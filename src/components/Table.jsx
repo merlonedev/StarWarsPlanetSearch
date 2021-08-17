@@ -1,7 +1,16 @@
-import React from 'react';
-import { shape, string, arrayOf } from 'prop-types';
+import React, { useEffect, useContext } from 'react';
+import AppContext from '../context/Context';
 
-export default function Table({ planets }) {
+export default function Table() {
+  const { planets, setPlanets } = useContext(AppContext);
+  useEffect(() => {
+    const fetchAPI = async () => {
+      const request = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
+      const { results } = await request.json();
+      setPlanets(results);
+    };
+    fetchAPI();
+  }, [setPlanets]);
   if (!planets.length) { return <div>LOADING...</div>; }
   return (
     <table>
@@ -26,21 +35,3 @@ export default function Table({ planets }) {
     </table>
   );
 }
-
-Table.propTypes = {
-  planets: arrayOf(shape({
-    name: string,
-    rotation_period: string,
-    orbital_period: string,
-    diameter: string,
-    climate: string,
-    gravity: string,
-    terrain: string,
-    surface_water: string,
-    population: string,
-    films: arrayOf(string),
-    created: string,
-    edited: string,
-    url: string,
-  })).isRequired,
-};
