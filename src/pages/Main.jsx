@@ -1,11 +1,11 @@
 import React from 'react';
-import Provider from '../context/Provider';
-import Table from '../components/Table';
+import { Table, Filter } from '../components';
 
 export default function Main() {
   return (
-    <Provider>
+    <>
+      <Filter />
       <Table />
-    </Provider>
+    </>
   );
 }

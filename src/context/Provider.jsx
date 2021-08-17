@@ -3,8 +3,16 @@ import PropTypes from 'prop-types';
 import AppContext from './Context';
 
 export default function Provider({ children }) {
-  const [planets, setPlanets] = useState([]);
-  const INITIAL_STATE = { planets, setPlanets };
+  const [data, setPlanets] = useState([]);
+  const [filterByName, setFilterByName] = useState('');
+  const INITIAL_STATE = {
+    data,
+    setPlanets,
+    setFilterByName,
+    filters: {
+      filterByName,
+    },
+  };
   return (
     <AppContext.Provider value={ INITIAL_STATE }>
       {children}
