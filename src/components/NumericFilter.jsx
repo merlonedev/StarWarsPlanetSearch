@@ -36,7 +36,7 @@ export default function NumericFilter() {
       <ColumnSelect change={ handleChanges } value={ fil.column } />
       <ComparisonSelect change={ handleChanges } value={ fil.comparison } />
       <ValueFilter change={ handleChanges } value={ fil.value } />
-      <FilterButton click={ handleClick4} />
+      <FilterButton click={ handleClick } />
     </div>
   );
 }
