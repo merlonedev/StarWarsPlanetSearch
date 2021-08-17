@@ -1,10 +1,17 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-export const MyContext = createContext();
+const MyContext = createContext();
+
+export const useMyContext = () => useContext(MyContext);
 
 export default function MyProvider({ children }) {
   const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -16,7 +23,20 @@ export default function MyProvider({ children }) {
     getPlanets();
   }, []);
 
-  const contextValue = { data };
+  const handleNameFilter = ({ target: { value } }) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      filterByName: {
+        name: value,
+      },
+    }));
+  };
+
+  const contextValue = {
+    data,
+    filters,
+    handleNameFilter,
+  };
   return (
     <MyContext.Provider value={ contextValue }>
       { children }
