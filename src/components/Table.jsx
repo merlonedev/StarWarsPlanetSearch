@@ -2,8 +2,13 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 export default function Table() {
-  const { data } = useContext(AppContext);
+  const { data, filters } = useContext(AppContext);
+  let planets = data;
   const keys = Object.keys(data[0]).filter((name) => name !== 'residents');
+  const { filters: { filterByName: { name } } } = filters;
+  if (name) {
+    planets = planets.filter((planet) => (planet.name).toLowerCase().includes(name));
+  }
 
   return (
     <div className="table-responsive-sm">
@@ -14,7 +19,7 @@ export default function Table() {
           </tr>
         </thead>
         <tbody>
-          {data.map((planet) => (
+          {planets.map((planet) => (
             <tr key={ planet.name }>
               {
                 keys.map((key) => (

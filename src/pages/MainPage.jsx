@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import Table from '../components/Table';
 import AppContext from '../context/AppContext';
 import fetchAPI from '../services';
+import FilterForm from '../components/FilterForm';
 
 export default function MainPage() {
   const { setPlanetData } = useContext(AppContext);
@@ -18,6 +19,7 @@ export default function MainPage() {
 
   return (
     <section>
+      <FilterForm />
       {!fetchig && <Table />}
     </section>
   );

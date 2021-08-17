@@ -4,10 +4,16 @@ import AppContext from './AppContext';
 
 function AppProvider({ children }) {
   const [data, setPlanetData] = useState();
-  const [nameFilter, setNameFilter] = useState({ });
+  const [filters, setFilter] = useState({
+    filters: {
+      filterByName: {
+        name: '',
+      },
+    },
+  });
 
   return (
-    <AppContext.Provider value={ { data, setPlanetData, nameFilter, setNameFilter } }>
+    <AppContext.Provider value={ { data, setPlanetData, filters, setFilter } }>
       {children}
     </AppContext.Provider>
   );
