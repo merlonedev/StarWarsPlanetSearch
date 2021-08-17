@@ -8,9 +8,8 @@ export const useMyContext = () => useContext(MyContext);
 export default function MyProvider({ children }) {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState({
-    filterByName: {
-      name: '',
-    },
+    filterByName: { name: '' },
+    filterByNumericValues: [{ column: '', comparison: '', value: '' }],
   });
 
   useEffect(() => {
@@ -26,16 +25,29 @@ export default function MyProvider({ children }) {
   const handleNameFilter = ({ target: { value } }) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      filterByName: {
-        name: value,
-      },
+      filterByName: { name: value },
     }));
+  };
+
+  const handleFilterByNumeric = ({ column, comparison, value }) => {
+    setFilters((prevFilters) => {
+      if (!prevFilters.filterByNumericValues[0].value) {
+        return { ...prevFilters, filterByNumericValues: [{ column, comparison, value }] };
+      }
+      return { ...prevFilters,
+        filterByNumericValues: [
+          ...prevFilters.filterByNumericValues,
+          { column, comparison, value },
+        ],
+      };
+    });
   };
 
   const contextValue = {
     data,
     filters,
     handleNameFilter,
+    handleFilterByNumeric,
   };
   return (
     <MyContext.Provider value={ contextValue }>
