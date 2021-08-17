@@ -8,11 +8,7 @@ export default function Provider({ children }) {
 
   const [filters, setFilters] = useState({
     filterByName: { name: '' },
-    filterByNumericValues: [{
-      column: '',
-      comparison: '',
-      value: '',
-    }],
+    filterByNumericValues: [],
   });
 
   const contextValue = {

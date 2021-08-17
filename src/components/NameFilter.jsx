@@ -13,9 +13,15 @@ function NameFilter() {
     });
   };
   return (
-    <div>
-      <input type="text" data-testid="name-filter" onChange={ handleName } />
-    </div>
+    <label htmlFor="name-filter">
+      Nome
+      <input
+        id="name-filter"
+        type="text"
+        data-testid="name-filter"
+        onChange={ handleName }
+      />
+    </label>
   );
 }
 
