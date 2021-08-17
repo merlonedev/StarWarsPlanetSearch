@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import AppContext from '../context/AppContext';
 import usePlanets from '../hooks/usePlanets';
@@ -6,9 +6,20 @@ import usePlanets from '../hooks/usePlanets';
 export default function Provider({ children }) {
   const [data, loading] = usePlanets();
 
+  const [filters, setFilters] = useState({
+    filterByName: { name: '' },
+    filterByNumericValues: [{
+      column: '',
+      comparison: '',
+      value: '',
+    }],
+  });
+
   const contextValue = {
     data,
     loading,
+    filters,
+    setFilters,
   };
 
   return (
