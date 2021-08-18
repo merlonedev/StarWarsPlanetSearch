@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
-import { PlanetsContext } from '../context/PlanetsContext';
+import React from 'react';
+
 import Table from '../components/Table';
+import Filter from '../components/Filter';
 
-const Home = () => {
-  const { data } = useContext(PlanetsContext);
-
-  return (
-    <Table data={ data } />
-  );
-};
+const Home = () => (
+  <>
+    <Filter />
+    <Table />
+  </>
+);
 
 export default Home;

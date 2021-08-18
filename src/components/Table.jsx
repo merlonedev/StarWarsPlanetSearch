@@ -7,19 +7,19 @@ import TableRow from '@material-ui/core/TableRow';
 import { PlanetsContext } from '../context/PlanetsContext';
 
 function Orders() {
-  const { data } = useContext(PlanetsContext);
-  return data ? (
+  const { filteredData } = useContext(PlanetsContext);
+  return filteredData ? (
     <Table size="small">
-      {console.log(data)}
+      {console.log(filteredData)}
       <TableHead>
         <TableRow>
           {
-            Object.keys(data[0]).map((e) => <TableCell key={ e }>{e}</TableCell>)
+            Object.keys(filteredData[0]).map((e) => <TableCell key={ e }>{e}</TableCell>)
           }
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((e) => (
+        {filteredData.map((e) => (
           <TableRow key={ e.name }>
             <TableCell>{e.name}</TableCell>
             <TableCell>{e.rotation_period}</TableCell>

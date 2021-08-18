@@ -5,7 +5,13 @@ import FetchPlanets from '../hooks/FetchPlanets';
 export const PlanetsContext = createContext();
 
 export const ContextProvider = ({ children }) => {
-  const [data, setData] = useState('');
+  const [data, setData] = useState();
+  const [filteredData, setFiltered] = useState('');
+  const [filters, setFilters] = useState();
+
+  const updateFilters = ({ name, value }) => {
+    setFilters({ ...filters, [name]: value });
+  };
 
   const getPlanets = async () => {
     const request = await FetchPlanets();
@@ -14,14 +20,25 @@ export const ContextProvider = ({ children }) => {
       return e;
     });
     setData(newArray);
+    setFiltered(newArray);
   };
 
   useEffect(() => {
     getPlanets();
   }, []);
 
+  useEffect(() => {
+    if (data && filters) {
+      setFiltered(data.filter((e) => e.name.toLowerCase().includes(
+        filters.filterByName.toLowerCase(),
+      )));
+    } else {
+      setFiltered(data);
+    }
+  }, [data, filters]);
+
   return (
-    <PlanetsContext.Provider value={ { data, setData } }>
+    <PlanetsContext.Provider value={ { filteredData, setData, updateFilters } }>
       {children}
     </PlanetsContext.Provider>
   );
