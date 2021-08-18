@@ -1,21 +1,12 @@
 import React, { useContext, useEffect } from 'react';
 import AppContext from '../context/AppContext';
+import useNumericFilters from '../hooks/useNumericFilters';
 
 function Table() {
-  const { loading, filters, setPlanets } = useContext(AppContext);
+  const { loading, filters } = useContext(AppContext);
   const { filterByNumericValues } = filters;
+  const [filterPlanets] = useNumericFilters();
   let { planets } = useContext(AppContext);
-
-  const filterPlanets = () => {
-    const comparisons = {
-      'maior que': (col, val) => Number(col) > Number(val),
-      'menor que': (col, val) => Number(col) < Number(val),
-      'igual a': (col, val) => Number(col) === Number(val),
-    };
-    filterByNumericValues
-      .forEach(({ column, comparison, value }) => setPlanets(planets
-        .filter((planet) => comparisons[comparison](planet[column], value))));
-  };
 
   useEffect(filterPlanets, [filterByNumericValues]);
 
