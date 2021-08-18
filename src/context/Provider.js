@@ -4,10 +4,10 @@ import StarWarsContext from './StarWarsContext';
 
 function Provider({ children }) {
   const [data, setData] = useState([]);
-  const [filter, setFilter] = useState({
+  const [filters, setFilter] = useState({
     filterByName: {
-      name: ''
-    }
+      name: '',
+    },
   });
 
   useEffect(() => {
@@ -19,7 +19,7 @@ function Provider({ children }) {
     };
     getPlanets();
   }, []);
-  const contextValue = { data, filter, setFilter };
+  const contextValue = { data, filters, setFilter };
   return (
     <StarWarsContext.Provider value={ contextValue }>
       { children }

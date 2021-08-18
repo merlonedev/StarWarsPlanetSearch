@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function Table() {
-  const { data } = useContext(StarWarsContext);
+  const { data, filters } = useContext(StarWarsContext);
+  const { filterByName: { name } } = filters;
 
   const renderTableRow = (planet) => (
     <tr key={ planet.name }>
@@ -23,7 +24,13 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { data.map((planet) => renderTableRow(planet)) }
+        { data.map((planet) => {
+          const planetName = planet.name.toLowerCase();
+          const pNameIncludesInputValue = planetName.includes(name.toLowerCase());
+          if (name && pNameIncludesInputValue) return renderTableRow(planet);
+          if (name === '') return renderTableRow(planet);
+          return null;
+        }) }
       </tbody>
     </table>
   );

@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function Filters() {
-  const { filter, setFilter } = useContext(StarWarsContext);
-  const { filterByName: { name } } = filter;
+  const { filters, setFilter } = useContext(StarWarsContext);
+  const { filterByName: { name } } = filters;
 
   const renderPlanetInput = () => (
     <label htmlFor="name-filter">
@@ -13,17 +13,16 @@ function Filters() {
         value={ name }
         id="name-filter"
         data-testid="name-filter"
-        onChange={ ( {target: { value }} ) => setFilter({
-          ...filter, filterByName: { ...filter.filterByName, name: value }
+        onChange={ ({ target: { value } }) => setFilter({
+          ...filters, filterByName: { ...filters.filterByName, name: value },
         }) }
       />
     </label>
   );
 
-
   return (
     <div>
-
+      {renderPlanetInput()}
     </div>
   );
 }
