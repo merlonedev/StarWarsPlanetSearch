@@ -6,9 +6,8 @@ import apiPlanets from '../services/apiPlanets';
 const StarWarsProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState({
-    filterByName: {
-      name: '',
-    },
+    filterByName: { name: '' },
+    filterByNumericValues: [],
   });
 
   useEffect(() => {

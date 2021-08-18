@@ -1,8 +1,10 @@
 .filter-form {
   align-items: center;
   display: flex;
-  justify-content: center;
-  margin: 20px;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px auto;
+  width: 60%;
 }
 
 .filter-by-name input {
@@ -14,4 +16,10 @@
 
 .filter-by-name input:focus {
   border: 5px solid lightblue;
+}
+
+.filter-by-numerical-values {
+  border: 5px solid lightgrey;
+  border-radius: 5px;
+  padding: 5px;
 }

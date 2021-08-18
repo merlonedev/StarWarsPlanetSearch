@@ -1,12 +1,15 @@
 import React from 'react';
+import StarWarsProvider from './context/StarWarsProvider';
 import FilterForm from './components/FilterForm';
 import Table from './components/Table';
 import './App.css';
 
 const App = () => (
   <section>
-    <FilterForm />
-    <Table />
+    <StarWarsProvider>
+      <FilterForm />
+      <Table />
+    </StarWarsProvider>
   </section>
 );
 
