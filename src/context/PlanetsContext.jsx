@@ -6,7 +6,7 @@ export const PlanetsContext = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [data, setData] = useState();
-  const [filteredData, setFiltered] = useState('');
+  const [filteredData, setFiltered] = useState();
   const [filters, setFilters] = useState();
 
   const updateFilters = ({ name, value }) => {
@@ -38,7 +38,7 @@ export const ContextProvider = ({ children }) => {
   }, [data, filters]);
 
   return (
-    <PlanetsContext.Provider value={ { filteredData, setData, updateFilters } }>
+    <PlanetsContext.Provider value={ { filteredData, setData, updateFilters, data } }>
       {children}
     </PlanetsContext.Provider>
   );
