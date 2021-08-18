@@ -49,3 +49,13 @@ th {
   box-shadow: 0 0 2px #ffff8f , 0 0 8px #ffea00 , 0 0 16px #ffea00;
   padding: 2px;
 }
+
+.table-body {
+  background-color: #ffea00;
+  font-size: 12px;
+  opacity: 60%;
+}
+
+td {
+  border: 2px;
+}

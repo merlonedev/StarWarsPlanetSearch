@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import StarContext from '../context/StarContext';
+import TableBody from './TableBody';
 
 function Table() {
   const { data } = useContext(StarContext);
@@ -26,6 +27,7 @@ function Table() {
           </tr>
         </thead>
       </table>
+      <TableBody />
     </div>
   );
 }
