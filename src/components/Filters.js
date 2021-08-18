@@ -1,13 +1,13 @@
 import React, { useState, useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
-const selectValues = {
-  population: 'Population',
-  orbital_period: 'Orbital period',
-  diameter: 'Diameter',
-  rotation_period: 'Rotation period',
-  surface_water: 'Surface water',
-};
+const selectValues = [
+  'population',
+  'orbital_period',
+  'diameter',
+  'rotation_period',
+  'surface_water',
+];
 
 const INITIAL_STATE = {
   column: 'population',
@@ -50,8 +50,8 @@ function Filters() {
         onChange={ numericFiltersOnChangeHandle }
         value={ numericFilter.column }
       >
-        { Object.keys(selectValues).map((value) => (
-          <option key={ value } value={ value }>{ selectValues[value]}</option>
+        { selectValues.map((value) => (
+          <option key={ value } value={ value }>{ value }</option>
         ))}
       </select>
       <select
@@ -60,15 +60,15 @@ function Filters() {
         onChange={ numericFiltersOnChangeHandle }
         value={ numericFilter.comparison }
       >
-        <option value="maior que">Maior que</option>
-        <option value="menor que">Menor que</option>
-        <option value="igual a">Igual a</option>
+        <option value="maior que">maior que</option>
+        <option value="menor que">menor que</option>
+        <option value="igual a">igual a</option>
       </select>
       <input
         type="number"
         value={ numericFilter.value }
         id="value"
-        data-testid="comparison-filter"
+        data-testid="value-filter"
         onChange={ numericFiltersOnChangeHandle }
       />
       <button
