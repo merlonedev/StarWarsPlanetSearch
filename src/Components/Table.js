@@ -12,15 +12,19 @@ function Table() {
   });
 
   const body = data.map((results, index) => {
-    if (results !== 'residents') {
-      const result = Object.values(results);
-      return (
-        <tr key={ index }>
-          { result.map((planetEntrie) => <td key={ planetEntrie }>{ planetEntrie }</td>)}
-        </tr>
-      );
-    }
-    return null;
+    const result = Object.entries(results);
+    return (
+      <tr key={ index }>
+        { result.map((planetEntry) => {
+          if (planetEntry[0] !== 'residents') {
+            return (
+              <td key={ planetEntry[1] }>{ planetEntry[1] }</td>
+            );
+          }
+          return null;
+        })}
+      </tr>
+    );
   });
 
   return (
