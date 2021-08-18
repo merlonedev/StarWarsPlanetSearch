@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+// Comite inicial
 
 function App() {
   return (
