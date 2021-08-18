@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import SWContext from './SWContext';
 
 function Provider({ children }) {
-  const [planets, setPlanets] = useState();
+  const [data, setData] = useState();
   const contextValue = {
-    planets,
-    setPlanets,
+    data,
+    setData,
   };
 
   return (
@@ -15,6 +15,8 @@ function Provider({ children }) {
     </SWContext.Provider>
   );
 }
+
+// Proptype para children vista no link https://bit.ly/3kbmWf0
 
 Provider.propTypes = {
   children: PropTypes.node.isRequired,
