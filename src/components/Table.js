@@ -31,10 +31,24 @@ function Table() {
     </thead>
   );
 
-  const { filters: { filterByName: { name } } } = useContext(FilterContext);
+  const { filters: { filterByName: { name },
+    filterByNumericValues } } = useContext(FilterContext);
   if (name) {
     filteredPlanets = filteredPlanets.filter((planet) => planet.name.toLowerCase()
       .includes(name.toLowerCase()));
+  }
+  if (filterByNumericValues) {
+    filterByNumericValues.forEach(({ column, comparison, value }) => {
+      filteredPlanets = filteredPlanets.filter((planet) => {
+        if (comparison === 'maior que') {
+          return Number(planet[column]) > value;
+        }
+        if (comparison === 'menor que') {
+          return Number(planet[column]) < value;
+        }
+        return planet[column] === value;
+      });
+    });
   }
   return (
     <table>

@@ -8,11 +8,16 @@ function FilterProvider({ children }) {
       filterByName: {
         name: '',
       },
+      filterByNumericValues: [],
+      order: {
+        column: '',
+        sort: '',
+      },
     },
   };
 
-  const [state, setName] = useState(INITIAL_STATE);
-  const handleChangeName = ({ target: { value } }) => setName(
+  const [state, setState] = useState(INITIAL_STATE);
+  const handleChangeName = ({ target: { value } }) => setState(
     { ...state,
       filters: { ...state.filters,
         filterByName: {
@@ -22,8 +27,22 @@ function FilterProvider({ children }) {
     },
   );
 
+  const handleFilter = (newFilter) => setState(
+    { ...state,
+      filters: { ...state.filters,
+        filterByNumericValues: [...state.filters.filterByNumericValues, newFilter],
+      },
+    },
+  );
+
+  const value = {
+    ...state,
+    handleChangeName,
+    handleFilter,
+  };
+
   return (
-    <FilterContext.Provider value={ { ...state, handleChangeName } }>
+    <FilterContext.Provider value={ value }>
       {children}
     </FilterContext.Provider>
   );
