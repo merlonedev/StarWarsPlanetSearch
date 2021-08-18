@@ -21,7 +21,11 @@ function Table() {
 
   const renderTableRow = (planet) => (
     <tr key={ planet.name }>
-      { Object.values(planet).map((value) => <td key={ value }>{value}</td>) }
+      { Object.values(planet).map((value) => {
+        if (value === planet.name) 
+          return <td data-testid="planet-name" key={ value }>{value}</td>
+        return <td key={ value }>{value}</td>  
+      })}
     </tr>
   );
 
