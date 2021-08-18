@@ -5,8 +5,19 @@ import fetchApi from '../services/api';
 
 export default function PlanetProvider({ children }) {
   const [data, setData] = useState([]);
-  const [filter, setFilter] = useState({ filterByName: { name: '' } });
-  const [filtered, setfitered] = useState(data);
+  const [filterNumeric, setFilterNumeric] = useState([]);
+  const [filter, setFilter] = useState({
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [
+      {
+        column: 'population',
+        comparison: 'maior que',
+        value: '100000',
+      },
+    ],
+  });
 
   useEffect(() => {
     fetchApi().then((response) => setData(response));
@@ -14,11 +25,11 @@ export default function PlanetProvider({ children }) {
 
   const context = {
     data,
-    fetchApi,
     filter,
+    filterNumeric,
+    fetchApi,
     setFilter,
-    filtered,
-    setfitered,
+    setFilterNumeric,
   };
 
   return (
