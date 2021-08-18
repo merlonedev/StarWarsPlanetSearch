@@ -1,5 +1,5 @@
 import React from 'react';
-import Filters from '../components/Filters';
+import Filters from '../components/filters/Filters';
 import Table from '../components/Table';
 
 function Planets() {

@@ -22,7 +22,7 @@ function Table() {
   const { filterByName: { name } } = filters;
   if (loading) return 'Loading';
   if (name) planets = planets.filter((d) => d.name.toLowerCase().includes(name));
-  if (!planets.length) return 'No Planet Found';
+  if (!planets.length) return 'No Planets Found';
 
   return (
     <table>

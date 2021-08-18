@@ -3,7 +3,7 @@ import ColumnSelect from './ColumnSelect';
 import ComparisonSelect from './ComparisonSelect';
 import ValueFilter from './ValueFilter';
 import FilterButton from './FilterButton';
-import AppContext from '../context/AppContext';
+import AppContext from '../../context/AppContext';
 
 const INITIAL = {
   column: 'population',
