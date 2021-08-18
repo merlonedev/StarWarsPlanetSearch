@@ -5,7 +5,7 @@ function Table() {
   const { planets, filters: { filterByName,
     numericFilter } } = useContext(MyContext);
   const planetData = filterByName.name
-    ? planets.filterByName((planet) => planet.name.includes(filterByName.name)) : planets;
+    ? planets.filter((planet) => planet.name.includes(filterByName.name)) : planets;
 
   const defaultNumericFilterValue = {
     column: '',

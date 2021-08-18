@@ -15,6 +15,7 @@ function Provider({ children }) {
     };
     getPlanets();
   }, []);
+
   const contextValue = {
     planets,
     filters: {
