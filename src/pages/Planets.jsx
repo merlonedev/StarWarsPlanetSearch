@@ -4,10 +4,10 @@ import Table from '../components/Table';
 
 function Planets() {
   return (
-    <div>
+    <main>
       <Header />
       <Table />
-    </div>
+    </main>
   );
 }
 

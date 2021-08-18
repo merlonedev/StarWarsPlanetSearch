@@ -1,9 +1,19 @@
 table, td, th {
-  border: 1px solid black;
+  border: 1px solid white;
   border-collapse: collapse;
+  box-shadow: 0 0 1px white , 0 0 2px white , 0 0 10px $blue-lightsaber;
+  color: white;
   font-size: 0.85em;
 }
 
 td, th {
   padding: 5px 10px;
+  text-align: center;
+}
+
+table {
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.8);
+  position: relative;
+  top: 50px
 }
