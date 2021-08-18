@@ -22,8 +22,8 @@ export default function Table() {
   useEffect(() => { setData(planets); }, [planets, setData]);
 
   return (
-    <table>
-      <thead>
+    <table className="table">
+      <thead className="thead">
         <tr>
           { planets.length > 0
           && Object.keys(planets[0])
@@ -31,7 +31,7 @@ export default function Table() {
               key !== 'residents' && <th key={ index1 }>{ key }</th>)) }
         </tr>
       </thead>
-      <tbody>
+      <tbody className="tbody">
         { planets.map((planet, index2) => (
           <tr key={ index2 }>
             { Object.keys(planet).map((key, index3) => (
