@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import './App.css';
+import React, { useEffect, useState } from 'react';
 
 function App() {
+  const [planets, setPlanets] = useState([]);
   useEffect(() => {
     const getPlanets = async () => {
       const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const result = await fetch(endpoint).then((response) => response.json());
-      console.log(result);
+      setPlanets(result);
     };
     getPlanets();
   }, []);
