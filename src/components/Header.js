@@ -59,14 +59,11 @@ function Header() {
         Filtrar
       </button>
       {filterByNumericValues.map((filter, index) => (
-        <button
-          type="button"
-          data-testid="filter"
-          key={ index }
-          onClick={ () => rmvFilter(filter) }
-        >
-          X
-        </button>
+        <div data-testid="filter" key={ index }>
+          <button type="button" onClick={ () => rmvFilter(filter) }>
+            X
+          </button>
+        </div>
       ))}
     </header>
   );
