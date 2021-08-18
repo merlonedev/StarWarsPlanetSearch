@@ -6,15 +6,20 @@ import FilterButton from './FilterButton';
 import AppContext from '../context/AppContext';
 
 const INITIAL = {
-  column: '',
-  comparison: '',
+  column: 'population',
+  comparison: 'maior que',
   value: '',
 };
+
+const COLUMNS = [
+  'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+];
 
 export default function NumericFilter() {
   const { filters, setFilters } = useContext(AppContext);
 
   const [fil, setFil] = useState(INITIAL);
+  const [options, setOptions] = useState(COLUMNS);
 
   const handleChanges = ({ target: { value, name } }) => {
     setFil({
@@ -31,12 +36,13 @@ export default function NumericFilter() {
         fil,
       ],
     });
+    setOptions(options.filter((opt) => opt !== fil.column));
     setFil(INITIAL);
   };
 
   return (
     <div>
-      <ColumnSelect change={ handleChanges } value={ fil.column } />
+      <ColumnSelect options={ options } change={ handleChanges } value={ fil.column } />
       <ComparisonSelect change={ handleChanges } value={ fil.comparison } />
       <ValueFilter change={ handleChanges } value={ fil.value } />
       <FilterButton click={ handleClick } />

@@ -17,9 +17,7 @@ function Table() {
         .filter((planet) => comparisons[comparison](planet[column], value))));
   };
 
-  useEffect(() => {
-    filterPlanets();
-  }, [filterByNumericValues]);
+  useEffect(filterPlanets, [filterByNumericValues]);
 
   const { filterByName: { name } } = filters;
   if (loading) return 'Loading';
