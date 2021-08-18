@@ -54,7 +54,7 @@ describe.only('1 - Faça uma requisição para o endpoint `/planets` da API de S
       const terrain = await screen.findAllByText(planets[planetIndex].terrain);
       const surfaceWater = await screen.findAllByText(planets[planetIndex].surface_water);
       const population = await screen.findAllByText(planets[planetIndex].population);
-
+      
       expect(name).toBeInTheDocument();
       expect(rotationPeriod.length).toBeGreaterThanOrEqual(1);
       expect(orbitalPeriod.length).toBeGreaterThanOrEqual(1);
