@@ -1,5 +1,5 @@
-import { useContext } from 'react';
+import { createContext } from 'react';
 
-const StarContext = useContext();
+const StarContext = createContext();
 
 export default StarContext;

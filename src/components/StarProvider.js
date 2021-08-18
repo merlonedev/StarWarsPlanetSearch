@@ -1,23 +1,23 @@
 import React from 'react';
-import { shape, string } from 'prop-types';
+import { arrayOf, node } from 'prop-types';
 import StarContext from '../context/StarContext';
+import usePlanets from '../hooks/usePlanets';
 
 function StarProvider({ children }) {
-  const contextValue = {
-    key: 'value',
-  };
+  const [planets] = usePlanets();
 
+  const contextValue = {
+    planets,
+  };
   return (
-    <StarContext value={ contextValue }>
+    <StarContext.Provider value={ contextValue }>
       {children}
-    </StarContext>
+    </StarContext.Provider>
   );
 }
 
 export default StarProvider;
 
 StarProvider.propTypes = {
-  children: shape({
-    innerHTML: string,
-  }).isRequired,
+  children: arrayOf(node).isRequired,
 };
