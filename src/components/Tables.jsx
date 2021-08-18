@@ -24,19 +24,7 @@ function Tables() {
       <TableBody>
         {filtred.map((e) => (
           <TableRow key={ e.name }>
-            <TableCell>{e.name}</TableCell>
-            <TableCell>{e.rotation_period}</TableCell>
-            <TableCell>{e.orbital_period}</TableCell>
-            <TableCell>{e.diameter}</TableCell>
-            <TableCell>{e.climate}</TableCell>
-            <TableCell>{e.gravity}</TableCell>
-            <TableCell>{e.terrain}</TableCell>
-            <TableCell>{e.surface_water}</TableCell>
-            <TableCell>{e.population}</TableCell>
-            <TableCell>{e.films}</TableCell>
-            <TableCell>{e.created}</TableCell>
-            <TableCell>{e.edited}</TableCell>
-            <TableCell>{e.url}</TableCell>
+            {Object.values(e).map((elm) => <TableCell key={ elm }>{elm}</TableCell>)}
           </TableRow>
         ))}
       </TableBody>
