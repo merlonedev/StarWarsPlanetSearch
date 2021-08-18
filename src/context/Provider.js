@@ -5,16 +5,16 @@ import { requestApi, requestKeysApi } from '../services/requestApi';
 
 const Provider = ({ children }) => {
   const [data, setData] = useState([]);
-  const [searchText, setSearchText] = useState('');
   const [key, setKeys] = useState([]);
+  const [result, setResult] = useState([]);
 
   const context = {
     data,
     setData,
-    searchText,
-    setSearchText,
     key,
     setKeys,
+    result,
+    setResult,
   };
 
   useEffect(() => {

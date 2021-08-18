@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 const Table = () => {
-  const { data, key } = useContext(AppContext);
+  const { key, result } = useContext(AppContext);
 
   return (
     <table>
@@ -17,7 +17,7 @@ const Table = () => {
       </thead>
       <tbody>
         {
-          data.map(({
+          result.map(({
             name,
             rotation_period: rotationPeriod,
             orbital_period: orbitalPeriod,
