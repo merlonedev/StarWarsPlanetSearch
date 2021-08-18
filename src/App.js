@@ -1,6 +1,6 @@
 import React from 'react';
-import Provider from './Context/Provider';
 import Filters from './components/Filters';
+import Provider from './Context/Provider';
 import Table from './components/Table';
 import './App.css';
 
@@ -8,7 +8,7 @@ function App() {
   return (
     <Provider>
       <Filters />
-      <h1>GALATIC EMPIRE COUNTER ATTACKS!</h1>
+      <h1>GALATIC EMPIRE RULES !!!</h1>
       <Table />
     </Provider>
   );

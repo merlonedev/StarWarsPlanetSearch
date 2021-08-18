@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import AppContext from '../Context/appContext';
 
 function Filters() {
-  const { setInfo } = useContext(AppContext);
+  const { setInfo, filters: { filterByName: { setName } } } = useContext(AppContext);
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -10,13 +10,26 @@ function Filters() {
       const planets = await fetch(url)
         .then((response) => response.json())
         .then((data) => data.results);
-      setInfo(planets);
+      setData(planets);
     };
     getPlanets();
   }, [setInfo]);
 
+  const handleChange = ({ target }) => {
+    setName(target.value);
+  };
+
   return (
-    <h1>A LOT OF FILTERS!!!</h1>
+    <form>
+      <div>
+        <input
+          data-testid="name-filter"
+          type="text"
+          placeholder="Star Wars Planet Name"
+          onChange={ handleChange }
+        />
+      </div>
+    </form>
   );
 }
 

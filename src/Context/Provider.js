@@ -4,9 +4,16 @@ import AppContext from './appContext';
 
 function Provider({ children }) {
   const [info, setInfo] = useState([]);
+  const [name, setName] = useState('');
   const contextValue = {
     info,
     setInfo,
+    filters: {
+      filterByName: {
+        name,
+        setName,
+      },
+    },
   };
 
   return (
