@@ -8,7 +8,7 @@ function App() {
   return (
     <Provider>
       <Filters />
-      <span>May the force be with You</span>
+      <span>May the force be with You!</span>
       <Table />
     </Provider>
   );
