@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
-import Context from '../context';
+import { PayloadContext } from '../context';
 
 const URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
 
-function Provider({ children }) {
+function PayloadProvider({ children }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -23,14 +23,14 @@ function Provider({ children }) {
   };
 
   return (
-    <Context.Provider value={ contextValue }>
+    <PayloadContext.Provider value={ contextValue }>
       {children}
-    </Context.Provider>
+    </PayloadContext.Provider>
   );
 }
 
-Provider.propTypes = {
+PayloadProvider.propTypes = {
   children: PropTypes.element.isRequired,
 };
 
-export default Provider;
+export default PayloadProvider;

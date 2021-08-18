@@ -1,5 +1,12 @@
 import { createContext } from 'react';
 
-const Context = createContext([]);
+export const PayloadContext = createContext([]);
 
-export default Context;
+export const FiltersContext = createContext({
+  filters: {
+    filterByName: {
+      name: '',
+      setName: () => null,
+    },
+  },
+});
