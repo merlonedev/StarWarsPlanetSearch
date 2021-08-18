@@ -1,16 +1,21 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import StarContext from './StarContext';
 
 function Provider({ children }) {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({ results: [] });
 
-  const context = {
-    data,
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      const dataList = await fetch('https://swapi-trybe.herokuapp.com/api/planets/')
+        .then((r) => r.json());
+      setData(dataList);
+    };
+    fetchData();
+  }, []);
 
   return (
-    <StarContext.Provider value={ context }>
+    <StarContext.Provider value={ data }>
       {children}
     </StarContext.Provider>
   );
