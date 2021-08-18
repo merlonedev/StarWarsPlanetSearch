@@ -22,7 +22,7 @@ function PlanetProvider({ children }) {
         item.name.toLowerCase().includes(inputName)));
       setFilterByName(dataFilter);
     }
-  }, [inputName]);
+  }, [inputName, data]);
 
   const contextValue = {
     data,
