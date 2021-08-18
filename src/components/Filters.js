@@ -46,11 +46,11 @@ function Filters() {
     const selectValuesWithFilter = [...selectValues];
     if (filterByNumericValues.length > 0) {
       filterByNumericValues
-      .map((filter) => filter.column)
-      .map((column) => {
-        const index = selectValuesWithFilter.indexOf(column);
-        selectValuesWithFilter.splice(index,1);
-      });
+        .map((filter) => filter.column)
+        .forEach((column) => {
+          const index = selectValuesWithFilter.indexOf(column);
+          selectValuesWithFilter.splice(index, 1);
+        });
     }
     return (
       <div>
@@ -96,7 +96,7 @@ function Filters() {
         </button>
       </div>
     );
-  }
+  };
 
   return (
     <div>
