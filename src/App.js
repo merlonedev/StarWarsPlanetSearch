@@ -1,9 +1,12 @@
 import React from 'react';
 import './App.css';
+import ProviderContext from './context/ProviderContext';
 
 function App() {
   return (
-    <span>Hello, App Wander!</span>
+    <ProviderContext>
+      <span>Hello, App Wander!</span>
+    </ProviderContext>
   );
 }
 
