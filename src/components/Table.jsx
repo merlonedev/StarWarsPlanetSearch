@@ -1,30 +1,23 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
+import SelectFilters from './SelectFilters';
 import Context from '../context/Context';
 
 function Table() {
-  const { data } = useContext(Context);
-  const [filter, setFilter] = useState('');
-  const [filterResult, setFilterResult] = useState([]);
-
-  function handleChange({ target: { value } }) {
-    setFilter(value);
-  }
-
-  useEffect(() => {
-    const results = data.filter((planet) => planet.name.toLowerCase().includes(filter));
-    setFilterResult(results);
-  }, [data, filter]);
+  const { data, filters, filterNameResult, handleChange } = useContext(Context);
+  const { filterByName } = filters;
 
   return (
     <div>
       <label htmlFor="filter">
+        Planet Name:
         <input
           data-testid="name-filter"
           type="text"
           onChange={ handleChange }
-          value={ filter }
+          value={ filterByName.name }
         />
       </label>
+      <SelectFilters />
       <table>
         <thead>
           <tr>
@@ -36,7 +29,7 @@ function Table() {
         </thead>
         <tbody>
           {
-            filterResult.map((planet, idx) => (
+            filterNameResult.map((planet, idx) => (
               <tr key={ idx }>
                 { Object.keys(planet)
                   .map((planets, i) => <td key={ i }>{planet[planets]}</td>) }
