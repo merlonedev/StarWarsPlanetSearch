@@ -29,7 +29,7 @@ function Provider({ children }) {
   const context = {
     data,
     setData,
-    name,
+    // name,
     setName,
     filters: {
       filterByName: {

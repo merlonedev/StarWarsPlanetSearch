@@ -1,23 +1,11 @@
-import React, { useContext } from 'react';
-import Context from '../../context/Context';
+import React from 'react';
+import FilterByName from './FilterByName';
 
-const Filters = () => {
-  const { name, setName } = useContext(Context);
-
-  const renderFilterByName = () => (
-    <input
-      value={ name }
-      data-testid="name-filter"
-      onChange={ ({ target: { value } }) => setName(value) }
-      placeholder="Filtrar por nome"
-    />
-  );
-
-  return (
-    <>
-      {renderFilterByName()}
-    </>
-  );
-};
+const Filters = () => (
+  <div>
+    <FilterByName />
+    <div>a</div>
+  </div>
+);
 
 export default Filters;
