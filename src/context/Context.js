@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
-// import Api from './Api';
+import Api from '../Api';
 
 const Context = createContext();
 
