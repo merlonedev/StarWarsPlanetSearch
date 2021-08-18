@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import Context from '../../context/Context';
 import './style.css';
 
-function Table() {
-  const { isLoading, data } = useContext(Context);
+const Table = () => {
+  const { data } = useContext(Context);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (data.length === 0) return <div>Loading...</div>;
 
   return (
     <table>
@@ -69,6 +69,6 @@ function Table() {
       </tbody>
     </table>
   );
-}
+};
 
 export default Table;

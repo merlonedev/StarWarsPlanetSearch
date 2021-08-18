@@ -1,15 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import useFetch from 'react-fetch-hook';
 import Context from './Context';
 
 function Provider({ children }) {
-  const { isLoading, data = { results: [] } } = useFetch('https://swapi-trybe.herokuapp.com/api/planets/');
-  data.results.forEach((planet) => delete planet.residents);
+  const [fullData, setFullData] = useState([]);
+  const [data, setData] = useState([]);
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    const fetchApi = async () => {
+      const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
+      const response = await fetch(endpoint);
+      const result = await response.json();
+      result.results.forEach((planet) => delete planet.residents);
+      setFullData(result.results);
+      setData(result.results);
+    };
+    fetchApi();
+  }, []);
+
+  useEffect(() => {
+    if (name.length !== '') {
+      setData(fullData.filter(({ name: planetName }) => planetName
+        .toLowerCase().includes(name.toLowerCase())));
+    } else { setData(fullData); }
+  }, [fullData, name]);
 
   const context = {
-    isLoading,
-    data: data.results,
+    data,
+    setData,
+    name,
+    setName,
+    filters: {
+      filterByName: {
+        name,
+      },
+    },
   };
 
   return (
