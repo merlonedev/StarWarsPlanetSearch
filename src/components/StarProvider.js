@@ -1,14 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { arrayOf, node } from 'prop-types';
 import StarContext from '../context/StarContext';
 import usePlanets from '../hooks/usePlanets';
+// import fetchPlanets from '../services/planetsAPI';
 
 function StarProvider({ children }) {
-  const [planets] = usePlanets();
+  const [planets, setPlanets] = useState([]);
+  const [data, loading] = usePlanets();
+
+  const [filters, setFilters] = useState({
+    filterByName: '',
+  });
+
+  useEffect(() => {
+    function getPlanets() {
+      setPlanets(data);
+    }
+    getPlanets();
+  }, [data]);
+
+  function filterPlanets() {
+    const { filterByName } = filters;
+    if (!filterByName.length) return setPlanets(data);
+    const filtered = planets.filter(
+      (e) => e.name.toLowerCase().includes(filterByName.toLowerCase()),
+    );
+    setPlanets(filtered);
+  }
+
+  useEffect(filterPlanets, [filters]);
 
   const contextValue = {
     planets,
+    loading,
+    filters,
+    setFilters,
   };
+
   return (
     <StarContext.Provider value={ contextValue }>
       {children}

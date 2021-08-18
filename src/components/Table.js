@@ -1,14 +1,16 @@
 import React, { useContext, useState, useEffect } from 'react';
 import StarContext from '../context/StarContext';
 
+const length = -1;
+
 function Table() {
   const { planets } = useContext(StarContext);
   const [headers, setHeaders] = useState([]);
 
   useEffect(() => {
-    if (planets.results) {
+    if (planets.length) {
       setHeaders(
-        Object.keys(planets.results[0]).filter((elem) => elem !== 'residents'),
+        Object.keys(planets[0]),
       );
     }
   }, [planets]);
@@ -33,7 +35,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {planets.results && planets.results.map((planet) => renderRow(planet))}
+        {planets.length > length && planets.map((planet) => renderRow(planet))}
       </tbody>
     </table>
   );
