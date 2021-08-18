@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import MyContext from '../context/context';
 
-const selectOptions = [
+// const backupOptions = [
+//   'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+let filterSelectOptions = [
   'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
 const comparisonOptions = ['maior que', 'menor que', 'igual a'];
 
@@ -23,9 +25,16 @@ function Filter() {
   };
 
   const handleSubmit = () => {
+    const { column, comparison, value } = InitialFilter;
+    const obj = { column, comparison, value };
+    filterSelectOptions = filterSelectOptions
+      .filter((item) => item !== obj.column);
+
     setFilter({ ...filters,
-      filterByNumericValues: [InitialFilter],
+      filterByNumericValues: [...filters.filterByNumericValues, obj],
     });
+    InitialFilter.column = filterSelectOptions.length ? filterSelectOptions[0] : '';
+    InitialFilter.value = '0';
   };
 
   return (
@@ -37,7 +46,7 @@ function Filter() {
       <label htmlFor="column">
         Column Filter:
         <select id="column" data-testid="column-filter" onChange={ handleChange }>
-          { selectOptions.map((item) => <option key={ item }>{ item }</option>) }
+          { filterSelectOptions.map((item) => <option key={ item }>{ item }</option>) }
         </select>
       </label>
       <label htmlFor="comparison">
