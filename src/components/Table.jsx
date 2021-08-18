@@ -1,31 +1,35 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import AppContext from '../context/Context';
 
 export default function Table() {
+  const [filteredPlanets, setFilteredPlanets] = useState([]);
   const { data, setPlanets, filters } = useContext(AppContext);
   useEffect(() => {
     const fetchAPI = async () => {
       const URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const { results } = await fetch(URL).then((r) => r.json());
-      const filterPlanets = await results
-        .filter(({ name }) => name.toLowerCase().includes(filters.filterByName));
-      setPlanets(filterPlanets);
+      setPlanets(results);
     };
     fetchAPI();
-  }, [filters.filterByName, setPlanets]);
-  if (!data.length) { return <div>LOADING...</div>; }
+  }, [setPlanets]);
+  useEffect(() => {
+    const filterPlanets = data
+      .filter(({ name }) => name.toLowerCase().includes(filters.filterByName));
+    setFilteredPlanets(filterPlanets);
+  }, [data, filters.filterByName]);
+  if (!filteredPlanets.length) { return <div>LOADING...</div>; }
   return (
     <table>
       <thead>
         <tr>
-          {Object.keys(data[0]).map((key, i) => {
+          {Object.keys(filteredPlanets[0]).map((key, i) => {
             if (key === 'residents') { return; }
             return (<th key={ i }>{key}</th>);
           })}
         </tr>
       </thead>
       <tbody>
-        {data.map((planet, i) => (
+        {filteredPlanets.map((planet, i) => (
           <tr key={ i }>
             {Object.values(planet).map((value, j) => (<td key={ j }>{value}</td>))}
           </tr>
