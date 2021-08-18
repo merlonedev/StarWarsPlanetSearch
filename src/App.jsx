@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import Planets from './pages/Planets';
 import Provider from './provider/Provider';
 

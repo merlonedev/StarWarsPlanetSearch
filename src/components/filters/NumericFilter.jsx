@@ -41,7 +41,7 @@ export default function NumericFilter() {
   };
 
   return (
-    <div>
+    <div className="numeric-filters">
       <ColumnSelect options={ options } change={ handleChanges } value={ fil.column } />
       <ComparisonSelect change={ handleChanges } value={ fil.comparison } />
       <ValueFilter change={ handleChanges } value={ fil.value } />

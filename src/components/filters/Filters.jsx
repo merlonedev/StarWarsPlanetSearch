@@ -4,9 +4,11 @@ import NumericFilter from './NumericFilter';
 
 export default function Filters() {
   return (
-    <div>
-      <NameFilter />
-      <NumericFilter />
+    <div className="filters-div">
+      <div className="filters">
+        <NameFilter />
+        <NumericFilter />
+      </div>
     </div>
   );
 }

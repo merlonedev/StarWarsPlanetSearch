@@ -1,0 +1,46 @@
+.page-header {
+  display: flex;
+  background-color: black;
+
+  .title-div {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .title {
+    color: #fff;
+    margin: 0;
+    text-shadow: 0 0 2px #fff , 0 0 5px #fff , 0 0 8px #fff , 0 0 10px $green-lightsaber , 0 0 12px $green-lightsaber , 0 0 15px $green-lightsaber;
+  }
+
+  .filters-div {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h4 {
+      margin: 0;
+    }
+
+    .filters {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .numeric-filters {
+      display: flex;
+    }
+  }
+
+  label {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 5px;
+    color: $green-lightsaber;
+  }
+}

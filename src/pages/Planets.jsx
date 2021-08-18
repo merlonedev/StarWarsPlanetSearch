@@ -1,11 +1,11 @@
 import React from 'react';
-import Filters from '../components/filters/Filters';
+import Header from '../components/Header';
 import Table from '../components/Table';
 
 function Planets() {
   return (
     <div>
-      <Filters />
+      <Header />
       <Table />
     </div>
   );
