@@ -4,12 +4,11 @@ import StarWarsContext from '../context/StarWarsContext';
 function OrderFilter() {
   const { data, filters, setFilter } = useContext(StarWarsContext);
   const [orderFilter, setOrderFilter] = useState({
-    column: 'population',
+    column: 'name',
     sort: '',
   });
 
   const orderFilterOnChangeHandle = ({ target: { name, value } }) => {
-    console.log(name, value);
     setOrderFilter({
       ...orderFilter,
       [name]: value,

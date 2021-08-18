@@ -6,6 +6,7 @@ function Table() {
   const {
     filterByName: { name },
     filterByNumericValues,
+    order,
   } = filters;
 
   const planetFilterByNumericValues = (planet, filter) => {
@@ -29,6 +30,44 @@ function Table() {
     </tr>
   );
 
+  const newData = [...data];
+  const sortingDataByOrderFilter = () => {
+    if(order.sort === 'ASC' ) {
+      if (data[0] && Number(newData[0][order.column])) {
+        console.log('foi');
+        newData.sort((a, b) => a[order.column] - b[order.column]);
+        } else {
+          newData.sort((a,b) => {
+            var nameA = a[order.column].toUpperCase(); 
+            var nameB = b[order.column].toUpperCase(); 
+            if (nameA < nameB) {
+              return -1;
+            }
+            if (nameA > nameB) {
+              return 1;
+            }
+          return 0;
+        })}
+    };
+    if(order.sort === 'DESC' ) {
+      if (data[0] && Number(newData[0][order.column])) {
+        newData.sort((a, b) => b[order.column] - a[order.column]);
+        } else {
+          newData.sort((a,b) => {
+            var nameA = a[order.column].toUpperCase();
+            var nameB = b[order.column].toUpperCase(); 
+            if (nameA > nameB) {
+              return -1;
+            }
+            if (nameA < nameB) {
+              return 1;
+            }
+          return 0;
+        })}
+    };
+  }
+  sortingDataByOrderFilter();
+
   return (
     <table>
       <thead>
@@ -42,7 +81,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { data.map((planet) => {
+        { newData.map((planet) => {
           const planetName = planet.name.toLowerCase();
           const pNameIncludesInputValue = planetName.includes(name.toLowerCase());
           if (filterByNumericValues

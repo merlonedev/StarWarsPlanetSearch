@@ -10,7 +10,7 @@ function Provider({ children }) {
     },
     filterByNumericValues: [],
     order: {
-      column: 'population',
+      column: 'name',
       sort: 'ASC',
     }
   });

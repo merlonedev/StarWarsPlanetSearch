@@ -29,9 +29,10 @@ function Filters() {
         value={ name }
         id="name-filter"
         data-testid="name-filter"
-        onChange={ ({ target: { value } }) => setFilter({
+        onChange={ ({ target: { value } }) => {
+          setFilter({
           ...filters, filterByName: { ...filters.filterByName, name: value },
-        }) }
+        })} }
       />
     </label>
   );
