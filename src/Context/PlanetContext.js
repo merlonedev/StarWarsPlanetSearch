@@ -6,16 +6,17 @@ export const PlanetContext = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [data, setData] = useState('');
-  const [backData, setBackData] = useState('');
+  const [filtred, setFiltered] = useState('');
   const [filter, setFilter] = useState('');
 
-  const tableFilter = (value) => {
-    const FiltredList = backData.filter((e) => e.name.toLowerCase()
-      .includes(value.toLowerCase()));
-    if (FiltredList.length >= 1) {
-      setData(FiltredList);
+  useEffect(() => {
+    if (data && filter) {
+      setFiltered(data.filter((e) => e.name.toLowerCase()
+        .includes(filter.filterByName.name.toLowerCase())));
+    } else {
+      setFiltered(data);
     }
-  };
+  }, [data, filter]);
 
   const getAPI = async () => {
     const request = await FetchPlanets();
@@ -24,12 +25,10 @@ export const ContextProvider = ({ children }) => {
       return e;
     });
     setData(newArray);
-    setBackData(newArray);
   };
 
   const handleFilter = ({ name, value }) => {
     setFilter({ ...filter, filterByName: { [name]: value } });
-    tableFilter(value);
   };
 
   useEffect(() => {
@@ -37,7 +36,7 @@ export const ContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <PlanetContext.Provider value={ { data, setData, filter, handleFilter } }>
+    <PlanetContext.Provider value={ { data, setData, filter, handleFilter, filtred } }>
       {children}
     </PlanetContext.Provider>
   );

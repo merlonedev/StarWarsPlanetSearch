@@ -1,9 +1,13 @@
 import React from 'react';
 import Tables from '../components/Tables';
+import Input from '../components/Input';
 
 function Home() {
   return (
-    <Tables />
+    <>
+      <Input />
+      <Tables />
+    </>
   );
 }
 
