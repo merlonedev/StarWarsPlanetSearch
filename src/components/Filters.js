@@ -7,7 +7,8 @@ function Filters() {
       filterByName: { setName },
       filterByNumericValues,
       setFilterByNumericValues,
-    } } = useContext(AppContext);
+    },
+  } = useContext(AppContext);
 
   const [column, setColumn] = useState('');
   const [comparison, setComparison] = useState('');
@@ -31,6 +32,12 @@ function Filters() {
     setFilterByNumericValues([...filterByNumericValues, newFilterValues]);
   };
 
+  const handleRemoveFilter = ({ target }) => {
+    setFilterByNumericValues(
+      filterByNumericValues.filter(({ column: col }) => col !== target.id),
+    );
+  };
+
   const setColumnOptions = () => {
     const columnFilters = filterByNumericValues.map((filter) => filter.column);
     let columns = initialColumnOptions;
@@ -40,6 +47,21 @@ function Filters() {
     return columns;
   };
   const columnOptions = setColumnOptions();
+
+  const renderSelectedFilters = () => (
+    <div>
+      <ul>
+        {filterByNumericValues.map(({ comparison: comp, column: col, value: v }) => (
+          <li data-testid="filter" key={ col }>
+            <span>{`${col} | ${comp} | ${v}`}</span>
+            <button type="button" id={ col } onClick={ handleRemoveFilter }>
+              X
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 
   return (
     <form>
@@ -59,7 +81,9 @@ function Filters() {
           onChange={ (e) => setColumn(e.target.value) }
         >
           {columnOptions.map((option) => (
-            <option key={ option } value={ option }>{ option }</option>
+            <option key={ option } value={ option }>
+              {option}
+            </option>
           ))}
         </select>
         <select
@@ -68,8 +92,10 @@ function Filters() {
           value={ comparison }
           onChange={ (e) => setComparison(e.target.value) }
         >
-          {comparisonOptions.map((option) => (
-            <option key={ option } value={ option }>{ option }</option>
+          {comparisonOptions.map((opt) => (
+            <option key={ opt } value={ opt }>
+              {opt}
+            </option>
           ))}
         </select>
         <input
@@ -86,6 +112,7 @@ function Filters() {
           Filtrar
         </button>
       </div>
+      { renderSelectedFilters() }
     </form>
   );
 }
