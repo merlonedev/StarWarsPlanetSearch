@@ -7,20 +7,24 @@ import TableRow from '@material-ui/core/TableRow';
 import { MyContext } from '../context/Provider';
 
 const TableComponent = () => {
-  const { data } = useContext(MyContext);
-  if (!data) {
-    return ('loading...');
+  const { filteredData } = useContext(MyContext);
+  if (!filteredData) {
+    return (<h1>loading...</h1>);
+  }
+  if (filteredData.length <= 0) {
+    return (<h1>Não encontramos nada</h1>);
   }
   return (
     <section>
       <Table size="small">
         <TableHead>
           <TableRow>
-            {Object.keys(data[0]).map((e) => <TableCell key={ e }>{e}</TableCell>)}
+            {Object.keys(filteredData[0])
+              .map((e) => <TableCell key={ e }>{e}</TableCell>)}
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((e) => (
+          {filteredData.map((e) => (
             <TableRow key={ e.name }>
               <TableCell>{e.name}</TableCell>
               <TableCell>{e.rotation_period}</TableCell>
