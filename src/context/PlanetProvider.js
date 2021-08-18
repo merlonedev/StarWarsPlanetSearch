@@ -5,6 +5,8 @@ import fetchApi from '../services/api';
 
 export default function PlanetProvider({ children }) {
   const [data, setData] = useState([]);
+  const [filter, setFilter] = useState({ filterByName: { name: '' } });
+  const [filtered, setfitered] = useState(data);
 
   useEffect(() => {
     fetchApi().then((response) => setData(response));
@@ -13,6 +15,10 @@ export default function PlanetProvider({ children }) {
   const context = {
     data,
     fetchApi,
+    filter,
+    setFilter,
+    filtered,
+    setfitered,
   };
 
   return (
