@@ -6,7 +6,6 @@ import Table from './components/Table';
 function App() {
   return (
     <Provider>
-      <span>oi, App!</span>
       <Table />
     </Provider>
   );
