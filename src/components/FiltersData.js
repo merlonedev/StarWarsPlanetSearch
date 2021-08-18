@@ -12,20 +12,20 @@ function FiltersData() {
       ...filters,
       filterByNumericValues: newArray,
     });
-  }
+  };
 
   return (
     <div>
       <ul>
         { filterByNumericValues.map((filter, index) => (
           <li key={ index } data-testid="filter">
-            { Object.values(filter).map((value) => <p key={value}>{value}</p>)}
-            <button type="button" onclick={ clickHandle }>X</button>
+            {Object.values(filter).map((value) => <p key={ value }>{value}</p>)}
+            <button type="button" onClick={ clickHandle }>X</button>
           </li>
         ))}
       </ul>
     </div>
-  )
+  );
 }
 
 export default FiltersData;
