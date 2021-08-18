@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useMyContext } from '../../Context';
 
@@ -17,19 +17,13 @@ export default function Table() {
     })
   );
 
-  const filtredArray = () => {
-    let planets = [...data];
+  const filtredArray = useCallback(() => {
+    let planets = data;
     const filteringByName = (array) => array.filter(({ name }) => (
       name.includes(filterByName.name)));
     if (filterByNumericValues.length > 0) {
-      filterByNumericValues.forEach(({ column, comparison, value }, index) => {
-        if (index === 0) {
-          if (!filterByName.name) {
-            planets = numericFiltering(data, column, comparison, value);
-          } else {
-            planets = numericFiltering(filteringByName(data), column, comparison, value);
-          }
-        } else if (!filterByName.name) {
+      filterByNumericValues.forEach(({ column, comparison, value }) => {
+        if (!filterByName.name) {
           planets = numericFiltering(planets, column, comparison, value);
         } else {
           planets = numericFiltering(filteringByName(planets), column, comparison, value);
@@ -39,7 +33,7 @@ export default function Table() {
       planets = filteringByName(planets);
     }
     return planets;
-  };
+  }, [data, filterByName.name, filterByNumericValues]);
 
   return (
     <table>
