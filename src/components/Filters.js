@@ -13,7 +13,7 @@ function Filters() {
   const [comparison, setComparison] = useState('');
   const [value, setValue] = useState(0);
 
-  const columnOptions = [
+  const initialColumnOptions = [
     'population',
     'orbital_period',
     'diameter',
@@ -30,6 +30,16 @@ function Filters() {
     };
     setFilterByNumericValues([...filterByNumericValues, newFilterValues]);
   };
+
+  const setColumnOptions = () => {
+    const columnFilters = filterByNumericValues.map((filter) => filter.column);
+    let columns = initialColumnOptions;
+    columnFilters.forEach((col) => {
+      columns = columns.filter((option) => option !== col);
+    });
+    return columns;
+  };
+  const columnOptions = setColumnOptions();
 
   return (
     <form>
