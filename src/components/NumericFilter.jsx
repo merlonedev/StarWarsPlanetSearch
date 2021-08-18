@@ -5,14 +5,16 @@ import ValueFilter from './ValueFilter';
 import FilterButton from './FilterButton';
 import AppContext from '../context/AppContext';
 
+const INITIAL = {
+  column: '',
+  comparison: '',
+  value: '',
+};
+
 export default function NumericFilter() {
   const { filters, setFilters } = useContext(AppContext);
 
-  const [fil, setFil] = useState({
-    column: '',
-    comparison: '',
-    value: '',
-  });
+  const [fil, setFil] = useState(INITIAL);
 
   const handleChanges = ({ target: { value, name } }) => {
     setFil({
@@ -29,6 +31,7 @@ export default function NumericFilter() {
         fil,
       ],
     });
+    setFil(INITIAL);
   };
 
   return (

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default function FilterButton({ click }) {
   return (
-    <button type="button" onClick={ click }>
+    <button data-testid="button-filter" type="button" onClick={ click }>
       Filtrar
     </button>
   );

@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AppContext from '../context/AppContext';
 import usePlanets from '../hooks/usePlanets';
 
 export default function Provider({ children }) {
   const [data, loading] = usePlanets();
+  const [planets, setPlanets] = useState([]);
+
+  useEffect(() => {
+    setPlanets(data);
+  }, [data]);
 
   const [filters, setFilters] = useState({
     filterByName: { name: '' },
@@ -12,7 +17,9 @@ export default function Provider({ children }) {
   });
 
   const contextValue = {
+    planets,
     data,
+    setPlanets,
     loading,
     filters,
     setFilters,
