@@ -12,21 +12,14 @@ function Table() {
         orbital_period: orbital, population, rotation_period: rotation,
         surface_water: surface, terrain, url,
       } = result;
+      const arrayResult = [
+        name, rotation, orbital, diameter, climate, gravity,
+        terrain, surface, population, films, created, edited, url,
+      ];
+
       return (
         <tr key={ index }>
-          <td>{ name }</td>
-          <td>{ rotation }</td>
-          <td>{ orbital }</td>
-          <td>{ diameter }</td>
-          <td>{ climate }</td>
-          <td>{ gravity }</td>
-          <td>{ terrain }</td>
-          <td>{ surface }</td>
-          <td>{ population }</td>
-          <td>{ films }</td>
-          <td>{ created }</td>
-          <td>{ edited }</td>
-          <td>{ url }</td>
+          { arrayResult.map((text, inde) => <td key={ inde }>{ text }</td>) }
         </tr>
       );
     });
