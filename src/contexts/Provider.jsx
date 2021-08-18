@@ -6,19 +6,27 @@ import fetchPlanetsApi from '../services/planetsApi';
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
+  const [filteredPlanets, setFilteredPlanets] = useState([]);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     const getPlanets = async () => {
       const planets = await fetchPlanetsApi();
+      planets.forEach((planet) => {
+        delete planet.residents;
+      });
       setData(planets);
       setIsFetching(false);
+      setIsMounted(true);
     };
-    getPlanets();
+    if (!isMounted) getPlanets();
   });
 
   const context = {
     isFetching,
     data,
+    filteredPlanets,
+    setFilteredPlanets,
   };
 
   return (
