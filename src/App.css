@@ -29,6 +29,11 @@
   color: #61dafb;
 }
 
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
 @keyframes App-logo-spin {
 
   from {
