@@ -4,6 +4,7 @@ import AppContext from '../context/AppContext';
 
 function Provider({ children }) {
   const [data, setData] = useState();
+  const [filterByName, setFilterByName] = useState({ name: '' });
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -15,8 +16,22 @@ function Provider({ children }) {
     getPlanets();
   }, []);
 
+  const filtroNome = ({ target }) => {
+    setFilterByName({ name: target.value });
+  };
+
+  const contextValu = {
+    data,
+    filters: {
+      filterByName,
+    },
+    functions: {
+      filtroNome,
+    },
+  };
+
   return (
-    <AppContext.Provider value={ { data } }>
+    <AppContext.Provider value={ { contextValu } }>
       { children }
     </AppContext.Provider>
   );

@@ -2,9 +2,11 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 function Principal() {
-  const { data } = useContext(AppContext);
+  const { contextValu: { data } } = useContext(AppContext);
+  const { contextValu: { filters } } = useContext(AppContext);
 
   const criaLinhas = () => {
+    const { name } = filters.filterByName;
     const montaTr = (planeta, index) => {
       const {
         climate, created, diameter, edited, films, gravity, name: namePlanet,
@@ -23,6 +25,13 @@ function Principal() {
         </tr>
       );
     };
+    if (name) {
+      const buscaPlanetas = data.filter((planeta) => (
+        planeta.name.toLowerCase().includes(name)
+      ));
+      console.log(buscaPlanetas);
+      return buscaPlanetas.map((planeta, index) => montaTr(planeta, index));
+    }
     return data.map((result, index) => montaTr(result, index));
   };
 
