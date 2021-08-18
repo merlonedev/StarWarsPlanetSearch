@@ -1,8 +1,11 @@
-import React from 'react';
-import FetchAPI from '../hooks/FetchAPI';
+import React, { useContext } from 'react';
+// import FetchAPI from '../hooks/FetchAPI';
+import MyContext from '../context/context';
 
 function Table() {
-  const [data] = FetchAPI();
+  // const [data] = FetchAPI();
+  const { data } = useContext(MyContext);
+  // const { filterByName: { name } } = filters;
 
   const tableHead = () => {
     if (data.length) {
