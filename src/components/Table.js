@@ -3,7 +3,24 @@ import StarWarsContext from '../context/StarWarsContext';
 
 function Table() {
   const { data, filters } = useContext(StarWarsContext);
-  const { filterByName: { name } } = filters;
+  const { 
+    filterByName: { name },
+    filterByNumericValues,
+  } = filters;
+
+  const planetFilterByNumericValues = (planet, filter) => {
+    const { column, comparison, value } = filter;
+    if (comparison === 'maior que') {
+      if (planet[column] > Number(value)) return true;
+    }
+    if (comparison === 'menor que') {
+      if (planet[column] < Number(value)) return true;
+    }
+    if (comparison === 'igual a') {
+      if (planet[column] === Number(value)) return true;
+    }
+    return false;
+  }
 
   const renderTableRow = (planet) => (
     <tr key={ planet.name }>
@@ -27,8 +44,18 @@ function Table() {
         { data.map((planet) => {
           const planetName = planet.name.toLowerCase();
           const pNameIncludesInputValue = planetName.includes(name.toLowerCase());
-          if (name && pNameIncludesInputValue) return renderTableRow(planet);
-          if (name === '') return renderTableRow(planet);
+          if (name && pNameIncludesInputValue) {
+            if ( filterByNumericValues
+              .map((filter) => planetFilterByNumericValues(planet, filter))
+              .every((filter) => filter === true)
+            ) return renderTableRow(planet);
+          } 
+          if (name === '') {
+            if ( filterByNumericValues
+              .map((filter) => planetFilterByNumericValues(planet, filter))
+              .every((filter) => filter === true)
+            ) return renderTableRow(planet);
+          };
           return null;
         }) }
       </tbody>

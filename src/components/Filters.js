@@ -9,14 +9,16 @@ const selectValues = {
   surface_water: 'Surface water',
 };
 
+const INITIAL_STATE = {
+  column: 'population',
+  comparison: 'maior que',
+  value: 0,
+};
+
 function Filters() {
   const { filters, setFilter } = useContext(StarWarsContext);
   const { filterByName: { name } } = filters;
-  const [numericFilter, setNumericFilter] = useState({
-    column: 'population',
-    comparison: 'maior que',
-    value: 0, 
-  });
+  const [numericFilter, setNumericFilter] = useState(INITIAL_STATE);
 
   const renderPlanetInput = () => (
     <label htmlFor="name-filter">
@@ -33,11 +35,11 @@ function Filters() {
     </label>
   );
 
-  const numericFiltersOnChangeHandle = ({ target: { id, value }}) => {
+  const numericFiltersOnChangeHandle = ({ target: { id, value } }) => {
     setNumericFilter({
       ...numericFilter,
       [id]: value,
-    })
+    });
   };
 
   const renderNumericFilters = () => (
@@ -46,6 +48,7 @@ function Filters() {
         id="column"
         data-testid="column-filter"
         onChange={ numericFiltersOnChangeHandle }
+        value={ numericFilter.column }
       >
         { Object.keys(selectValues).map((value) => (
           <option key={ value } value={ value }>{ selectValues[value]}</option>
@@ -55,6 +58,7 @@ function Filters() {
         id="comparison"
         data-testid="comparison-filter"
         onChange={ numericFiltersOnChangeHandle }
+        value={ numericFilter.comparison }
       >
         <option value="maior que">Maior que</option>
         <option value="menor que">Menor que</option>
@@ -70,15 +74,18 @@ function Filters() {
       <button
         type="button"
         data-testid="button-filter"
-        onClick={ () => setFilter({
-          ...filters, filterByNumericValues: [...filters.filterByNumericValues, numericFilter],
-        }) }
+        onClick={ () => {
+          setFilter({
+            ...filters,
+            filterByNumericValues: [...filters.filterByNumericValues, numericFilter],
+          });
+          setNumericFilter(INITIAL_STATE);
+        } }
       >
         Adicionar Filtro
       </button>
     </div>
   );
-    
 
   return (
     <div>
