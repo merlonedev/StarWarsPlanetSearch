@@ -5,7 +5,7 @@ function Table() {
   const { data, infos, loading } = useContext(myContext);
   return (
     <>
-      {loading && 'Carregando'}
+      {loading && 'Carregando...'}
       <table>
         <thead>
           <tr>
