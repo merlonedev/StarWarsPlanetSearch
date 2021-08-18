@@ -8,14 +8,14 @@ const StarWarsProvider = ({ children }) => {
   useEffect(() => {
     const getPlanets = async () => {
       const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const { result } = await fetch(endpoint).then((response) => response.json());
-      setplanets(result);
+      const { results } = await fetch(endpoint).then((response) => response.json());
+      setplanets(results);
     };
     getPlanets();
   }, []);
 
   const context = {
-    planets,
+    data: planets,
   };
 
   return (
