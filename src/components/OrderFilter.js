@@ -20,7 +20,7 @@ function OrderFilter() {
       ...filters,
       order: orderFilter,
     });
-  }
+  };
 
   return (
     <div>
@@ -28,34 +28,38 @@ function OrderFilter() {
         name="column"
         value={ orderFilter.column }
         data-testid="column-sort"
-        onChange={orderFilterOnChangeHandle}
+        onChange={ orderFilterOnChangeHandle }
       >
         {data[0] && Object.keys(data[0]).map((title) => (
           <option key={ title } value={ title }>{ title }</option>
         ))}
       </select>
-      <input
-        id="radio-ASC"
-        name="sort"
-        type="radio"
-        value="ASC"
-        onChange={orderFilterOnChangeHandle}
-        data-testid="column-sort-input-asc"
-      />
-      <label htmlFor="radio-ASC">Ascendente</label>
-      <input
-        id="radio-DESC"
-        name="sort"
-        type="radio"
-        value="DESC"
-        onChange={orderFilterOnChangeHandle}
-        data-testid="column-sort-input-desc"
-      />
-      <label htmlFor="radio-DESC">Descendente</label>
+      <label htmlFor="radio-ASC">
+        <input
+          id="radio-ASC"
+          name="sort"
+          type="radio"
+          value="ASC"
+          onChange={ orderFilterOnChangeHandle }
+          data-testid="column-sort-input-asc"
+        />
+        Ascendente
+      </label>
+      <label htmlFor="radio-DESC">
+        <input
+          id="radio-DESC"
+          name="sort"
+          type="radio"
+          value="DESC"
+          onChange={ orderFilterOnChangeHandle }
+          data-testid="column-sort-input-desc"
+        />
+        Descendente
+      </label>
       <button
-      type="button"
-      data-testid="column-sort-button"
-      onClick={ onClickHandle }
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ onClickHandle }
       >
         Ordenar
       </button>

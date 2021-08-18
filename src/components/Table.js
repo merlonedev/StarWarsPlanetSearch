@@ -23,49 +23,42 @@ function Table() {
   const renderTableRow = (planet) => (
     <tr key={ planet.name }>
       { Object.values(planet).map((value) => {
-        if (value === planet.name) 
-          return <td data-testid="planet-name" key={ value }>{value}</td>
-        return <td key={ value }>{value}</td>  
+        if (value === planet.name) {
+          return (<td data-testid="planet-name" key={ value }>{value}</td>);
+        }
+        return (<td key={ value }>{value}</td>);
       })}
     </tr>
   );
 
+  const sortNameOrder = (a, b) => {
+    const MINUS_ONE = -1;
+    const ONE = 1;
+    const ZERO = 0;
+    const nameA = a.toUpperCase();
+    const nameB = b.toUpperCase();
+    if (nameA < nameB) {
+      return MINUS_ONE;
+    }
+    if (nameA > nameB) {
+      return ONE;
+    }
+    return ZERO;
+  };
+
   const newData = [...data];
   const sortingDataByOrderFilter = () => {
-    if(order.sort === 'ASC' ) {
-      if (data[0] && Number(newData[0][order.column])) {
-        console.log('foi');
-        newData.sort((a, b) => a[order.column] - b[order.column]);
-        } else {
-          newData.sort((a,b) => {
-            var nameA = a[order.column].toUpperCase(); 
-            var nameB = b[order.column].toUpperCase(); 
-            if (nameA < nameB) {
-              return -1;
-            }
-            if (nameA > nameB) {
-              return 1;
-            }
-          return 0;
-        })}
-    };
-    if(order.sort === 'DESC' ) {
-      if (data[0] && Number(newData[0][order.column])) {
-        newData.sort((a, b) => b[order.column] - a[order.column]);
-        } else {
-          newData.sort((a,b) => {
-            var nameA = a[order.column].toUpperCase();
-            var nameB = b[order.column].toUpperCase(); 
-            if (nameA > nameB) {
-              return -1;
-            }
-            if (nameA < nameB) {
-              return 1;
-            }
-          return 0;
-        })}
-    };
-  }
+    const { column, sort } = order;
+    const isNumber = data[0] && Number(newData[0][column]);
+    if (sort === 'ASC') {
+      if (isNumber) newData.sort((a, b) => a[column] - b[column]);
+      else newData.sort((a, b) => sortNameOrder(a[column], b[column]));
+    }
+    if (sort === 'DESC') {
+      if (isNumber) newData.sort((a, b) => b[column] - a[column]);
+      else newData.sort((a, b) => sortNameOrder(b[column], a[column]));
+    }
+  };
   sortingDataByOrderFilter();
 
   return (

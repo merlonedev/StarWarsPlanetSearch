@@ -31,8 +31,9 @@ function Filters() {
         data-testid="name-filter"
         onChange={ ({ target: { value } }) => {
           setFilter({
-          ...filters, filterByName: { ...filters.filterByName, name: value },
-        })} }
+            ...filters, filterByName: { ...filters.filterByName, name: value },
+          });
+        } }
       />
     </label>
   );

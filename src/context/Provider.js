@@ -12,7 +12,7 @@ function Provider({ children }) {
     order: {
       column: 'name',
       sort: 'ASC',
-    }
+    },
   });
 
   useEffect(() => {
