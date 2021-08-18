@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import myContext from './myContext';
+import useData from '../hooks/useData';
 
 function Provider({ children }) {
-  const [planets, setPlanets] = useState([]);
-  const [infos, setInfos] = useState([]);
+  const [data, infos, loading] = useData();
+  // const [data, setPlanets] = useState([]);
+  // const [infos, setInfos] = useState([]);
 
-  useEffect(() => {
-    const FetchPlanets = async () => {
-      const url = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const result = await fetch(url).then((response) => response.json());
-      setPlanets(result.results);
-      setInfos(Object.keys(result.results[0]));
-    };
-    FetchPlanets();
-  }, []);
+  // useEffect(() => {
+  //   const FetchPlanets = async () => {
+  //     const url = 'https://swapi-trybe.herokuapp.com/api/planets/';
+  //     const result = await fetch(url).then((response) => response.json());
+  //     setPlanets(result.results);
+  //     setInfos(Object.keys(result.results[0]));
+  //   };
+  //   FetchPlanets();
+  // }, []);
 
-  const contextValue = { planets, infos };
+  const contextValue = { data, infos, loading };
   return (
     <myContext.Provider value={ contextValue }>
       { children }
