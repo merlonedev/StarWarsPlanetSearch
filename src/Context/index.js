@@ -11,6 +11,10 @@ export default function MyProvider({ children }) {
     filterByName: { name: '' },
     filterByNumericValues: [],
   });
+  const [order, setOrder] = useState({
+    column: 'name',
+    sort: 'ASC',
+  });
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -47,12 +51,18 @@ export default function MyProvider({ children }) {
     }));
   };
 
+  const handleOrder = (orderFilter) => {
+    setOrder((prevOrder) => ({ ...prevOrder, ...orderFilter }));
+  };
+
   const contextValue = {
     data,
     filters,
+    order,
     handleNameFilter,
     handleFilterByNumeric,
     handleRemoveFilter,
+    handleOrder,
   };
   return (
     <MyContext.Provider value={ contextValue }>

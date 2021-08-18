@@ -3,7 +3,27 @@ import { v4 as uuidv4 } from 'uuid';
 import { useMyContext } from '../../Context';
 
 export default function Table() {
-  const { data, filters: { filterByName, filterByNumericValues } } = useMyContext();
+  const {
+    data,
+    filters: { filterByName, filterByNumericValues },
+    order,
+  } = useMyContext();
+
+  const orderedArray = useCallback((array) => {
+    const oneNegative = -1;
+    if (array.length > 0 && !Number(array[0][order.column])) {
+      array.sort((a, b) => {
+        if (a[order.column] < b[order.column]) return oneNegative;
+        if (a[order.column] > b[order.column]) return 1;
+        return 0;
+      });
+      if (order.sort !== 'ASC') array.reverse();
+      return array;
+    }
+    array.sort((a, b) => Number(a[order.column]) - Number(b[order.column]));
+    if (order.sort !== 'ASC') array.reverse();
+    return array;
+  }, [order.column, order.sort]);
 
   const numericFiltering = (array, column, comparison, value) => (
     array.filter((planet) => {
@@ -32,8 +52,8 @@ export default function Table() {
     } else if (filterByName.name) {
       planets = filteringByName(planets);
     }
-    return planets;
-  }, [data, filterByName.name, filterByNumericValues]);
+    return orderedArray(planets);
+  }, [data, filterByName.name, filterByNumericValues, orderedArray]);
 
   return (
     <table>
@@ -47,8 +67,10 @@ export default function Table() {
       <tbody>
         { filtredArray().map((planet) => (
           <tr key={ uuidv4() }>
-            { Object.keys(planet).map((key) => (
-              key !== 'residents' && <td key={ uuidv4() }>{ planet[key] }</td>
+            { Object.keys(planet).map((key, index) => (
+              (index === 0)
+                ? <td key={ uuidv4() } data-testid="planet-name">{ planet[key] }</td>
+                : key !== 'residents' && <td key={ uuidv4() }>{ planet[key] }</td>
             )) }
           </tr>
         )) }
