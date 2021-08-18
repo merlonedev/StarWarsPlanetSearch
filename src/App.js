@@ -1,14 +1,12 @@
 import React from 'react';
-import Table from './components/Table';
-import Filters from './components/Filters';
-import './App.css';
+import ContextProvider from './context/ContextProvider';
+import Home from './pages/Home';
 
 function App() {
   return (
-    <main>
-      <Filters />
-      <Table />
-    </main>
+    <ContextProvider>
+      <Home />
+    </ContextProvider>
   );
 }
 

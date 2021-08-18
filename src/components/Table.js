@@ -5,8 +5,9 @@ import Planet from './Planet';
 import defaultHeaders from '../helpers/defaultHeaders';
 
 function Table() {
-  const { planets, filters: { filterByName: { name } } } = useContext(context);
-  const doesInclude = (planetName) => planetName.toLowerCase().includes(name.toLowerCase());
+  const { data: { planets }, filters: { filterByName: { name } } } = useContext(context);
+  const doesInclude = (planetName) => planetName.toLowerCase()
+    .includes(name.toLowerCase());
   const filteredPlanets = planets.length > 0
     ? planets.filter((planet) => doesInclude(planet.name))
     : [];
