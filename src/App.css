@@ -33,3 +33,7 @@ body {
 h1 {
   font-size: 48px;
 }
+
+table {
+  color: #ffea00;
+}

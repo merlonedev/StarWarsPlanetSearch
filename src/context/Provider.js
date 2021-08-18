@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import StarContext from './StarContext';
 
 function Provider({ children }) {
-  const [planets, setPlanets] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     const getPlanets = async () => {
       const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const result = await fetch(endpoint).then((data) => data.json());
-      setPlanets(result);
+      const result = await fetch(endpoint).then((response) => response.json());
+      setData(result);
     };
     getPlanets();
   }, []);
 
-  const starValue = { planets };
+  const starValue = { data };
 
   return (
     <StarContext.Provider value={ { starValue } }>
@@ -26,5 +26,5 @@ function Provider({ children }) {
 export default Provider;
 
 Provider.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.node.isRequired,
 };
