@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import MyContext from '../context/MyContext';
 
 function SearchBar() {
-  const { filters: { filterByName: { name }, numericFilter },
+  const { filters: { filterByName: { name }, filterByNumericValues },
     setNameFilter, setFilters } = useContext(MyContext);
 
   const initialColumnOpt = ['population',
@@ -20,7 +20,7 @@ function SearchBar() {
       comparison,
       value,
     };
-    setFilters([...numericFilter, filterState]);
+    setFilters([...filterByNumericValues, filterState]);
   };
 
   return (

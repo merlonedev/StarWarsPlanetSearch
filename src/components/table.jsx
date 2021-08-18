@@ -3,7 +3,7 @@ import MyContext from '../context/MyContext';
 
 function Table() {
   const { planets, filters: { filterByName,
-    numericFilter } } = useContext(MyContext);
+    filterByNumericValues } } = useContext(MyContext);
   const planetData = filterByName.name
     ? planets.filter((planet) => planet.name.includes(filterByName.name)) : planets;
 
@@ -13,8 +13,8 @@ function Table() {
     value: 0,
   };
 
-  const selectedFilter = numericFilter.length
-    ? numericFilter[numericFilter.length - 1]
+  const selectedFilter = filterByNumericValues.length
+    ? filterByNumericValues[filterByNumericValues.length - 1]
     : defaultNumericFilterValue;
 
   const { column, comparison, value } = selectedFilter;
