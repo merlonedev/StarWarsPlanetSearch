@@ -27,7 +27,7 @@ function FilterProvider({ children }) {
     },
   );
 
-  const handleFilter = (newFilter) => setState(
+  const addFilter = (newFilter) => setState(
     { ...state,
       filters: { ...state.filters,
         filterByNumericValues: [...state.filters.filterByNumericValues, newFilter],
@@ -35,10 +35,20 @@ function FilterProvider({ children }) {
     },
   );
 
+  const rmvFilter = (removed) => setState(
+    { ...state,
+      filters: { ...state.filters,
+        filterByNumericValues: [...state.filters.filterByNumericValues
+          .filter((filter) => filter.column !== removed.column)],
+      },
+    },
+  );
+
   const value = {
     ...state,
     handleChangeName,
-    handleFilter,
+    addFilter,
+    rmvFilter,
   };
 
   return (

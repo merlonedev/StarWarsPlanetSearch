@@ -6,15 +6,19 @@ function Header() {
     'rotation_period', 'surface_water'];
   const comparisonOptions = ['maior que', 'menor que', 'igual a'];
 
-  const { handleChangeName, handleFilter } = useContext(FilterContext);
+  const { handleChangeName, addFilter, rmvFilter,
+    filters: { filterByNumericValues } } = useContext(FilterContext);
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [number, setNumber] = useState('');
   const [uniqueColumns, setUniqueColumns] = useState(columnOptions);
 
-  const handleClick = () => {
+  const teste = columnOptions.filter((option) => !filterByNumericValues
+    .map((item) => item.column).includes(option));
+
+  const handleFilter = () => {
     if (number) {
-      handleFilter({ column, comparison, value: number });
+      addFilter({ column, comparison, value: number });
       setUniqueColumns(...[uniqueColumns.filter((item) => item !== column)]);
     }
   };
@@ -31,10 +35,9 @@ function Header() {
       />
       <select
         data-testid="column-filter"
-        value={ column }
         onChange={ ({ target: { value } }) => setColumn(value) }
       >
-        {uniqueColumns.map((option) => (
+        {teste.map((option) => (
           <option value={ option } key={ option }>{option}</option>
         ))}
       </select>
@@ -52,9 +55,19 @@ function Header() {
         data-testid="value-filter"
         onChange={ ({ target: { value } }) => setNumber(value) }
       />
-      <button type="button" data-testid="button-filter" onClick={ handleClick }>
+      <button type="button" data-testid="button-filter" onClick={ handleFilter }>
         Filtrar
       </button>
+      {filterByNumericValues.map((filter, index) => (
+        <button
+          type="button"
+          data-testid="filter"
+          key={ index }
+          onClick={ () => rmvFilter(filter) }
+        >
+          X
+        </button>
+      ))}
     </header>
   );
 }
