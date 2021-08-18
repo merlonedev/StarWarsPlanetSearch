@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import contextTable from '../context/contextTable';
 
 const Table = () => {
-  const { data } = useContext(contextTable);
+  const { data, filteredPlanets } = useContext(contextTable);
   const columns = data[0] ? Object.keys(data[0]) : [];
 
   return (
@@ -14,7 +14,7 @@ const Table = () => {
       </thead>
       <tbody>
         {
-          data.map((planet) => (
+          filteredPlanets.map((planet) => (
             <tr key={ planet.name }>
               { Object.values(planet)
                 .map((property) => <td key={ property }>{ property }</td>) }
