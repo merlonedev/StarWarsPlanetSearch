@@ -1,6 +1,6 @@
 .page-header {
-  display: flex;
   background-color: black;
+  display: flex;
 
   .title-div {
     align-items: center;
@@ -10,9 +10,15 @@
   }
 
   .title {
-    color: #fff;
     margin: 0;
-    text-shadow: 0 0 2px #fff , 0 0 5px #fff , 0 0 8px #fff , 0 0 10px $green-lightsaber , 0 0 12px $green-lightsaber , 0 0 15px $green-lightsaber;
+    color: white;
+    text-shadow:
+      0 0 2px white,
+      0 0 5px white,
+      0 0 10px white,
+      0 0 15px $blue-lightsaber,
+      0 0 20px $blue-lightsaber,
+      0 0 25px $blue-lightsaber,
   }
 
   .filters-div {
@@ -37,10 +43,10 @@
 
   label {
     align-items: center;
+    color: $blue-lightsaber;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     margin: 5px;
-    color: $green-lightsaber;
   }
 }

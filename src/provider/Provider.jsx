@@ -18,7 +18,6 @@ export default function Provider({ children }) {
 
   const contextValue = {
     planets,
-    data,
     setPlanets,
     loading,
     filters,
