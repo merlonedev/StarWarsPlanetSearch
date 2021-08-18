@@ -1,37 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import contextTable from './contextTable';
+import usePlanets from '../hooks/usePlanets';
 
 const Provider = ({ children }) => {
-  const [data, setData] = useState([]);
-  const [filteredPlanets, setFilteredPlanets] = useState([]);
-  const [filters, setFilters] = useState({
-    filterByName: {
-      name: '',
-    },
-  });
-
-  useEffect(() => {
-    const getPlanets = async () => {
-      const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const response = await fetch(endpoint);
-      const { results } = await response.json();
-      const planets = results.map((planet) => {
-        const { residents, ...rest } = planet;
-        return rest;
-      });
-
-      setData(planets);
-      setFilteredPlanets(planets);
-    };
-
-    getPlanets();
-  }, []);
-
-  useEffect(() => {
-    setFilteredPlanets(data
-      .filter(({ name }) => name.includes(filters.filterByName.name)));
-  }, [filters, data]);
+  const {
+    data,
+    filters,
+    setFilters,
+    filteredPlanets,
+  } = usePlanets();
 
   const contextValue = {
     data,
