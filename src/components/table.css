@@ -1,0 +1,22 @@
+.planets-table {
+  border-collapse: collapse;
+  font-size: 16px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.planets-table thead tr {
+  background-color: #bbb8ba;
+  color: #16065c;
+  text-align: center;
+}
+
+.planets-table th, .planets-table td {
+  font-size: 14px;
+  padding: 8px 6px;
+  text-align: center;
+}
+
+.planets-table tbody tr {
+  border-bottom: 1px solid #0b1ec4;
+}
