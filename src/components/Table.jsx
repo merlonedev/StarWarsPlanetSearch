@@ -51,6 +51,14 @@ function Table() {
                   </td>
                 );
               }
+
+              if (key === Object.keys(planets[0]).length - 1) {
+                return (
+                  <td key={ `cell-${key}` }>
+                    <a href={ value } target="_blank" rel="noreferrer">API Link</a>
+                  </td>
+                );
+              }
               return (
                 <td key={ key }>{value}</td>
               );
