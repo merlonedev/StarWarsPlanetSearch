@@ -1,0 +1,15 @@
+table {
+  background-color: lightgray;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+thead {
+  background-color: gray;
+  text-transform: capitalize;
+}
+
+tr, th, td {
+  border: 1px solid black;
+  padding: 5px;
+}
