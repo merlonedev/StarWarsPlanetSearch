@@ -1,0 +1,17 @@
+.filter-form {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
+.filter-by-name input {
+  border: 5px solid lightgrey;
+  border-radius: 5px;
+  outline: none;
+  padding: 5px;
+}
+
+.filter-by-name input:focus {
+  border: 5px solid lightblue;
+}

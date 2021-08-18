@@ -5,6 +5,11 @@ import apiPlanets from '../services/apiPlanets';
 
 const StarWarsProvider = ({ children }) => {
   const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
 
   useEffect(() => {
     (async () => {
@@ -15,6 +20,8 @@ const StarWarsProvider = ({ children }) => {
 
   const context = {
     data,
+    filters,
+    setFilters,
   };
 
   return (

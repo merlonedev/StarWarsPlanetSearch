@@ -4,9 +4,8 @@ import Loading from '../Loading';
 import './style.css';
 
 const Table = () => {
-  const { data } = useContext(StarWarsContext);
-  console.log(useContext(StarWarsContext));
-  console.log(data);
+  const { data, filters } = useContext(StarWarsContext);
+  const { filterByName: { name } } = filters;
   const columns = (data.length > 0)
     && Object.keys(data[0]).filter((key) => key !== 'residents');
 
@@ -18,15 +17,19 @@ const Table = () => {
     </thead>
   );
 
-  const renderTableBody = () => (
-    <tbody>
-      { data.map((planet) => (
-        <tr key={ planet.name }>
-          { columns.map((column) => <td key={ column }>{ planet[column] }</td>) }
-        </tr>
-      )) }
-    </tbody>
-  );
+  const renderTableBody = () => {
+    const filterByName = data
+      .filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()));
+    return (
+      <tbody>
+        { filterByName.map((planet) => (
+          <tr key={ planet.name }>
+            { columns.map((column) => <td key={ column }>{ planet[column] }</td>) }
+          </tr>
+        )) }
+      </tbody>
+    );
+  };
 
   if (!columns) return <Loading />;
   return (
