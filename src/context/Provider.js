@@ -1,24 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import MyContext from './Context';
 
 function MyProvider({ children }) {
-//  const [user, setUser] = useState('');
-//  const [email, setEmail] = useState('');
-  const contextUserValue = {
-    // user,
-    // setUser,
-    // email,
-    // setEmail,
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const getPlanets = async () => {
+      const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
+      const response = await fetch(endpoint);
+      const { results } = await response.json();
+      setData(results);
+    };
+    getPlanets();
+  }, [setData]);
+
+  const contextValue = {
+    data,
   };
 
   return (
-    <MyContext.Provider value={ contextUserValue }>
+    <MyContext.Provider value={ contextValue }>
       { children }
     </MyContext.Provider>
   );
 }
 MyProvider.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.string).isRequired,
+  children: PropTypes.node.isRequired,
 };
 export default MyProvider;
