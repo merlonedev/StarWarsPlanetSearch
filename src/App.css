@@ -35,5 +35,17 @@ h1 {
 }
 
 table {
+  color: black;
+  width: 100%;
+}
+
+.table-header {
+  background-color: black;
   color: #ffea00;
+  font-family: monospace;
+}
+
+th {
+  box-shadow: 0 0 2px #ffff8f , 0 0 8px #ffea00 , 0 0 16px #ffea00;
+  padding: 2px;
 }

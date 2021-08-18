@@ -9,15 +9,17 @@ function Provider({ children }) {
     const getPlanets = async () => {
       const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const result = await fetch(endpoint).then((response) => response.json());
-      setData(result);
+      const planets = result.results;
+      setData(planets);
+      // console.log(planets);
     };
     getPlanets();
   }, []);
 
-  const starValue = { data };
+  const starValue = { data, setData };
 
   return (
-    <StarContext.Provider value={ { starValue } }>
+    <StarContext.Provider value={ starValue }>
       { children }
     </StarContext.Provider>
   );

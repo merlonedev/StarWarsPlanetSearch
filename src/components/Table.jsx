@@ -6,23 +6,28 @@ function Table() {
   console.log(data);
 
   return (
-    <h1>teste</h1>
-  );
-}
-
-/*  const { planets } = Object.keys(results[0]).filter((tag) => tag !== 'residents');
-  return (
     <div>
       <table>
-        <thead>
+        <thead className="table-header">
           <tr>
-            { planets.map((key) => (<th key={ key }>{ key }</th>))}
+            <th>name</th>
+            <th>rotation_period</th>
+            <th>orbital_period</th>
+            <th>diameter</th>
+            <th>climate</th>
+            <th>gravity</th>
+            <th>terrain</th>
+            <th>surface_water</th>
+            <th>population</th>
+            <th>films</th>
+            <th>created</th>
+            <th>edited</th>
+            <th>url</th>
           </tr>
         </thead>
       </table>
     </div>
   );
 }
-*/
 
 export default Table;
