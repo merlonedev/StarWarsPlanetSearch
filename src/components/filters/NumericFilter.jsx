@@ -11,15 +11,10 @@ const INITIAL = {
   value: '',
 };
 
-const COLUMNS = [
-  'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
-];
-
 export default function NumericFilter() {
-  const { filters, setFilters } = useContext(AppContext);
+  const { filters, setFilters, options, setOptions } = useContext(AppContext);
 
   const [fil, setFil] = useState(INITIAL);
-  const [options, setOptions] = useState(COLUMNS);
 
   const handleChanges = ({ target: { value, name } }) => {
     setFil({

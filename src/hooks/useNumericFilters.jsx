@@ -3,7 +3,7 @@ import AppContext from '../context/AppContext';
 
 export default function useNumericFilters() {
   const {
-    filters: { filterByNumericValues }, setPlanets, planets,
+    filters: { filterByNumericValues }, setPlanets, planets, data,
   } = useContext(AppContext);
 
   const filterPlanets = () => {
@@ -13,9 +13,13 @@ export default function useNumericFilters() {
       'igual a': (col, val) => Number(col) === Number(val),
     };
 
-    filterByNumericValues
-      .forEach(({ column, comparison, value }) => setPlanets(planets
-        .filter((planet) => comparisons[comparison](planet[column], value))));
+    if (!filterByNumericValues.length) {
+      setPlanets(data);
+    } else {
+      filterByNumericValues
+        .forEach(({ column, comparison, value }) => setPlanets(planets
+          .filter((planet) => comparisons[comparison](planet[column], value))));
+    }
   };
 
   return [filterPlanets];

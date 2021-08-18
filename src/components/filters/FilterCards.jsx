@@ -1,14 +1,29 @@
 import React, { useContext } from 'react';
 import AppContext from '../../context/AppContext';
 
-function FilterCards() {
-  const { filters: { filterByNumericValues } } = useContext(AppContext);
+const comparisonConverter = {
+  'maior que': '>',
+  'menor que': '<',
+  'igual a': '=',
+};
 
-  const columns = {
-    'maior que': '>',
-    'menor que': '<',
-    'igual a': '=',
+function FilterCards() {
+  const {
+    filters, setFilters, setOptions, options,
+  } = useContext(AppContext);
+
+  const { filterByNumericValues } = filters;
+
+  const handleDelete = (index, col) => {
+    setFilters({
+      ...filters,
+      filterByNumericValues: [
+        ...filters.filterByNumericValues.filter((fil, i) => i !== index),
+      ],
+    });
+    setOptions([...options, col]);
   };
+
   return (
     <div className="filter-cards">
       {filterByNumericValues.map(({ column, comparison, value }, i) => (
@@ -20,11 +35,16 @@ function FilterCards() {
           <p>
             {column}
             {' '}
-            {columns[comparison]}
+            {comparisonConverter[comparison]}
             {' '}
             {value}
           </p>
-          <button type="button">X</button>
+          <button
+            type="button"
+            onClick={ () => handleDelete(i, column) }
+          >
+            X
+          </button>
         </div>
       ))}
     </div>
