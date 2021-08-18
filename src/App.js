@@ -1,17 +1,15 @@
-import React, { useContext, useEffect } from 'react';
-import StarWarsContext from './context/StarWarsContext';
+import StarWarsProvider from './context/StarWarsProvider';
 import './App.css';
 import Table from './Components/Table';
 
 function App() {
-  const { data } = useContext(StarWarsContext);
-
   return (
-    <div>
-      <header>Star Wars Planets Search</header>
-      { data ? <Table /> : <p>LOADING TABLE</p> }
-    </div>
-
+    <StarWarsProvider>
+      <div>
+        <header>Star Wars Planets Search</header>
+        <Table />
+      </div>
+    </StarWarsProvider>
   );
 }
 
