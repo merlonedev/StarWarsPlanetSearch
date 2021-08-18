@@ -1,16 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import PlanetsContext from './PlanetsContext';
+import Context from './Context';
 import usePlanets from '../hooks/usePlanets';
+import useFilters from '../hooks/useFIlters';
 
 function Provider({ children }) {
   const [planets, loading] = usePlanets();
+  const [filters, updateFilters] = useFilters();
+
+  const providerValue = {
+    data: planets, loading, filters, updateFilters,
+  };
 
   return (
-    <PlanetsContext.Provider value={ { data: planets, loading } }>
+    <Context.Provider value={ providerValue }>
       {children}
-    </PlanetsContext.Provider>
+    </Context.Provider>
   );
 }
 
