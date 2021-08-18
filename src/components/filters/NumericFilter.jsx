@@ -36,8 +36,9 @@ export default function NumericFilter() {
         fil,
       ],
     });
-    setOptions(options.filter((opt) => opt !== fil.column));
-    setFil(INITIAL);
+    const newOpts = options.filter((opt) => opt !== fil.column);
+    setOptions(newOpts);
+    setFil({ ...INITIAL, column: newOpts[0] });
   };
 
   return (

@@ -10,9 +10,7 @@ function Header() {
         <h3 className="title">Planet Search</h3>
       </div>
       <Filters />
-      <div className="filter-cards">
-        <FilterCards />
-      </div>
+      <FilterCards />
     </header>
   );
 }

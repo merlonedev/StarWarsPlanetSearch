@@ -10,22 +10,24 @@ function FilterCards() {
     'igual a': '=',
   };
   return (
-    filterByNumericValues.map(({ column, comparison, value }, i) => (
-      <div
-        key={ `filter-${i}` }
-        className="filter-card"
-        data-testid="filter"
-      >
-        <p>
-          {column}
-          {' '}
-          {columns[comparison]}
-          {' '}
-          {value}
-        </p>
-        <button type="button">X</button>
-      </div>
-    ))
+    <div className="filter-cards">
+      {filterByNumericValues.map(({ column, comparison, value }, i) => (
+        <div
+          key={ `filter-${i}` }
+          className="filter-card"
+          data-testid="filter"
+        >
+          <p>
+            {column}
+            {' '}
+            {columns[comparison]}
+            {' '}
+            {value}
+          </p>
+          <button type="button">X</button>
+        </div>
+      ))}
+    </div>
   );
 }
 
