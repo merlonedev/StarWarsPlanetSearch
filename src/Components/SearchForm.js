@@ -6,14 +6,16 @@ function Table() {
   const { data } = useContext(StarWarsContext);
 
   const renderTableHeader = () => {
-    const dataKeys = ['Name', 'Rotation Period', 'Orbital Period',
-      'Diameter', 'Climate', 'Gravity', 'Terrain', 'Surface Water', 'Population',
-      'Films', 'Created', 'Edited', 'URL'];
-    return dataKeys.map((columnName) => <th key={ columnName }>{ columnName }</th>);
+    if (data.length > 0) {
+      const dataKeys = ['Name', 'Rotation Period', 'Orbital Period',
+        'Diameter', 'Climate', 'Gravity', 'Terrain', 'Surface Water', 'Population',
+        'Films', 'Created', 'Edited', 'URL'];
+      return dataKeys.map((columnName) => <th key={ columnName }>{ columnName }</th>);
+    }
   };
 
   const renderTableInfo = () => {
-    if (data.length > 0) {
+    if (data) {
       return (
         data.map((item) => (
           <tr key={ item.name }>

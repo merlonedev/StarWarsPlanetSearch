@@ -1,8 +1,8 @@
 .planet-table {
-  text-align: center;
-  font-family: sans-serif;
-  border-collapse: collapse;
   border: 2px solid rgb(150, 150, 150);
+  border-collapse: collapse;
+  font-family: sans-serif;
+  text-align: center;
   width: 100%;
 }
 
