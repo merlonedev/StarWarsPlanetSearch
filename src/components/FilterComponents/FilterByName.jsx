@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import PlanetContext from '../../context/PlanetContext';
 
-const FilterByName = () => (
-  <div>
-    <label htmlFor="filterName">
-      <input
-        type="text"
-        placeholder="Filtre por Nome"
-        id="filterName"
-        data-testid="name-filter"
-      />
-    </label>
-  </div>
-);
+function FilterByName() {
+  const { handleChange } = useContext(PlanetContext);
+  return (
+    <div>
+      <label htmlFor="filterName">
+        <input
+          type="text"
+          placeholder="Filtre por Nome"
+          id="filterName"
+          data-testid="name-filter"
+          onChange={ handleChange }
+        />
+      </label>
+    </div>
+  );
+}
 
 export default FilterByName;

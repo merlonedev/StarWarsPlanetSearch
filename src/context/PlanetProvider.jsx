@@ -21,12 +21,50 @@ const PlanetProvider = ({ children }) => {
     SetNewFilterByName({ name: target.value });
   };
 
+  function generateRows() {
+    const { name } = filterByName;
+    const generate = ((result, index) => {
+      const {
+        climate, created, diameter, edited, films, gravity, name: nome,
+        orbital_period: orbitalPeriod,
+        population, rotation_period: rotationPeriod,
+        surface_water: surfaceWater, terrain, url } = result;
+
+      const resultsContainer = [nome, rotationPeriod, orbitalPeriod,
+        diameter, climate, gravity, terrain, surfaceWater,
+        population, films, created, edited, url];
+      return (
+        <tr key={ index }>
+          {
+            resultsContainer.map((res, indxRes) => <td id="td" key={ indxRes }>{res}</td>)
+          }
+        </tr>
+      );
+    });
+
+    if (name) {
+      const Planets = data.filter((result) => (
+        result.name.toLowerCase().includes(name)
+      ));
+      return Planets.map((planet, index) => generate(planet, index));
+    }
+    return data.map((planet, index) => generate(planet, index));
+  }
+
+  function generateColluns() {
+    const objResponse = Object.keys(data[0]);
+    const keys = objResponse.filter((object) => !object.includes('residents'));
+    return keys.map((key, index) => <th key={ index }>{key}</th>);
+  }
+
   const context = {
     data,
     filters: {
       filterByName,
     },
     handleChange,
+    generateRows,
+    generateColluns,
   };
 
   return (
