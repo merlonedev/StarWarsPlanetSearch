@@ -4,6 +4,12 @@ import MyContext from '../context/context';
 function Table() {
   const { data, filters } = useContext(MyContext);
 
+  const operators = {
+    'maior que': (a, b) => (a > b),
+    'menor que': (a, b) => (a < b),
+    'igual a': (a, b) => (a === b),
+  };
+
   const tableHead = () => {
     if (data.length) {
       const allKeys = Object.keys(data[0]);
@@ -43,13 +49,26 @@ function Table() {
     }
   };
 
+  const filteredColumn = (teste = data) => {
+    const { filterByNumericValues } = filters;
+    const { column, comparison, value } = filterByNumericValues[0];
+    if (column) {
+      const itemFiltered = teste.filter((item) => {
+        const re = operators[comparison](parseInt(item[column], 10), parseInt(value, 10));
+        return re;
+      });
+      return tableBody(itemFiltered);
+    }
+    return tableBody(teste);
+  };
+
   const filteredBody = () => {
     const { filterByName: { name } } = filters;
     if (name) {
       const itemFiltered = data.filter((item) => item.name.includes(name));
-      return tableBody(itemFiltered);
+      return filteredColumn(itemFiltered);
     }
-    return tableBody();
+    return filteredColumn();
   };
 
   return (
