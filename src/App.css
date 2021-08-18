@@ -29,6 +29,10 @@
   color: #61dafb;
 }
 
+.headerApp {
+  text-align: center;
+}
+
 @keyframes App-logo-spin {
 
   from {

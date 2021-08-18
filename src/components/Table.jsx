@@ -2,27 +2,40 @@ import React, { useContext } from 'react';
 import Context from '../Context/Context';
 
 function Table() {
-  const { data } = useContext(Context);
+  const { contextValue: { data } } = useContext(Context);
+  const { contextValue: { filters } } = useContext(Context);
 
   const geraLinhas = () => {
     const { results } = data;
-    return results.map((result, index) => {
+    const { name } = filters.filterByName;
+
+    const gerate = (planet, i) => {
       const {
-        climate, created, diameter, edited, films, gravity, name,
+        climate, created, diameter, edited, films, gravity, name: namePlanet,
         orbital_period: orbital, population, rotation_period: rotation,
         surface_water: surface, terrain, url,
-      } = result;
+      } = planet;
+
       const arrayResult = [
-        name, rotation, orbital, diameter, climate, gravity,
+        namePlanet, rotation, orbital, diameter, climate, gravity,
         terrain, surface, population, films, created, edited, url,
       ];
 
       return (
-        <tr key={ index }>
+        <tr key={ i }>
           { arrayResult.map((text, inde) => <td key={ inde }>{ text }</td>) }
         </tr>
       );
-    });
+    };
+
+    if (name) {
+      const planetsSearch = results.filter((result) => (
+        result.name.toLowerCase().includes(name)
+      ));
+
+      return planetsSearch.map((planet, i) => gerate(planet, i));
+    }
+    return results.map((result, index) => gerate(result, index));
   };
 
   const geraColunas = () => {

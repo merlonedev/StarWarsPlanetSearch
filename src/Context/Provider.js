@@ -4,6 +4,7 @@ import Context from './Context';
 
 function Provider({ children }) {
   const [data, setData] = useState();
+  const [filterByName, setFilterByName] = useState({ name: '' });
 
   useEffect(() => {
     const planetsJson = async () => {
@@ -14,15 +15,29 @@ function Provider({ children }) {
     planetsJson();
   }, []);
 
+  const nameFilter = ({ target }) => {
+    setFilterByName({ name: target.value });
+  };
+
+  const contextValue = {
+    data,
+    filters: {
+      filterByName,
+    },
+    functionsFilters: {
+      nameFilter,
+    },
+  };
+
   return (
-    <Context.Provider value={ { data } }>
+    <Context.Provider value={ { contextValue } }>
       { children }
     </Context.Provider>
   );
 }
 
-export default Provider;
-
 Provider.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.node.isRequired,
 };
+
+export default Provider;
