@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import Context from '../../context/Context';
 
-function FilterByName() {
+const FilterByName = () => {
   const { filters: { filterByName: { name } }, setName } = useContext(Context);
 
   return (
@@ -14,6 +14,6 @@ function FilterByName() {
       />
     </div>
   );
-}
+};
 
 export default FilterByName;

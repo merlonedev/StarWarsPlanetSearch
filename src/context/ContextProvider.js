@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Context from './Context';
 
-function Provider({ children }) {
+const Provider = ({ children }) => {
   const [fullData, setFullData] = useState([]);
   const [data, setData] = useState([]);
   const [name, setName] = useState('');
+  const [filterByNumericValue, setFilterByNumericValue] = useState(null);
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -27,14 +28,15 @@ function Provider({ children }) {
   }, [fullData, name]);
 
   const context = {
-    data,
     setData,
-    // name,
     setName,
+    setFilterByNumericValue,
+    data,
     filters: {
       filterByName: {
         name,
       },
+      filterByNumericValue,
     },
   };
 
@@ -43,7 +45,7 @@ function Provider({ children }) {
       { children }
     </Context.Provider>
   );
-}
+};
 
 Provider.propTypes = {
   children: PropTypes.oneOfType([
