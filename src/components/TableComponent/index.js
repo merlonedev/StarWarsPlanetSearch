@@ -4,7 +4,7 @@ import ApiContext from '../../context/ApiContext';
 import TableDataRow from '../TableDataRow';
 
 function TableComponent() {
-  const { data } = useContext(ApiContext);
+  const { filteredData } = useContext(ApiContext);
 
   return (
     <table>
@@ -25,7 +25,7 @@ function TableComponent() {
           <th>Url</th>
         </tr>
       </thead>
-      <TableDataRow data={ data } />
+      <TableDataRow data={ filteredData } />
     </table>
   );
 }

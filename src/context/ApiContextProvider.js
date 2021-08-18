@@ -3,17 +3,27 @@ import PropTypes from 'prop-types';
 
 import ApiContext from './ApiContext';
 import fetchApi from '../services/api';
+import filtersStructure from '../services/filtersStructure';
 
 const ApiContextProvider = ({ children }) => {
   const [data, setData] = useState([]);
+  const [filters, setFilters] = useState(filtersStructure);
+  const [filteredData, setFilteredData] = useState([]);
 
   const contextValue = {
     data,
     setData,
+    filteredData,
+    setFilteredData,
+    filters,
+    setFilters,
   };
 
   const getApi = () => {
-    fetchApi().then((response) => setData(response));
+    fetchApi().then((response) => {
+      setData(response);
+      setFilteredData(response);
+    });
   };
 
   useEffect(getApi, []);
