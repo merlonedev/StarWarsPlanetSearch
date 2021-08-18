@@ -1,25 +1,54 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import Context from '../context/Context';
 
 function Table() {
-  const { data, loading, filters } = useContext(Context);
+  const
+    {
+      data,
+      loading,
+      filters: { filterByName, filterByNumericValues },
+    } = useContext(Context);
+  const [planets, setPlanets] = useState([]);
+
+  useEffect(() => {
+    setPlanets(data);
+  }, [data]);
+
+  useEffect(() => {
+    filterByNumericValues.forEach(({ column, comparison, value }) => {
+      setPlanets(data.filter((planet) => {
+        switch (comparison) {
+        case 'maior que':
+          return Number(planet[column]) > Number(value);
+        case 'menor que':
+          return Number(planet[column]) < Number(value);
+        case 'igual a':
+          return Number(planet[column]) === Number(value);
+        default:
+          return true;
+        }
+      }));
+    });
+  }, [data, filterByNumericValues]);
 
   if (loading) return 'Loading';
+  if (planets.length === 0) return 'No planets found';
+
   return (
     <table>
       <thead>
         <tr>
-          {Object.keys(data[0]).map((key) => (
+          {Object.keys(planets[0]).map((key) => (
             <th key={ key }>{key}</th>
 
           ))}
         </tr>
       </thead>
       <tbody>
-        {data
+        {planets
           .filter(({ name }) => name.toLowerCase()
-            .includes(filters.filterByName.name.toLowerCase()))
+            .includes(filterByName.name.toLowerCase()))
           .map((planet, index) => (
             <tr key={ index }>
               {Object.values(planet).map((value) => (
