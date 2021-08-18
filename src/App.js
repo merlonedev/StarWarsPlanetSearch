@@ -1,9 +1,13 @@
 import React from 'react';
 import './App.css';
+import { Header, Table } from './components';
 
 function App() {
   return (
-    <span>Hello, App!!</span>
+    <>
+      <Header />
+      <Table />
+    </>
   );
 }
 
