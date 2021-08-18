@@ -3,7 +3,7 @@ import StarContext from '../context/StarContext';
 import TableLines from './TableLines';
 
 function MainTable() {
-  const { results } = useContext(StarContext);
+  const { filteredPlanets } = useContext(StarContext);
 
   return (
     <table>
@@ -25,7 +25,7 @@ function MainTable() {
         </tr>
       </thead>
       <tbody>
-        {results.map((e) => <TableLines objData={ e } key={ e.name } />)}
+        {filteredPlanets.map((e) => <TableLines objData={ e } key={ e.name } />)}
       </tbody>
     </table>
   );
