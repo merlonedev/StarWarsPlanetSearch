@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import Context from '../Context/Context';
 
 function FilterText() {
-  const { contextValue: { functionsFilters: { nameFilter } } } = useContext(Context);
+  const { functionsFilters: { nameFilter } } = useContext(Context);
 
   return (
     <div>
       <label htmlFor="name-filter">
-        Filtrar pelo nome:
+        Filter by name:
         <input
           data-testid="name-filter"
           type="text"

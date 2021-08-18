@@ -5,6 +5,7 @@ import Context from './Context';
 function Provider({ children }) {
   const [data, setData] = useState();
   const [filterByName, setFilterByName] = useState({ name: '' });
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
   useEffect(() => {
     const planetsJson = async () => {
@@ -19,18 +20,32 @@ function Provider({ children }) {
     setFilterByName({ name: target.value });
   };
 
+  const numericFilter = () => {
+    const column = document.querySelector('#column-filter').value;
+    const comparison = document.querySelector('#comparison-filter').value;
+    const valueNumber = document.querySelector('#value-filter').value;
+
+    setFilterByNumericValues([{
+      column,
+      comparison,
+      value: valueNumber,
+    }]);
+  };
+
   const contextValue = {
     data,
     filters: {
       filterByName,
+      filterByNumericValues,
     },
     functionsFilters: {
       nameFilter,
+      numericFilter,
     },
   };
 
   return (
-    <Context.Provider value={ { contextValue } }>
+    <Context.Provider value={ contextValue }>
       { children }
     </Context.Provider>
   );
