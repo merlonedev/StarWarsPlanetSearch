@@ -9,7 +9,7 @@ export default function MyProvider({ children }) {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState({
     filterByName: { name: '' },
-    filterByNumericValues: [{ column: '', comparison: '', value: '' }],
+    filterByNumericValues: [],
   });
 
   useEffect(() => {
@@ -30,17 +30,21 @@ export default function MyProvider({ children }) {
   };
 
   const handleFilterByNumeric = ({ column, comparison, value }) => {
-    setFilters((prevFilters) => {
-      if (!prevFilters.filterByNumericValues[0].value) {
-        return { ...prevFilters, filterByNumericValues: [{ column, comparison, value }] };
-      }
-      return { ...prevFilters,
-        filterByNumericValues: [
-          ...prevFilters.filterByNumericValues,
-          { column, comparison, value },
-        ],
-      };
-    });
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      filterByNumericValues: [
+        ...prevFilters.filterByNumericValues,
+        { column, comparison, value },
+      ],
+    }));
+  };
+
+  const handleRemoveFilter = (filterName) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      filterByNumericValues: prevFilters.filterByNumericValues
+        .filter(({ column }) => column !== filterName),
+    }));
   };
 
   const contextValue = {
@@ -48,6 +52,7 @@ export default function MyProvider({ children }) {
     filters,
     handleNameFilter,
     handleFilterByNumeric,
+    handleRemoveFilter,
   };
   return (
     <MyContext.Provider value={ contextValue }>
