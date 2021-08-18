@@ -1,7 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
+import SWContext from '../Context/SWContext';
 
 function Table() {
-  const [data, setData] = useState([]);
+  const { setData, filters } = useContext(SWContext);
+  let { data } = useContext(SWContext);
+  const { filterByName: { name } } = filters;
+  if (name !== '') {
+    data = data.filter((planet) => (
+      (planet.name.toLowerCase()).includes(name.toLowerCase())
+    ));
+  }
 
   useEffect(() => {
     const getPlanets = async () => {
