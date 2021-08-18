@@ -13,21 +13,15 @@ const Table = () => {
     let filteredData = [...data];
     filteredData = data
       .filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()));
-    console.log('Antes de de filtrar por valores numéricos', filteredData);
-    console.log('Array de filtros', filterByNumericValues);
     filterByNumericValues.forEach(({ column, comparison, value }) => {
       if (comparison === 'maior que') {
         filteredData = filteredData.filter((planet) => +planet[column] > +value);
-        console.log('Entrou no filtro "maior que"', filteredData);
       } else if (comparison === 'menor que') {
         filteredData = filteredData.filter((planet) => +planet[column] < +value);
-        console.log('Entrou no filtro "menor que"', filteredData);
       } else if (comparison === 'igual a') {
         filteredData = filteredData.filter((planet) => +planet[column] === +value);
-        console.log('Entrou no filtro "igual a"', filteredData);
       }
     });
-    console.log('Ao final da filtragem restou', filteredData);
     return filteredData;
   };
 

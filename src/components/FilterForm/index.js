@@ -1,11 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import StarWarsContext from '../../context/StarWarsContext';
 import './style.css';
 
+const columnFiltersOptions = ['population', 'orbital_period',
+  'diameter', 'rotation_period', 'surface_water'];
+const comparisonFiltersOptions = ['maior que', 'menor que', 'igual a'];
+
 const FilterForm = () => {
-  const [columnFilters/* , setColumnFilters */] = useState(
-    ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'],
-  );
+  const [columnFilters, setColumnFilters] = useState(columnFiltersOptions);
   const [comparisonFilter, setComparisonFilter] = useState({
     column: 'population',
     comparison: 'maior que',
@@ -13,7 +15,18 @@ const FilterForm = () => {
   });
   const { filters, setFilters } = useContext(StarWarsContext);
   const { filterByName: { name: filterName }, filterByNumericValues } = filters;
-  const comparisonFiltersOptions = ['maior que', 'menor que', 'igual a'];
+
+  useEffect(() => {
+    const filtersSelected = filterByNumericValues.map(({ column }) => column);
+    let newColumnFilters = [...columnFiltersOptions];
+    filtersSelected.forEach((columnFilterSelected) => {
+      newColumnFilters = newColumnFilters
+        .filter((columnFilter) => columnFilter !== columnFilterSelected);
+    });
+    setComparisonFilter((prevCompareFilter) => (
+      { ...prevCompareFilter, column: newColumnFilters[0] }));
+    setColumnFilters(newColumnFilters);
+  }, [filterByNumericValues]);
 
   const handleFilterByName = ({ target: { value } }) => {
     setFilters({
@@ -50,12 +63,13 @@ const FilterForm = () => {
     </div>
   );
 
-  const { value } = comparisonFilter;
+  const { column, comparison, value } = comparisonFilter;
   const renderFilterByNumericalValues = () => (
     <div className="filter-by-numerical-values">
       <select
         data-testid="column-filter"
         name="column"
+        value={ column }
         onChange={ handlefilterByNumericValues }
       >
         { columnFilters.map((columnOption) => (
@@ -65,6 +79,7 @@ const FilterForm = () => {
       <select
         data-testid="comparison-filter"
         name="comparison"
+        value={ comparison }
         onChange={ handlefilterByNumericValues }
       >
         { comparisonFiltersOptions.map((comparisonOption) => (
