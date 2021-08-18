@@ -1,6 +1,6 @@
 import React from 'react';
-import TableBody from './TabbleBody';
-import TableHeader from './TabbleHeader';
+import TableBody from './TableBody';
+import TableHeader from './TableHeader';
 
 export default function Table() {
   return (
