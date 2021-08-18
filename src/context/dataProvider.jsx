@@ -3,16 +3,29 @@ import PropTypes from 'prop-types';
 import dataContext from './dataContext';
 
 function Provider({ children }) {
-  const [state, setState] = useState({
+  const [nameFilter, setNameFilter] = useState('');
+  const [column, setColumn] = useState('population');
+  const [comparison, setComparison] = useState('>');
+  const [value, setValue] = useState();
+  const state = {
     filters: {
       filterByName: {
-        name: '',
+        name: nameFilter,
+      },
+      filterByNumericValues: {
+        column,
+        comparison,
+        value,
       },
     },
-  });
+  };
+
   const contextValue = {
     state,
-    setState,
+    setNameFilter,
+    setColumn,
+    setComparison,
+    setValue,
   };
 
   return (

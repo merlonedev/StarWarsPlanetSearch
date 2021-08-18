@@ -2,21 +2,10 @@ import React, { useContext } from 'react';
 import dataContext from '../context/dataContext';
 
 function FilterByName() {
-  const { state, setState } = useContext(dataContext);
+  const { setNameFilter } = useContext(dataContext);
   const filterName = (event) => {
     const { value } = event.target;
-    const newState = {
-      filters: {
-        filterByName: {
-          name: value,
-        },
-      },
-    };
-
-    setState({
-      ...state,
-      ...newState,
-    });
+    setNameFilter(value);
   };
 
   return (
