@@ -6,6 +6,13 @@ import fetchApi from '../services/fetchApi';
 
 const Provider = ({ children }) => {
   const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({
+    filters: {
+      filterByName: {
+        name: '',
+      },
+    },
+  });
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -14,8 +21,14 @@ const Provider = ({ children }) => {
     getPlanets();
   }, []);
 
+  const filterName = ({ target }) => {
+    setFilters({ filters: { filterByName: { name: target.value } } });
+  };
+
   const context = {
     data,
+    filters,
+    filterName,
   };
 
   return (
