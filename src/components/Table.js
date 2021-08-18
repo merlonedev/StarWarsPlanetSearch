@@ -5,8 +5,11 @@ import Planet from './Planet';
 import defaultHeaders from '../helpers/defaultHeaders';
 
 function Table() {
-  const { planets } = useContext(context);
-  console.log(planets);
+  const { planets, filters: { filterByName: { name } } } = useContext(context);
+  const doesInclude = (planetName) => planetName.toLowerCase().includes(name.toLowerCase());
+  const filteredPlanets = planets.length > 0
+    ? planets.filter((planet) => doesInclude(planet.name))
+    : [];
   return (
     <table>
       <thead>
@@ -15,7 +18,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { planets.map((planet, index) => (
+        { filteredPlanets.map((planet, index) => (
           <Planet planet={ planet } key={ index } />
         ))}
       </tbody>
