@@ -1,41 +1,35 @@
+@import url('https://allfont.net/allfont.css?fonts=star-jedi') ;
+
+
+body {
+  background-color: black;
+}
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+@font-face {
+  font-family: starjout;
+  src: url('./images/starjout.ttf');
 }
 
-@media ( prefers-reduced-motion : no-preference ) {
-
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  align-items: center;
-  background-color: #282c34;
-  color: white;
+.header {
+  background-color: black;
+  box-shadow: 0 0 2px #ffff8f , 0 0 8px #ffea00;
   display: flex;
   flex-direction: column;
-  font-size: calc(10px + 2vmin);
+  font-family: starjout , monospace;
+  height: 100px;
   justify-content: center;
-  min-height: 100vh;
+  line-height: 2px;
+  margin: 0%;
+  padding: 0%;
+  text-align: center;
+  text-shadow: 0 0 2px #ffff8f , 0 0 8px #ffea00 , 0 0 16px #ffea00;
+  width: 100%;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
+h1 {
+  font-size: 48px;
 }
