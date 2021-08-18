@@ -7,6 +7,7 @@ export default function Table() {
     data,
     filters: { filterByName, filterByNumericValues },
     order,
+    apiError,
   } = useMyContext();
 
   const orderedArray = useCallback((array) => {
@@ -55,26 +56,28 @@ export default function Table() {
     return orderedArray(planets);
   }, [data, filterByName.name, filterByNumericValues, orderedArray]);
 
-  return (
-    <table>
-      <thead>
-        <tr>
-          { data.length > 0
-          && Object.keys(data[0])
-            .map((key) => key !== 'residents' && <th key={ uuidv4() }>{ key }</th>) }
-        </tr>
-      </thead>
-      <tbody>
-        { filtredArray().map((planet) => (
-          <tr key={ uuidv4() }>
-            { Object.keys(planet).map((key, index) => (
-              (index === 0)
-                ? <td key={ uuidv4() } data-testid="planet-name">{ planet[key] }</td>
-                : key !== 'residents' && <td key={ uuidv4() }>{ planet[key] }</td>
-            )) }
+  return (!apiError
+    && (
+      <table>
+        <thead>
+          <tr>
+            { data.length > 0
+            && Object.keys(data[0])
+              .map((key) => key !== 'residents' && <th key={ uuidv4() }>{ key }</th>) }
           </tr>
-        )) }
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          { filtredArray().map((planet) => (
+            <tr key={ uuidv4() }>
+              { Object.keys(planet).map((key, index) => (
+                (index === 0)
+                  ? <td key={ uuidv4() } data-testid="planet-name">{ planet[key] }</td>
+                  : key !== 'residents' && <td key={ uuidv4() }>{ planet[key] }</td>
+              )) }
+            </tr>
+          )) }
+        </tbody>
+      </table>
+    )
   );
 }

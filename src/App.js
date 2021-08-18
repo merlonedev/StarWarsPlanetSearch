@@ -1,5 +1,6 @@
 import React from 'react';
 import ActualFilters from './components/ActualFilters';
+import ErrorAltert from './components/ErrorAlert';
 import FiltersContainer from './components/FiltersContainer';
 import Table from './components/Table';
 import MyProvider from './Context';
@@ -9,6 +10,7 @@ function App() {
     <MyProvider>
       <FiltersContainer />
       <ActualFilters />
+      <ErrorAltert />
       <Table />
     </MyProvider>
   );

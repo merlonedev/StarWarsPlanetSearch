@@ -15,13 +15,18 @@ export default function MyProvider({ children }) {
     column: 'name',
     sort: 'ASC',
   });
+  const [apiError, setApiError] = useState(false);
 
   useEffect(() => {
+    const PLANETS_URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
     const getPlanets = async () => {
-      const PLANETS_URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const fetching = await fetch(PLANETS_URL);
-      const { results } = await fetching.json();
-      setData(results);
+      try {
+        const fetching = await fetch(PLANETS_URL);
+        const { results } = await fetching.json();
+        setData(results);
+      } catch (error) {
+        setApiError(true);
+      }
     };
     getPlanets();
   }, []);
@@ -59,6 +64,7 @@ export default function MyProvider({ children }) {
     data,
     filters,
     order,
+    apiError,
     handleNameFilter,
     handleFilterByNumeric,
     handleRemoveFilter,
