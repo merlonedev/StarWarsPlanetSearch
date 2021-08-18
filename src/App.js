@@ -9,7 +9,6 @@ function App() {
     <Provider>
       <Header />
       <Table />
-
     </Provider>
 
   );

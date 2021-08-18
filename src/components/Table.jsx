@@ -2,11 +2,24 @@ import React, { useContext } from 'react';
 import Context from '../context/context';
 
 function Table() {
-  const { data } = useContext(Context);
+  const {
+    data,
+    filters: {
+      filterName,
+    },
+  } = useContext(Context);
+
+  let dtPlanets = data;
+
   const headerTable = [
     'Nome', 'Período de Rotação', 'Período Orbital', 'Diâmetro', 'Clima',
     'Gravidade', 'Terreno', 'Superfície Àgua', 'População',
     'Filmes', 'Criado em', 'Editado', 'URL'];
+
+  if (filterName) {
+    dtPlanets = dtPlanets.filter(({ name }) => name.toLowerCase().includes(filterName));
+  }
+
   return (
     <table>
       <thead className="table-header">
@@ -15,7 +28,7 @@ function Table() {
         </tr>
       </thead>
       <tbody className="table-body">
-        {data.map((dt, index) => {
+        {dtPlanets.map((dt, index) => {
           const {
             climate, created, diameter, edited, films, gravity,
             name, orbital_period: orbitalPeriod, population,
