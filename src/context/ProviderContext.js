@@ -4,16 +4,22 @@ import Context from './Context';
 
 function ProviderContext({ children }) {
   const [planets, setPlanets] = useState([]);
-
-  const contextValue = { planets, setPlanets };
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       const END_POINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const { results } = await fetch(END_POINT).then((data) => data.json());
       setPlanets(results);
+      setIsLoading(false);
     })();
   }, []);
+
+  const contextValue = {
+    planets,
+    isLoading,
+    setPlanets,
+  };
 
   return (
     <Context.Provider value={ contextValue }>
