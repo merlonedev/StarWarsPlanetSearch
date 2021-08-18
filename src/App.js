@@ -1,10 +1,10 @@
 import React from 'react';
-import './App.css';
+import Table from './components/Table';
+import AppProvider from './context/AppProvider';
 
-function App() {
-  return (
-    <span>Hello, App!</span>
-  );
-}
-
+const App = () => (
+  <AppProvider>
+    <Table />
+  </AppProvider>
+);
 export default App;
