@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import Table from './components/Table';
+import NewProvider from './context/MyContext';
 
 function App() {
-  const [planets, setPlanets] = useState([]);
-
   return (
-    <span>Hello, App!</span>
+    <div>
+      <NewProvider>
+        <Table />
+      </NewProvider>
+    </div>
   );
 }
 
 export default App;
-// adding a simple comment
