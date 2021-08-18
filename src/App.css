@@ -34,6 +34,17 @@ table, th, td {
   border-collapse: collapse;
 }
 
+.header {
+  background-color: rgb(44, 43, 43);
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  color: #ffe81f;
+}
+
 @keyframes App-logo-spin {
 
   from {
