@@ -1,9 +1,8 @@
 import React from 'react';
-import './App.css';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <span>Project Star Wars Planets Search!</span>
   );
 }
 
