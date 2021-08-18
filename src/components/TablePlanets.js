@@ -3,7 +3,8 @@ import Context from '../context/Context';
 
 function TabletPlanets() {
   const { planets } = useContext(Context);
-  console.log(planets);
+  const HEADERS_TABLE = Object.keys(planets[0]);
+  console.log(HEADERS_TABLE);
   return (
     <p>TabletPlanets online</p>
   );
