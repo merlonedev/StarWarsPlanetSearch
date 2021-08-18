@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import FilterContext from '../context/FilterContext';
 
 function Header() {
+  const { handleChangeName } = useContext(FilterContext);
   return (
     <header>
-      <h1>Teste</h1>
+      <input
+        type="text"
+        placeholder="Digite um planeta"
+        data-testid="name-filter"
+        onChange={ handleChangeName }
+      />
     </header>
   );
 }

@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import FilterContext from '../context/FilterContext';
 
 function Table() {
   const [planets, setPlanets] = useState([]);
   const [tableHeadData, setTableHeadData] = useState([]);
+  let filteredPlanets = [...planets];
 
   useEffect(() => {
     const fetchAPI = async () => {
@@ -29,11 +31,16 @@ function Table() {
     </thead>
   );
 
+  const { filters: { filterByName: { name } } } = useContext(FilterContext);
+  if (name) {
+    filteredPlanets = filteredPlanets.filter((planet) => planet.name.toLowerCase()
+      .includes(name.toLowerCase()));
+  }
   return (
     <table>
       { tableHead() }
       <tbody>
-        { planets.map((planet, index) => (
+        { filteredPlanets.map((planet, index) => (
           <tr key={ index }>
             {tableHeadData.map((column, dataindex) => (
               <td key={ dataindex }>{ planet[column]}</td>
