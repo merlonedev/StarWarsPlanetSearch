@@ -2,18 +2,17 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 function Table() {
-  const { planets } = useContext(AppContext);
-  const columns = (planets.length) ? Object.keys(planets[0]) : [];
+  const { planetsFiltered, tableColumns } = useContext(AppContext);
 
   return (
     <table>
       <thead>
         <tr>
-          { columns.map((key) => <th key={ key }>{key}</th>)}
+          { tableColumns.map((key) => <th key={ key }>{key}</th>)}
         </tr>
       </thead>
       <tbody>
-        { planets.map(({
+        { planetsFiltered.map(({
           name,
           rotation_period: rotationPeriod,
           orbital_period: orbitalPeriod,
