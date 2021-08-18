@@ -2,7 +2,11 @@ import React, { useContext } from 'react';
 import MyContext from '../Context/MyContext';
 
 function Table() {
-  const { data } = useContext(MyContext);
+  const { data, filters } = useContext(MyContext);
+  const { filterByName: { name } } = filters;
+  const nameLowerCase = name.toLowerCase();
+  const filteredData = data.filter((planet) => planet.name.toLowerCase()
+    .includes(nameLowerCase));
   const tableHeads = Object.keys(data[0]);
   const filteredHeads = tableHeads.filter((head) => head !== 'residents');
 
@@ -17,7 +21,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { data.map((planet) => (
+        { filteredData.map((planet) => (
           <tr key={ planet.name }>
             { Object.entries(planet).filter((entry) => entry[0] !== 'residents')
               .map((filteredEntry) => (
