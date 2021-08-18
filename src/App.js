@@ -4,9 +4,15 @@ import MyContext from './Context/Context';
 import Table from './Components/Table';
 
 function App() {
-  const [data, setData] = useState([1]);
+  const [data, setData] = useState([]);
+  const [name, setName] = useState('');
   const planets = {
     data,
+    filters: {
+      filterByName: {
+        name,
+      },
+    },
   };
 
   useEffect(() => {
@@ -18,9 +24,19 @@ function App() {
     getData();
   }, []);
 
+  const handleChange = ({ target }) => {
+    setName(target.value);
+  };
+
   return (
     <MyContext.Provider value={ planets }>
-      <Table />
+      <input
+        type="text"
+        placeholder="Nome do planeta"
+        onChange={ handleChange }
+        data-testid="name-filter"
+      />
+      { (data.length > 0 && <Table />) }
     </MyContext.Provider>
   );
 }
