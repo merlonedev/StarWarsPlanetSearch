@@ -1,22 +1,34 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
 
 function Filters() {
-  const { setData, filters: { filterByName: { setName } } } = useContext(AppContext);
+  const {
+    filters: {
+      filterByName: { setName },
+      filterByNumericValues,
+      setFilterByNumericValues,
+    } } = useContext(AppContext);
 
-  useEffect(() => {
-    const getPlanets = async () => {
-      const url = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const planets = await fetch(url)
-        .then((response) => response.json())
-        .then((data) => data.results);
-      setData(planets);
+  const [column, setColumn] = useState('');
+  const [comparison, setComparison] = useState('');
+  const [value, setValue] = useState(0);
+
+  const columnOptions = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ];
+  const comparisonOptions = ['maior que', 'menor que', 'igual a'];
+
+  const handleFilter = () => {
+    const newFilterValues = {
+      column,
+      comparison,
+      value,
     };
-    getPlanets();
-  }, [setData]);
-
-  const handleChange = ({ target }) => {
-    setName(target.value);
+    setFilterByNumericValues([...filterByNumericValues, newFilterValues]);
   };
 
   return (
@@ -26,8 +38,43 @@ function Filters() {
           data-testid="name-filter"
           type="text"
           placeholder="Nome do Planeta"
-          onChange={ handleChange }
+          onChange={ (e) => setName(e.target.value) }
         />
+      </div>
+      <div>
+        <select
+          data-testid="column-filter"
+          name="column"
+          value={ column }
+          onChange={ (e) => setColumn(e.target.value) }
+        >
+          {columnOptions.map((option) => (
+            <option key={ option } value={ option }>{ option }</option>
+          ))}
+        </select>
+        <select
+          data-testid="comparison-filter"
+          name="comparison"
+          value={ comparison }
+          onChange={ (e) => setComparison(e.target.value) }
+        >
+          {comparisonOptions.map((option) => (
+            <option key={ option } value={ option }>{ option }</option>
+          ))}
+        </select>
+        <input
+          data-testid="value-filter"
+          type="number"
+          placeholder="Valor"
+          onChange={ (e) => setValue(e.target.value) }
+        />
+        <button
+          data-testid="button-filter"
+          type="button"
+          onClick={ handleFilter }
+        >
+          Filtrar
+        </button>
       </div>
     </form>
   );

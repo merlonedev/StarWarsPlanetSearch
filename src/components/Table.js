@@ -2,7 +2,12 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 function Table() {
-  const { data, filters: { filterByName: { name } } } = useContext(AppContext);
+  const {
+    data,
+    filters: {
+      filterByName: { name },
+      filterByNumericValues,
+    } } = useContext(AppContext);
   const tableHeaders = [
     'name',
     'rotation_period',
@@ -27,7 +32,34 @@ function Table() {
     }
     return data;
   };
-  const filtredPlanets = filterPlanetsByName();
+  let filtredPlanets = filterPlanetsByName();
+
+  const filterPlanetsByValues = () => {
+    if (filterByNumericValues) {
+      filterByNumericValues.forEach(({ comparison, column, value }) => {
+        switch (comparison) {
+        case 'maior que':
+          filtredPlanets = filtredPlanets.filter(
+            (planet) => (parseInt(planet[column], 10) > value),
+          );
+          break;
+        case 'menor que':
+          filtredPlanets = filtredPlanets.filter(
+            (planet) => (parseInt(planet[column], 10) < value),
+          );
+          break;
+        case 'igual a':
+          filtredPlanets = filtredPlanets.filter(
+            (planet) => parseInt(planet[column], 10) === parseInt(value, 10),
+          );
+          break;
+        default:
+          break;
+        }
+      });
+    }
+  };
+  filterPlanetsByValues();
 
   const renderTable = (planets) => (
     <div>

@@ -3,12 +3,13 @@ import Filters from './components/Filters';
 import Provider from './context/Provider';
 import Table from './components/Table';
 import './App.css';
+import Header from './components/Header';
 
 function App() {
   return (
     <Provider>
+      <Header />
       <Filters />
-      <span>May the force be with You!</span>
       <Table />
     </Provider>
   );
