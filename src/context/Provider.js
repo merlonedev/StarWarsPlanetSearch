@@ -4,32 +4,41 @@ import MyContext from './MyContext';
 
 function Provider({ children }) {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [headers, setHeaders] = useState([]);
+  const [filtersByName, setFiltersByName] = useState({ name: '' });
 
   useEffect(() => {
     async function fetchAPI() {
       const URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const request = await fetch(URL);
       const { results } = await request.json();
-      results.map((result) => delete result.residents);
-      setData(results);
-      setLoading(true);
+      results.map((planet) => delete planet.residents);
+      setHeaders(Object.keys(results[0]));
+      const filtered = results
+        .filter((planet) => planet.name.includes(filtersByName.name));
+      setData(filtered.length === 0 ? [] : filtered);
+      // setData(results);
     }
 
     fetchAPI();
-  }, []);
+  }, [filtersByName]);
 
-  const loadingFn = () => {
-    if (loading) return <h2>Loading...</h2>;
-    return !loading;
+  useEffect(() => {
+    const filtered = data
+      .filter((planet) => planet.name.includes(filtersByName.name));
+    setData(filtered);
+  }, [filtersByName]);
+
+  const handleChange = ({ target }) => {
+    setFiltersByName({ name: target.value });
   };
 
   const context = {
     data,
-    loading,
-    loadingFn,
+    headers,
     setData,
-    setLoading,
+    filtersByName,
+    handleChange,
   };
 
   return (

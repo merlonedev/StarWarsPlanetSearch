@@ -2,9 +2,7 @@ import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
 
 function Table() {
-  const { data, loading } = useContext(MyContext);
-
-  const headers = loading ? Object.keys(data[0]) : [];
+  const { data, headers } = useContext(MyContext);
 
   return (
     <table>
