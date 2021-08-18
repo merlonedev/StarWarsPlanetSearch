@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 const selectValues = {
@@ -12,6 +12,11 @@ const selectValues = {
 function Filters() {
   const { filters, setFilter } = useContext(StarWarsContext);
   const { filterByName: { name } } = filters;
+  const [numericFilter, setNumericFilter] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: 0, 
+  });
 
   const renderPlanetInput = () => (
     <label htmlFor="name-filter">
@@ -28,28 +33,46 @@ function Filters() {
     </label>
   );
 
+  const numericFiltersOnChangeHandle = ({ target: { id, value }}) => {
+    setNumericFilter({
+      ...numericFilter,
+      [id]: value,
+    })
+  };
+
   const renderNumericFilters = () => (
     <div>
-      <select id="column" data-testid="column-filter">
+      <select
+        id="column"
+        data-testid="column-filter"
+        onChange={ numericFiltersOnChangeHandle }
+      >
         { Object.keys(selectValues).map((value) => (
           <option key={ value } value={ value }>{ selectValues[value]}</option>
         ))}
       </select>
-      <select id="comparison" data-testid="comparison-filter">
+      <select
+        id="comparison"
+        data-testid="comparison-filter"
+        onChange={ numericFiltersOnChangeHandle }
+      >
         <option value="maior que">Maior que</option>
         <option value="menor que">Menor que</option>
         <option value="igual a">Igual a</option>
       </select>
       <input
         type="number"
-        value=""
+        value={ numericFilter.value }
         id="value"
         data-testid="comparison-filter"
-        onChange={ () => {} }
+        onChange={ numericFiltersOnChangeHandle }
       />
       <button
         type="button"
         data-testid="button-filter"
+        onClick={ () => setFilter({
+          ...filters, filterByNumericValues: [...filters.filterByNumericValues, numericFilter],
+        }) }
       >
         Adicionar Filtro
       </button>
