@@ -23,11 +23,11 @@ function Provider({ children }) {
       filterByName: {
         name,
       },
-      filterByNumericValues: [{
+      filterByNumericValues: {
         column: filters.column,
         comparison: filters.comparison,
         value: filters.value,
-      }],
+      },
     },
   };
   return (

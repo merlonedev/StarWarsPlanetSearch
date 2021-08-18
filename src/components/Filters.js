@@ -58,7 +58,7 @@ function Filters() {
         </label>
         <button
           type="button"
-          onClick={ () => setFilters({ column, comparison, value }) }
+          onClick={ () => setFilters({ column, comparison, value: parseInt(value, 10) }) }
         >
           Adicionar filtro
         </button>
