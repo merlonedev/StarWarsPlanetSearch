@@ -2,10 +2,19 @@ import React, { useContext } from 'react';
 import Context from '../context/Context';
 
 function Table() {
-  const { api } = useContext(Context);
+  const { api, planetFilter } = useContext(Context);
+
+  const jonas = (result, index) => (
+    <tr key={ index }>
+      {
+        Object.values(result).map((element, key) => (
+          <td key={ key }>{ element }</td>))
+      }
+    </tr>
+  );
 
   return (
-    <div>
+    <table>
       <thead>
         <tr>
           <th>Name</th>
@@ -24,25 +33,13 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { api.map((result, index) => (
-          <tr key={ index }>
-            <td>{result.name}</td>
-            <td>{result.rotation_period}</td>
-            <td>{result.orbital_period}</td>
-            <td>{result.diameter}</td>
-            <td>{result.climate}</td>
-            <td>{result.gravity}</td>
-            <td>{result.terrain}</td>
-            <td>{result.surface_water}</td>
-            <td>{result.population}</td>
-            <td>{result.films}</td>
-            <td>{result.created}</td>
-            <td>{result.edited}</td>
-            <td>{result.url}</td>
-          </tr>
-        )) }
+        {
+          planetFilter.length > 0
+            ? planetFilter.map((result, index) => jonas(result, index))
+            : api.map((result, index) => jonas(result, index))
+        }
       </tbody>
-    </div>
+    </table>
   );
 }
 

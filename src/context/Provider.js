@@ -4,6 +4,8 @@ import Context from './Context';
 
 function Provider({ children }) {
   const [api, setApi] = useState([]);
+  const [planetName, setPlanetName] = useState('');
+  const [planetFilter, setPlanetFilter] = useState('');
 
   useEffect(() => {
     const getApi = async () => {
@@ -14,8 +16,21 @@ function Provider({ children }) {
     getApi();
   }, []);
 
+  const handleName = ({ target: { value } }) => {
+    setPlanetName(value);
+  };
+
+  useEffect(() => {
+    const filterTo = [...api];
+    const filtered = filterTo.filter((planet) => planet.name.includes((planetName)));
+    setPlanetFilter(filtered);
+  }, [api, planetName]);
+
   const context = {
     api,
+    planetName,
+    handleName,
+    planetFilter,
   };
 
   return (
