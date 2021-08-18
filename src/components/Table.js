@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 function Table() {
-  const { planets } = useContext(PlanetsContext);
+  // const { planets } = useContext(PlanetsContext);
+  const { filteredPlanets } = useContext(PlanetsContext);
   const results = [
     'Name',
     'Rotation_period',
@@ -31,7 +32,7 @@ function Table() {
           * Consultei o repositório de Victor para resolver essa parte.
           * Link: https://github.com/tryber/sd-011-project-starwars-planets-search/pull/4/commits/4ac907c703e279d2d00b04416ede5b40cdaffd09
           */
-          planets.map(({
+          filteredPlanets.map(({
             name,
             rotation_period: rotationPeriod,
             orbital_period: orbitalPeriod,
