@@ -1,9 +1,13 @@
 import React from 'react';
 import './App.css';
+import Provider from './context/Provider';
+import Table from './components/table';
 
 function App() {
   return (
-    <span>Inicio do projas</span>
+    <Provider>
+      <Table />
+    </Provider>
   );
 }
 
