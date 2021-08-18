@@ -21,3 +21,5 @@ export default function TableHeader() {
     </thead>
   );
 }
+
+// referência tag tbody: https://www.w3schools.com/tags/tag_tbody.asp & https://www.infowester.com/tagsdesconhecidas2.php
