@@ -15,6 +15,11 @@ export default function useNumericFilters() {
 
     if (!filterByNumericValues.length) {
       setPlanets(data);
+    }
+    if (filterByNumericValues.length === 1) {
+      filterByNumericValues
+        .forEach(({ column, comparison, value }) => setPlanets(data
+          .filter((d) => comparisons[comparison](d[column], value))));
     } else {
       filterByNumericValues
         .forEach(({ column, comparison, value }) => setPlanets(planets
