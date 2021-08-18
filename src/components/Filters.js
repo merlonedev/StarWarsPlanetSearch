@@ -17,7 +17,7 @@ const INITIAL_STATE = {
 
 function Filters() {
   const { filters, setFilter } = useContext(StarWarsContext);
-  const { filterByName: { name } } = filters;
+  const { filterByName: { name }, filterByNumericValues } = filters;
   const [numericFilter, setNumericFilter] = useState(INITIAL_STATE);
 
   const renderPlanetInput = () => (
@@ -42,50 +42,61 @@ function Filters() {
     });
   };
 
-  const renderNumericFilters = () => (
-    <div>
-      <select
-        id="column"
-        data-testid="column-filter"
-        onChange={ numericFiltersOnChangeHandle }
-        value={ numericFilter.column }
-      >
-        { selectValues.map((value) => (
-          <option key={ value } value={ value }>{ value }</option>
-        ))}
-      </select>
-      <select
-        id="comparison"
-        data-testid="comparison-filter"
-        onChange={ numericFiltersOnChangeHandle }
-        value={ numericFilter.comparison }
-      >
-        <option value="maior que">maior que</option>
-        <option value="menor que">menor que</option>
-        <option value="igual a">igual a</option>
-      </select>
-      <input
-        type="number"
-        value={ numericFilter.value }
-        id="value"
-        data-testid="value-filter"
-        onChange={ numericFiltersOnChangeHandle }
-      />
-      <button
-        type="button"
-        data-testid="button-filter"
-        onClick={ () => {
-          setFilter({
-            ...filters,
-            filterByNumericValues: [...filters.filterByNumericValues, numericFilter],
-          });
-          setNumericFilter(INITIAL_STATE);
-        } }
-      >
-        Adicionar Filtro
-      </button>
-    </div>
-  );
+  const renderNumericFilters = () => {
+    const selectValuesWithFilter = [...selectValues];
+    if (filterByNumericValues.length > 0) {
+      filterByNumericValues
+      .map((filter) => filter.column)
+      .map((column) => {
+        const index = selectValuesWithFilter.indexOf(column);
+        selectValuesWithFilter.splice(index,1);
+      });
+    }
+    return (
+      <div>
+        <select
+          id="column"
+          data-testid="column-filter"
+          onChange={ numericFiltersOnChangeHandle }
+          value={ numericFilter.column }
+        >
+          { selectValuesWithFilter.map((value) => (
+            <option key={ value } value={ value }>{ value }</option>
+          ))}
+        </select>
+        <select
+          id="comparison"
+          data-testid="comparison-filter"
+          onChange={ numericFiltersOnChangeHandle }
+          value={ numericFilter.comparison }
+        >
+          <option value="maior que">maior que</option>
+          <option value="menor que">menor que</option>
+          <option value="igual a">igual a</option>
+        </select>
+        <input
+          type="number"
+          value={ numericFilter.value }
+          id="value"
+          data-testid="value-filter"
+          onChange={ numericFiltersOnChangeHandle }
+        />
+        <button
+          type="button"
+          data-testid="button-filter"
+          onClick={ () => {
+            setFilter({
+              ...filters,
+              filterByNumericValues: [...filters.filterByNumericValues, numericFilter],
+            });
+            setNumericFilter(INITIAL_STATE);
+          } }
+        >
+          Adicionar Filtro
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div>
