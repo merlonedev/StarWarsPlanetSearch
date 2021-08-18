@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from '../Context/appContext';
 
 function Table() {
-  const { info } = useContext(AppContext);
+  const { info, filters: { filterByName: { name } } } = useContext(AppContext);
   const tableHeading = [
     'name',
     'rotation_period',
@@ -19,7 +19,18 @@ function Table() {
     'url',
   ];
 
-  const renderTable = (starWarsPlanets) => (
+  const filterByName = () => {
+    if (name) {
+      return info.filter(
+        (planet) => planet.name.toUpperCase().includes(name.toUpperCase()),
+      );
+    }
+    return info;
+  };
+
+  const filteredPlanets = filterByName();
+
+  const renderTable = (planets) => (
     <div>
       <table>
         <tbody>
@@ -28,9 +39,9 @@ function Table() {
               <th key={ header }>{header}</th>
             ))}
           </tr>
-          {starWarsPlanets.map(
+          {planets.map(
             ({
-              name,
+              name: planetName,
               rotation_period: rotationPeriod,
               orbital_period: orbitalPeriod,
               diameter,
@@ -44,8 +55,8 @@ function Table() {
               edited,
               url,
             }) => (
-              <tr key={ name }>
-                <td>{name}</td>
+              <tr key={ planetName }>
+                <td>{planetName}</td>
                 <td>{rotationPeriod}</td>
                 <td>{orbitalPeriod}</td>
                 <td>{diameter}</td>
@@ -65,7 +76,7 @@ function Table() {
       </table>
     </div>
   );
-  return renderTable(info);
+  return renderTable(filteredPlanets);
 }
 
 export default Table;
