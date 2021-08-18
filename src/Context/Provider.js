@@ -9,13 +9,13 @@ function Provider({ children }) {
     const planetsJson = async () => {
       const planetsFetch = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
       const result = await planetsFetch.json();
-      await setData(result);
+      setData(result);
     };
-    return planetsJson();
+    planetsJson();
   }, []);
 
   return (
-    <Context.Provider value={ data }>
+    <Context.Provider value={ { data } }>
       { children }
     </Context.Provider>
   );
