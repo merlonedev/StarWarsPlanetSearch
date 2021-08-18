@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import OrderFilter from './OrderFilter';
 import StarWarsContext from '../context/StarWarsContext';
 
 const selectValues = [
@@ -101,6 +102,7 @@ function Filters() {
   return (
     <div>
       {renderPlanetInput()}
+      <OrderFilter />
       {renderNumericFilters()}
     </div>
   );

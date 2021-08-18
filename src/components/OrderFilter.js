@@ -1,39 +1,62 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function OrderFilter() {
   const { data, filters, setFilter } = useContext(StarWarsContext);
-  const { order : { column, sort } } = filters;
+  const [orderFilter, setOrderFilter] = useState({
+    column: 'population',
+    sort: '',
+  });
+
+  const orderFilterOnChangeHandle = ({ target: { name, value } }) => {
+    console.log(name, value);
+    setOrderFilter({
+      ...orderFilter,
+      [name]: value,
+    });
+  };
+
+  const onClickHandle = () => {
+    setFilter({
+      ...filters,
+      order: orderFilter,
+    });
+  }
+
   return (
     <div>
       <select
-        value={ column }
+        name="column"
+        value={ orderFilter.column }
         data-testid="column-sort"
-        onChange={}
+        onChange={orderFilterOnChangeHandle}
       >
         {data[0] && Object.keys(data[0]).map((title) => (
           <option key={ title } value={ title }>{ title }</option>
         ))}
       </select>
       <input
+        id="radio-ASC"
         name="sort"
         type="radio"
         value="ASC"
-        onChange=""
+        onChange={orderFilterOnChangeHandle}
         data-testid="column-sort-input-asc"
-        checked
       />
+      <label htmlFor="radio-ASC">Ascendente</label>
       <input
+        id="radio-DESC"
         name="sort"
         type="radio"
         value="DESC"
-        onChange=""
+        onChange={orderFilterOnChangeHandle}
         data-testid="column-sort-input-desc"
       />
+      <label htmlFor="radio-DESC">Descendente</label>
       <button
       type="button"
       data-testid="column-sort-button"
-      onClick=""
+      onClick={ onClickHandle }
       >
         Ordenar
       </button>
