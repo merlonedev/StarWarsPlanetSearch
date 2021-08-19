@@ -1,8 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { PlanetsContext } from '../context/PlanetsContext';
 
 const Filter = () => {
-  const { updateFilters, filtersOptions } = useContext(PlanetsContext);
+  const { updateFilters,
+    filtersOptions, filters, removeFilter } = useContext(PlanetsContext);
   const [parameter, setParameter] = useState('population');
   const [measure, setMeasure] = useState('maior que');
   const [value, setValue] = useState(0);
@@ -48,6 +49,28 @@ const Filter = () => {
         Filtrar
 
       </button>
+      {
+        filters.filterByNumericValues.length !== 0
+          ? filters.filterByNumericValues
+            .map((e) => (
+              <li data-testid="filter" key={ e.parameter }>
+                {e.parameter}
+                ,
+                {' '}
+                {e.measure}
+                ,
+                {' '}
+                {e.value}
+                <button
+                  type="button"
+                  onClick={ () => removeFilter(e.parameter) }
+                >
+                  X
+
+                </button>
+              </li>
+            )) : null
+      }
     </>
   );
 };

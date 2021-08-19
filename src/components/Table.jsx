@@ -7,8 +7,9 @@ import TableRow from '@material-ui/core/TableRow';
 import { PlanetsContext } from '../context/PlanetsContext';
 
 function Orders() {
-  const { filteredData, data } = useContext(PlanetsContext);
-  return filteredData ? (
+  const { data, filteredData } = useContext(PlanetsContext);
+
+  return filteredData && data ? (
     <Table size="small">
       <TableHead>
         <TableRow>
