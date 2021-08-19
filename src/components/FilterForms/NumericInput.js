@@ -64,12 +64,13 @@ function NumericInput() {
         />
       </label>
 
-      <input
+      <button
         data-testid="button-filter"
         type="button"
-        value="Filtrar"
         onClick={ handleClick }
-      />
+      >
+        Filtrar
+      </button>
     </>
   );
 }

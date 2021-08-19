@@ -12,9 +12,9 @@ function StarProvider({ children }) {
     filterByName: { name: '' },
     filterByNumericValues: [
       {
-        column: '',
-        comparison: '',
-        value: '',
+        column: 'population',
+        comparison: 'maior que',
+        value: '0',
       },
     ],
   });
@@ -26,7 +26,7 @@ function StarProvider({ children }) {
     getPlanets();
   }, [data]);
 
-  function filterPlanets() {
+  function filterPlanetsByName() {
     const { filterByName } = filters;
     if (!filterByName.name.length) return setPlanets(data);
     const filtered = planets.filter(
@@ -35,7 +35,31 @@ function StarProvider({ children }) {
     setPlanets(filtered);
   }
 
-  useEffect(filterPlanets, [filters]);
+  function filterPlanetsByNumeric() {
+    const { filterByNumericValues: { column, comparison, value } } = filters;
+    switch (comparison) {
+    case 'maior que':
+      setPlanets(
+        planets.filter((p) => parseInt(p[column], 10) > parseInt(value, 10)),
+      );
+      break;
+    case 'menor que':
+      setPlanets(
+        planets.filter((p) => parseInt(p[column], 10) < parseInt(value, 10)),
+      );
+      break;
+    case 'igual a':
+      setPlanets(
+        planets.filter((p) => p[column] === value),
+      );
+      break;
+    default:
+      break;
+    }
+  }
+
+  useEffect(filterPlanetsByName, [filters]);
+  useEffect(filterPlanetsByNumeric, [filters.filterByNumericValues]);
 
   const contextValue = {
     planets,
