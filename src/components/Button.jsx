@@ -2,21 +2,22 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import MyContext from '../context/MyContext';
 
-function Input({ name, testId, type }) {
-  const { handleChange } = useContext(MyContext);
+function Button({ testId }) {
+  const { handleClick } = useContext(MyContext);
   return (
-    <input
+    <button
       data-testid={ testId }
-      type={ type }
-      name={ name }
-      onChange={ handleChange }
-    />
+      type="button"
+      onClick={ handleClick }
+    >
+      Adicionar Filtro
+    </button>
   );
 }
 
-Input.propTypes = {
+Button.propTypes = {
   name: PropTypes.string,
   testId: PropTypes.string,
 }.isRequired;
 
-export default Input;
+export default Button;
