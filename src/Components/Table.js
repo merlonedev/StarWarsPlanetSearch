@@ -28,9 +28,6 @@ function Table() {
 
   const filteredData = compare(column, comparison, value, dataFilteredByName);
 
-  // console.log(filteredData);
-  // console.log(column, comparison, value);
-
   return (
     <table>
       <thead>
