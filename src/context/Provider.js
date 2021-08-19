@@ -5,7 +5,7 @@ import AppContext from './AppContext';
 function Provider({ children }) {
   return (
     <AppContext.Provider>
-      { children}
+      { children }
     </AppContext.Provider>
   );
 }

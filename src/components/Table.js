@@ -3,18 +3,17 @@ import AppContext from '../context/AppContext';
 import '../css/table.css';
 
 function Table() {
-  const { planets } = useContext(AppContext);
-  const columns = (planets.length) ? Object.keys(planets[0]) : [];
+  const { planetsFiltered, tableColumns } = useContext(AppContext);
 
   return (
     <table>
       <thead className="container-thead">
         <tr>
-          { columns.map((key) => <th key={ key }>{key}</th>)}
+          { tableColumns.map((key) => <th key={ key }>{key}</th>)}
         </tr>
       </thead>
       <tbody className="container-tbody">
-        { planets.map(({
+        { planetsFiltered.map(({
           name,
           rotation_period: rotationPeriod,
           orbital_period: orbitalPeriod,
