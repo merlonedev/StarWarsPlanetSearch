@@ -45,18 +45,18 @@ function Provider({ children }) {
     const filterPlanet = api.filter((requisition) => {
       // console.log(requisition[column]);
       // console.log(comparison);
-      const columnCompare = Number(requisition[column]);
-      const valueCompare = Number(value);
+      const columnFilter = Number(requisition[column]);
+      const valueFilter = Number(value);
 
       switch (comparison) {
       case 'maior que':
-        return columnCompare > valueCompare;
+        return columnFilter > valueFilter;
 
       case 'menor que':
-        return columnCompare < valueCompare;
+        return columnFilter < valueFilter;
 
       default:
-        return columnCompare === valueCompare;
+        return columnFilter === valueFilter;
       }
     });
 

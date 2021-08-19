@@ -4,9 +4,6 @@ import Context from '../context/Context';
 function Form() {
   const { planetName, handleName, filterByNumericValues,
     handleFilter, handleClick } = useContext(Context);
-  const columnsOptions = ['population', 'orbital_period',
-    'diameter', 'rotation_period', 'surface_water'];
-  const comparisonOptions = ['maior que', 'menor que', 'igual a'];
 
   return (
     <form>
@@ -30,16 +27,11 @@ function Form() {
           value={ filterByNumericValues.column }
           onChange={ handleFilter }
         >
-          {
-            columnsOptions.map((column, index) => (
-              <option key={ index } value={ column }>{ column }</option>
-            ))
-          }
-          {/* <option value="population">population</option>
+          <option value="population">population</option>
           <option value="orbital_period">orbital_period</option>
           <option value="diameter">diameter</option>
           <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option> */}
+          <option value="surface_water">surface_water</option>
         </select>
       </label>
       <label htmlFor="comparison-filter">
@@ -51,14 +43,9 @@ function Form() {
           value={ filterByNumericValues.comparison }
           onChange={ handleFilter }
         >
-          {
-            comparisonOptions
-              .map((column, index) => (
-                <option key={ index } value={ column }>{column}</option>))
-          }
-          {/* <option value="maior que">maior que</option>
+          <option value="maior que">maior que</option>
           <option value="menor que">menor que</option>
-          <option value="igual a">igual a</option> */}
+          <option value="igual a">igual a</option>
         </select>
         <label htmlFor="value-filter">
           Filtro de valor:
