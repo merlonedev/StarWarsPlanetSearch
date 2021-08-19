@@ -7,6 +7,7 @@ function Table() {
     filters: {
       filterByName: { name },
       filterByNumericValues,
+      order,
     } } = useContext(AppContext);
   const tableHeaders = [
     'name',
@@ -61,6 +62,44 @@ function Table() {
   };
   filterPlanetsByValues();
 
+  const sortStrings = (a, b, type) => {
+    const sortInvert = -1;
+    if (a[order.column] > b[order.column]) {
+      return 1 * type;
+    }
+    if (a[order.column] < b[order.column]) {
+      return sortInvert * type;
+    }
+    // a must be equal to b
+    return 0;
+  };
+
+  const sortNumbers = (a, b, type) => type * a[order.column] - type * b[order.column];
+
+  const sortPlanets = () => {
+    const sortInvert = -1;
+    let type = 1;
+    const numberData = [
+      'rotation_period',
+      'orbital_period',
+      'diameter',
+      'surface_water',
+      'population',
+    ];
+
+    if (order.sort === 'ASC') {
+      type = 1;
+    } else if (order.sort === 'DESC') {
+      type = sortInvert;
+    }
+    if (numberData.some((column) => column === order.column)) {
+      filtredPlanets = filtredPlanets.sort((a, b) => sortNumbers(a, b, type));
+    } else {
+      filtredPlanets = filtredPlanets.sort((a, b) => sortStrings(a, b, type));
+    }
+  };
+  sortPlanets();
+
   const renderTable = (planets) => (
     <div>
       <table>
@@ -87,7 +126,7 @@ function Table() {
               url,
             }) => (
               <tr key={ planetName }>
-                <td>{planetName}</td>
+                <td data-testid="planet-name">{planetName}</td>
                 <td>{rotationPeriod}</td>
                 <td>{orbitalPeriod}</td>
                 <td>{diameter}</td>

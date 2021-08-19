@@ -6,6 +6,11 @@ function Provider({ children }) {
   const [data, setData] = useState([]);
   const [name, setName] = useState('');
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  const [order, setOrder] = useState({
+    column: 'name',
+    sort: 'ASC',
+  });
+
   const contextValue = {
     data,
     setData,
@@ -16,6 +21,8 @@ function Provider({ children }) {
       },
       filterByNumericValues,
       setFilterByNumericValues,
+      order,
+      setOrder,
     },
   };
 
