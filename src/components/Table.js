@@ -3,15 +3,19 @@ import planetsContext from '../context/PlanetsContext';
 
 function Table() {
   const { state, handleSetState } = useContext(planetsContext);
-  const { data } = state;
-  const header = data
-    ? Object.keys(data[0]).filter((headers) => headers !== 'residents') : '';
+  const filteredName = state.filters.filterByName.name;
+  const data = filteredName
+    ? state.data.filter(
+      (planet) => planet.name.toLowerCase().includes(filteredName.toLowerCase()),
+    ) : state.data;
+  const header = state.data
+    ? Object.keys(state.data[0]).filter((headers) => headers !== 'residents') : '';
 
   useEffect(() => {
     const getPlanets = async () => {
       const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const { results } = await fetch(endpoint).then((result) => result.json());
-      handleSetState(results);
+      handleSetState('data', results);
     };
 
     getPlanets();
