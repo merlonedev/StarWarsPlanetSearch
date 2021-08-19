@@ -5,7 +5,7 @@ import './style.css';
 const Table = () => {
   const { data } = useContext(Context);
 
-  if (data.length === 0) return <div>Loading...</div>;
+  if (data.length === 0) return <div className="loading">Loading...</div>;
 
   return (
     <table>

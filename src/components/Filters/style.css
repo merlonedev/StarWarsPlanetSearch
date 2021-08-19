@@ -1,0 +1,70 @@
+.page-filters {
+  color: gray;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+h2 {
+  color: black;
+}
+
+input {
+  border: none;
+  border-bottom: 1px solid rgb(153, 152, 152);
+  color: gray;
+  padding: 5px 10px;
+  text-transform: capitalize;
+}
+
+input:focus {
+  outline: none;
+}
+
+.name-input {
+  margin-top: 5px;
+  width: 100%;
+}
+
+select {
+  border: none;
+  border-bottom: 1px solid rgb(153, 152, 152);
+  color: gray;
+  margin-right: 5px;
+  margin-top: 5px;
+  padding: 5px 10px;
+  text-transform: capitalize;
+}
+
+.order-type {
+  margin: 0 10px;
+}
+
+.order-type input {
+  margin-left: 10px;
+}
+
+button {
+  background-color: rgb(179, 178, 178);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  letter-spacing: 1px;
+  margin-left: 10px;
+  padding: 5px 10px;
+}
+
+button:hover {
+  background-color: gray;
+}
+
+.delete-button {
+  background-color: whitesmoke;
+  border: none;
+  border-radius: none;
+}
+
+.delete-button:hover {
+  background-color: whitesmoke;
+}

@@ -11,7 +11,7 @@ const FilterByNumericValues = () => {
 
   const [column, setColumn] = useState('population');
   const [comparison, setcomparison] = useState('maior que');
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState('');
 
   useEffect(() => {
     if (columns.length > 0) setColumn(columns[0]);
@@ -25,7 +25,7 @@ const FilterByNumericValues = () => {
         comparison,
         value },
     ]);
-    setValue(0);
+    setValue('');
   };
 
   if (columns.length === 0) {

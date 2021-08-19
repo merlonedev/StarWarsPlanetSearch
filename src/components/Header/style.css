@@ -1,0 +1,43 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  margin: 2.25rem 4.5rem;
+}
+
+header img {
+  height: auto;
+  width: 18rem;
+}
+
+/* section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+} */
+
+.page-head {
+  align-items: center;
+  display: flex;
+}
+
+.page-title {
+  display: flex;
+  flex-flow: column nowrap;
+  font-size: 4rem;
+  margin-left: 3rem;
+}
+
+ul {
+  align-items: flex-end;
+  color: gray;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 20px;
+  margin-right: 12%;
+}
+
+li {
+  list-style: none;
+}

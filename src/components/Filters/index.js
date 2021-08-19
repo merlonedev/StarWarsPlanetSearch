@@ -1,21 +1,16 @@
-import React, { useContext } from 'react';
-import Context from '../../context/Context';
+import React from 'react';
 import FilterByName from './FilterByName';
 import FilterByNumericValues from './FilterByNumericValues';
 import OrderData from './OrderData';
-import UsedFilters from './UsedFilters';
+import './style.css';
 
-const Filters = () => {
-  const { filters: { filterByNumericValue } } = useContext(Context);
-
-  return (
-    <div>
-      <FilterByName />
-      <OrderData />
-      <FilterByNumericValues />
-      { filterByNumericValue.length > 0 && <UsedFilters />}
-    </div>
-  );
-};
+const Filters = () => (
+  <div className="page-filters">
+    <h2>Filters</h2>
+    <FilterByName />
+    <OrderData />
+    <FilterByNumericValues />
+  </div>
+);
 
 export default Filters;

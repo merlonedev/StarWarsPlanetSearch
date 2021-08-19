@@ -6,12 +6,17 @@ const FilterByName = () => {
 
   return (
     <div>
-      <input
-        value={ name }
-        data-testid="name-filter"
-        onChange={ ({ target: { value } }) => setName(value) }
-        placeholder="Filter by Name"
-      />
+      <label htmlFor="name-input">
+        Filter by Name
+        <input
+          className="name-input"
+          id="name-input"
+          value={ name }
+          data-testid="name-filter"
+          onChange={ ({ target: { value } }) => setName(value) }
+          placeholder="Name"
+        />
+      </label>
     </div>
   );
 };

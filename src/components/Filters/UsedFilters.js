@@ -41,6 +41,7 @@ const UsedFilters = () => {
   const renderDeleteIcon = (index) => (
     <button
       type="button"
+      className="delete-button"
       onClick={ () => {
         setFilterByNumericValue(filterByNumericValue
           .filter((_filter, i) => i !== index));

@@ -18,6 +18,7 @@ const OrderData = () => {
 
   return (
     <form onSubmit={ handleSubmit }>
+      <p>Order Columns</p>
       <select
         data-testid="column-sort"
         onChange={ ({ target: { value } }) => setColumn(value) }
@@ -26,7 +27,7 @@ const OrderData = () => {
           keys.map((key) => <option key={ key }>{ key }</option>)
         }
       </select>
-      <label htmlFor="upward">
+      <label htmlFor="upward" className="order-type">
         Upward
         <input
           type="radio"
@@ -38,7 +39,7 @@ const OrderData = () => {
           checked={ sort === 'ASC' }
         />
       </label>
-      <label htmlFor="downward">
+      <label htmlFor="downward" className="order-type">
         Downward
         <input
           type="radio"

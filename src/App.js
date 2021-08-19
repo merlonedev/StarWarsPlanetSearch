@@ -2,11 +2,11 @@ import React from 'react';
 import Table from './components/Table';
 import Provider from './context/ContextProvider';
 import './App.css';
-import Filters from './components/Filters';
+import Header from './components/Header';
 
 const App = () => (
   <Provider>
-    <Filters />
+    <Header />
     <Table />
   </Provider>
 );
