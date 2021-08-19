@@ -1,11 +1,60 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Context from '../../context/Context';
+import { switchComparison, sortASC, sortDESC } from '../../utils/data';
 import './style.css';
 
 const Table = () => {
-  const { data } = useContext(Context);
+  const {
+    data,
+    filters: {
+      filterByName: { name: typedName },
+      filterByNumericValue,
+      order,
+    },
+  } = useContext(Context);
 
-  if (data.length === 0) return <div className="loading">Loading...</div>;
+  const [usefulData, setUsefulData] = useState([]);
+
+  const sortData = (array) => {
+    const { column, sort } = order;
+    switch (sort) {
+    case 'ASC':
+      return array.sort((a, b) => sortASC(a, b, column));
+    case 'DESC':
+      return array.sort((a, b) => sortDESC(a, b, column));
+    default:
+      return array;
+    }
+  };
+
+  const filterByName = (array) => {
+    if (array.length > 0) {
+      return array.filter(({ name: planetName }) => planetName
+        .toLowerCase().includes(typedName.toLowerCase()));
+    }
+    return array;
+  };
+
+  const filterByValue = (array) => {
+    if (filterByNumericValue.length > 0) {
+      let filteredData = array;
+      filterByNumericValue.forEach(({ column, comparison, value }) => {
+        filteredData = filteredData
+          .filter((planet) => switchComparison(planet, column, comparison, value));
+      });
+      return filteredData;
+    }
+    return array;
+  };
+
+  const applyFilters = () => setUsefulData(sortData(filterByValue(filterByName(data))));
+
+  useEffect(
+    applyFilters,
+    [data, typedName, filterByNumericValue, order],
+  );
+
+  if (usefulData.length === 0) return <div className="loading">Loading...</div>;
 
   return (
     <table>
@@ -28,7 +77,7 @@ const Table = () => {
       </thead>
       <tbody>
         {
-          data.map(({
+          usefulData.map(({
             name,
             rotation_period: rotationPeriod,
             orbital_period: orbitalPeriod,
