@@ -267,7 +267,7 @@ describe('4 - Não utilize filtros repetidos', () => {
       expect(child).toHaveProperty('nodeName', 'OPTION');
       return child.innerHTML;
     });
-    // expect(foundColumnFilter).toEqual(expect.arrayContaining(['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water']));
+    expect(foundColumnFilter).toEqual(expect.arrayContaining(['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water']));
 
     fireEvent.change(await screen.findByTestId(COLUMN_FILTER_SELECTOR), { target: { value: 'population' }});
     fireEvent.change(await screen.findByTestId(COMPARISON_FILTER_SELECTOR), { target: { value: 'maior que' }});
@@ -281,8 +281,8 @@ describe('4 - Não utilize filtros repetidos', () => {
       expect(child).toHaveProperty('nodeName', 'OPTION');
       return child.innerHTML;
     });
-    // expect(foundColumnFilter).toEqual(expect.arrayContaining(['orbital_period', 'diameter', 'rotation_period', 'surface_water']));
-    // expect(foundColumnFilter).toHaveLength(4);
+    expect(foundColumnFilter).toEqual(expect.arrayContaining(['orbital_period', 'diameter', 'rotation_period', 'surface_water']));
+    expect(foundColumnFilter).toHaveLength(4);
   });
 });
 

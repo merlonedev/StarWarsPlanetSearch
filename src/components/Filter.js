@@ -1,9 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import MyContext from '../context/context';
 
-// const backupOptions = [
-//   'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
-let filterSelectOptions = [
+const filterSelectOptions = [
   'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
 const comparisonOptions = ['maior que', 'menor que', 'igual a'];
 
@@ -15,26 +13,32 @@ const InitialFilter = {
 
 function Filter() {
   const { filters, setFilter } = useContext(MyContext);
+  const [baseFilter, setBaseFilter] = useState(InitialFilter);
+  const [baseSelect, setBaseSelect] = useState(filterSelectOptions);
+  const [baseComparison] = useState(comparisonOptions);
 
   const filterName = ({ target: { value } }) => {
     setFilter({ ...filters, filterByName: { ...filters.filterByName, name: value } });
   };
 
   const handleChange = ({ target: { id, value } }) => {
-    InitialFilter[id] = value;
+    setBaseFilter({ ...baseFilter, [id]: value });
   };
 
   const handleSubmit = () => {
-    const { column, comparison, value } = InitialFilter;
+    const { column, comparison, value } = baseFilter;
     const obj = { column, comparison, value };
-    filterSelectOptions = filterSelectOptions
+    const result = baseSelect
       .filter((item) => item !== obj.column);
-
+    setBaseSelect(result);
     setFilter({ ...filters,
       filterByNumericValues: [...filters.filterByNumericValues, obj],
     });
-    InitialFilter.column = filterSelectOptions.length ? filterSelectOptions[0] : '';
-    InitialFilter.value = '0';
+    setBaseFilter({ ...baseFilter,
+      column: baseSelect.length ? baseSelect[0] : '',
+      value: '0',
+    });
+    document.getElementById('value').value = '';
   };
 
   return (
@@ -46,13 +50,13 @@ function Filter() {
       <label htmlFor="column">
         Column Filter:
         <select id="column" data-testid="column-filter" onChange={ handleChange }>
-          { filterSelectOptions.map((item) => <option key={ item }>{ item }</option>) }
+          { baseSelect.map((item) => <option key={ item }>{ item }</option>) }
         </select>
       </label>
       <label htmlFor="comparison">
         Comparison:
         <select id="comparison" data-testid="comparison-filter" onChange={ handleChange }>
-          { comparisonOptions.map((item) => <option key={ item }>{ item }</option>) }
+          { baseComparison.map((item) => <option key={ item }>{ item }</option>) }
         </select>
       </label>
       <label htmlFor="value">

@@ -52,18 +52,15 @@ function Table() {
   const filteredColumn = (normalData = data) => {
     const { filterByNumericValues } = filters;
     let itemEdit = normalData;
-    if (filterByNumericValues.length > 1) {
+    if (filterByNumericValues.length) {
       filterByNumericValues
-        .filter(({ column, comparison, value }, index) => {
-          if (index) {
-            itemEdit = itemEdit.filter((sec) => {
-              const re = operators[comparison](parseInt(sec[
-                column], 10), parseInt(value, 10));
-              return re;
-            });
-            return itemEdit;
-          }
-          return null;
+        .filter(({ column, comparison, value }) => {
+          itemEdit = itemEdit.filter((sec) => {
+            const re = operators[comparison](parseInt(sec[
+              column], 10), parseInt(value, 10));
+            return re;
+          });
+          return itemEdit;
         });
       return tableBody(itemEdit);
     }
