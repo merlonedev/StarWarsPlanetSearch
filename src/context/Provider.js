@@ -2,19 +2,9 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import StarContext from './StarContext';
 
-const initialFilterState = {
-  filterByName: '',
-  filterByNumericValues: ({
-    column: '',
-    comparation: '',
-    value: undefined,
-  }),
-}
-
 function Provider({ children }) {
   const [data, setData] = useState({ results: [] });
   const [filteredPlanets, setFilteredPlanets] = useState([]);
-  const [filter, setFilter] = useState(initialFilterState);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,18 +22,29 @@ function Provider({ children }) {
     setFilteredPlanets(filteredNames);
   };
 
-  // const filterPlanets = (filterStats) => {
-  //   const { name, column, comparation, value } = filterStats;
-  //   const filteredNames = data.results.filter((e) => e.name.includes(name));
-  //   setFilteredPlanets(filteredNames);
-  //   if(value) {
-  //     const filteredValues = filteredPlanets
-  //   }
-  // }
+  const filterPlanetsByNumber = ({ column, comparation, value }) => {
+    const planets = data.results;
+    const intVal = parseInt(value, 10);
+
+    if (comparation === 'igual a') {
+      console.log('entrei');
+      const filterPlanets = planets.filter((e) => parseInt(e[column], 10) === intVal);
+      setFilteredPlanets(filterPlanets);
+    }
+    if (comparation === 'maior que') {
+      const filterPlanets = planets.filter((e) => parseInt(e[column], 10) > intVal);
+      setFilteredPlanets(filterPlanets);
+    }
+    if (comparation === 'menor que') {
+      const filterPlanets = planets.filter((e) => parseInt(e[column], 10) < intVal);
+      setFilteredPlanets(filterPlanets);
+    }
+  };
 
   const context = {
     data,
     filterName: filterPlanetsByName,
+    filterNumber: filterPlanetsByNumber,
     filteredPlanets,
   };
 

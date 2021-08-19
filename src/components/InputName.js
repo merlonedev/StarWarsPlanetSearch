@@ -6,6 +6,7 @@ function InputName() {
 
   return (
     <label htmlFor="filter-name">
+      Planeta:
       <input
         type="text"
         id="filter-name"
