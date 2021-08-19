@@ -39,18 +39,33 @@ function Provider({ children }) {
 
       let filtered = results.filter((result) => result.name.includes(name));
 
+      let filteredAvailable = INITIAL_AVAILABLE_FILTERS;
+
       filterByNumericValues.forEach((filter) => {
+        filteredAvailable = filteredAvailable.filter((available) => {
+          const test = filter.column !== available;
+          return test;
+        });
         if (filter.comparison === 'maior que') {
-          filtered = filtered.filter((result) => Number(result[filter.column]) > Number(filter.value));
+          filtered = filtered.filter((result) => {
+            const test = Number(result[filter.column]) > Number(filter.value);
+            return test;
+          });
         }
         if (filter.comparison === 'menor que') {
-          filtered = filtered.filter((result) => Number(result[filter.column]) < Number(filter.value));
+          filtered = filtered.filter((result) => {
+            const test = Number(result[filter.column]) < Number(filter.value);
+            return test;
+          });
         }
         if (filter.comparison === 'igual a') {
-          filtered = filtered.filter((result) => Number(result[filter.column]) === Number(filter.value));
+          filtered = filtered.filter((result) => {
+            const test = Number(result[filter.column]) === Number(filter.value);
+            return test;
+          });
         }
       });
-
+      setAvailableFilters(filteredAvailable);
       return filtered;
     };
     setFilteredData(applyFilters(data));
@@ -71,5 +86,9 @@ function Provider({ children }) {
     </AppContext.Provider>
   );
 }
+
+Provider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default Provider;
