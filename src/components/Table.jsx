@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from 'react';
 
 import Context from '../context/Context';
@@ -17,7 +18,7 @@ function Table() {
 
   useEffect(() => {
     filterByNumericValues.forEach(({ column, comparison, value }) => {
-      setPlanets(data.filter((planet) => {
+      setPlanets(planets.filter((planet) => {
         switch (comparison) {
         case 'maior que':
           return Number(planet[column]) > Number(value);
@@ -30,7 +31,7 @@ function Table() {
         }
       }));
     });
-  }, [data, filterByNumericValues]);
+  }, [filterByNumericValues]);
 
   if (loading) return 'Loading';
   if (planets.length === 0) return 'No planets found';

@@ -5,13 +5,7 @@ const useFilters = () => {
     filterByName: {
       name: '',
     },
-    filterByNumericValues: [
-      {
-        column: '',
-        comparison: '',
-        value: '',
-      },
-    ],
+    filterByNumericValues: [],
   };
 
   const [filters, setFilters] = useState(initialFilters);
@@ -28,12 +22,15 @@ const useFilters = () => {
       setFilters(newFilter);
     }
       break;
+
     case 'numericValue': {
       const { column, comparison, value } = filter;
+      const { filterByNumericValues } = filters;
 
       const newFilter = {
         ...filters,
         filterByNumericValues: [
+          ...filterByNumericValues,
           {
             column,
             comparison,
@@ -44,6 +41,7 @@ const useFilters = () => {
       setFilters(newFilter);
     }
       break;
+
     default:
       setFilters(filters);
     }

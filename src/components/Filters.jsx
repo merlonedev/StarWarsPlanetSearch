@@ -6,11 +6,12 @@ function Filters() {
   const { updateFilters } = useContext(Context);
 
   const initialState = {
-    column: 'population',
-    comparison: 'maior que',
+    column: '',
+    comparison: '',
     value: '',
   };
   const [state, setState] = useState(initialState);
+  // const [filters, setFilters] = useState([]);
 
   const handleChange = (target) => {
     const { name, value } = target;
@@ -23,6 +24,13 @@ function Filters() {
   };
 
   const { column, comparison, value } = state;
+  const columns = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ];
 
   return (
     <div>
@@ -52,11 +60,10 @@ function Filters() {
             value={ column }
             onChange={ ({ target }) => handleChange(target) }
           >
-            <option value="population">population</option>
-            <option value="orbital_period">orbital_period</option>
-            <option value="diameter">diameter</option>
-            <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option>
+            <option disabled value="">Selecione uma opção</option>
+            {columns.map((option) => (
+              <option key={ option } value={ option }>{option}</option>
+            ))}
           </select>
         </label>
 
@@ -70,6 +77,7 @@ function Filters() {
             value={ comparison }
             onChange={ ({ target }) => handleChange(target) }
           >
+            <option disabled value="">Selecione uma opção</option>
             <option value="maior que">maior que</option>
             <option value="menor que">menor que</option>
             <option value="igual a">igual a</option>
