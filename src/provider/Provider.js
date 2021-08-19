@@ -7,6 +7,10 @@ const filterInitial = {
     name: '',
   },
   filterByNumericValues: [],
+  order: {
+    column: 'name',
+    sort: 'ASC',
+  },
 };
 
 function Provider({ children }) {

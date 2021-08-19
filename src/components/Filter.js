@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import MyContext from '../context/context';
+import Sort from './Sort';
 
 const filterSelectOptions = [
   'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
@@ -106,6 +107,8 @@ function Filter() {
       >
         Filter
       </button>
+      <br />
+      <Sort />
       <br />
       { createFilterToDelete() }
     </>
