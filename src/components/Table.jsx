@@ -1,23 +1,37 @@
 import React, { useContext } from 'react';
 import PlanetContext from '../context/PlanetContext';
 import TableData from './TableData';
-import TableFilterByName from './TableFilterByName';
-import TableFilterByNumericValues from './TableFilterByNumericValues';
 
 function Table() {
-  const { filters: { filterByName: { name } } } = useContext(PlanetContext);
+  const { data, inputName, inputNumeric } = useContext(PlanetContext);
   const { filters: { filterByNumericValues: {
     column, comparison, value,
   } } } = useContext(PlanetContext);
 
   const tableFilter = () => {
-    if (name) return <TableFilterByName />;
-    if (column || comparison || value) return <TableFilterByNumericValues />;
-    if (!name && !column && !comparison && !value) return <TableData />;
+    if (data) {
+      if (inputName) {
+        const dataFilterByName = data.filter((item) => (
+          item.name.toLowerCase().includes(inputName.toLowerCase())
+        ));
+        return <TableData data={ dataFilterByName } />;
+      }
+
+      if (inputNumeric) {
+        const dataFilterByNumber = data.filter((item) => {
+          if (comparison === 'maior que') return item[column] > +value;
+          if (comparison === 'menor que') return item[column] < +value;
+          return item[column] === value;
+        });
+        return <TableData data={ dataFilterByNumber } />;
+      }
+
+      return <TableData data={ data } />;
+    }
   };
 
   return (
-    <div>
+    <div className="App">
       <h2>Eu sou o Componente Table!</h2>
       <table>
         <tr>

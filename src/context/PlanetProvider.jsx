@@ -7,7 +7,6 @@ function PlanetProvider({ children }) {
   const [data, setData] = useState();
   const [inputName, setInputName] = useState();
   const [inputNumeric, setInputNumeric] = useState();
-
   const [filters, setFilters] = useState({
     filterByName: {
       name: '',
@@ -21,6 +20,7 @@ function PlanetProvider({ children }) {
     ],
   });
 
+  // componentDidMount - faz requisicao api
   useEffect(() => {
     const getPlanetsApi = async () => {
       const result = await fetchPlanetsApi();
@@ -29,22 +29,18 @@ function PlanetProvider({ children }) {
     getPlanetsApi();
   }, []);
 
+  // componentDidUpdate - faz filtro por nome
   useEffect(() => {
-    if (data) {
-      const dataFilter = data.filter((item) => (
-        item.name.toLowerCase().includes(inputName.toLowerCase())
-      ));
-      setFilters({ ...filters, filterByName: { name: dataFilter } });
-    }
+    setFilters({ ...filters, filterByName: { name: inputName } });
   }, [inputName]);
 
+  // componentDidUpdate - faz filtro por numeros
   useEffect(() => {
     if (data) {
       const { column, comparison, value } = inputNumeric;
       setFilters({
         ...filters,
         filterByNumericValues: {
-          // dataFilter,
           column,
           comparison,
           value,
@@ -55,10 +51,13 @@ function PlanetProvider({ children }) {
 
   const contextValue = {
     data,
+    setData,
+    inputName,
     setInputName,
-    filters,
     inputNumeric,
     setInputNumeric,
+    filters,
+    setFilters,
   };
 
   return (
@@ -69,7 +68,9 @@ function PlanetProvider({ children }) {
 }
 
 PlanetProvider.propTypes = {
-  children: PropTypes.element.isRequired, // verificar se é assim mesmo
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node]).isRequired,
 };
 
 export default PlanetProvider;

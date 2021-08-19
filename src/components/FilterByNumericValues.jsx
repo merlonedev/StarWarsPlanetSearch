@@ -17,7 +17,7 @@ function FilterByNumericValues() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const { column = 'population', comparison = 'maior_que', value = 0 } = stateLocal;
+    const { column = 'population', comparison = 'maior que', value = 0 } = stateLocal;
     setInputNumeric({
       ...inputNumeric,
       column,
@@ -42,7 +42,6 @@ function FilterByNumericValues() {
             <option value="rotation_period">rotation_period</option>
             <option value="surface_water">surface_water</option>
           </select>
-
           <select
             name="comparison"
             data-testid="comparison-filter"
@@ -52,11 +51,9 @@ function FilterByNumericValues() {
             <option value="menor que">menor que</option>
             <option value="igual a">igual a</option>
           </select>
-
           <input
             type="number"
             name="value"
-            // id="input-numbers"
             data-testid="value-filter"
             onChange={ handleChange }
           />

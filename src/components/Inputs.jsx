@@ -4,7 +4,7 @@ import FilterByNumericValues from './FilterByNumericValues';
 
 function Inputs() {
   return (
-    <div>
+    <div className="App">
       <h2>Eu sou o Componente Inputs!</h2>
       <form>
         <FilterByName />
