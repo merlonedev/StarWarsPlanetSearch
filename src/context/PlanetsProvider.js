@@ -4,6 +4,13 @@ import PlanetsContext from './PlanetsContext';
 
 function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({
+    filters: {
+      filterByName: {
+        name: '',
+      },
+    },
+  });
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -23,6 +30,8 @@ function PlanetsProvider({ children }) {
   const contextValue = {
     data,
     setData,
+    filters,
+    setFilters,
   };
 
   return (
