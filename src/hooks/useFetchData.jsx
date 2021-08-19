@@ -4,6 +4,9 @@ const useFetchData = () => {
   const [state, setState] = useState([]);
   const [stateCopy, setStateCopy] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [column, setColumn] = useState('');
+  const [comparison, setComparison] = useState('');
+  const [value, setValue] = useState(0);
   const [input, setInput] = useState('');
 
   useEffect(() => {
@@ -25,7 +28,11 @@ const useFetchData = () => {
     setState(filteredPlanets);
   }, [input, stateCopy]);
 
-  return [state, loading, input, setInput];
+  return [
+    state, loading, input, setInput,
+    column, setColumn, comparison, setComparison,
+    value, setValue, setState, stateCopy, setStateCopy,
+  ];
 };
 
 export default useFetchData;

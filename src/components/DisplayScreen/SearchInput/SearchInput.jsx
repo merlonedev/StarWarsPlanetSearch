@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import StarWarsPlanetsContext from '../../context/StarWarsPlanetsContext';
+import StarWarsPlanetsContext from '../../../context/StarWarsPlanetsContext';
 
 const SearchInput = () => {
   const {

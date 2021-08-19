@@ -4,10 +4,15 @@ import StarWarsPlanetsContext from './StarWarsPlanetsContext';
 import useFetchData from '../hooks/useFetchData';
 
 const Provider = ({ children }) => {
-  const [state, loading, input, setInput] = useFetchData();
+  const [
+    state, loading, input, setInput,
+    column, setColumn, comparison, setComparison,
+    value, setValue, setState, stateCopy, setStateCopy,
+  ] = useFetchData();
 
   const contextValue = {
     data: state,
+    setState,
     filters: {
       filterByName: {
         name: input,
@@ -15,6 +20,14 @@ const Provider = ({ children }) => {
     },
     loading,
     setInput,
+    column,
+    setColumn,
+    comparison,
+    setComparison,
+    value,
+    setValue,
+    stateCopy,
+    setStateCopy,
   };
 
   return (

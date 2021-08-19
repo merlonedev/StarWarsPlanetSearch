@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import StarWarsPlanetsContext from '../../context/StarWarsPlanetsContext';
-import Loading from '../Loading';
+import StarWarsPlanetsContext from '../../../context/StarWarsPlanetsContext';
+import Loading from '../../Loading';
 
 const Table = () => {
   const { data, loading } = useContext(StarWarsPlanetsContext);
