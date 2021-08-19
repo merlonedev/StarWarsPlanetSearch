@@ -19,20 +19,22 @@ const INITIAL_AVAILABLE_FILTERS = [
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(INITIAL_FILTERS);
+  const [filteredData, setFilteredData] = useState([]);
   const [availableFilters, setAvailableFilters] = useState(INITIAL_AVAILABLE_FILTERS);
   const contextValue = {
     data,
     setData,
     filters,
     setFilters,
+    filteredData,
+    setFilteredData,
     availableFilters,
     setAvailableFilters,
   };
 
   useEffect(() => {
-    setData([]);
-
     const applyFilters = (results) => {
+      setFilteredData(data);
       const { filterByName: { name }, filterByNumericValues } = filters;
 
       let filtered = results.filter((result) => result.name.includes(name));
@@ -51,18 +53,17 @@ function Provider({ children }) {
 
       return filtered;
     };
+    setFilteredData(applyFilters(data));
+  }, [filters, data]);
 
+  useEffect(() => {
     const getPlanets = async () => {
       const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const { results } = await fetch(endpoint).then((stuff) => stuff.json());
-      console.log(`Resultados pré filtragem: ${results.length}`);
-      setData(applyFilters(results));
-      console.log(`Resultados pós filtragem: ${applyFilters(results).length}`);
-
+      setData(results);
     };
-
     getPlanets();
-  }, [filters]);
+  }, []);
 
   return (
     <AppContext.Provider value={ contextValue }>

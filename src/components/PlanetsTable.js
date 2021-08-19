@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 function PlanetsTable() {
-  const { data } = useContext(AppContext);
+  const { filteredData } = useContext(AppContext);
 
-  const renderPlanetsList = () => data.map(({
+  const renderPlanetsList = () => filteredData.map(({
     name,
     rotation_period: rotationPeriod,
     orbital_period: orbitalPeriod,

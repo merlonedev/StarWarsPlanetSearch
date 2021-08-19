@@ -17,11 +17,10 @@ function ActiveFiltersList() {
     <ul>
       {
         filterByNumericValues.map((filter, index) => (
-          <li key={ index }>
+          <li data-testid="filter" key={ index }>
             {`${filter.column} ${filter.comparison} ${filter.value} `}
             <button
               type="button"
-              data-testid="filter"
               onClick={ () => deleteFilter(index) }
             >
               X
