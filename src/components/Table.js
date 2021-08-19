@@ -1,11 +1,20 @@
-import React, { useContext } from 'react';
+import React, { useContext, /* useState */ useEffect } from 'react';
 import usePlanetsData from '../hooks/usePlanetsData';
 import Context from '../context/Context';
 import Tr from './Tr';
 
 function Table() {
   usePlanetsData();
-  const { planets } = useContext(Context);
+  // const [filteredPlanets, setFilteredPlanets] = useState([]);
+
+  const { planets, filtersState } = useContext(Context);
+
+  useEffect(() => {
+    const { filters: { filterByName: { name } } } = filtersState;
+    const getFilteredPlanets = planets.filter((planet) => planet.name === name);
+    console.log(getFilteredPlanets);
+  }, [filtersState, planets]);
+
   return (
     <section>
       <table border="1px">

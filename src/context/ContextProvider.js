@@ -3,10 +3,22 @@ import PropTypes from 'prop-types';
 import Context from './Context';
 
 function ContextProvider({ children }) {
+  const filters = {
+    filters: {
+      filterByName: {
+        name: '',
+      },
+    },
+  };
+
   const [planets, setPlanets] = useState([]);
+  const [filtersState, setFiltersState] = useState(filters);
+
   const contextValue = {
     planets,
     setPlanets,
+    filtersState,
+    setFiltersState,
   };
 
   return (
