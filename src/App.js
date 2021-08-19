@@ -1,10 +1,15 @@
 import React from 'react';
+import Provider from './context/Provider';
+import CreateTable from './pages/CreateTable';
 import './App.css';
 // Comite inicial
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <Provider>
+      <CreateTable />
+    </Provider>
+
   );
 }
 
