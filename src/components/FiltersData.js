@@ -20,7 +20,7 @@ function FiltersData() {
         { filterByNumericValues.map((filter, index) => (
           <li key={ index } data-testid="filter">
             {Object.values(filter).map((value) => <p key={ value }>{value}</p>)}
-            <button type="button" onClick={ clickHandle }>X</button>
+            <button type="button" onClick={ () => clickHandle(index) }>X</button>
           </li>
         ))}
       </ul>
