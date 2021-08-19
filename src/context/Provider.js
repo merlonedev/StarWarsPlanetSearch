@@ -4,21 +4,44 @@ import StarWarsContext from './StarWarsContext';
 
 const Provider = ({ children }) => {
   const [planets, setPlanets] = useState([]);
+  const [copyPlanets, setCopyPlanets] = useState([]);
+  const [filterName, setFilterName] = useState('');
   useEffect(() => {
     const getPlanets = async () => {
       try {
-        const ENDPOINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
+        const ENDPOINT = 'https://swapi.dev/api/planets';
         const { results } = await fetch(ENDPOINT).then((data) => data.json());
         setPlanets(results);
+        setCopyPlanets(results);
       } catch (error) {
         return (error);
       }
     };
     getPlanets();
-  }, [planets]);
+  }, []);
+  // Consegui arrumar o loop infinito com ajuda do David Gonzaga.
+  // Eu precisava setar uma copia do planets para ele chamar o useEffect somente quando houvesse
+  // mudança no filterName.
+  const handleFilterName = ({ target: { value } }) => {
+    setFilterName(value);
+  };
+
+  useEffect(() => {
+    const getPlanets = [...copyPlanets];
+    const filtered = getPlanets.filter((planet) => planet.name.includes(filterName));
+    setPlanets(filtered);
+  }, [filterName, copyPlanets]);
 
   const contextValue = {
     planets,
+    setPlanets,
+    filters: {
+      filterByName: {
+        name: filterName,
+      },
+    },
+    setFilterName,
+    handleFilterName,
   };
 
   return (

@@ -5,7 +5,7 @@ const Table = () => {
   const { planets } = useContext(StarWarsContext);
   if (!planets.length) return <h2>Loading...</h2>;
 
-  const titleTable = Object.keys(planets[0]).filter((planet) => planet !== 'residents');
+  const titleTable = Object.keys(planets[0]).filter((headers) => headers !== 'residents');
 
   return (
     <table>
@@ -16,7 +16,7 @@ const Table = () => {
       </thead>
       <tbody>
         {planets.map((planet) => (
-          // Essa estrutura do tr do body da table eu consegui através do pull request do David Gonzaga.
+          // Essa estrutura do td do body da table eu consegui através do pull request do David Gonzaga.
           // https://github.com/tryber/sd-012-project-starwars-planets-search/pull/13/files
           <tr key={ planet.name }>
             {titleTable.map((dataPlanet) => (
