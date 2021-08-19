@@ -24,9 +24,10 @@ function NumericInput() {
   function handleClick() {
     setFilters({
       ...filters,
-      filterByNumericValues: {
-        ...formState,
-      },
+      filterByNumericValues: [
+        ...filters.filterByNumericValues,
+        formState,
+      ],
     });
 
     setColumns(columns.filter((c) => c !== formState.column));
