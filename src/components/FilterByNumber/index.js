@@ -43,18 +43,15 @@ function FilterByNumber() {
       switch (comparison) {
       case 'maior que':
         setFilteredData(filteredData.filter((cur) => (
-          parseInt(cur[column], 10) > value || cur[column] === 'unknown'
-        )));
+          parseInt(cur[column], 10) > value)));
         break;
       case 'menor que':
         setFilteredData(filteredData.filter((cur) => (
-          parseInt(cur[column], 10) < value || cur[column] === 'unknown'
-        )));
+          parseInt(cur[column], 10) < value)));
         break;
       case 'igual a':
         setFilteredData(filteredData.filter((cur) => (
-          parseInt(cur[column], 10) === value || cur[column] === 'unknown'
-        )));
+          parseInt(cur[column], 10) === parseInt(value, 10))));
         break;
       default:
         return filteredData;
@@ -67,14 +64,14 @@ function FilterByNumber() {
       <select
         data-testid="column-filter"
         name="column"
-        onClick={ (event) => handleChange(event) }
+        onChange={ (event) => handleChange(event) }
       >
         {tableColumns.map((current) => <option key={ current }>{current}</option>)}
       </select>
       <select
         data-testid="comparison-filter"
         name="comparison"
-        onClick={ (event) => handleChange(event) }
+        onChange={ (event) => handleChange(event) }
       >
         <option>maior que</option>
         <option>menor que</option>
