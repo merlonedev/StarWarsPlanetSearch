@@ -22,7 +22,10 @@ export default function Input(props) {
 Input.propTypes = {
   type: PropTypes.string.isRequired,
   label: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   name: PropTypes.string,
   id: PropTypes.string,
   onChange: PropTypes.func,

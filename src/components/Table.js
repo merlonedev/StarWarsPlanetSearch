@@ -30,11 +30,11 @@ export default function Table() {
         switch (e.comparison) {
         case 'maior que':
           filteredData = filteredData
-            .filter((item) => (item[e.column] > Number(e.value)));
+            .filter((item) => (Number(item[e.column]) > Number(e.value)));
           break;
         case 'menor que':
           filteredData = filteredData
-            .filter((item) => (item[e.column] < Number(e.value)));
+            .filter((item) => (Number(item[e.column]) < Number(e.value)));
           break;
         case 'igual a':
           filteredData = filteredData

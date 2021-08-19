@@ -4,7 +4,8 @@ import Button from './Button';
 import Input from './Input';
 import Select from './Select';
 
-const FILTER_OP = ['orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+let FILTER_OP = [
+  'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
 const INITIAL_STATE = { column: 'population', comparison: 'maior que', value: 0 };
 
 export default function Header() {
@@ -22,13 +23,16 @@ export default function Header() {
 
   const addToContext = () => {
     const filterByNumericValues = [filterByNumeric];
+    const { column } = filterByNumeric;
     if (filters.filterByNumericValues) {
       setFilters((prev) => (
         { ...prev,
           filterByNumericValues: [...prev.filterByNumericValues, filterByNumeric] }
       ));
+      FILTER_OP = FILTER_OP.filter((item) => item !== column);
     } else {
       setFilters((prev) => ({ ...prev, filterByNumericValues }));
+      FILTER_OP = FILTER_OP.filter((item) => item !== column);
     }
   };
 
@@ -46,8 +50,6 @@ export default function Header() {
       />
       <Select
         testId="column-filter"
-        defaultOption="population"
-        defaultValue="population"
         name="column"
         id="column"
         label="Filter by: "
@@ -57,12 +59,10 @@ export default function Header() {
       />
       <Select
         testId="comparison-filter"
-        defaultOption="maior que"
-        defaultValue="maior que"
         name="comparison"
         id="comparison"
         onChange={ handleOption }
-        options={ ['menor que', 'igual a'] }
+        options={ ['maior que', 'menor que', 'igual a'] }
         value={ comparison }
       />
       <Input

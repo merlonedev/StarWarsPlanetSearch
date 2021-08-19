@@ -8,8 +8,8 @@ export default function Select(props) {
     onChange,
     value,
     id,
-    defaultOption,
-    defaultValue,
+    // defaultOption,
+    // defaultValue,
     options,
     testId,
   } = props;
@@ -25,7 +25,7 @@ export default function Select(props) {
         value={ value }
         data-testid={ testId }
       >
-        <option value={ defaultValue }>{ defaultOption }</option>
+        {/* <option value={ defaultValue }>{ defaultOption }</option> */}
         {
           options.map((option, index) => (
             <option key={ index }>{ option }</option>
@@ -45,8 +45,8 @@ Select.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.string,
   ).isRequired,
-  defaultValue: PropTypes.string.isRequired,
-  defaultOption: PropTypes.string.isRequired,
+  // defaultValue: PropTypes.string.isRequired,
+  // defaultOption: PropTypkes.string.isRequired,
   testId: PropTypes.string,
 };
 
