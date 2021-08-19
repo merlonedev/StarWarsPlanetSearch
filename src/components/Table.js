@@ -18,11 +18,35 @@ export default function Table() {
   }, [setData]);
 
   const filterData = () => {
-    const { filterByName: { name: filterName } } = filters;
+    const { filterByName, filterByNumericValues: fbnv } = filters;
+    const { name: filterName } = filterByName;
+    let filteredData = data;
     if (filterName) {
-      return data.filter(({ name }) => name.toLowerCase().includes(filterName));
+      filteredData = filteredData
+        .filter(({ name }) => name.toLowerCase().includes(filterName));
     }
-    return data;
+    if (fbnv) {
+      fbnv.forEach((e) => {
+        switch (e.comparison) {
+        case 'maior que':
+          filteredData = filteredData
+            .filter((item) => (item[e.column] > Number(e.value)));
+          break;
+        case 'menor que':
+          filteredData = filteredData
+            .filter((item) => (item[e.column] < Number(e.value)));
+          break;
+        case 'igual a':
+          filteredData = filteredData
+            .filter((item) => (Number(item[e.column]) === Number(e.value)));
+          break;
+        default:
+          return filteredData;
+        }
+      });
+    }
+
+    return filteredData;
   };
 
   if (loading) { return <span> Loading... </span>; }

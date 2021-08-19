@@ -11,12 +11,8 @@ const INITIAL_LIST = {
 export default function DataProvider({ children }) {
   const [data, setData] = useState({});
   const [filters, setFilters] = useState(INITIAL_LIST);
-  const setFilterByName = (name) => {
-    name = name.toLowerCase();
-    setFilters({ filterByName: { name } });
-  };
 
-  const contextValue = { data, setData, filters, setFilterByName };
+  const contextValue = { data, setData, filters, setFilters };
 
   return (
     <DataContext.Provider value={ contextValue }>
@@ -35,8 +31,8 @@ export function useData() {
 export function useFilter() {
   const context = useContext(DataContext);
   if (!context) throw new Error('useFilter must be used inside a DataProvider');
-  const { filters, setFilterByName } = context;
-  return { filters, setFilterByName };
+  const { filters, setFilters } = context;
+  return { filters, setFilters };
 }
 
 DataProvider.propTypes = {
