@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Input from './Input';
 import Select from './Select';
 import { comparisons } from '../../helpers/options';
@@ -6,7 +6,8 @@ import useFiltersPlanets from '../../hooks/useFiltersPlanets';
 import useHandleColumnOptions from '../../hooks/useHandleColumnOptions';
 
 function FilterPlanets() {
-  const [filters, setFilters, setNumericFilter] = useFiltersPlanets();
+  const [filters, setFilters] = useFiltersPlanets();
+  const [selectedFilters, setSelectedFilters] = useState([]);
 
   const [optionsColumns,
     handleColumnOptions,
@@ -34,7 +35,6 @@ function FilterPlanets() {
   };
 
   const handleNumericFilter = () => {
-    setNumericFilter(true);
     setHandleColumnSelection({
       selected: [...selected, column],
       indexFilter: indexFilter + 1,
@@ -44,7 +44,9 @@ function FilterPlanets() {
       filterByNumericValues: [...filterByNumericValues,
         { column: optionsColumns[1], comparison: comparisons[0], value: 0 },
       ],
+      numericFilter: true,
     });
+    setSelectedFilters([...filterByNumericValues]);
   };
 
   const handleChangeName = ({ target: { name: title, value: param } }) => {
@@ -93,6 +95,19 @@ function FilterPlanets() {
           Buscar
         </button>
       </div>
+      {selectedFilters.length ? (
+        <ul>
+          {selectedFilters.map((filter) => (
+            <li
+              data-testid="filter"
+              key={ filter.column }
+            >
+              {JSON.stringify(filter)}
+              <button type="button">X</button>
+            </li>
+          ))}
+        </ul>
+      ) : ''}
     </section>
   );
 }
