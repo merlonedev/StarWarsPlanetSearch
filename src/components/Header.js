@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import FilterContext from '../context/FilterContext';
 import useData from '../hooks/useData';
 
@@ -9,7 +9,7 @@ function Header() {
 
   const { addFilter, rmvFilter, handleOrder, setName,
     filters: { filterByNumericValues } } = useContext(FilterContext);
-  const [column, setColumn] = useState('population');
+  const [column, setColumn] = useState(columnOptions[0]);
   const [comparison, setComparison] = useState('maior que');
   const [number, setNumber] = useState('');
   const [, tableHeadData] = useData();
@@ -24,6 +24,10 @@ function Header() {
       addFilter({ column, comparison, value: number });
     }
   };
+
+  const firstColumn = () => setColumn(availableColumns[0]);
+
+  useEffect(firstColumn, [filterByNumericValues]);
 
   const handleSort = () => handleOrder({ column: sortColumn, sort: sortOrder });
 
