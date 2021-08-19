@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import Context from '../context/Context';
-import './Table.css';
 
 function Table() {
   const { tablePlanet } = useContext(Context);
