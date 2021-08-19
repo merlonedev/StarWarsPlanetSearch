@@ -8,7 +8,7 @@ function Table() {
 
   return (
     <div>
-      <h2>Table</h2>
+      <h3>Planets</h3>
       <table>
         <thead>
           <tr>

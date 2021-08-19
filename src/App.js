@@ -8,9 +8,12 @@ import Provider from './context/Provider';
 function App() {
   return (
     <Provider>
-      <span>Project Starwars Planets Search</span>
-      <InputFilter />
-      <SelectFilter />
+      <h2>Project Starwars Planets Search</h2>
+      <div>
+        <h4>Planets Seacrh</h4>
+        <InputFilter />
+        <SelectFilter />
+      </div>
       <Table />
     </Provider>
   );

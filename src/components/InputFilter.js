@@ -21,7 +21,7 @@ function InputFilter() {
         name="name"
         value={ name }
         onChange={ handleChange }
-        placeholder="planet name"
+        placeholder="Planet name"
       />
     </div>
   );
