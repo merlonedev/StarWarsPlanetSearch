@@ -7,7 +7,8 @@ function Filter() {
   const showFilter = () => {
     const map = filterByNumericValues.map((item, index) => (
       <div key={ index }>
-        <p>{`${item.column}, ${item.comparison}, ${item.value}`}</p>
+        <p data-testid="filter">{`${item.column}, ${item.comparison}, ${item.value}`}</p>
+        <button type="button">X</button>
       </div>
     ));
     return map;
