@@ -8,7 +8,6 @@ function Table() {
       <thead>
         <tr>
           {
-          // Object.keys para acessar a keys dos values
             data.length > 0
           && Object.keys(data[0])
             .map(
@@ -20,8 +19,8 @@ function Table() {
       </thead>
       <tbody>
         { data.length > 0
-        && data.map((planet) => (
-          <tr key={ planet }>
+        && data.map((planet, index) => (
+          <tr key={ index }>
             { Object.keys(planet).map((key) => (
               key !== 'residents' && <td key={ key }>{ planet[key] }</td>
             )) }
