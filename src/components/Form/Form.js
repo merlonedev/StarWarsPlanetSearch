@@ -1,14 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGlobalContext } from '../../context/GlobalContext';
 
+const columns = [
+  'population',
+  'orbital_period',
+  'diameter',
+  'rotation_period',
+  'surface_water',
+];
+
 export default function FiltersContainer() {
-  const { setFilterByName, setFilterByNum } = useGlobalContext();
+  const {
+    setFilterByName,
+    setFilterByNum,
+    filters: { filterByNumericValues },
+  } = useGlobalContext();
 
   const [numFilters, setNumFilters] = useState({
-    column: 'population',
+    column: columns[0],
     comparison: 'maior que',
     value: '1000',
   });
+
+  useEffect(() => {
+    const [newColumn] = columns.filter((column) => !filterByNumericValues
+      .some((numFilter) => numFilter.column === column))
+      .map((column) => column);
+    setNumFilters((prevNumState) => ({
+      ...prevNumState,
+      column: newColumn,
+    }));
+  }, [filterByNumericValues]);
 
   const handleChange = ({ target: { name, value } }) => {
     setNumFilters((prevNumFilters) => ({
@@ -31,11 +53,9 @@ export default function FiltersContainer() {
         value={ numFilters.column }
         onChange={ handleChange }
       >
-        <option value="population">population</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="diameter">diameter</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="surface_water">surface_water</option>
+        { columns.filter((column) => !filterByNumericValues
+          .some((numericFilter) => numericFilter.column === column))
+          .map((column) => <option key={ column } value={ column }>{ column }</option>) }
       </select>
       <select
         data-testid="comparison-filter"
