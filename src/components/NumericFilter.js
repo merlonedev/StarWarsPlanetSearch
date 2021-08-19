@@ -1,8 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Context from '../context/Context';
 
 function NumericFilter() {
-  const { filters, setFilters } = useContext(Context);
+  const { filters, setFilters, colunmInfo, setColunmInfo } = useContext(Context);
+  const { filterByNumericValues } = filters;
   const [numericFilter, setNumericFilter] = useState({
     column: 'population',
     comparison: 'maior que',
@@ -16,6 +17,12 @@ function NumericFilter() {
         filterByNumericValues: [...filters.filterByNumericValues, numericFilter],
       },
     );
+    setColunmInfo(colunmInfo.filter((info) => info !== numericFilter.column));
+    setNumericFilter({
+      column: colunmInfo[0],
+      comparison: 'maior que',
+      value: '0',
+    });
   };
 
   const handleChange = ({ target: { name, value } }) => {
@@ -33,11 +40,7 @@ function NumericFilter() {
         value={ numericFilter.column }
         data-testid="column-filter"
       >
-        <option>population</option>
-        <option>orbital_period</option>
-        <option>diameter</option>
-        <option>rotation_period</option>
-        <option>surface_water</option>
+        { colunmInfo.map((info, i) => <option key={ i }>{ info }</option>) }
       </select>
 
       <select

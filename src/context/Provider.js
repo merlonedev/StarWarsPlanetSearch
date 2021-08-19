@@ -11,6 +11,8 @@ function Provider(props) {
     filterByName: { name: '' },
     filterByNumericValues: [],
   });
+  const [colunmInfo, setColunmInfo] = useState([
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
 
   useEffect(() => {
     const planetsAPI = async () => {
@@ -31,7 +33,8 @@ function Provider(props) {
     setFilted(filtedPlanets);
   }, [filters, planets]);
 
-  const contextValue = { planets, filters, setFilters, filted };
+  const contextValue = {
+    planets, filters, setFilters, filted, colunmInfo, setColunmInfo };
 
   return (
     <TretaContext.Provider value={ contextValue }>
