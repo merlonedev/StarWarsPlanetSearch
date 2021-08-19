@@ -10,10 +10,9 @@ function Table() {
     filters: {
       filterByName: { name },
       filterByNumericValues,
+      order,
     },
   } = useContext(context);
-  const doesInclude = (planetName) => planetName.toLowerCase()
-    .includes(name.toLowerCase());
 
   const compareValue = (planetValue, value, comparison) => {
     switch (comparison) {
@@ -24,10 +23,12 @@ function Table() {
     case 'igual a':
       return planetValue === value;
     default:
-      console.log('sim');
       return true;
     }
   };
+
+  const doesInclude = (planetName) => planetName.toLowerCase()
+    .includes(name.toLowerCase());
 
   const filteredPlanets = () => {
     const filterByName = planets.length > 0
@@ -47,6 +48,32 @@ function Table() {
     }
     return filterByName;
   };
+  const isUnknown = (sort) => (sort === 'ASC' ? POSITIVE_NUMBER : NEGATIVE_NUMBER);
+  const sortPlanets = () => {
+    const POSITIVE_NUMBER = 1;
+    const NEGATIVE_NUMBER = -1;
+    const { column, sort } = order;
+    const newSortedPlanets = filteredPlanets().sort((a, b) => {
+      const aValue = a[column];
+      const bValue = b[column];
+      if (aValue === 'unknown' || bValue === 'unknown') {
+        return isUnknown(sort);
+      }
+      const isNumber = !Number.isNaN((parseFloat(aValue)))
+       && !Number.isNaN((parseFloat(bValue)));
+      if (isNumber) {
+        return (
+          sort === 'ASC'
+            ? parseFloat(aValue) - parseFloat(bValue)
+            : parseFloat(bValue) - parseFloat(aValue));
+      }
+      const ifASC = aValue > bValue ? POSITIVE_NUMBER : NEGATIVE_NUMBER;
+      const ifDESC = aValue < bValue ? POSITIVE_NUMBER : NEGATIVE_NUMBER;
+      return (sort === 'ASC' ? ifASC : ifDESC);
+    });
+    return newSortedPlanets;
+  };
+
   return (
     <table>
       <thead>
@@ -55,7 +82,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { filteredPlanets().map((planet, index) => (
+        { sortPlanets().map((planet, index) => (
           <Planet planet={ planet } key={ index } />
         ))}
       </tbody>

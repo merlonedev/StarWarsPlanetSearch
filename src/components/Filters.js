@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import context from '../context';
 
+import defaultFilters from '../helpers/filters';
 import useFilters from '../hooks/useFilters';
 import CurrentFiltersList from './CurrentFiltersList';
 
@@ -9,9 +10,12 @@ function Filters() {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState(0);
+  const [sort, setSort] = useState('ASC');
+  const [sortColumn, setSortColumn] = useState('name');
   const {
     setName,
     handleSetFilters,
+    setOrder,
     filters: {
       filterByNumericValues,
     },
@@ -35,6 +39,10 @@ function Filters() {
     restoreFilter(filter);
     const newFilters = filterByNumericValues.filter((item) => item.column !== filter);
     handleSetFilters(newFilters, true);
+  };
+
+  const handleChangeSort = (text) => {
+    setSort(text);
   };
   return (
     <div>
@@ -93,6 +101,51 @@ function Filters() {
         </button>
       </form>
       <CurrentFiltersList filters={ currentFilters } onClick={ handleRemoveFilter } />
+      <label htmlFor="filter-sort">
+        <select
+          data-testid="column-sort"
+          onChange={ ({ target }) => setSortColumn(target.value) }
+          value={ sortColumn }
+          id="filter-sort"
+        >
+          { defaultFilters.map((item, index) => (
+            <option
+              key={ index }
+              value={ item }
+            >
+              {item}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label htmlFor="ASC">
+        ASC
+        <input
+          data-testid="column-sort-input-asc"
+          value="ASC"
+          onChange={ ({ target }) => handleChangeSort(target.value) }
+          name="sort"
+          type="radio"
+          checked
+        />
+      </label>
+      <label htmlFor="DESC">
+        DESC
+        <input
+          data-testid="column-sort-input-desc"
+          value="DESC"
+          onChange={ ({ target }) => handleChangeSort(target.value) }
+          name="sort"
+          type="radio"
+        />
+      </label>
+      <button
+        onClick={ () => setOrder({ sort, column: sortColumn }) }
+        type="button"
+        data-testid="column-sort-button"
+      >
+        Apply sort
+      </button>
     </div>
   );
 }

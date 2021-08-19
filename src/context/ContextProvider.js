@@ -6,16 +6,26 @@ function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [name, setName] = useState('');
   const [filters, setFilters] = useState([]);
+  const [order, setOrder] = useState({
+    column: 'name',
+    sort: 'ASC',
+  });
 
   const handleSetFilters = (filter, newFilter) => (
     newFilter
       ? setFilters(filter)
       : setFilters([...filters, filter]));
 
+  const handleSortPlanets = () => {
+
+  };
+
   const contextValue = {
     data: {
       planets,
     },
+    setOrder,
+    handleSortPlanets,
     setPlanets,
     setName,
     handleSetFilters,
@@ -24,6 +34,7 @@ function Provider({ children }) {
         name,
       },
       filterByNumericValues: filters,
+      order,
     },
   };
   return (
