@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Proptypes from 'prop-types';
 import StarWarsPlanetsContext from './StarWarsPlanetsContext';
 import useFetchData from '../hooks/useFetchData';
 
 const Provider = ({ children }) => {
-  const [data, setData] = useState([]);
-  const [state, loading] = useFetchData();
-
-  useEffect(() => {
-    setData(state);
-  }, [state]);
+  const [state, loading, input, setInput] = useFetchData();
 
   const contextValue = {
-    data,
+    data: state,
+    filters: {
+      filterByName: {
+        name: input,
+      },
+    },
     loading,
+    setInput,
   };
 
   return (
