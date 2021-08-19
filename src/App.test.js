@@ -88,7 +88,7 @@ describe.only('2 - Filtre a tabela através de um texto, inserido num *campo de 
   beforeAll(mockFetch);
   beforeEach(cleanup);
 
-  it.only('Renderize o campo de texto para o filtro de nomes', async () => {
+  it('Renderize o campo de texto para o filtro de nomes', async () => {
     await act(async () => {
       render(<App />);
     });

@@ -1,18 +1,22 @@
-import React, { useContext, /* useState */ useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import usePlanetsData from '../hooks/usePlanetsData';
 import Context from '../context/Context';
 import Tr from './Tr';
 
 function Table() {
   usePlanetsData();
-  // const [filteredPlanets, setFilteredPlanets] = useState([]);
+  const [filteredPlanets, setFilteredPlanets] = useState([]);
 
   const { planets, filtersState } = useContext(Context);
 
   useEffect(() => {
     const { filters: { filterByName: { name } } } = filtersState;
-    const getFilteredPlanets = planets.filter((planet) => planet.name === name);
-    console.log(getFilteredPlanets);
+
+    const getFilteredPlanets = planets.filter((planet) => (
+      planet.name.toLowerCase().includes(name.toLowerCase())
+    ));
+
+    setFilteredPlanets(getFilteredPlanets);
   }, [filtersState, planets]);
 
   return (
@@ -34,7 +38,9 @@ function Table() {
             <th>created</th>
             <th>url</th>
           </tr>
-          { planets.map((planet) => <Tr key={ planet.name } planet={ planet } />) }
+          {
+            filteredPlanets.map((planet) => <Tr key={ planet.name } planet={ planet } />)
+          }
         </tbody>
       </table>
     </section>

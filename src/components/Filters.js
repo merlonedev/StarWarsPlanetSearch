@@ -3,17 +3,27 @@ import Context from '../context/Context';
 import Input from './Input';
 
 function Filters() {
-  const { filtersState: { filters: { filterByName } } } = useContext(Context);
+  const { filtersState, setFiltersState } = useContext(Context);
 
-  const handleChange = () => {
-    console.log('mudança no filtro');
+  const { filters: { filterByName: { name } } } = filtersState;
+
+  const handleChange = (event) => {
+    const newState = {
+      ...filtersState,
+      filters: {
+        filterByName: {
+          name: event.target.value,
+        },
+      },
+    };
+    setFiltersState(newState);
   };
 
   return (
     <section>
       <Input
         testid="name-filter"
-        value={ filterByName.name }
+        value={ name }
         onChange={ handleChange }
       />
     </section>
