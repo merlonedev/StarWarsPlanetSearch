@@ -1,54 +1,43 @@
 import React, { useState } from 'react';
 import propTypes from 'prop-types';
 import FilterContext from './FilterContext';
+import useData from '../hooks/useData';
 
 function FilterProvider({ children }) {
-  const INITIAL_STATE = {
-    filters: {
-      filterByName: {
-        name: '',
-      },
-      filterByNumericValues: [],
-      order: {
-        column: '',
-        sort: '',
-      },
-    },
-  };
+  const [planets, tableHeadData] = useData();
+  const [name, setName] = useState('');
+  const [numericFilters, setNumericFilters] = useState([]);
+  const [order, setOrder] = useState({
+    column: 'name',
+    sort: 'ASC',
+  });
 
-  const [state, setState] = useState(INITIAL_STATE);
-  const handleChangeName = ({ target: { value } }) => setState(
-    { ...state,
-      filters: { ...state.filters,
-        filterByName: {
-          name: value,
-        },
-      },
-    },
+  const addFilter = (newFilter) => setNumericFilters(
+    [...numericFilters, newFilter],
   );
 
-  const addFilter = (newFilter) => setState(
-    { ...state,
-      filters: { ...state.filters,
-        filterByNumericValues: [...state.filters.filterByNumericValues, newFilter],
-      },
-    },
+  const rmvFilter = (removed) => setNumericFilters(
+    [...numericFilters.filter((filter) => filter.column !== removed.column)],
   );
 
-  const rmvFilter = (removed) => setState(
-    { ...state,
-      filters: { ...state.filters,
-        filterByNumericValues: [...state.filters.filterByNumericValues
-          .filter((filter) => filter.column !== removed.column)],
-      },
-    },
-  );
+  const handleOrder = (params) => setOrder({ ...params });
 
   const value = {
-    ...state,
-    handleChangeName,
+    filters: {
+      filterByName: {
+        name,
+      },
+      filterByNumericValues: numericFilters,
+      order,
+    },
+    data: {
+      planets,
+      tableHeadData,
+    },
     addFilter,
     rmvFilter,
+    handleOrder,
+    setName,
   };
 
   return (
