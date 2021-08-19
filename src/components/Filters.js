@@ -54,7 +54,6 @@ function Filters() {
           const index = selectValuesWithFilter.indexOf(column);
           selectValuesWithFilter.splice(index, 1);
         });
-      INITIAL_STATE.column = selectValuesWithFilter[0];
     }
     return (
       <div className="numeric-filters">
@@ -93,7 +92,10 @@ function Filters() {
               ...filters,
               filterByNumericValues: [...filters.filterByNumericValues, numericFilter],
             });
-            setNumericFilter(INITIAL_STATE);
+            setNumericFilter({
+              ...INITIAL_STATE,
+              column: selectValuesWithFilter[0],
+            });
           } }
         >
           Adicionar Filtro
