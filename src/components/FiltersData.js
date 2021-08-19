@@ -15,7 +15,7 @@ function FiltersData() {
   };
 
   return (
-    <div>
+    <div className="filters-data-container">
       <ul>
         { filterByNumericValues.map((filter, index) => (
           <li key={ index } data-testid="filter">

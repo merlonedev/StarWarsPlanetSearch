@@ -22,7 +22,7 @@ function Filters() {
   const [numericFilter, setNumericFilter] = useState(INITIAL_STATE);
 
   const renderPlanetInput = () => (
-    <label htmlFor="name-filter">
+    <label htmlFor="name-filter" className="planet-input-label">
       Planeta:
       <input
         type="text"
@@ -57,7 +57,7 @@ function Filters() {
       INITIAL_STATE.column = selectValuesWithFilter[0];
     }
     return (
-      <div>
+      <div className="numeric-filters">
         <select
           id="column"
           data-testid="column-filter"
@@ -103,10 +103,12 @@ function Filters() {
   };
 
   return (
-    <div>
-      {renderPlanetInput()}
-      <OrderFilter />
-      {renderNumericFilters()}
+    <div className="filters-section">
+      <div className="filters-container">
+        {renderPlanetInput()}
+        <OrderFilter />
+        {renderNumericFilters()}
+      </div>
     </div>
   );
 }

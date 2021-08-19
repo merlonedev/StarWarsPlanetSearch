@@ -30,7 +30,90 @@ tr {
 }
 
 td {
-  background-color: gainsboro;
+  border: 1px solid black;
   padding: 7px;
   text-align: center;
+}
+
+.filters-section {
+  background-color: #264653;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+}
+
+.filters-container {
+  align-items: center;
+  border: 1px solid black;
+  background-color: #e9c46a;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 150px;
+  width: 600px;
+}
+
+.planet-input-label {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.planet-input-label input {
+  margin-left: 5px;
+  padding: 2px 5px;
+}
+
+.numeric-filters {
+  font-size: 20px;
+}
+
+.numeric-filters select, input {
+  padding: 2px 5px;
+  margin: 0 5px 0 5px;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+  background-color: #2a9d8f;
+  color: white;
+  padding: 5px 15px;
+}
+
+.order-filters {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.order-filters select {
+  padding: 2px 5px;
+}
+
+.order-filters label {
+  margin: 0 5px 0 5px;
+}
+
+.filters-data-container {
+  align-items: center;
+  background-color: #219ebc;
+  display: flex;
+  justify-content: center;
+  height: 10%;
+  padding-top: 5px;
+}
+
+.filters-data-container ul li {
+  display: flex;
+  font-size: 20px;
+  list-style: none;
+  margin-bottom: 10px;
+  text-decoration: none;
+}
+
+.filters-data-container ul li p {
+  margin-right: 7px;
+}
+
+.filters-data-container ul li button {
+  background-color: red;
 }

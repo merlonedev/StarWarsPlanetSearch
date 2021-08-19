@@ -23,7 +23,7 @@ function OrderFilter() {
   };
 
   return (
-    <div>
+    <div className="order-filters">
       <select
         name="column"
         value={ orderFilter.column }
