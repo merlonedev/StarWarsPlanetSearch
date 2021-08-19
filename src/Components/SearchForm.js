@@ -3,10 +3,23 @@ import StarWarsContext from '../context/StarWarsContext';
 import './SearchForm.css';
 
 function SearchForm() {
-  const { filterName } = useContext(StarWarsContext);
+  const {
+    setInputName,
+    filters,
+    setNumValue,
+    renderFilterByNumValues } = useContext(StarWarsContext);
 
-  const handleChange = ({ target }) => {
-    filterName(target.value);
+  const handleChangeName = ({ target }) => {
+    setInputName(target.value);
+  };
+
+  const handleChangeNumValue = ({ target }) => {
+    const { filterByNumericValues } = filters;
+    const newInput = target.name === 'value' ? +target.value : target.value;
+    setNumValue({
+      ...filterByNumericValues[0],
+      [target.name]: newInput,
+    });
   };
 
   return (
@@ -16,7 +29,7 @@ function SearchForm() {
         <input
           id="nameFilter"
           type="text"
-          onChange={ (event) => handleChange(event) }
+          onChange={ (event) => handleChangeName(event) }
           data-testid="name-filter"
         />
       </label>
@@ -24,9 +37,12 @@ function SearchForm() {
         Filter column:
         <select
           id="columnFilter"
+          name="column"
           data-testid="column-filter"
           type="text"
+          onChange={ (event) => handleChangeNumValue(event) }
         >
+          <option value="">Choose column</option>
           <option>population</option>
           <option>orbital_period</option>
           <option>diameter</option>
@@ -38,9 +54,12 @@ function SearchForm() {
         Filter comparison:
         <select
           id="comparisonFilter"
+          name="comparison"
           data-testid="comparison-filter"
           type="text"
+          onChange={ (event) => handleChangeNumValue(event) }
         >
+          <option value="">Choose comparison</option>
           <option>maior que</option>
           <option>menor que</option>
           <option>igual a</option>
@@ -50,11 +69,17 @@ function SearchForm() {
         Filter by value:
         <input
           id="valueFilter"
+          name="value"
           type="number"
           data-testid="value-filter"
+          onChange={ (event) => handleChangeNumValue(event) }
         />
       </label>
-      <button type="button" data-testid="button-filter">
+      <button
+        type="button"
+        data-testid="button-filter"
+        onClick={ renderFilterByNumValues }
+      >
         Add filter
       </button>
     </form>

@@ -3,26 +3,13 @@ import propTypes from 'prop-types';
 import StarWarsContext from './StarWarsContext';
 
 function StarWarsProvider({ children }) {
-  const filtersInitialState = {
-    filters: {
-      filterByName: {
-        name: '',
-      },
-    },
-  };
-
   const [data, setData] = useState([]);
-  const [filters, setFilters] = useState(filtersInitialState);
-
-  const filterName = (input) => {
-    setFilters({
-      filters: {
-        filterByName: {
-          name: input,
-        },
-      },
-    });
-  };
+  const [inputName, setInputName] = useState('');
+  const [numValue, setNumValue] = useState({
+    column: '',
+    comparison: '',
+    value: 0,
+  });
 
   useEffect(() => {
     const getData = async () => {
@@ -34,8 +21,36 @@ function StarWarsProvider({ children }) {
     getData();
   }, []);
 
+  const renderFilterByNumValues = () => {
+    const { column, comparison, value } = numValue;
+    if (data.length > 0 && column !== '' && comparison !== '') {
+      if (comparison === 'maior que') {
+        const filteredData = data.filter((planet) => planet[column] > value);
+        console.log(comparison);
+        setData(filteredData);
+      }
+      if (comparison === 'menor que') {
+        const filteredData = data.filter((planet) => planet[column] < value);
+        setData(filteredData);
+      }
+      if (comparison === 'igual a') {
+        const filteredData = data.filter((planet) => planet[column] === value);
+        setData(filteredData);
+      }
+    }
+  };
+
   const contextValue = {
-    data, filters, filterName,
+    data,
+    setInputName,
+    filters: {
+      filterByName: {
+        name: inputName,
+      },
+      filterByNumericValues: [numValue],
+    },
+    setNumValue,
+    renderFilterByNumValues,
   };
 
   return (

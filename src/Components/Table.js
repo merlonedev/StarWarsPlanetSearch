@@ -33,8 +33,8 @@ function Table() {
       </tr>));
   };
 
-  const checkFiltersAndRender = () => {
-    const { filters: { filterByName } } = filters;
+  const renderNameFilter = () => {
+    const { filterByName } = filters;
     if (data.length > 0) {
       if (filterByName.name !== '') {
         return mapPlanetData(filterByName.name);
@@ -50,7 +50,7 @@ function Table() {
         <tr>{ renderTableHeader() }</tr>
       </thead>
       <tbody>
-        { checkFiltersAndRender() }
+        { renderNameFilter() }
       </tbody>
     </table>
   );
