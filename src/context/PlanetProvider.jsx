@@ -32,7 +32,7 @@ function PlanetProvider({ children }) {
   useEffect(() => {
     if (data) {
       const dataFilter = data.filter((item) => (
-        item.name.toLowerCase().includes(inputName)
+        item.name.toLowerCase().includes(inputName.toLowerCase())
       ));
       setFilters({ ...filters, filterByName: { name: dataFilter } });
     }
