@@ -27,6 +27,7 @@ function Table() {
   function filterByNumericValuesStep(filterByNumericValues, filteredPlanets) {
     let response = null;
     const [{ column, comparison, value }] = filterByNumericValues;
+
     response = filteredPlanets.filter((planet) => {
       switch (comparison) {
       case 'maior que':
@@ -57,7 +58,6 @@ function Table() {
 
     if (filterByNumericValues.length > 0) {
       const newPlanets = filterByNumericValuesStep(filterByNumericValues, results);
-      console.log(newPlanets);
       return newPlanets.map((result, index) => gerate(result, index));
     }
 

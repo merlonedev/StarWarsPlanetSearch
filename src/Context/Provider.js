@@ -6,6 +6,9 @@ function Provider({ children }) {
   const [data, setData] = useState();
   const [filterByName, setFilterByName] = useState({ name: '' });
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  const options = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+  const [Options, setOptions] = useState([...options]);
 
   useEffect(() => {
     const planetsJson = async () => {
@@ -24,8 +27,9 @@ function Provider({ children }) {
     const column = document.querySelector('#column-filter').value;
     const comparison = document.querySelector('#comparison-filter').value;
     const valueNumber = document.querySelector('#value-filter').value;
+    setOptions(Options.filter((opcao) => opcao !== column));
 
-    setFilterByNumericValues([{
+    setFilterByNumericValues([...filterByNumericValues, {
       column,
       comparison,
       value: valueNumber,
@@ -34,6 +38,10 @@ function Provider({ children }) {
 
   const contextValue = {
     data,
+    opcoes: {
+      Options,
+      setOptions,
+    },
     filters: {
       filterByName,
       filterByNumericValues,

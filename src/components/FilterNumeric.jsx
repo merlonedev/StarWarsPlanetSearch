@@ -3,8 +3,7 @@ import Context from '../Context/Context';
 
 function FilterNumeric() {
   const { functionsFilters: { numericFilter } } = useContext(Context);
-  const options = [
-    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+  const { opcoes: { Options } } = useContext(Context);
 
   return (
     <form>
@@ -14,14 +13,14 @@ function FilterNumeric() {
           data-testid="column-filter"
           id="column-filter"
         >
-          { options.map((option, index) => (
+          { Options.map((option, index) => (
             <option
               key={ index }
               value={ option }
             >
               { option }
             </option>
-          )) }
+          ))}
         </select>
       </label>
       <label htmlFor="comparison-filter">
