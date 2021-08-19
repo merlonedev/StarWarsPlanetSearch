@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useData } from '../context/DataContext';
+import { useData, useFilter } from '../context/DataContext';
 import StarWarsAPI from '../services/StarWarsAPI';
 
 export default function Table() {
   const { data, setData } = useData();
+  const { filters } = useFilter();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,6 +16,14 @@ export default function Table() {
     };
     loadData();
   }, [setData]);
+
+  const filterData = () => {
+    const { filterByName: { name: filterName } } = filters;
+    if (filterName !== '') {
+      return data.filter(({ name }) => name.toLowerCase().includes(filterName));
+    }
+    return data;
+  };
 
   if (loading) { return <span> Loading... </span>; }
   const headers = Object.keys(data[0]).filter((head) => head !== 'residents');
@@ -30,7 +39,7 @@ export default function Table() {
         </tr>
       </thead>
       <tbody>
-        {data.map((planet) => (
+        {filterData().map((planet) => (
           <tr key={ planet.url }>
             <td>{ planet.name }</td>
             <td>{ planet.rotation_period }</td>
