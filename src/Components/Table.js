@@ -6,19 +6,23 @@ function Table() {
   const { filterByName: { name }, filterByNumericValues } = filters;
   let { data } = useContext(SWContext);
 
-  const { column, comparison, value } = filterByNumericValues[filterByNumericValues.length - 1];
+  const {
+    column,
+    comparison,
+    value,
+  } = filterByNumericValues[filterByNumericValues.length - 1];
 
   if (filterByNumericValues.length > 1) {
     data = data.filter((planet) => {
       if (comparison === 'menor que') {
-        return planet[column] < value;
+        return planet[column] < parseInt(value, 10);
       }
 
       if (comparison === 'igual a') {
         return planet[column] === value;
       }
 
-      return planet[column] > value;
+      return planet[column] > parseInt(value, 10);
     });
   }
 

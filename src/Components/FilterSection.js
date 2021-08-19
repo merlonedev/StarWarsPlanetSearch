@@ -68,7 +68,13 @@ function FilterSection() {
             name="value"
             onChange={ handleChangeLocalFilter }
           />
-          <button type="button" data-testid="button-filter" onClick={ sendNumberFiltersToContext }>Filtrar</button>
+          <button
+            type="button"
+            data-testid="button-filter"
+            onClick={ sendNumberFiltersToContext }
+          >
+            Filtrar
+          </button>
         </div>
       </form>
     </section>
