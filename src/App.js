@@ -1,9 +1,12 @@
 import React from 'react';
 import './App.css';
+import StarWarsPlanets from './services/APIContext';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <StarWarsPlanets>
+      <p>Olá</p>
+    </StarWarsPlanets>
   );
 }
 
