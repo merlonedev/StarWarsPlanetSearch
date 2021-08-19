@@ -41,10 +41,9 @@ function ShowFilters() {
       {filters.filterByNumericValues.length !== 0 && (
         <div>
           {filters.filterByNumericValues.map((current, index) => (
-            <div key={ index }>
+            <div key={ index } data-testid="filter">
               <p>{JSON.stringify(current)}</p>
               <button
-                data-testid="filter"
                 type="button"
                 onClick={ () => {
                   removeFilter(current);
