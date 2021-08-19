@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 function Table() {
-  const { planetsFiltered, tableColumns } = useContext(AppContext);
+  const { planetsInOrder, tableColumns } = useContext(AppContext);
 
   return (
     <table>
@@ -12,7 +12,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { planetsFiltered.map(({
+        { planetsInOrder.map(({
           name,
           rotation_period: rotationPeriod,
           orbital_period: orbitalPeriod,
@@ -28,7 +28,7 @@ function Table() {
           url,
         }, index) => (
           <tr key={ index }>
-            <td>{name}</td>
+            <td data-testid="planet-name">{name}</td>
             <td>{rotationPeriod}</td>
             <td>{orbitalPeriod}</td>
             <td>{diameter}</td>
