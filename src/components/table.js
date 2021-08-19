@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Context } from '../services/APIContext';
 
 function PlanetsTable() {
-  const { data } = useContext(Context);
+  const { filteredPlanets } = useContext(Context);
   const tableHeaders = [
     'NAME',
     'ROTATION PERIOD',
@@ -30,7 +30,7 @@ function PlanetsTable() {
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
+          {filteredPlanets.map((item, index) => (
             <tr key={ index }>
               <td data-testid="planet-name">{item.name}</td>
               <td>{item.rotation_period}</td>
