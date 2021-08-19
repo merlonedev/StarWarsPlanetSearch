@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import { MyContext } from '../context/Provider';
+import ActiveFilters from './ActiveFilters';
 import helperToOptions from '../helper';
 
 const FilterInputs = () => {
@@ -28,13 +29,9 @@ const FilterInputs = () => {
 
   const handleClick = () => {
     const result = {
-      filterByNumericValues: [
-        {
-          column,
-          comparison,
-          valueNumber,
-        },
-      ],
+      column,
+      comparison,
+      valueNumber,
     };
     SetFilter(result);
   };
@@ -105,6 +102,7 @@ const FilterInputs = () => {
       <Button { ...buttonProps }>
         Filter
       </Button>
+      <ActiveFilters />
     </section>
   );
 };

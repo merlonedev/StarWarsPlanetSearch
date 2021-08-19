@@ -7,10 +7,17 @@ export const MyContext = createContext();
 
 export const ProviderContext = ({ children }) => {
   // const { data } = FetchHook();
-  const { filteredData, SetFilter, optionsfiltered } = SetGlobalFilter();
+  const { filteredData, SetFilter,
+    optionsfiltered, filters, removeFilter } = SetGlobalFilter();
 
   return (
-    <MyContext.Provider value={ { filteredData, SetFilter, optionsfiltered } }>
+    <MyContext.Provider
+      value={ { filteredData,
+        SetFilter,
+        optionsfiltered,
+        filters,
+        removeFilter } }
+    >
       {children}
     </MyContext.Provider>
 

@@ -14,7 +14,6 @@ const SetGlobalFilter = () => {
   const [optionsfiltered, setOptions] = useState(['population',
     'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
   const { data } = FetchHook();
-
   const objFunc = {
     'maior que': (column, value) => setFilterData(filteredData
       .filter((e) => +e[column] > +value && e[column] !== 'unknown')),
@@ -23,8 +22,8 @@ const SetGlobalFilter = () => {
     'igual a': (column, value) => setFilterData(filteredData
       .filter((e) => +e[column] === +value && e[column] !== 'unknown')),
   };
-
   useEffect(() => {
+    console.log(filters.filterByNumericValues);
     if (data && filters.filterByName.name !== ''
     && filters.filterByNumericValues.length === 0) {
       const filtredList = data.filter((e) => (
@@ -35,22 +34,30 @@ const SetGlobalFilter = () => {
       setFilterData(data);
     }
   }, [data, filters]);
-
   const SetFilter = (target) => {
     if (target.name) {
       setFiltered({ ...filters, filterByName: { [target.name]: target.value } });
     } else {
-      const { comparison, column, valueNumber } = target.filterByNumericValues[0];
-      setFiltered({ ...filters, ...target });
+      const { comparison, column, valueNumber } = target;
+      setFiltered({ ...filters,
+        filterByNumericValues:
+        [...filters.filterByNumericValues, target] });
       setOptions(optionsfiltered.filter((e) => e !== column));
       objFunc[comparison](column, valueNumber);
     }
   };
+  const removeFilter = (i) => {
+    const removedFilters = filters.filterByNumericValues.filter((e) => e.column !== i);
+    setFiltered({ ...filters, filterByNumericValues: [...removedFilters] });
+    setOptions([...optionsfiltered, i]);
+  };
 
   return {
+    removeFilter,
     optionsfiltered,
     SetFilter,
     filteredData,
+    filters,
   };
 };
 
