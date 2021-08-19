@@ -1,17 +1,27 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Context from '../ContextStuff/Context';
+import useFilterByNumericValues from '../hooks/useFilterByNumericValues';
+import useToColumnErase from '../hooks/useToColumnErase';
 
 export default function Table() {
-  const { data: { results }, filters: { filterByName: { name } } } = useContext(Context);
+  const { systems,
+    filters: { filterByName: { name }, filterByNumericValues } } = useContext(Context);
+  const [useNumeric] = useFilterByNumericValues();
+  const [optionErase] = useToColumnErase();
 
-  if (results === undefined) return <span>Loading...</span>;
+  useEffect(useNumeric, [filterByNumericValues]);
+  useEffect(optionErase, [filterByNumericValues]);
 
-  const filteredPlanets = results.filter((p) => (
-    p.name.toLowerCase().includes(name.toLowerCase())));
+  if (!systems.length) return <span>Loading...</span>;
 
-  if (filteredPlanets.length === 0) return <span>No planets found in this galaxy</span>;
+  const filteredPlanets = systems
+    .filter((p) => p.name.toLowerCase().includes(name.toLowerCase()));
 
-  const headers = Object.keys(results[0]);
+  if (!filteredPlanets.length) {
+    return <span>System could not be found in the archives</span>;
+  }
+
+  const headers = Object.keys(systems[0]);
   return (
     <table>
       <thead>
@@ -26,7 +36,7 @@ export default function Table() {
               <td key={ id }>{ planet[head] }</td>
             ))}
           </tr>
-        )) }
+        ))}
       </tbody>
     </table>
   );

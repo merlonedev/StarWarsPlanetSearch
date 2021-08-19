@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import Context from '../ContextStuff/Context';
 
 export default function SelectColumnFilter({ updateFilter }) {
+  const { options } = useContext(Context);
   return (
     <label htmlFor="column-filter">
       Selecione uma coluna de valores
       <select name="column" data-testid="column-filter" onChange={ updateFilter }>
-        <option value="population">population</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="diameter">diameter</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="surface_water">surface_water</option>
+        { options
+          .map((option, id) => <option key={ id } value={ option }>{ option }</option>) }
       </select>
     </label>
   );

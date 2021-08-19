@@ -1,35 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Context from './Context';
-import planetsFetch from '../services/planetFetch';
+import useFetch from '../hooks/useFetch';
 
 export default function Provider({ children }) {
-  const [data, setData] = useState({});
-  const [numericFilter, setNumericFilter] = useState({});
+  const [data] = useFetch();
+  const [systems, setSystems] = useState([]);
   const [filters, setFilters] = useState({
     filterByName: { name: '' },
-    filterByNumericValues: [
-      {
-        column: 'population',
-        comparison: 'maior que',
-        value: '100000',
-      },
-    ],
+    filterByNumericValues: [],
   });
+  const [options, setOptions] = useState(['population', 'orbital_period', 'diameter',
+    'rotation_period', 'surface_water']);
 
-  useEffect(() => {
-    const requestPlanets = async () => {
-      const planets = await planetsFetch();
-      planets.results.forEach((planet) => delete planet.residents);
-      setData(planets);
-    };
-    requestPlanets();
-  }, []);
+  useEffect(() => { setSystems(data); }, [data]);
 
   const context = {
-    data,
+    systems,
+    setSystems,
     filters,
     setFilters,
+    options,
+    setOptions,
   };
 
   return (

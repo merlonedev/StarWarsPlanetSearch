@@ -6,9 +6,9 @@ export default function SelectComparisonFilter({ updateFilter }) {
     <label htmlFor="column-filter">
       Selecione a comparação desejada
       <select name="comparison" data-testid="comparison-filter" onChange={ updateFilter }>
-        <option value=">">maior que</option>
-        <option value="<">menor que</option>
-        <option value="===">igual a</option>
+        <option value="maior que">maior que</option>
+        <option value="menor que">menor que</option>
+        <option value="igual a">igual a</option>
       </select>
     </label>
   );
