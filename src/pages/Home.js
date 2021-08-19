@@ -1,12 +1,16 @@
 import React, { useContext } from 'react';
-import { ContextProvider } from '../Components/StarWarsContext';
+import { Context } from '../context/SWProvider';
 import Table from '../Components/Table';
 
 const Home = () => {
-  const { planets } = useContext(ContextProvider);
+  const { data } = useContext(Context);
 
   return (
-    <Table planets={ planets } />
+    <div>
+      {' '}
+      <Table data={ data } />
+    </div>
+
   );
 };
 

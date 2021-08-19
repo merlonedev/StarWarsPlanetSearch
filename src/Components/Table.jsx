@@ -4,21 +4,21 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { StarWarsContext } from './StarWarsContext';
+import { Context } from '../context/SWProvider';
 
 function Orders() {
-  const { planets } = useContext(StarWarsContext);
-  return planets ? (
+  const { data } = useContext(Context);
+  return data ? (
     <Table size="small">
       <TableHead>
         <TableRow>
           {
-            Object.keys(planets[0]).map((e) => <TableCell key={ e }>{e}</TableCell>)
+            Object.keys(data[0]).map((e) => <TableCell key={ e }>{e}</TableCell>)
           }
         </TableRow>
       </TableHead>
       <TableBody>
-        {planets.map((e) => (
+        {data.map((e) => (
           <TableRow key={ e.name }>
             <TableCell>{e.name}</TableCell>
             <TableCell>{e.rotation_period}</TableCell>

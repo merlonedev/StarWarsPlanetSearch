@@ -1,19 +1,19 @@
 import React, { useState, createContext, useEffect } from 'react';
 import Proptypes from 'prop-types';
-import FetchPlanets from './FetchPlanets';
+import fetchPlanets from '../uteis/api';
 
-export const ContextProvider = createContext();
+export const Context = createContext();
 
-export const StarWarsContext = ({ children }) => {
-  const [planets, setPlanets] = useState('');
+export const StarWarsProvider = ({ children }) => {
+  const [data, setData] = useState('');
 
   const getPlanets = async () => {
-    const request = await FetchPlanets();
+    const request = await fetchPlanets();
     const newPlanets = Object.values(request.results).map((planet) => {
       delete planet.residents;
       return planet;
     });
-    setPlanets(newPlanets);
+    setData(newPlanets);
   };
 
   useEffect(() => {
@@ -21,12 +21,12 @@ export const StarWarsContext = ({ children }) => {
   }, []);
 
   return (
-    <StarWarsContext.Provider value={ { planets, setPlanets } }>
+    <Context.Provider value={ { data, setData } }>
       {children}
-    </StarWarsContext.Provider>
+    </Context.Provider>
   );
 };
 
-StarWarsContext.propTypes = {
+StarWarsProvider.propTypes = {
   children: Proptypes.node.isRequired,
 };
