@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import PlanetContext from '../context/PlanetContext';
 
 function FilterByNumericValues() {
-  const { setInputNumeric } = useContext(PlanetContext);
+  const { setInputNumeric, filters } = useContext(PlanetContext);
 
   const [stateLocal, setStateLocal] = useState();
   const [selectColumn, setSelectColumn] = useState(
@@ -26,7 +26,7 @@ function FilterByNumericValues() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const { column, comparison, value } = stateLocal;
+    const { column = 'population', comparison = 'maior que', value = 0 } = stateLocal;
     setInputNumeric({
       column,
       comparison,
@@ -46,23 +46,27 @@ function FilterByNumericValues() {
   useEffect(() => {
     const render = async () => renderSelectColumn();
     render();
-  }, [stateLocal]);
+  }, [filters]);
 
   return (
     <div>
       <form onSubmit={ handleSubmit }>
         <label htmlFor="input-numbers">
           Pesquisar Planeta por Números:
-          <select
-            name="column"
-            data-testid="column-filter"
-            onChange={ handleChange }
-            defaultValue=""
-          >
-            { selectColumn.map((item) => (
-              <option value={ item } key={ item }>{item}</option>
-            ))}
-          </select>
+          <label htmlFor="input-numbers">
+            Selecione o seu filtro:
+            <select
+              name="column"
+              data-testid="column-filter"
+              onChange={ handleChange }
+              // defaultValue="population"
+              id="input-numbers"
+            >
+              { selectColumn.map((item) => (
+                <option value={ item } key={ item }>{item}</option>
+              ))}
+            </select>
+          </label>
           <select
             name="comparison"
             data-testid="comparison-filter"
