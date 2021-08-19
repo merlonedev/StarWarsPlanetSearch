@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import Context from '../context/Context';
+import './Table.css';
 
-export default function Table() {
-  const [filteredPlanets] = useState(['Loading']);
+function Table() {
+  const { tablePlanet } = useContext(Context);
 
   return (
-    <table>
+    <table className="table">
       <thead>
         <tr>
           <th>Name:</th>
@@ -23,28 +25,26 @@ export default function Table() {
         </tr>
       </thead>
       <tbody>
-        {
-          (
-            filteredPlanets.map((planet, index) => (
-              <tr key={ index }>
-                <td>{ planet.name }</td>
-                <td>{ planet.climate }</td>
-                <td>{ planet.created }</td>
-                <td>{ planet.diameter }</td>
-                <td>{ planet.edited }</td>
-                <td>{ planet.filmes }</td>
-                <td>{ planet.gravity }</td>
-                <td>{ planet.orbital_period }</td>
-                <td>{ planet.population }</td>
-                <td>{ planet.rotation_period }</td>
-                <td>{ planet.surface_water }</td>
-                <td>{ planet.terrain }</td>
-                <td>{ planet.url }</td>
-              </tr>
-            ))
-          )
-        }
+        { tablePlanet.map((planet, index) => (
+          <tr key={ index }>
+            <td>{ planet.name }</td>
+            <td>{ planet.climate }</td>
+            <td>{ planet.created }</td>
+            <td>{ planet.diameter }</td>
+            <td>{ planet.edited }</td>
+            <td>{ planet.films }</td>
+            <td>{ planet.gravity }</td>
+            <td>{ planet.orbital_period }</td>
+            <td>{ planet.population }</td>
+            <td>{ planet.rotation_period }</td>
+            <td>{ planet.surface_water }</td>
+            <td>{ planet.terrain }</td>
+            <td>{ planet.url }</td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );
 }
+
+export default Table;
