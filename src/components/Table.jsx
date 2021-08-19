@@ -4,9 +4,6 @@ import TableData from './TableData';
 
 function Table() {
   const { data, inputName, inputNumeric } = useContext(PlanetContext);
-  const { filters: { filterByNumericValues: {
-    column, comparison, value,
-  } } } = useContext(PlanetContext);
 
   const tableFilter = () => {
     if (data) {
@@ -18,6 +15,7 @@ function Table() {
       }
 
       if (inputNumeric) {
+        const { column, comparison, value } = inputNumeric;
         const dataFilterByNumber = data.filter((item) => {
           if (comparison === 'maior que') return item[column] > +value;
           if (comparison === 'menor que') return item[column] < +value;

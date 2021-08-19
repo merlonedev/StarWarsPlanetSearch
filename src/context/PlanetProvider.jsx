@@ -11,13 +11,7 @@ function PlanetProvider({ children }) {
     filterByName: {
       name: '',
     },
-    filterByNumericValues: [
-      {
-        column: '',
-        comparison: '',
-        value: '',
-      },
-    ],
+    filterByNumericValues: [],
   });
 
   // componentDidMount - faz requisicao api
@@ -38,13 +32,18 @@ function PlanetProvider({ children }) {
   useEffect(() => {
     if (data) {
       const { column, comparison, value } = inputNumeric;
+      const { filterByNumericValues } = filters;
+
       setFilters({
         ...filters,
-        filterByNumericValues: {
-          column,
-          comparison,
-          value,
-        },
+        filterByNumericValues: [
+          ...filterByNumericValues,
+          {
+            column,
+            comparison,
+            value,
+          },
+        ],
       });
     }
   }, [inputNumeric]);

@@ -2,24 +2,23 @@ import React, { useState, useContext } from 'react';
 import PlanetContext from '../context/PlanetContext';
 
 function FilterByNumericValues() {
-  const { inputNumeric, setInputNumeric } = useContext(PlanetContext);
+  const { setInputNumeric } = useContext(PlanetContext);
 
   const [stateLocal, setStateLocal] = useState();
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
-    setStateLocal({
-      ...stateLocal,
+    setStateLocal((previousState) => ({
+      ...previousState,
       [name]: value,
-    });
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const { column = 'population', comparison = 'maior que', value = 0 } = stateLocal;
+    const { column, comparison, value } = stateLocal;
     setInputNumeric({
-      ...inputNumeric,
       column,
       comparison,
       value,
