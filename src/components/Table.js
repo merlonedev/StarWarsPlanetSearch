@@ -1,10 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import TableLine from './TableLine';
 import StarWarsContext from '../context/StarWarsContext';
 
 function Table() {
-  const { data } = useContext(StarWarsContext);
+  const [filteredPlanets, setFilteredPlanets] = useState([]);
+  const { data, filters: { name } } = useContext(StarWarsContext);
+
+  useEffect(() => {
+    if (name === undefined) {
+      setFilteredPlanets(data);
+    } else {
+      setFilteredPlanets(data.filter((planet) => planet.name.includes(name)));
+    }
+  }, [name, data]);
 
   return (
     <table>
@@ -26,7 +35,7 @@ function Table() {
         </tr>
       </thead>
       {
-        data.map((d, index) => <TableLine key={ index } data={ d } />)
+        filteredPlanets.map((d, index) => <TableLine key={ index } data={ d } />)
       }
     </table>
   );
