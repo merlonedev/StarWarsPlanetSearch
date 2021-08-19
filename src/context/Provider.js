@@ -28,7 +28,8 @@ const Provider = ({ children }) => {
 
   useEffect(() => {
     const getPlanets = [...copyPlanets];
-    const filtered = getPlanets.filter((planet) => planet.name.toLowerCase().includes(filterName.toLowerCase()));
+    const filtered = getPlanets.filter((planet) => planet.name.toLowerCase()
+      .includes(filterName.toLowerCase()));
     setPlanets(filtered);
   }, [filterName, copyPlanets]);
 
