@@ -4,6 +4,7 @@ import Context from './Context';
 
 function ProviderContext({ children }) {
   const [planets, setPlanets] = useState([]);
+  const [newListPlanets, setNewListPlanets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -15,10 +16,24 @@ function ProviderContext({ children }) {
     })();
   }, []);
 
+  useEffect(() => {
+    const planetsWithoutResidentProperty = () => {
+      const newList = planets.map((planet) => Object.entries(planet)
+        .filter((prop) => prop[0] !== 'residents'))
+        .map((plan) => (
+          plan.reduce((acc, planet) => {
+            const [key, value] = planet;
+            acc[key] = value;
+            return acc;
+          }, [])));
+      setNewListPlanets(newList);
+    };
+    planetsWithoutResidentProperty();
+  }, [planets]);
+
   const contextValue = {
-    planets,
+    newListPlanets,
     isLoading,
-    setPlanets,
   };
 
   return (
