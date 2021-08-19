@@ -6,8 +6,8 @@ function Filters() {
   const { updateFilters } = useContext(Context);
 
   const initialState = {
-    column: '',
-    comparison: '',
+    column: 'population',
+    comparison: 'maior que',
     value: '',
   };
   const [state, setState] = useState(initialState);
@@ -49,7 +49,11 @@ function Filters() {
           event.preventDefault();
           updateFilters('numericValue', state);
           setFilters(...filters, column);
-          setState(initialState);
+          setState({
+            column: columns.find((item) => ![...filters, column].includes(item)),
+            comparison: 'maior que',
+            value: '',
+          });
         } }
       >
         <label htmlFor="column">
@@ -62,7 +66,6 @@ function Filters() {
             value={ column }
             onChange={ ({ target }) => handleChange(target) }
           >
-            <option disabled value="">Selecione uma opção</option>
             {columns
               .filter((item) => !filters.includes(item))
               .map((option) => (
@@ -81,7 +84,6 @@ function Filters() {
             value={ comparison }
             onChange={ ({ target }) => handleChange(target) }
           >
-            <option disabled value="">Selecione uma opção</option>
             <option value="maior que">maior que</option>
             <option value="menor que">menor que</option>
             <option value="igual a">igual a</option>
