@@ -61,6 +61,7 @@ const FilterByNumericValues = () => {
         {' '}
         <input
           data-testid="value-filter"
+          className="input-number"
           type="number"
           value={ value }
           onChange={ ({ target }) => setValue(target.value) }
