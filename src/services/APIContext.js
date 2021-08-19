@@ -2,36 +2,46 @@ import React, { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const Context = createContext({});
+const URL_BASE = 'https://swapi-trybe.herokuapp.com/api/planets/';
+const NUM_NEGATIVE = -1;
+const NUM_POSITIVE = 1;
 
 function StarWarsPlanets({ children }) {
   const [data, setData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchText, setsearchText] = useState('');
   const [filteredPlanets, setFilteredPlanets] = useState([]);
   const [columnTags, setColumnTags] = useState([
-    'population',
-    'orbital_period',
-    'diameter',
+    'population', 'orbital_period', 'diameter',
     'rotation_period',
     'surface_water',
   ]);
-  const [comparisonOptions] = useState(['maior que', 'menor que', 'igual a']);
+  const [comparisonParams] = useState(['maior que', 'menor que', 'igual a']);
   const [numericFilterList, setNumericFilterList] = useState([]);
   const [numericFilters, setNumericFilters] = useState({
     column: 'population',
     comparison: 'maior que',
     value: '',
   });
+  const [order, setOrder] = useState({
+    column: 'population',
+    sort: '',
+  });
+  const [sortedData, setSortedData] = useState(data.sort((a, b) => {
+    if (a.name > b.name) return 1;
+    if (a.name < b.name) return NUM_NEGATIVE;
+    return 0;
+  }));
 
   useEffect(() => {
-    fetch('https://swapi-trybe.herokuapp.com/api/planets/')
+    fetch(URL_BASE)
       .then((response) => response.json())
       .then((planets) => setData(planets.results));
   }, []);
 
   useEffect(() => {
-    const planets = data.filter((planet) => planet.name.includes(searchTerm));
+    const planets = data.filter((planet) => planet.name.includes(searchText));
     setFilteredPlanets(planets);
-  }, [data, searchTerm]);
+  }, [data, searchText]);
 
   function handleNumericFilter() {
     setNumericFilterList([...numericFilterList, numericFilters]);
@@ -48,19 +58,40 @@ function StarWarsPlanets({ children }) {
     const numericFilteredPlanets = data.filter((planet) => {
       const targetTag = Number(planet[numericFilters.column]);
       const inputValue = Number(numericFilters.value);
-      if (numericFilters.comparison === 'maior que') {
+      switch (numericFilters.comparison) {
+      case 'maior que':
         return targetTag > inputValue;
-      }
-      if (numericFilters.comparison === 'menor que') {
+      case 'menor que':
         return targetTag < inputValue;
-      }
-      if (numericFilters.comparison === 'igual a') {
+      case 'igual a':
         return targetTag === inputValue;
+      default:
+        return numericFilteredPlanets;
       }
-      return numericFilteredPlanets;
     });
     setFilteredPlanets(numericFilteredPlanets);
     handleNumericFilter();
+  }
+
+  function handleClickSortButton() {
+    if (order.sort === 'ASC') {
+      setFilteredPlanets(
+        [...data].sort((a, b) => {
+          if (Number(a[order.column]) < Number(b[order.column])) return NUM_NEGATIVE;
+          if (Number(a[order.column]) > Number(b[order.column])) return NUM_POSITIVE;
+          return 0;
+        }),
+      );
+    }
+    if (order.sort === 'DESC') {
+      setFilteredPlanets(
+        [...data].sort((a, b) => {
+          if (Number(a[order.column]) > Number(b[order.column])) return NUM_NEGATIVE;
+          if (Number(a[order.column]) < Number(b[order.column])) return NUM_POSITIVE;
+          return 0;
+        }),
+      );
+    }
   }
 
   function removeNumericFilter(event) {
@@ -91,7 +122,7 @@ function StarWarsPlanets({ children }) {
           ${selectedFilter.value}`}
         </span>
         <button onClick={ removeNumericFilter } type="button">
-          X
+          Remover
         </button>
       </div>
     ));
@@ -107,7 +138,7 @@ function StarWarsPlanets({ children }) {
             name="name-filter"
             placeholder="Search"
             data-testid="name-filter"
-            onChange={ (e) => setSearchTerm(e.target.value) }
+            onChange={ (e) => setsearchText(e.target.value) }
           />
         </label>
       </form>
@@ -128,7 +159,7 @@ function StarWarsPlanets({ children }) {
           data-testid="comparison-filter"
           onChange={ handleChangeComparison }
         >
-          {comparisonOptions.map((option) => (
+          {comparisonParams.map((option) => (
             <option key={ option } value={ option }>
               {option}
             </option>
@@ -144,15 +175,60 @@ function StarWarsPlanets({ children }) {
           type="button"
           onClick={ handleClickFilter }
         >
-          Add filter
+          Adicionar filtro
         </button>
       </section>
     );
   }
 
+  function sortForm() {
+    return (
+      <form>
+        <select
+          data-testid="column-sort"
+          onChange={ (e) => setOrder({ ...order, column: e.target.value }) }
+        >
+          {columnTags.map((sortTag) => (
+            <option key={ sortTag } value={ sortTag }>
+              {sortTag}
+            </option>
+          ))}
+        </select>
+        <label htmlFor="ASC">
+          <input
+            type="radio"
+            name="sort-input"
+            data-testid="column-sort-input-asc"
+            id="ASC"
+            value="ASC"
+            onClick={ (e) => setOrder({ ...order, sort: e.target.value }) }
+          />
+          ascendente
+        </label>
+        <label htmlFor="DESC">
+          <input
+            type="radio"
+            name="sort-input"
+            data-testid="column-sort-input-desc"
+            id="DESC"
+            value="DESC"
+            onClick={ (e) => setOrder({ ...order, sort: e.target.value }) }
+          />
+          descendente
+        </label>
+        <button
+          onClick={ handleClickSortButton }
+          type="button"
+          data-testid="column-sort-button"
+        >
+          Adicionar filtro ordenado
+        </button>
+      </form>
+    );
+  }
+
   const contextValue = {
-    data,
-    filteredPlanets,
+    filteredPlanets, sortedData, setSortedData,
   };
 
   return (
@@ -160,6 +236,7 @@ function StarWarsPlanets({ children }) {
       {numericFilter()}
       {filterByNameInput()}
       {renderNumericFilter()}
+      {sortForm()}
       {children}
     </Context.Provider>
   );
