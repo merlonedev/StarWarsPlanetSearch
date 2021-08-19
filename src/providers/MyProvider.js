@@ -4,8 +4,12 @@ import MyContext from './MyContext';
 
 function MyProvider({ children }) {
   const [data, setData] = useState([]);
-
-  const contextData = { data };
+  const [filterPlanets, setFilterPlanets] = useState([]);
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -18,6 +22,21 @@ function MyProvider({ children }) {
     getPlanets();
   });
 
+  const { name } = filters.filterByName;
+  useEffect(() => {
+    setFilterPlanets(
+      data.filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase())),
+    );
+  }, [name, data]);
+
+  const contextData = {
+    data,
+    filters,
+    setFilters,
+    filterPlanets,
+    setFilterPlanets,
+  };
+
   return (
     <MyContext.Provider value={ contextData }>
       { children }
@@ -26,7 +45,7 @@ function MyProvider({ children }) {
 }
 
 MyProvider.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.string).isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default MyProvider;
