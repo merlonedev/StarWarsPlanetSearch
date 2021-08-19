@@ -34,9 +34,9 @@ function ProviderContext({ children }) {
   const [value, setValue] = useState('');
   const [optionsComparation, setOptionsComparation] = useState(INITIAL_OPT_COMPAR_STATE);
   const [optionsProperties, setOptionsProperties] = useState(INITIAL_OPT_PROP_STATE);
+  const { filterByNumericValues } = filters;
 
   const handleClíckFilter = () => {
-    const { filterByNumericValues } = filters;
     setFilters({
       ...filters,
       filterByNumericValues: [
@@ -56,6 +56,8 @@ function ProviderContext({ children }) {
     const filterComparison = optionsComparation
       .filter((option) => option !== comparison);
     setOptionsComparation(filterComparison);
+
+    setValue('');
   };
 
   useEffect(() => {
@@ -84,7 +86,7 @@ function ProviderContext({ children }) {
   }, [planets]);
 
   useEffect(() => {
-    const { filterByName: { name }, filterByNumericValues } = filters;
+    const { filterByName: { name } } = filters;
     let filtersTable = newListPlanets;
 
     if (name !== '') {
@@ -121,7 +123,7 @@ function ProviderContext({ children }) {
       compareFilter();
     }
     setPlanetFilters(filtersTable);
-  }, [newListPlanets, filters]);
+  }, [newListPlanets, filters, filterByNumericValues]);
 
   const contextValue = {
     newListPlanets,
@@ -138,6 +140,7 @@ function ProviderContext({ children }) {
     setColumn,
     handleClíckFilter,
     setFilters,
+    INITIAL_FILTERS_STATE,
   };
 
   return (

@@ -6,6 +6,7 @@ import SelectFilterProperties from '../components/SelectFilterProperties';
 import SelectFilterComparation from '../components/SelectFilterComparation';
 import InputFilterValue from '../components/InputFilterValue';
 import ButtonFilter from '../components/ButtonFilter';
+import ButtonResetFilters from '../components/ButtonResetFilters';
 
 function Home() {
   const { isLoading } = useContext(Context);
@@ -19,6 +20,7 @@ function Home() {
       <SelectFilterComparation />
       <InputFilterValue />
       <ButtonFilter />
+      <ButtonResetFilters />
       <TabletPlanets />
     </>
   );
