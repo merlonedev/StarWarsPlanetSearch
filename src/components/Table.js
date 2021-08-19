@@ -1,8 +1,16 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { MyContext } from '../context/MyContext';
 
 function Table() {
-  const { planets } = useContext(MyContext);
+  const { planets, filter } = useContext(MyContext);
+
+  function filterPlanet() {
+    const getPlanet = planets
+      .filter((planet) => (planet.name.toLowerCase().includes(filter.toLowerCase())));
+  }
+  useEffect(() => {
+    filterPlanet();
+  }, [filter]);
   return (
     <table>
 
