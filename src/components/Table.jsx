@@ -5,7 +5,7 @@ export default function Table() {
   const { data, filters } = useContext(AppContext);
   let planets = data;
   const keys = Object.keys(data[0]).filter((name) => name !== 'residents');
-  const { filters: { filterByName: { name } } } = filters;
+  const { filterByName: { name } } = filters;
   if (name) {
     planets = planets.filter((planet) => (planet.name).toLowerCase().includes(name));
   }
