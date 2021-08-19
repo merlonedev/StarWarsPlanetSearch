@@ -22,6 +22,7 @@ function FilterByName() {
       <input
         data-testid="name-filter"
         placeholder="Pesquisar por nome"
+        value={ filters.filterByName.name }
         onChange={ (event) => filter(event) }
       />
     </div>
