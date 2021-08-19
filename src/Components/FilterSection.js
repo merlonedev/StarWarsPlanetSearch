@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Select from './Inputs/Select';
 import SWContext from '../Context/SWContext';
 
@@ -19,15 +19,19 @@ const COMPARISON_FILTER_OPTIONS = [
 function FilterSection() {
   const { filters, setFilters } = useContext(SWContext);
 
+  const [localFilterNumbers, setLocalFilter] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: 0,
+});
+
   const handleChange = ({ target }) => {
     setFilters({ ...filters, filterByName: { name: target.value } });
   };
 
-  const handleChangeFilterNumbers = ({ target: { name, value } }) => {
-    const { filterByNumericValues } = filters;
-    setFilters(
-      { ...filters,
-        filterByNumericValues: [{ ...filterByNumericValues[0], [name]: value }] },
+  const handleChangeLocalFilter = ({ target: { name, value } }) => {
+    setLocalFilter(
+      { ...localFilterNumbers, [name]: value },
     );
   };
 
@@ -45,20 +49,20 @@ function FilterSection() {
             testID="column-filter"
             options={ COLUMN_FILTER_OPTIONS }
             name="column"
-            onChange={ handleChangeFilterNumbers }
+            onChange={ handleChangeLocalFilter }
           />
           <Select
             testID="comparison-filter"
             options={ COMPARISON_FILTER_OPTIONS }
             name="comparison"
-            onChange={ handleChangeFilterNumbers }
+            onChange={ handleChangeLocalFilter }
           />
           <input
             type="number"
             placeholder="Digite o Valor"
             data-testid="value-filter"
             name="value"
-            onChange={ handleChangeFilterNumbers }
+            onChange={ handleChangeLocalFilter }
           />
           <button type="button">Filtrar</button>
         </div>
