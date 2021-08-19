@@ -3,6 +3,7 @@ import TabletPlanets from '../components/TablePlanets';
 import Context from '../context/Context';
 import InputFilterName from '../components/InputFilterName';
 import SelectFilterProperties from '../components/SelectFilterProperties';
+import SelectFilterComparation from '../components/SelectFilterComparation';
 
 function Home() {
   const { isLoading } = useContext(Context);
@@ -13,6 +14,7 @@ function Home() {
     <>
       <InputFilterName />
       <SelectFilterProperties />
+      <SelectFilterComparation />
       <TabletPlanets />
     </>
   );
