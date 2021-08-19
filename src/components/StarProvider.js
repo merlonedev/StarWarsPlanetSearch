@@ -9,7 +9,14 @@ function StarProvider({ children }) {
   const [data, loading] = usePlanets();
 
   const [filters, setFilters] = useState({
-    filterByName: '',
+    filterByName: { name: '' },
+    filterByNumericValues: [
+      {
+        column: '',
+        comparison: '',
+        value: '',
+      },
+    ],
   });
 
   useEffect(() => {
@@ -21,9 +28,9 @@ function StarProvider({ children }) {
 
   function filterPlanets() {
     const { filterByName } = filters;
-    if (!filterByName.length) return setPlanets(data);
+    if (!filterByName.name.length) return setPlanets(data);
     const filtered = planets.filter(
-      (e) => e.name.toLowerCase().includes(filterByName.toLowerCase()),
+      (e) => e.name.toLowerCase().includes(filterByName.name.toLowerCase()),
     );
     setPlanets(filtered);
   }
