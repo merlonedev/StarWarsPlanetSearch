@@ -133,8 +133,6 @@ function ProviderContext({ children }) {
     value,
     optionsComparation,
     optionsProperties,
-    setOptionsProperties,
-    setOptionsComparation,
     setValue,
     setComparison,
     setColumn,

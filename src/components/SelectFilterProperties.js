@@ -6,7 +6,6 @@ function SelectFilterProperties() {
     column,
     setColumn,
     optionsProperties,
-    // setOptionsProperties,
   } = useContext(Context);
 
   const handleChange = ({ target: { value } }) => setColumn(value);

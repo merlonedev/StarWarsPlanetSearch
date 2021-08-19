@@ -6,7 +6,6 @@ function SelectFilterComparation() {
     comparison,
     setComparison,
     optionsComparation,
-    setOptionsComparation,
   } = useContext(Context);
 
   const handleChange = ({ target: { value } }) => setComparison(value);
