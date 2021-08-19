@@ -7,6 +7,10 @@ function usePlanetsFilter(planets) {
       name: '',
     },
     filterByNumericValues: [],
+    order: {
+      column: 'name',
+      sort: 'ASC',
+    },
   });
 
   const removeFilter = (filterColumn) => {
@@ -36,7 +40,7 @@ function usePlanetsFilter(planets) {
       const filterUsingName = planets
         .filter((planet) => planet.name.toLowerCase().includes(filterByName.name));
 
-      const filterResult = filterUsingName.filter((planet) => {
+      const filterUsingNumericValues = filterUsingName.filter((planet) => {
         const planetPropertiesTest = filterByNumericValues
           .filter(({
             column,
@@ -46,7 +50,8 @@ function usePlanetsFilter(planets) {
 
         return (planetPropertiesTest.length === filterByNumericValues.length);
       });
-      setPlanetsFiltered(filterResult);
+
+      setPlanetsFiltered(filterUsingNumericValues);
     };
 
     filterPlanets();
