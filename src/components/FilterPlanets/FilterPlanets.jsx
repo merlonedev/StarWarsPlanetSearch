@@ -1,28 +1,54 @@
 import React from 'react';
 import Input from './Input';
 import Select from './Select';
-import { columns, comparisons } from '../../helpers/options';
+import { comparisons } from '../../helpers/options';
 import useFiltersPlanets from '../../hooks/useFiltersPlanets';
+import useHandleColumnOptions from '../../hooks/useHandleColumnOptions';
 
 function FilterPlanets() {
   const [filters, setFilters, setNumericFilter] = useFiltersPlanets();
+
+  const [optionsColumns,
+    handleColumnOptions,
+    setHandleColumnSelection] = useHandleColumnOptions();
+
+  const { selected, indexFilter } = handleColumnOptions;
+
   const {
     filterByName: { name },
-    filterByNumericValues: [{ column, comparison, value }],
     filterByNumericValues,
   } = filters;
 
+  const { column, comparison, value } = filterByNumericValues[indexFilter];
+
   const handleChangeNumericFilter = ({ target: { name: title, value: param } }) => {
+    const newParam = filterByNumericValues.map((filter, index) => (
+      index === indexFilter
+        ? { ...filterByNumericValues[indexFilter], [title]: param }
+        : filter
+    ));
     setFilters({
       ...filters,
-      filterByNumericValues: [{ ...filterByNumericValues[0], [title]: param }],
+      filterByNumericValues: newParam,
     });
   };
 
-  const handleNumericFilter = () => setNumericFilter(true);
+  const handleNumericFilter = () => {
+    setNumericFilter(true);
+    setHandleColumnSelection({
+      selected: [...selected, column],
+      indexFilter: indexFilter + 1,
+    });
+    setFilters({
+      ...filters,
+      filterByNumericValues: [...filterByNumericValues,
+        { column: optionsColumns[1], comparison: comparisons[0], value: 0 },
+      ],
+    });
+  };
 
-  const handleChangeName = ({ target: { value: param } }) => {
-    setFilters({ ...filters, filterByName: { name: param } });
+  const handleChangeName = ({ target: { name: title, value: param } }) => {
+    setFilters({ ...filters, filterByName: { [title]: param } });
   };
 
   return (
@@ -38,7 +64,7 @@ function FilterPlanets() {
         <Select
           name="column"
           id="column-filter"
-          options={ columns }
+          options={ optionsColumns }
           value={ column }
           text="Coluna: "
           onChange={ handleChangeNumericFilter }
