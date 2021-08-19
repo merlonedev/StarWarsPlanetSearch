@@ -1,11 +1,16 @@
 import React from 'react';
+import { useGlobalContext } from '../../context/GlobalContext';
 
-function Form() {
+export default function FiltersContainer() {
+  const { setFilterByName } = useGlobalContext();
+
   return (
-    <div>
-      Form
-    </div>
+    <section>
+      <input
+        data-testid="name-filter"
+        placeholder="Planet name"
+        onChange={ setFilterByName }
+      />
+    </section>
   );
 }
-
-export default Form;
