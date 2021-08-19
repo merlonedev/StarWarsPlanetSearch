@@ -1,9 +1,15 @@
 import React from 'react';
 import './App.css';
+import Table from './components/table/Table';
+import PlanetsInfo from './context/usePlanetsInfo';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <PlanetsInfo>
+      <main>
+        <Table />
+      </main>
+    </PlanetsInfo>
   );
 }
 
