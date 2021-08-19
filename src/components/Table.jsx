@@ -4,7 +4,7 @@ import TableData from './TableData';
 import TableFilterByName from './TableFilterByName';
 
 function Table() {
-  const { filterByName } = useContext(PlanetContext);
+  const { filters: { filterByName: { name } } } = useContext(PlanetContext);
 
   return (
     <div>
@@ -25,7 +25,7 @@ function Table() {
           <th>terrain</th>
           <th>url</th>
         </tr>
-        { filterByName ? <TableFilterByName /> : <TableData />}
+        { name ? <TableFilterByName /> : <TableData />}
       </table>
     </div>
   );

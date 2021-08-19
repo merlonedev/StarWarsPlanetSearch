@@ -2,7 +2,11 @@ import { createContext } from 'react';
 
 const INITIAL_STATE = {
   data: [],
-  filters: {},
+  filters: {
+    filterByName: {
+      name: '',
+    },
+  },
 };
 
 const PlanetContext = createContext(INITIAL_STATE);

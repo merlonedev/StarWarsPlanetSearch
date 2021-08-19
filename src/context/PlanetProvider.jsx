@@ -6,7 +6,11 @@ import fetchPlanetsApi from '../services/fetchPlanetsApi';
 function PlanetProvider({ children }) {
   const [data, setData] = useState();
   const [inputName, setInputName] = useState();
-  const [filterByName, setFilterByName] = useState();
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
 
   useEffect(() => {
     const getPlanetsApi = async () => {
@@ -19,15 +23,16 @@ function PlanetProvider({ children }) {
   useEffect(() => {
     if (data) {
       const dataFilter = data.filter((item) => (
-        item.name.toLowerCase().includes(inputName)));
-      setFilterByName(dataFilter);
+        item.name.toLowerCase().includes(inputName)
+      ));
+      setFilters({ ...filters, filterByName: { name: dataFilter } });
     }
   }, [inputName]);
 
   const contextValue = {
     data,
     setInputName,
-    filterByName,
+    filters,
   };
 
   return (

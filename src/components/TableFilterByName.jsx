@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import PlanetContext from '../context/PlanetContext';
 
 function TableFilterByName() {
-  const { filterByName } = useContext(PlanetContext);
+  const { filters: { filterByName: { name } } } = useContext(PlanetContext);
 
   return (
     <tbody>
       {
-        filterByName.map((item) => (
+        name.map((item) => (
           <tr key={ item.name }>
             <td>{ item.name }</td>
             <td>{ item.climate }</td>
