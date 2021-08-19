@@ -5,7 +5,7 @@ import Input from './Input';
 function Filters() {
   const numericFiltersState = {
     column: 'population',
-    comparison: 'menor que',
+    comparison: 'maior que',
     value: '0',
   };
 
@@ -18,6 +18,7 @@ function Filters() {
     const newState = {
       ...filtersState,
       filters: {
+        ...filtersState.filters,
         filterByName: {
           name: event.target.value,
         },

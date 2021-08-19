@@ -9,14 +9,59 @@ function Table() {
 
   const { planets, filtersState } = useContext(Context);
 
+  const customFilter = (filterByNumericValues, getFilteredPlanets) => {
+    setFilteredPlanets([]);
+    const withCustomFilters = [];
+
+    filterByNumericValues.forEach((filter) => {
+      getFilteredPlanets.forEach((planetsFiltered, index) => {
+        switch (filter.comparison) {
+        case 'maior que':
+          if (
+            parseInt(planetsFiltered[filter.column], 10) > parseInt(filter.value, 10)
+          ) {
+            console.log('Maior');
+            withCustomFilters.push(getFilteredPlanets[index]);
+          }
+          break;
+        case 'menor que':
+          if (
+            parseInt(planetsFiltered[filter.column], 10) < parseInt(filter.value, 10)
+          ) {
+            console.log('Menor');
+            withCustomFilters.push(getFilteredPlanets[index]);
+          }
+          break;
+        case 'igual a':
+          if (
+            parseInt(planetsFiltered[filter.column], 10) === parseInt(filter.value, 10)
+          ) {
+            console.log('Igual');
+            withCustomFilters.push(getFilteredPlanets[index]);
+          }
+          break;
+        default:
+          withCustomFilters.push(getFilteredPlanets[index]);
+          break;
+        }
+      });
+    });
+    setFilteredPlanets(withCustomFilters);
+  };
+
   useEffect(() => {
     const { filters: { filterByName: { name } } } = filtersState;
+    const { filters: { filterByNumericValues } } = filtersState;
 
     const getFilteredPlanets = planets.filter((planet) => (
       planet.name.toLowerCase().includes(name.toLowerCase())
     ));
 
-    setFilteredPlanets(getFilteredPlanets);
+    if (filterByNumericValues.length >= 1) {
+      customFilter(filterByNumericValues, getFilteredPlanets);
+    } else {
+      setFilteredPlanets(getFilteredPlanets);
+    }
   }, [filtersState, planets]);
 
   return (
