@@ -12,7 +12,6 @@ function Table() {
       filterByNumericValues,
     },
   } = useContext(context);
-
   const doesInclude = (planetName) => planetName.toLowerCase()
     .includes(name.toLowerCase());
 
@@ -25,6 +24,7 @@ function Table() {
     case 'igual a':
       return planetValue === value;
     default:
+      console.log('sim');
       return true;
     }
   };

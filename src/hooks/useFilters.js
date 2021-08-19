@@ -27,7 +27,7 @@ function useFilters() {
     removeFilter,
     restoreFilter,
   };
-  return [filters, filterFunctions];
+  return [filters, filterFunctions, currentFilters];
 }
 
 export default useFilters;

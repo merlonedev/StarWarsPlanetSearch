@@ -7,9 +7,11 @@ function Provider({ children }) {
   const [name, setName] = useState('');
   const [filters, setFilters] = useState([]);
 
-  const handleSetFilters = (filter) => {
-    setFilters([...filters, filter]);
-  };
+  const handleSetFilters = (filter, newFilter) => (
+    newFilter
+      ? setFilters(filter)
+      : setFilters([...filters, filter]));
+
   const contextValue = {
     data: {
       planets,

@@ -2,17 +2,21 @@ import React, { useContext, useEffect, useState } from 'react';
 import context from '../context';
 
 import useFilters from '../hooks/useFilters';
+import CurrentFiltersList from './CurrentFiltersList';
 
 function Filters() {
   const [inputText, setInputText] = useState('');
   const [column, setColumn] = useState('population');
-  const [comparison, setComparison] = useState('bigger');
+  const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState(0);
   const {
     setName,
     handleSetFilters,
+    filters: {
+      filterByNumericValues,
+    },
   } = useContext(context);
-  const [filters, { removeFilter }] = useFilters();
+  const [filters, { removeFilter, restoreFilter }, currentFilters] = useFilters();
 
   useEffect(() => {
     setColumn(filters[0]);
@@ -25,6 +29,12 @@ function Filters() {
   const handleAddFilter = () => {
     handleSetFilters({ column, comparison, value: parseInt(value, 10) });
     removeFilter(column);
+  };
+
+  const handleRemoveFilter = (filter) => {
+    restoreFilter(filter);
+    const newFilters = filterByNumericValues.filter((item) => item.column !== filter);
+    handleSetFilters(newFilters, true);
   };
   return (
     <div>
@@ -82,6 +92,7 @@ function Filters() {
           Adicionar filtro
         </button>
       </form>
+      <CurrentFiltersList filters={ currentFilters } onClick={ handleRemoveFilter } />
     </div>
   );
 }
