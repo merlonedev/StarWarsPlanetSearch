@@ -2,14 +2,21 @@ import React, { useState, useEffect } from 'react';
 import propTypes from 'prop-types';
 import StarWarsContext from './StarWarsContext';
 
+const initialColumnOptions = ['population',
+  'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+const initialComparisonOptions = ['maior que',
+  'menor que', 'igual a'];
+
 function StarWarsProvider({ children }) {
   const [data, setData] = useState([]);
   const [inputName, setInputName] = useState('');
   const [numValue, setNumValue] = useState({
-    column: '',
-    comparison: '',
+    column: 'population',
+    comparison: 'maior que',
     value: 0,
   });
+  const [columnOptions, setColumnOptions] = useState(initialColumnOptions);
+  const [comparisonOptions, setComparisonOptions] = useState(initialComparisonOptions);
 
   useEffect(() => {
     const getData = async () => {
@@ -40,6 +47,17 @@ function StarWarsProvider({ children }) {
     }
   };
 
+  const handleOptions = () => {
+    const { column, comparison, value } = numValue;
+    if (column !== '' && comparison !== '' && value !== 0) {
+      const newComparisonOptions = comparisonOptions
+        .filter((item) => item !== comparison && item);
+      setComparisonOptions(newComparisonOptions);
+      const newColumnOptions = columnOptions.filter((thing) => thing !== column);
+      setColumnOptions(newColumnOptions);
+    }
+  };
+
   const contextValue = {
     data,
     setInputName,
@@ -51,6 +69,9 @@ function StarWarsProvider({ children }) {
     },
     setNumValue,
     renderFilterByNumValues,
+    columnOptions,
+    comparisonOptions,
+    handleOptions,
   };
 
   return (

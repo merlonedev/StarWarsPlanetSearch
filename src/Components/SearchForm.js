@@ -7,7 +7,8 @@ function SearchForm() {
     setInputName,
     filters,
     setNumValue,
-    renderFilterByNumValues } = useContext(StarWarsContext);
+    renderFilterByNumValues,
+    columnOptions, comparisonOptions, handleOptions } = useContext(StarWarsContext);
 
   const handleChangeName = ({ target }) => {
     setInputName(target.value);
@@ -20,6 +21,11 @@ function SearchForm() {
       ...filterByNumericValues[0],
       [target.name]: newInput,
     });
+  };
+
+  const handleClick = () => {
+    handleOptions();
+    renderFilterByNumValues();
   };
 
   return (
@@ -42,12 +48,7 @@ function SearchForm() {
           type="text"
           onChange={ (event) => handleChangeNumValue(event) }
         >
-          <option value="">Choose column</option>
-          <option>population</option>
-          <option>orbital_period</option>
-          <option>diameter</option>
-          <option>rotation_period</option>
-          <option>surface_water</option>
+          {columnOptions.map((item) => <option key={ item }>{item}</option>)}
         </select>
       </label>
       <label htmlFor="comparisonFilter">
@@ -59,10 +60,7 @@ function SearchForm() {
           type="text"
           onChange={ (event) => handleChangeNumValue(event) }
         >
-          <option value="">Choose comparison</option>
-          <option>maior que</option>
-          <option>menor que</option>
-          <option>igual a</option>
+          {comparisonOptions.map((item) => <option key={ item }>{item}</option>)}
         </select>
       </label>
       <label htmlFor="valueFilter">
@@ -78,7 +76,7 @@ function SearchForm() {
       <button
         type="button"
         data-testid="button-filter"
-        onClick={ renderFilterByNumValues }
+        onClick={ handleClick }
       >
         Add filter
       </button>
