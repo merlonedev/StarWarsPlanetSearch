@@ -2,8 +2,7 @@ import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
 
 function FiltroNumerico() {
-  const [options] = useState([
-    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
+  const { contextValu: { options: { opcoes } } } = useContext(AppContext);
   const [comparadores] = useState(['maior que', 'menor que', 'igual a']);
   const { contextValu: { functions: { submitFilter } } } = useContext(AppContext);
   return (
@@ -14,7 +13,7 @@ function FiltroNumerico() {
           id="filtro"
         >
           {
-            options.map((option, index) => (
+            opcoes.map((option, index) => (
               <option
                 value={ option }
                 key={ index }

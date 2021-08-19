@@ -6,6 +6,9 @@ function Provider({ children }) {
   const [data, setData] = useState();
   const [filterByName, setFilterByName] = useState({ name: '' });
   const [filterByNumericValues, setfilterByNumericValues] = useState([]);
+  const Opcoes = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+  const [opcoes, setOpcoes] = useState([...Opcoes]);
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -26,6 +29,7 @@ function Provider({ children }) {
     const numericValue = document.getElementById('valor').value;
     const column = document.getElementById('filtro').value;
 
+    setOpcoes(opcoes.filter((op) => op !== column));
     setfilterByNumericValues([{
       column,
       comparison,
@@ -43,6 +47,10 @@ function Provider({ children }) {
     functions: {
       filtroNome,
       submitFilter,
+    },
+    options: {
+      opcoes,
+      setOpcoes,
     },
   };
 
