@@ -2,14 +2,12 @@ import React, { useContext, useState } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import { MyContext } from '../context/Provider';
 import helperToOptions from '../helper';
-import SetGlobalFilter from '../hook/SetFilter';
 
 const FilterInputs = () => {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [valueNumber, setValue] = useState(0);
-  const { SetFilter } = useContext(MyContext);
-  const { optionsfiltered } = SetGlobalFilter();
+  const { SetFilter, optionsfiltered } = useContext(MyContext);
 
   const handleChange = (e) => {
     const { value, name } = e;

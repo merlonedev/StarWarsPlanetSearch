@@ -11,7 +11,7 @@ const INITIAL_STATE = {
 const SetGlobalFilter = () => {
   const [filters, setFiltered] = useState(INITIAL_STATE);
   const [filteredData, setFilterData] = useState();
-  const [optionsfiltered] = useState(['population',
+  const [optionsfiltered, setOptions] = useState(['population',
     'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
   const { data } = FetchHook();
 
@@ -42,6 +42,7 @@ const SetGlobalFilter = () => {
     } else {
       const { comparison, column, valueNumber } = target.filterByNumericValues[0];
       setFiltered({ ...filters, ...target });
+      setOptions(optionsfiltered.filter((e) => e !== column));
       objFunc[comparison](column, valueNumber);
     }
   };
