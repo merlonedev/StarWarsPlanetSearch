@@ -18,7 +18,7 @@ const Table = () => {
           <th>Climate</th>
           <th>Gravity</th>
           <th>Terrain</th>
-          <th>Srface Water</th>
+          <th>Surface Water</th>
           <th>Population</th>
           <th>Films</th>
           <th>Created</th>
