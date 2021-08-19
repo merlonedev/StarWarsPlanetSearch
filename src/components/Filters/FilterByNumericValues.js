@@ -25,6 +25,7 @@ const FilterByNumericValues = () => {
         comparison,
         value },
     ]);
+    setValue(0);
   };
 
   if (columns.length === 0) {
