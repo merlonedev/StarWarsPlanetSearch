@@ -5,10 +5,16 @@ import MyContext from './Context';
 function MyProvider({ children }) {
   const [data, setData] = useState([]);
   const [filteredPlanets, setFilteredPlanets] = useState([]);
+
   const [filters, setFilters] = useState({
-    filterByName: {
-      name: '',
-    },
+    filterByName: { name: '' },
+    filterByNumericValues: [{ column: '', comparison: '', value: '' }],
+  });
+
+  const [numericFilters, setNumericFilters] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: '0',
   });
 
   useEffect(() => {
@@ -28,6 +34,21 @@ function MyProvider({ children }) {
         .toLowerCase().includes(name.toLowerCase())),
     );
   }, [data, name]);
+  // planet 'if' population > 10 return planets
+  useEffect(() => {
+    const { filterByNumericValues } = filters;
+    filterByNumericValues.forEach(({ column, comparison, value }) => (
+      value && setFilteredPlanets((prevsPlanets) => prevsPlanets.filter((planet) => {
+        if (comparison === 'maior que') {
+          return Number(planet[column]) > Number(value);
+        }
+        if (comparison === 'menor que') {
+          return Number(planet[column]) < Number(value);
+        }
+        return Number(planet[column]) === Number(value);
+      }))
+    ));
+  }, [filters]);
 
   const contextValue = {
     data,
@@ -35,6 +56,8 @@ function MyProvider({ children }) {
     setFilters,
     filteredPlanets,
     setFilteredPlanets,
+    numericFilters,
+    setNumericFilters,
   };
 
   return (
@@ -49,3 +72,7 @@ MyProvider.propTypes = {
 export default MyProvider;
 // Link
 // https://codesandbox.io/embed/react-hooks-search-filter-4gnwc
+// Vinicius Tavares
+// https://github.com/tryber/sd-012-project-starwars-planets-search/commit/5dbc25783415d5c030b56bebf60a559eb3c14b0c
+// Eric Kreis
+// https://github.com/tryber/sd-012-project-starwars-planets-search/pull/35/commits/fac6b0bb3e192f5d8e8370c382eb9f9938e99f17
