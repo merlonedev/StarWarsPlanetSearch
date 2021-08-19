@@ -9,6 +9,15 @@ function usePlanetsFilter(planets) {
     filterByNumericValues: [],
   });
 
+  const removeFilter = (filterColumn) => {
+    const { filterByNumericValues } = filters;
+    setFilters({
+      ...filters,
+      filterByNumericValues: filterByNumericValues
+        .filter(({ column }) => column !== filterColumn),
+    });
+  };
+
   const propertieChecker = (propertieValue, condition, value) => {
     switch (condition) {
     case 'maior que':
@@ -43,7 +52,7 @@ function usePlanetsFilter(planets) {
     filterPlanets();
   }, [filters, planets]);
 
-  return [planetsFiltered, filters, setFilters];
+  return [planetsFiltered, filters, setFilters, removeFilter];
 }
 
 export default usePlanetsFilter;

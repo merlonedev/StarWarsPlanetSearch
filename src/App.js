@@ -4,6 +4,7 @@ import AppContext from './context/AppContext';
 import Table from './components/Table';
 import FilterBar from './components/FilterBar';
 import usePlanetsFilter from './hooks/usePlanetsFilter';
+import ActiveFilters from './components/ActiveFilters';
 
 function App() {
   const [planets, setPlanets] = useState([]);
@@ -25,18 +26,20 @@ function App() {
     getData();
   }, []);
 
-  const [planetsFiltered, filters, setFilters] = usePlanetsFilter(planets);
+  const [planetsFiltered, filters, setFilters, removeFilter] = usePlanetsFilter(planets);
 
   const contextValue = {
     planetsFiltered,
     tableColumns,
     filters,
     setFilters,
+    removeFilter,
   };
 
   return (
     <AppContext.Provider value={ contextValue }>
       <FilterBar />
+      <ActiveFilters />
       <Table />
     </AppContext.Provider>
   );
