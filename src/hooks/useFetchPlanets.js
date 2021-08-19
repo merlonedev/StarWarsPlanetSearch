@@ -14,7 +14,6 @@ function useFetchPlanets() {
       });
       setData(planets);
       setIsFetching(false);
-      console.log('fetch');
     };
     if (isMounted) getPlanets();
     setIsMounted(true);
