@@ -7,6 +7,7 @@ const usePlanets = () => {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [],
   });
 
   useEffect(() => {
@@ -27,10 +28,27 @@ const usePlanets = () => {
   }, []);
 
   useEffect(() => {
+    const { filterByNumericValues } = filters;
     const filteredByName = data
       .filter(({ name }) => name.includes(filters.filterByName.name));
 
-    setFilteredPlanets(filteredByName);
+    const filterByNumVal = (array, { column, comparison, value }) => (
+      array.filter((planet) => {
+        if (comparison === 'maior que') {
+          return parseInt(planet[column], 10) > parseInt(value, 10);
+        }
+        if (comparison === 'menor que') {
+          return parseInt(planet[column], 10) < parseInt(value, 10);
+        }
+        return parseInt(planet[column], 10) === parseInt(value, 10);
+      })
+    );
+
+    const filtered = filterByNumericValues.reduce((acc, filter) => (
+      filterByNumVal(acc, filter)
+    ), [...filteredByName]);
+
+    setFilteredPlanets(filtered);
   }, [filters, data]);
 
   return {

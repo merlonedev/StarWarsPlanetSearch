@@ -6,6 +6,7 @@ const contextTable = createContext({
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [],
   },
 });
 
