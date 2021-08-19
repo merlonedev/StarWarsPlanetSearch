@@ -3,7 +3,11 @@ import Context from '../../context/Context';
 import { comparisonMethods } from '../../utils/data';
 
 const FilterByNumericValues = () => {
-  const { setFilterByNumericValue, columns } = useContext(Context);
+  const {
+    setFilterByNumericValue,
+    columns,
+    filters: { filterByNumericValue },
+  } = useContext(Context);
 
   const [column, setColumn] = useState('population');
   const [comparison, setcomparison] = useState('maior que');
@@ -11,11 +15,12 @@ const FilterByNumericValues = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFilterByNumericValue({
-      column,
-      comparison,
-      value,
-    });
+    setFilterByNumericValue([
+      ...filterByNumericValue,
+      { column,
+        comparison,
+        value },
+    ]);
   };
 
   return (

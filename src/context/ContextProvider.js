@@ -7,7 +7,7 @@ const Provider = ({ children }) => {
   const [fullData, setFullData] = useState([]);
   const [data, setData] = useState([]);
   const [name, setName] = useState('');
-  const [filterByNumericValue, setFilterByNumericValue] = useState(null);
+  const [filterByNumericValue, setFilterByNumericValue] = useState([]);
   const [columnsOptions, setColumnsOptions] = useState(columns);
 
   useEffect(() => {
@@ -28,10 +28,14 @@ const Provider = ({ children }) => {
   ), [fullData, name]);
 
   const dataFilteredByNumeric = useMemo(() => {
-    if (filterByNumericValue) {
-      const { column, comparison, value } = filterByNumericValue;
-      return dataFilteredByName
-        .filter((planet) => switchComparison(planet, column, comparison, value));
+    if (filterByNumericValue.length > 0) {
+      let filteredData = dataFilteredByName;
+      filterByNumericValue.forEach((filter) => {
+        const { column, comparison, value } = filter;
+        filteredData = filteredData
+          .filter((planet) => switchComparison(planet, column, comparison, value));
+      });
+      return filteredData;
     }
     return dataFilteredByName;
   }, [dataFilteredByName, filterByNumericValue]);
