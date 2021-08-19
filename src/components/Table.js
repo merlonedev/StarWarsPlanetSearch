@@ -2,8 +2,9 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 const Table = () => {
-  const { data } = useContext(AppContext);
-  const { filters } = useContext(AppContext);
+  const { data, filters } = useContext(AppContext);
+
+  // const [currentPlanets, setCurrentPlanets] = useState();
 
   const renderTableHeader = () => {
     const result = Object.keys(data[0]).map((title) => {
@@ -39,7 +40,10 @@ const Table = () => {
   };
 
   if (data !== undefined) {
-    if (filters.filterByName.name === '') {
+    if (filters.filterByName.name !== '') {
+      const filteredPlanets = data.filter((planet) => (
+        planet.name.includes(filters.filterByName.name)
+      ));
       return (
         <table>
           <thead>
@@ -48,14 +52,45 @@ const Table = () => {
             </tr>
           </thead>
           <tbody>
-            { renderPlanets(data) }
+            { renderPlanets(filteredPlanets) }
           </tbody>
         </table>
       );
     }
-    const filteredPlanets = data.filter((planet) => (
-      planet.name.includes(filters.filterByName.name)
-    ));
+
+    if (filters.filterByNumericValues.length > 0) {
+      const lastFilterLength = filters.filterByNumericValues.length - 1;
+      const lastFilter = filters.filterByNumericValues[lastFilterLength];
+      const { column, comparison, value } = lastFilter;
+      let filteredPlanets;
+      if (comparison === 'maior que') {
+        filteredPlanets = data.filter((planet) => (
+          +planet[column] > +value
+        ));
+        console.log(filteredPlanets);
+      } else if (comparison === 'menor que') {
+        filteredPlanets = data.filter((planet) => (
+          +planet[column] < +value
+        ));
+      } else {
+        filteredPlanets = data.filter((planet) => (
+          +planet[column] === +value
+        ));
+      }
+      return (
+        <table>
+          <thead>
+            <tr>
+              { renderTableHeader() }
+            </tr>
+          </thead>
+          <tbody>
+            { renderPlanets(filteredPlanets) }
+          </tbody>
+        </table>
+      );
+    }
+
     return (
       <table>
         <thead>
@@ -64,7 +99,7 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          { renderPlanets(filteredPlanets) }
+          { renderPlanets(data) }
         </tbody>
       </table>
     );

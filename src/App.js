@@ -1,28 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Filters from './components/Filters';
-import AppContext from './context/AppContext';
+import Table from './components/Table';
+import AppProvider from './context/AppProvider';
 
-const App = () => {
-  const [planets, setPlanets] = useState();
-
-  useEffect(() => {
-    const getPlanets = async () => {
-      const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const response = await fetch(endpoint);
-      const { results } = await response.json();
-      setPlanets(results);
-    };
-    getPlanets();
-  }, []);
-
-  const contextValue = {
-    data: planets,
-  };
-  return (
-    <AppContext.Provider value={ contextValue }>
-      <Filters />
-    </AppContext.Provider>
-  );
-};
+const App = () => (
+  <AppProvider>
+    <Filters />
+    <Table />
+  </AppProvider>
+);
 
 export default App;
