@@ -14,7 +14,11 @@ const Button = ({ buttonText, onClick, testId }) => (
 Button.propTypes = {
   buttonText: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  testId: PropTypes.string.isRequired,
+  testId: PropTypes.string,
+};
+
+Button.defaultProps = {
+  testId: '',
 };
 
 export default Button;

@@ -17,9 +17,13 @@ Select.propTypes = {
     PropTypes.string.isRequired,
   ).isRequired,
   name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   testId: PropTypes.string.isRequired,
+};
+
+Select.defaultProps = {
+  value: '',
 };
 
 export default Select;

@@ -35,7 +35,7 @@ const Filters = () => {
     });
   };
 
-  const handleClick = () => {
+  const handleAddFilters = () => {
     const { column, comparison, value, columnOptions } = numFilterState;
     const newFilters = {
       ...filters,
@@ -67,16 +67,39 @@ const Filters = () => {
     }
   };
 
+  const handleRemoveFilters = (column) => {
+    const { columnOptions } = numFilterState;
+    const { filterByNumericValues } = filters;
+
+    const numFilters = filterByNumericValues
+      .filter(({ column: columnFilter }) => columnFilter !== column);
+
+    const newFilters = {
+      ...filters,
+      filterByNumericValues: numFilters,
+    };
+
+    setNumFilterState({
+      ...numFilterState,
+      columnOptions: [...columnOptions, column],
+    });
+    setFilters(newFilters);
+  };
+
   return (
     <div>
       <div>
         {
           filters.filterByNumericValues
             .map(({ column, comparison, value }) => (
-              <div key={ column }>
-                <p>
+              <div key={ column } data-testid="filter">
+                <span>
                   { `{ column: ${column}, comparison: ${comparison}, value: ${value}, }` }
-                </p>
+                </span>
+                <Button
+                  buttonText="X"
+                  onClick={ () => handleRemoveFilters(column) }
+                />
               </div>
             ))
         }
@@ -122,7 +145,7 @@ const Filters = () => {
       <div>
         <Button
           buttonText="Adicionar filtro"
-          onClick={ handleClick }
+          onClick={ handleAddFilters }
           testId="button-filter"
         />
       </div>
