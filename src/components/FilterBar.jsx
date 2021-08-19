@@ -3,19 +3,22 @@ import AppContext from '../context/AppContext';
 
 function FilterBar() {
   const { filters, setFilters } = useContext(AppContext);
+  const [inputFilters, setInputFilters] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: 0,
+  });
+
   const columnFilterList = [
     'population',
     'orbital_period',
     'diameter',
     'rotation_period',
     'surface_water',
-  ];
+  ].filter((columnValue) => !filters.filterByNumericValues
+    .some(({ column }) => column === columnValue));
+
   const comparisonFilterList = ['maior que', 'menor que', 'igual a'];
-  const [inputFilters, setInputFilters] = useState({
-    column: 'population',
-    comparison: 'maior que',
-    value: 0,
-  });
 
   const handleChange = ({ target: { name, value } }) => {
     if (name === 'name') {
