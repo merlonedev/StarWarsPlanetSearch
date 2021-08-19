@@ -59,7 +59,7 @@ function FilterByNumericValues() {
               name="column"
               data-testid="column-filter"
               onChange={ handleChange }
-              // defaultValue="population"
+              defaultValue="population"
               id="input-numbers"
             >
               { selectColumn.map((item) => (
