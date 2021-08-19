@@ -38,6 +38,7 @@ const FilterByNumericValues = () => {
 
   return (
     <form onSubmit={ handleSubmit }>
+      <p>Filter by Column Value</p>
       <select
         data-testid="column-filter"
         value={ column }
@@ -57,7 +58,7 @@ const FilterByNumericValues = () => {
         }
       </select>
       <label htmlFor="value">
-        Valor:
+        Value:
         {' '}
         <input
           data-testid="value-filter"
