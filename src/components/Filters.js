@@ -18,6 +18,11 @@ const Filters = () => {
     comparison: COMPARISON[0],
     value: 0,
   });
+  const [orderState, setOrderState] = useState({
+    columnOptions: ['name', ...COLUMNS],
+    column: 'name',
+    sort: 'ASC',
+  });
 
   const handleChangeName = ({ target: { value } }) => {
     setFilters({
@@ -86,24 +91,27 @@ const Filters = () => {
     setFilters(newFilters);
   };
 
+  const handleChangeOrder = ({ target: { name, value } }) => {
+    setOrderState({
+      ...orderState,
+      [name]: value,
+    });
+  };
+
+  const handleAddSort = () => {
+    const { column, sort } = orderState;
+    const newOrder = {
+      ...filters,
+      order: {
+        column,
+        sort,
+      },
+    };
+    setFilters(newOrder);
+  };
+
   return (
     <div>
-      <div>
-        {
-          filters.filterByNumericValues
-            .map(({ column, comparison, value }) => (
-              <div key={ column } data-testid="filter">
-                <span>
-                  { `{ column: ${column}, comparison: ${comparison}, value: ${value}, }` }
-                </span>
-                <Button
-                  buttonText="X"
-                  onClick={ () => handleRemoveFilters(column) }
-                />
-              </div>
-            ))
-        }
-      </div>
       <div>
         <Input
           inputType="text"
@@ -115,39 +123,97 @@ const Filters = () => {
         />
       </div>
       <div>
-        <Select
-          name="column"
-          options={ numFilterState.columnOptions }
-          value={ numFilterState.column }
-          onChange={ handleChangeFilter }
-          testId="column-filter"
-        />
+        <div>
+          <Select
+            name="column"
+            options={ orderState.columnOptions }
+            value={ orderState.column }
+            onChange={ handleChangeOrder }
+            testId="column-sort"
+          />
+        </div>
+        <div>
+          <Input
+            inputType="radio"
+            value="ASC"
+            onChange={ handleChangeOrder }
+            name="sort"
+            id="input-asc"
+            testId="column-sort-input-asc"
+          />
+        </div>
+        <div>
+          <Input
+            inputType="radio"
+            value="DESC"
+            onChange={ handleChangeOrder }
+            name="sort"
+            id="input-desc"
+            testId="column-sort-input-desc"
+          />
+        </div>
+        <div>
+          <Button
+            buttonText="Adicionar ordenação"
+            onClick={ handleAddSort }
+            testId="column-sort-button"
+          />
+        </div>
       </div>
       <div>
-        <Select
-          name="comparison"
-          options={ numFilterState.comparisonOptions }
-          value={ numFilterState.comparison }
-          onChange={ handleChangeFilter }
-          testId="comparison-filter"
-        />
-      </div>
-      <div>
-        <Input
-          inputType="number"
-          placeholder="Valor"
-          value={ numFilterState.value }
-          onChange={ handleChangeFilter }
-          name="value"
-          testId="value-filter"
-        />
-      </div>
-      <div>
-        <Button
-          buttonText="Adicionar filtro"
-          onClick={ handleAddFilters }
-          testId="button-filter"
-        />
+        <div>
+          {
+            filters.filterByNumericValues
+              .map(({ column, comparison, value }) => (
+                <div key={ column } data-testid="filter">
+                  <span>
+                    {
+                      `{ column: ${column}, comparison: ${comparison}, value: ${value}, }`
+                    }
+                  </span>
+                  <Button
+                    buttonText="X"
+                    onClick={ () => handleRemoveFilters(column) }
+                  />
+                </div>
+              ))
+          }
+        </div>
+        <div>
+          <Select
+            name="column"
+            options={ numFilterState.columnOptions }
+            value={ numFilterState.column }
+            onChange={ handleChangeFilter }
+            testId="column-filter"
+          />
+        </div>
+        <div>
+          <Select
+            name="comparison"
+            options={ numFilterState.comparisonOptions }
+            value={ numFilterState.comparison }
+            onChange={ handleChangeFilter }
+            testId="comparison-filter"
+          />
+        </div>
+        <div>
+          <Input
+            inputType="number"
+            placeholder="Valor"
+            value={ numFilterState.value }
+            onChange={ handleChangeFilter }
+            name="value"
+            testId="value-filter"
+          />
+        </div>
+        <div>
+          <Button
+            buttonText="Adicionar filtro"
+            onClick={ handleAddFilters }
+            testId="button-filter"
+          />
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import sortArray from '../helpers';
 
 const usePlanets = () => {
   const [data, setData] = useState([]);
@@ -8,6 +9,10 @@ const usePlanets = () => {
       name: '',
     },
     filterByNumericValues: [],
+    order: {
+      column: 'name',
+      sort: 'ASC',
+    },
   });
 
   useEffect(() => {
@@ -28,7 +33,7 @@ const usePlanets = () => {
   }, []);
 
   useEffect(() => {
-    const { filterByNumericValues } = filters;
+    const { filterByNumericValues, order } = filters;
     const filteredByName = data
       .filter(({ name }) => name.includes(filters.filterByName.name));
 
@@ -47,6 +52,8 @@ const usePlanets = () => {
     const filtered = filterByNumericValues.reduce((acc, filter) => (
       filterByNumVal(acc, filter)
     ), [...filteredByName]);
+
+    sortArray(filtered, order);
 
     setFilteredPlanets(filtered);
   }, [filters, data]);
