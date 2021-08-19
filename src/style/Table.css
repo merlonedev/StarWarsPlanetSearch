@@ -1,0 +1,53 @@
+.planets-table {
+  border: 1px solid black;
+  width: 98%;
+}
+
+.table-row, .cell {
+  border: 1px solid black;
+}
+
+.header, .header > .created, .header > .edited, .header > .url {
+  background-color: cadetblue;
+  font-size: 20px;
+  text-align: center;
+}
+
+.name, .rotation, .orbital, .diameter, .climate, .water, .population {
+  font-weight: 700;
+  text-align: center;
+  width: 6%;
+}
+
+.terrain, .gravity {
+  font-weight: 700;
+  text-align: center;
+  width: 12%;
+}
+
+.created, .edited, .url {
+  font-weight: 700;
+  text-align: justify;
+  width: 8%;
+  line-height: 50%;
+}
+
+.header > .films {
+  font-weight: 700;
+  text-align: center;
+  width: 9%;
+}
+
+.body > .films {
+  font-weight: 500;
+  text-align: justify;
+  width: 9%;
+  font-size: small;
+}
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}

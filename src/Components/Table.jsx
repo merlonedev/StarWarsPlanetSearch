@@ -1,53 +1,48 @@
-import React from 'react';
-import StarWarsContext from '../context/context';
+import React, { useContext } from 'react';
+import PlanetsContext from '../Context/PlanetsContext';
+import '../style/Table.css';
 
 function Table() {
-  // const [planets, setPlanets] = useState([]);
-
-  // useEffect(() => {
-  //   const getPlanets = async () => {
-  //     const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
-  //     const result = await fetch(endpoint).then((response) => response.json());
-  //     setPlanets(result.results);
-  //   };
-  //   getPlanets();
-  // }, []);
+  const { state: { data, filters } } = useContext(PlanetsContext);
+  const { filterByName: { name } } = filters;
 
   const renderTableHeader = () => (
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Rotation Period</th>
-        <th>Orbital Period</th>
-        <th>Diameter</th>
-        <th>Climate</th>
-        <th>Gravity</th>
-        <th>Terrain</th>
-        <th>Surface Water</th>
-        <th>Population</th>
-        <th>Films</th>
-        <th>Created</th>
-        <th>Edited</th>
-        <th>URL</th>
+    <thead className="table-header">
+      <tr className="table-row header">
+        <th className="cell name">Name</th>
+        <th className="cell rotation">Rotation Period</th>
+        <th className="cell orbital">Orbital Period</th>
+        <th className="cell diameter">Diameter</th>
+        <th className="cell climate">Climate</th>
+        <th className="cell gravity">Gravity</th>
+        <th className="cell terrain">Terrain</th>
+        <th className="cell water">Surface Water</th>
+        <th className="cell population">Population</th>
+        <th className="cell films">Films</th>
+        <th className="cell created">Created</th>
+        <th className="cell edited">Edited</th>
+        <th className="cell url">URL</th>
       </tr>
     </thead>
   );
 
-  const renderTableBody = () => (
+  const renderTableBody = (newArray) => (
     <tbody>
-      <StarWarsContext.Consumer>
-        { (value) => value.map((planet, index) => (
-          <tr key={ index }>
-            <td>{ planet.name }</td>
-            <td>{ planet.rotation_period }</td>
-            <td>{ planet.orbital_period }</td>
-            <td>{ planet.diameter }</td>
-            <td>{ planet.climate }</td>
-            <td>{ planet.gravity }</td>
-            <td>{ planet.terrain }</td>
-            <td>{ planet.surface_water }</td>
-            <td>{ planet.population }</td>
-            <td>
+      { newArray.map((planet, index) => {
+        const dateLength = 10;
+        const hourLength = 8;
+        return (
+          <tr key={ index } className="table-row body">
+            <td className="cell name">{ planet.name }</td>
+            <td className="cell rotation">{ planet.rotation_period }</td>
+            <td className="cell orbital">{ planet.orbital_period }</td>
+            <td className="cell diameter">{ planet.diameter }</td>
+            <td className="cell climate">{ planet.climate }</td>
+            <td className="cell gravity">{ planet.gravity }</td>
+            <td className="cell terrain">{ planet.terrain }</td>
+            <td className="cell water">{ planet.surface_water }</td>
+            <td className="cell population">{ planet.population }</td>
+            <td className="cell films">
               <ol>
                 { planet.films.map(
                   (film, fIndex) => (
@@ -57,20 +52,33 @@ function Table() {
                 ) }
               </ol>
             </td>
-            <td>{ planet.created }</td>
-            <td>{ planet.edited }</td>
-            <td><a href={ planet.url }>{ `${planet.name} Description` }</a></td>
+            <td className="cell created">
+              <p>{ planet.created.substr(0, dateLength) }</p>
+              <p>{ planet.created.substr(dateLength + 1, hourLength) }</p>
+            </td>
+            <td className="cell edited">
+              <p>{ planet.edited.substr(0, dateLength) }</p>
+              <p>{ planet.edited.substr(dateLength + 1, hourLength) }</p>
+            </td>
+            <td className="cell url">
+              <a href={ planet.url }>{ `${planet.name} URL` }</a>
+            </td>
           </tr>
-        )) }
-      </StarWarsContext.Consumer>
+        );
+      }) }
     </tbody>
   );
 
+  const filterTable = () => {
+    const newArray = data.filter((planet) => planet.name.includes(name));
+    return (renderTableBody(newArray));
+  };
+
   return (
-    <div>
-      <table>
+    <div className="table-container">
+      <table className="planets-table">
         { renderTableHeader() }
-        { renderTableBody() }
+        { filterTable() }
       </table>
     </div>
   );
