@@ -30,18 +30,24 @@ const Provider = ({ children }) => {
   const dataFilteredByNumeric = useMemo(() => {
     if (filterByNumericValue.length > 0) {
       let filteredData = dataFilteredByName;
-      let filteredColumns = [...columns];
-      filterByNumericValue.forEach((filter) => {
-        const { column, comparison, value } = filter;
+      filterByNumericValue.forEach(({ column, comparison, value }) => {
         filteredData = filteredData
           .filter((planet) => switchComparison(planet, column, comparison, value));
-        filteredColumns = filteredColumns.filter((item) => item !== column);
       });
-      setColumnsOptions(filteredColumns);
       return filteredData;
     }
     return dataFilteredByName;
   }, [dataFilteredByName, filterByNumericValue]);
+
+  useEffect(() => {
+    if (filterByNumericValue.length > 0) {
+      let filteredColumns = [...columns];
+      filterByNumericValue.forEach(({ column }) => {
+        filteredColumns = filteredColumns.filter((item) => item !== column);
+      });
+      setColumnsOptions(filteredColumns);
+    }
+  }, [filterByNumericValue]);
 
   useEffect(() => {
     setData(dataFilteredByNumeric);
