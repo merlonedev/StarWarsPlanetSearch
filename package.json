@@ -10,8 +10,6 @@
     "@types/testing-library__jest-dom": "^5.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-fetch-hook": "^1.8.5",
-    "react-hanger": "^2.4.4",
     "react-scripts": "^3.4.1"
   },
   "jest": {
