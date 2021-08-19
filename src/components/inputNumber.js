@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import StarContext from '../context/StarContext';
 
 const initialFilterState = {
@@ -15,14 +15,20 @@ const columnList = [
   'surface_water',
 ];
 
-const selectedColumn = [];
-
-const notSelected = columnList.filter((e) => !selectedColumn.includes(e));
-
 function InputNumber() {
   const [filter, setFilter] = useState(initialFilterState);
-  const [selectedFilter, setSelectedFilter] = useState(notSelected);
+  const [selectedFilter, setSelectedFilter] = useState(columnList);
+  const [selectedColumn, setSelectedColumn] = useState([]);
   const { filterNumber } = useContext(StarContext);
+
+  useEffect(() => {
+    const selected = columnList.filter((e) => !selectedColumn.includes(e));
+    setSelectedFilter(selected);
+    setFilter(() => ({
+      ...filter,
+      column: selected[0],
+    }));
+  }, [selectedColumn]);
 
   function handleChange({ target }) {
     const { id, value } = target;
@@ -34,16 +40,20 @@ function InputNumber() {
 
   function handleClick() {
     filterNumber(filter);
-    selectedColumn.push(filter.column);
-    const selected = columnList.filter((e) => !selectedColumn.includes(e));
-    setSelectedFilter(selected);
+    setSelectedColumn([...selectedColumn, filter.column]);
   }
 
   return (
     <form>
       <label htmlFor="column">
         <select id="column" data-testid="column-filter" onChange={ handleChange }>
-          { selectedFilter.map((e, i) => <option key={ i } value={ e }>{ e }</option>) }
+          { selectedFilter.map((e, i) => (
+            <option
+              key={ i }
+              value={ e }
+            >
+              { e }
+            </option>))}
         </select>
       </label>
       <label htmlFor="comparation">

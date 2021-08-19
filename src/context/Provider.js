@@ -27,7 +27,6 @@ function Provider({ children }) {
     const intVal = parseInt(value, 10);
 
     if (comparation === 'igual a') {
-      console.log('entrei');
       const filterPlanets = planets.filter((e) => parseInt(e[column], 10) === intVal);
       setFilteredPlanets(filterPlanets);
     }
