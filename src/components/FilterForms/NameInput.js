@@ -9,16 +9,19 @@ function NameInput() {
   }
 
   return (
-    <label htmlFor="name-input">
-      Filtrar por Nome
-      <input
-        data-testid="name-filter"
-        type="text"
-        name="name"
-        id="name-input"
-        onChange={ handleChange }
-      />
-    </label>
+    <div className="mb-3">
+      <label htmlFor="name-input" className="form-label">
+        Filtrar por Nome
+        <input
+          data-testid="name-filter"
+          className="form-control"
+          type="text"
+          name="name"
+          id="name-input"
+          onChange={ handleChange }
+        />
+      </label>
+    </div>
   );
 }
 

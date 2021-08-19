@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import StarContext from '../context/StarContext';
+import './style/Table.css';
 
-const length = -1;
+const LENGTH = -1;
 
 function Table() {
   const { planets } = useContext(StarContext);
@@ -28,16 +29,17 @@ function Table() {
   }
 
   return (
-    <table>
+    <table className="table table-striped table-bordered table-sm align-middle">
       <thead>
         <tr>
-          {headers.map((elem) => (<th key={ elem }>{elem}</th>))}
+          {headers.map((elem) => (<th scope="col" key={ elem }>{elem}</th>))}
         </tr>
       </thead>
       <tbody>
-        {planets.length > length && planets.map((planet) => renderRow(planet))}
+        {planets.length > LENGTH && planets.map((planet) => renderRow(planet))}
       </tbody>
     </table>
+
   );
 }
 

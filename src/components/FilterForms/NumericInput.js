@@ -22,20 +22,23 @@ function NumericInput() {
   }
 
   function handleClick() {
-    setFilters({ ...filters,
+    setFilters({
+      ...filters,
       filterByNumericValues: {
         ...formState,
-      } });
+      },
+    });
 
     setColumns(columns.filter((c) => c !== formState.column));
   }
 
   return (
-    <>
-      <label htmlFor="column-input">
+    <div className="mb-3">
+      <label htmlFor="column-input" className="form-label">
         column:
         <select
           data-testid="column-filter"
+          className="form-select"
           name="column"
           id="column-input"
           value={ formState.column }
@@ -49,10 +52,11 @@ function NumericInput() {
         </select>
       </label>
 
-      <label htmlFor="column-input">
+      <label htmlFor="column-input" className="form-label">
         comparison:
         <select
           data-testid="comparison-filter"
+          className="form-select"
           name="comparison"
           value={ formState.comparison }
           id="comparison-input"
@@ -64,10 +68,11 @@ function NumericInput() {
         </select>
       </label>
 
-      <label htmlFor="value-input">
+      <label htmlFor="value-input" className="form-label">
         value:
         <input
           data-testid="value-filter"
+          className="form-control"
           type="number"
           value={ formState.value }
           name="value"
@@ -76,10 +81,15 @@ function NumericInput() {
         />
       </label>
 
-      <button data-testid="button-filter" type="button" onClick={ handleClick }>
+      <button
+        data-testid="button-filter"
+        className="btn btn-primary"
+        type="button"
+        onClick={ handleClick }
+      >
         Filtrar
       </button>
-    </>
+    </div>
   );
 }
 
