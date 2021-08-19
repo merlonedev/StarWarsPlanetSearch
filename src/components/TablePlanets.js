@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import Context from '../context/Context';
 
 function TabletPlanets() {
-  const { newListPlanets } = useContext(Context);
+  const { newListPlanets, planetFilters } = useContext(Context);
 
   const HEADERS_TABLE = Object.keys(newListPlanets[0]);
 
@@ -21,7 +21,7 @@ function TabletPlanets() {
   );
 
   const linesContent = (
-    newListPlanets.map((planet) => (
+    planetFilters.map((planet) => (
       <tr key={ Math.random() * NUMBER_RAMDOM }>
         {
           Object.values(planet).map((type) => (
