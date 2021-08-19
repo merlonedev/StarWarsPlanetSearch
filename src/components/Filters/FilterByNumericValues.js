@@ -6,7 +6,7 @@ const FilterByNumericValues = () => {
   const { setFilterByNumericValue } = useContext(Context);
 
   const [column, setColumn] = useState('population');
-  const [comparison, setcomparison] = useState('');
+  const [comparison, setcomparison] = useState('maior que');
   const [value, setValue] = useState(0);
 
   const handleSubmit = (e) => {

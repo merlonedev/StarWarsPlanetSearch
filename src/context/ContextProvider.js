@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Context from './Context';
+import { switchComparison } from '../utils/data';
 
 const Provider = ({ children }) => {
   const [fullData, setFullData] = useState([]);
@@ -20,12 +21,23 @@ const Provider = ({ children }) => {
     fetchApi();
   }, []);
 
-  useEffect(() => {
-    if (name.length !== '') {
+  const filterName = useCallback(() => {
+    if (name !== '') {
       setData(fullData.filter(({ name: planetName }) => planetName
         .toLowerCase().includes(name.toLowerCase())));
-    } else { setData(fullData); }
-  }, [fullData, name]);
+    }
+  }, [name, fullData]);
+
+  const filterNumeric = useCallback(() => {
+    const { column, comparison, value } = filterByNumericValue;
+    setData(fullData
+      .filter((planet) => switchComparison(planet, column, comparison, value)));
+  }, [filterByNumericValue, fullData]);
+
+  useEffect(() => {
+    filterNumeric();
+    filterName();
+  }, [filterName, filterNumeric]);
 
   const context = {
     setData,

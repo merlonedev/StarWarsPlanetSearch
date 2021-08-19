@@ -10,3 +10,16 @@ export const comparisonMethods = [
   'menor que',
   'igual a',
 ];
+
+export const switchComparison = (planet, column, comparison, value) => {
+  switch (comparison) {
+  case comparisonMethods[0]:
+    return planet[column] > value;
+  case comparisonMethods[1]:
+    return planet[column] < value;
+  case comparisonMethods[2]:
+    return planet[column] === value;
+  default:
+    return null;
+  }
+};
