@@ -8,7 +8,9 @@ function App() {
   return (
     <StarWarsProvider>
       <div>
-        <header>Star Wars Planets Search</header>
+        <header className="appHeader">
+          <h1>Star Wars Planets Search</h1>
+        </header>
         <SearchForm />
         <Table />
       </div>
