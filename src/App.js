@@ -1,9 +1,16 @@
 import React from 'react';
 import './App.css';
+import Table from './components/Table';
+import Provider from './context/Provider';
 
 function App() {
   return (
-    <h1 className="App">Hello, App!</h1>
+    <div>
+      <h1 className="App">StarWars - Planets</h1>
+      <Provider>
+        <Table />
+      </Provider>
+    </div>
   );
 }
 
