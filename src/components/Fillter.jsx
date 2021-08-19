@@ -3,21 +3,20 @@ import PlanetContext from '../context/PlanetContext';
 
 function Filter() {
   const { filters: { filterByNumericValues } } = useContext(PlanetContext);
-  console.log(filterByNumericValues);
 
-  const exibir = () => {
-    const { column, comparison, value } = filterByNumericValues;
-    console.log(column);
-
-    if (column || comparison || value) {
-      return (<p>{ `${column} | ${comparison} | ${value}` }</p>);
-    }
+  const showFilter = () => {
+    const map = filterByNumericValues.map((item, index) => (
+      <div key={ index }>
+        <p>{`${item.column}, ${item.comparison}, ${item.value}`}</p>
+      </div>
+    ));
+    return map;
   };
 
   return (
     <div className="App">
       <h2>Eu sou o Componente Filtro!</h2>
-      { exibir() }
+      { showFilter() }
     </div>
   );
 }
