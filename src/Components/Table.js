@@ -2,7 +2,9 @@ import React, { useContext } from 'react';
 import MyContext from '../Context/Context';
 
 function Table() {
-  const { data, filters: { filterByName: { name } } } = useContext(MyContext);
+  const { data,
+    filters: { filterByName: { name },
+      filterByNumericValues: [{ column, comparison, value }] } } = useContext(MyContext);
   const head = Object.keys(data[0]);
   const header = head.map((tagHead, index) => {
     if (tagHead !== 'residents') {
@@ -16,8 +18,19 @@ function Table() {
     .includes(inputName));
 
   // Usei a ideia de filtrar o data antes de usá-lo na renderização baseada no código do colega Rodrigo Facury
+  const initialFilter = () => {
+    if (comparison === 'maior que') {
+      return filterData.filter((infoPlanet) => Number(infoPlanet[column]) > value);
+    }
+    if (comparison === 'menor que') {
+      return filterData.filter((infoPlanet) => Number(infoPlanet[column]) < value);
+    }
+    if (comparison === 'igual a') {
+      return filterData.filter((infoPlanet) => infoPlanet[column] === value);
+    }
+  };
 
-  const body = filterData.map((results, index) => {
+  const body = initialFilter().map((results, index) => {
     const result = Object.entries(results);
     return (
       <tr key={ index }>

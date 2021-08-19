@@ -6,12 +6,16 @@ import Table from './Components/Table';
 function App() {
   const [data, setData] = useState([]);
   const [name, setName] = useState('');
+  const [filterByNumericValues, setfilterByNumericValues] = useState([{
+    column: 'diameter',
+    comparison: 'maior que',
+    value: 0 }]);
+
   const planets = {
     data,
     filters: {
-      filterByName: {
-        name,
-      },
+      filterByName: { name },
+      filterByNumericValues,
     },
   };
 
@@ -24,8 +28,20 @@ function App() {
     getData();
   }, []);
 
-  const handleChange = ({ target }) => {
+  const handleChangeName = ({ target }) => {
     setName(target.value);
+  };
+
+  const UpdatebyNumericValues = { column: 'diameter',
+    comparison: 'maior que',
+    value: 0 };
+
+  const handleChangeOptions = ({ target }) => {
+    UpdatebyNumericValues[target.name] = target.value;
+  };
+
+  const handleClick = () => {
+    setfilterByNumericValues([UpdatebyNumericValues]);
   };
 
   return (
@@ -33,9 +49,44 @@ function App() {
       <input
         type="text"
         placeholder="Nome do planeta"
-        onChange={ handleChange }
+        onChange={ handleChangeName }
         data-testid="name-filter"
       />
+      <select
+        name="column"
+        id="filtro-coluna"
+        data-testid="column-filter"
+        onChange={ handleChangeOptions }
+      >
+        <option value="diameter">diameter</option>
+        <option value="population">population</option>
+        <option value="orbital_period">orbital_period</option>
+        <option value="rotation_period">rotation_period</option>
+        <option value="surface_water">surface_water</option>
+      </select>
+      <select
+        name="comparison"
+        id="filtro-compara"
+        onChange={ handleChangeOptions }
+        data-testid="comparison-filter"
+      >
+        <option value="maior que">maior que</option>
+        <option value="menor que">menor que</option>
+        <option value="igual a">igual a</option>
+      </select>
+      <input
+        type="number"
+        name="value"
+        onChange={ handleChangeOptions }
+        data-testid="value-filter"
+      />
+      <button
+        type="button"
+        data-testid="button-filter"
+        onClick={ handleClick }
+      >
+        Filtrar
+      </button>
       { (data.length > 0 && <Table />) }
     </MyContext.Provider>
   );
