@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import MyContext from '../context/MyContext';
 
 function SelectColumn({ testId, name }) {
-  const { handleChangeColumn } = useContext(MyContext);
+  const { handleChangeColumn, options } = useContext(MyContext);
 
   return (
     <select
@@ -11,11 +11,9 @@ function SelectColumn({ testId, name }) {
       data-testid={ testId }
       onChange={ handleChangeColumn }
     >
-      <option>population</option>
-      <option>orbital_period</option>
-      <option>diameter</option>
-      <option>rotation_period</option>
-      <option>surface_water</option>
+      {
+        options.map((option) => <option key={ option }>{ option }</option>)
+      }
     </select>
   );
 }

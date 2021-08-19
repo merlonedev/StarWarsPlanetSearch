@@ -5,6 +5,9 @@ import MyContext from './MyContext';
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [headers, setHeaders] = useState([]);
+  const [options, setOptions] = useState(
+    ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'],
+  );
   const [filterByName, setFiltersByName] = useState({ name: '' });
   const [filterByNumericValues, setFilterByNumericValues] = useState([{
     column: '',
@@ -61,15 +64,19 @@ function Provider({ children }) {
 
     if (comparison === 'igual a') {
       const filtered = data
-        .filter((planet) => planet[column] === value);
+        .filter((planet) => parseInt(planet[column], 10) === parseInt(value, 10));
       setData(filtered);
     }
+
+    setOptions(options.filter((option) => option !== column));
   };
 
   const context = {
     data,
-    headers,
     setData,
+    options,
+    setOptions,
+    headers,
     filters: {
       filtersByName: filterByName,
       filterByNumericValues,
