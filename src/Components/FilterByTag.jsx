@@ -2,15 +2,26 @@ import React, { useContext, useState } from 'react';
 import dataContext from '../context/dataContext';
 
 function FilterByTag() {
+  const filterColumnTypes = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+
   const [columnFilter, setColumnFilter] = useState('population');
   const [comparisonFilter, setComparisonFilter] = useState('>');
   const [valueFilter, setValueFilter] = useState();
-  const { setColumn, setComparison, setValue } = useContext(dataContext);
+  const [filterTags, setFilterTags] = useState(filterColumnTypes);
+
+  const { filterBy, setFilterBy } = useContext(dataContext);
 
   const filterByTag = () => {
-    setColumn(columnFilter);
-    setComparison(comparisonFilter);
-    setValue(valueFilter);
+    const newFilter = {
+      column: columnFilter,
+      comparison: comparisonFilter,
+      value: valueFilter,
+    };
+    const newTags = filterTags.filter((tag) => tag !== columnFilter);
+
+    setFilterTags(newTags);
+    setFilterBy([...filterBy, newFilter]);
   };
 
   return (
@@ -22,11 +33,9 @@ function FilterByTag() {
           value={ columnFilter }
           onChange={ (e) => setColumnFilter(e.target.value) }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {filterTags.map((tag) => (
+            <option key={ tag } value={ tag }>{tag}</option>
+          ))}
         </select>
       </label>
       <label htmlFor="comparison-filter">

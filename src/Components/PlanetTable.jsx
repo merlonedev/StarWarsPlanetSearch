@@ -19,29 +19,35 @@ function PlanetTable() {
 
   const filterPlanets = () => {
     let filteredPlanets = planets;
-    const { column, comparison, value } = state.filters.filterByNumericValues;
+    const filtersByTag = state.filters.filterByNumericValues;
+
     if (state.filters.filterByName.name !== '') {
-      filteredPlanets = planets
+      filteredPlanets = filteredPlanets
         .filter((planet) => planet.name.includes(state.filters.filterByName.name));
     }
-    if (value !== undefined) {
-      switch (comparison) {
-      case 'maior que':
-        filteredPlanets = planets
-          .filter((planet) => planet[column] > parseInt(value, DEZ));
-        break;
-      case 'menor que':
-        filteredPlanets = planets
-          .filter((planet) => planet[column] < parseInt(value, DEZ));
-        break;
-      case 'igual a':
-        filteredPlanets = planets
-          .filter((planet) => parseInt(planet[column], 10) === parseInt(value, DEZ));
-        break;
-      default:
-        filteredPlanets = planets;
-      }
+
+    if (filtersByTag !== []) {
+      state.filters.filterByNumericValues.map(({ column, comparison, value }) => {
+        switch (comparison) {
+        case 'maior que':
+          filteredPlanets = filteredPlanets
+            .filter((planet) => planet[column] > parseInt(value, DEZ));
+          break;
+        case 'menor que':
+          filteredPlanets = filteredPlanets
+            .filter((planet) => planet[column] < parseInt(value, DEZ));
+          break;
+        case 'igual a':
+          filteredPlanets = filteredPlanets
+            .filter((planet) => parseInt(planet[column], 10) === parseInt(value, DEZ));
+          break;
+        default:
+          filteredPlanets = planets;
+        }
+        return filteredPlanets;
+      });
     }
+
     return filteredPlanets;
   };
 

@@ -4,28 +4,21 @@ import dataContext from './dataContext';
 
 function Provider({ children }) {
   const [nameFilter, setNameFilter] = useState('');
-  const [column, setColumn] = useState('population');
-  const [comparison, setComparison] = useState('>');
-  const [value, setValue] = useState();
+  const [filterBy, setFilterBy] = useState([]);
   const state = {
     filters: {
       filterByName: {
         name: nameFilter,
       },
-      filterByNumericValues: {
-        column,
-        comparison,
-        value,
-      },
+      filterByNumericValues: filterBy,
     },
   };
 
   const contextValue = {
     state,
     setNameFilter,
-    setColumn,
-    setComparison,
-    setValue,
+    setFilterBy,
+    filterBy,
   };
 
   return (
