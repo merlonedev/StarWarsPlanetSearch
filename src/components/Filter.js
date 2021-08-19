@@ -16,6 +16,7 @@ function Filter() {
   const [baseFilter, setBaseFilter] = useState(InitialFilter);
   const [baseSelect, setBaseSelect] = useState(filterSelectOptions);
   const [baseComparison] = useState(comparisonOptions);
+  const [removeFilter, setRemoveFilter] = useState([]);
 
   const filterName = ({ target: { value } }) => {
     setFilter({ ...filters, filterByName: { ...filters.filterByName, name: value } });
@@ -26,19 +27,49 @@ function Filter() {
   };
 
   const handleSubmit = () => {
-    const { column, comparison, value } = baseFilter;
-    const obj = { column, comparison, value };
-    const result = baseSelect
-      .filter((item) => item !== obj.column);
-    setBaseSelect(result);
-    setFilter({ ...filters,
-      filterByNumericValues: [...filters.filterByNumericValues, obj],
+    const result = baseSelect // Filtra options pra tirar as ja usadas.
+      .filter((item) => item !== baseFilter.column);
+    setBaseSelect(result); // Salva as options.
+    setFilter({ ...filters, // Manda de volta pro context, atualizando os filters.
+      filterByNumericValues: [...filters.filterByNumericValues, baseFilter],
     });
-    setBaseFilter({ ...baseFilter,
+    setRemoveFilter([...removeFilter, baseFilter]);
+    setBaseFilter({ ...baseFilter, // Troca o item (valor) da lista, quando o anterior e removido.
       column: baseSelect.length ? baseSelect[0] : '',
       value: '0',
     });
-    document.getElementById('value').value = '';
+  };
+
+  const handleDelete = ({ target: { value } }) => {
+    setFilter({
+      ...filters,
+      filterByNumericValues: filters.filterByNumericValues
+        .filter((item) => item.column !== value),
+    });
+    setRemoveFilter(removeFilter.filter((item) => item.column !== value));
+  };
+
+  const createFilterToDelete = () => {
+    const createFilter = (
+      <div>
+        { removeFilter.map((item) => {
+          const deletable = (
+            <div key={ item.column } data-testid="filter">
+              <p>{ JSON.stringify(item) }</p>
+              <button
+                type="button"
+                value={ item.column }
+                onClick={ handleDelete }
+              >
+                X
+              </button>
+            </div>
+          );
+          return deletable;
+        }) }
+      </div>
+    );
+    return createFilter;
   };
 
   return (
@@ -75,6 +106,8 @@ function Filter() {
       >
         Filter
       </button>
+      <br />
+      { createFilterToDelete() }
     </>
   );
 }
