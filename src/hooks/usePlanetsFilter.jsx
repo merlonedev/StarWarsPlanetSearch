@@ -6,14 +6,38 @@ function usePlanetsFilter(planets) {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [],
   });
+
+  const propertieChecker = (propertieValue, condition, value) => {
+    switch (condition) {
+    case 'maior que':
+      return (Number(propertieValue) > Number(value));
+    case 'menor que':
+      return (Number(propertieValue) < Number(value));
+    default:
+      return (Number(propertieValue) === Number(value));
+    }
+  };
 
   useEffect(() => {
     const filterPlanets = () => {
-      const { filterByName } = filters;
-      const filterName = planets
-        .filter((planet) => planet.name.includes(filterByName.name));
-      setPlanetsFiltered(filterName);
+      const { filterByName, filterByNumericValues } = filters;
+
+      const filterUsingName = planets
+        .filter((planet) => planet.name.toLowerCase().includes(filterByName.name));
+
+      const filterResult = filterUsingName.filter((planet) => {
+        const planetPropertiesTest = filterByNumericValues
+          .filter(({
+            column,
+            comparison,
+            value,
+          }) => propertieChecker(planet[column], comparison, value));
+
+        return (planetPropertiesTest.length === filterByNumericValues.length);
+      });
+      setPlanetsFiltered(filterResult);
     };
 
     filterPlanets();
