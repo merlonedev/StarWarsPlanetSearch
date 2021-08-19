@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Context from '../../context/Context';
 import { comparisonMethods } from '../../utils/data';
 
@@ -12,6 +12,10 @@ const FilterByNumericValues = () => {
   const [column, setColumn] = useState('population');
   const [comparison, setcomparison] = useState('maior que');
   const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (columns.length > 0) setColumn(columns[0]);
+  }, [columns]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

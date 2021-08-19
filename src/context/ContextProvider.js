@@ -30,11 +30,14 @@ const Provider = ({ children }) => {
   const dataFilteredByNumeric = useMemo(() => {
     if (filterByNumericValue.length > 0) {
       let filteredData = dataFilteredByName;
+      let filteredColumns = [...columns];
       filterByNumericValue.forEach((filter) => {
         const { column, comparison, value } = filter;
         filteredData = filteredData
           .filter((planet) => switchComparison(planet, column, comparison, value));
+        filteredColumns = filteredColumns.filter((item) => item !== column);
       });
+      setColumnsOptions(filteredColumns);
       return filteredData;
     }
     return dataFilteredByName;
