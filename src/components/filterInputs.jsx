@@ -2,17 +2,19 @@ import React, { useContext, useState } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import { MyContext } from '../context/Provider';
 import helperToOptions from '../helper';
+import SetGlobalFilter from '../hook/SetFilter';
 
 const FilterInputs = () => {
   const [column, setColumn] = useState('population');
-  const [comparison, setComparison] = useState('Maior que');
+  const [comparison, setComparison] = useState('maior que');
   const [valueNumber, setValue] = useState(0);
   const { SetFilter } = useContext(MyContext);
+  const { optionsfiltered } = SetGlobalFilter();
 
   const handleChange = (e) => {
     const { value, name } = e;
     switch (name) {
-    case 'name':
+    case 'column':
       setColumn(value);
       break;
     case 'comparison':
@@ -53,7 +55,6 @@ const FilterInputs = () => {
     name: 'column',
     'data-testid': 'column-filter',
     id: 'demo-simple-select-column',
-    value: column,
     onChange: ({ target }) => handleChange(target),
   };
 
@@ -91,7 +92,7 @@ const FilterInputs = () => {
       <label htmlFor="demo-simple-select-column">
         column
         <select { ...selectProps }>
-          {helperToOptions.columnFilter
+          {optionsfiltered
             .map((e) => <option key={ e } value={ e }>{ e }</option>)}
         </select>
       </label>
