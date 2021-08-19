@@ -8,17 +8,21 @@ const StarWarsProvider = ({ children }) => {
   const [filters, setFilters] = useState({
     filterByName: { name: '' },
     filterByNumericValues: [],
+    order: { column: 'name', sort: 'ASC' },
   });
 
   useEffect(() => {
     (async () => {
       const planets = await apiPlanets();
-      setData(planets);
+      const sortedPlanets = [...planets]
+        .sort(({ name: a }, { name: b }) => a.localeCompare(b));
+      setData(sortedPlanets);
     })();
   }, []);
 
   const context = {
     data,
+    setData,
     filters,
     setFilters,
   };

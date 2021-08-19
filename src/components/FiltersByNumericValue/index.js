@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import StarWarsContext from '../../context/StarWarsContext';
 
-const FilterByNumericValue = () => {
+const FiltersByNumericValue = () => {
   const { filters, setFilters } = useContext(StarWarsContext);
   const { filterByNumericValues } = filters;
 
@@ -31,4 +31,4 @@ const FilterByNumericValue = () => {
   );
 };
 
-export default FilterByNumericValue;
+export default FiltersByNumericValue;

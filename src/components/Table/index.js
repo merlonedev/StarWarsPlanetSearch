@@ -37,7 +37,12 @@ const Table = () => {
     <tbody>
       { filterData().map((planet) => (
         <tr key={ planet.name }>
-          { columnsTableHead.map((column) => <td key={ column }>{ planet[column] }</td>) }
+          { columnsTableHead.map((column) => {
+            if (column === 'name') {
+              return <td key={ column } data-testid="planet-name">{ planet[column] }</td>;
+            }
+            return <td key={ column }>{ planet[column] }</td>;
+          }) }
         </tr>
       )) }
     </tbody>
