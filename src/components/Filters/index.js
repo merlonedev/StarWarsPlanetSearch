@@ -6,7 +6,6 @@ const Filters = () => (
   <div>
     <FilterByName />
     <FilterByNumericValues />
-    <div>a</div>
   </div>
 );
 

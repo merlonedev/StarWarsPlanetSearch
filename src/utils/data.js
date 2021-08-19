@@ -3,6 +3,7 @@ export const columns = [
   'orbital_period',
   'diameter',
   'rotation_period',
+  'surface_water',
 ];
 
 export const comparisonMethods = [
@@ -14,11 +15,11 @@ export const comparisonMethods = [
 export const switchComparison = (planet, column, comparison, value) => {
   switch (comparison) {
   case comparisonMethods[0]:
-    return planet[column] > value;
+    return (planet[column] > +value);
   case comparisonMethods[1]:
-    return planet[column] < value;
+    return (planet[column] < +value);
   case comparisonMethods[2]:
-    return planet[column] === value;
+    return (planet[column] === value);
   default:
     return null;
   }

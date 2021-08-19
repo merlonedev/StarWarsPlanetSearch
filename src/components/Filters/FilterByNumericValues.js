@@ -26,7 +26,7 @@ const FilterByNumericValues = () => {
         onChange={ ({ target }) => setColumn(target.value) }
       >
         {
-          columns.map((e) => <option key={ e }>{ e }</option>)
+          columns.map((item) => <option key={ item }>{ item }</option>)
         }
       </select>
       <select
@@ -35,7 +35,7 @@ const FilterByNumericValues = () => {
         onChange={ ({ target }) => setcomparison(target.value) }
       >
         {
-          comparisonMethods.map((e) => <option key={ e }>{ e }</option>)
+          comparisonMethods.map((item) => <option key={ item }>{ item }</option>)
         }
       </select>
       <label htmlFor="value">

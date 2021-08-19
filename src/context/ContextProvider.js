@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Context from './Context';
 import { switchComparison } from '../utils/data';
@@ -21,23 +21,23 @@ const Provider = ({ children }) => {
     fetchApi();
   }, []);
 
-  const filterName = useCallback(() => {
-    if (name !== '') {
-      setData(fullData.filter(({ name: planetName }) => planetName
-        .toLowerCase().includes(name.toLowerCase())));
-    }
-  }, [name, fullData]);
+  const dataFilteredByName = useMemo(() => (
+    fullData.filter(({ name: planetName }) => planetName
+      .toLowerCase().includes(name.toLowerCase()))
+  ), [fullData, name]);
 
-  const filterNumeric = useCallback(() => {
-    const { column, comparison, value } = filterByNumericValue;
-    setData(fullData
-      .filter((planet) => switchComparison(planet, column, comparison, value)));
-  }, [filterByNumericValue, fullData]);
+  const dataFilteredByNumeric = useMemo(() => {
+    if (filterByNumericValue) {
+      const { column, comparison, value } = filterByNumericValue;
+      return dataFilteredByName
+        .filter((planet) => switchComparison(planet, column, comparison, value));
+    }
+    return dataFilteredByName;
+  }, [dataFilteredByName, filterByNumericValue]);
 
   useEffect(() => {
-    filterNumeric();
-    filterName();
-  }, [filterName, filterNumeric]);
+    setData(dataFilteredByNumeric);
+  }, [dataFilteredByNumeric]);
 
   const context = {
     setData,
