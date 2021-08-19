@@ -27,6 +27,14 @@ const FilterByNumericValues = () => {
     ]);
   };
 
+  if (columns.length === 0) {
+    return (
+      <div>
+        <p>Sem possibilidade de mais filtros!</p>
+      </div>
+    );
+  }
+
   return (
     <form onSubmit={ handleSubmit }>
       <select
