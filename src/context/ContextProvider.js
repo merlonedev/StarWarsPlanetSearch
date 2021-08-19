@@ -1,13 +1,14 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Context from './Context';
-import { switchComparison } from '../utils/data';
+import { switchComparison, columns } from '../utils/data';
 
 const Provider = ({ children }) => {
   const [fullData, setFullData] = useState([]);
   const [data, setData] = useState([]);
   const [name, setName] = useState('');
   const [filterByNumericValue, setFilterByNumericValue] = useState(null);
+  const [columnsOptions, setColumnsOptions] = useState(columns);
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -43,7 +44,9 @@ const Provider = ({ children }) => {
     setData,
     setName,
     setFilterByNumericValue,
+    setColumnsOptions,
     data,
+    columns: columnsOptions,
     filters: {
       filterByName: {
         name,

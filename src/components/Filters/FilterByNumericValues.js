@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import Context from '../../context/Context';
-import { columns, comparisonMethods } from '../../utils/data';
+import { comparisonMethods } from '../../utils/data';
 
 const FilterByNumericValues = () => {
-  const { setFilterByNumericValue } = useContext(Context);
+  const { setFilterByNumericValue, columns } = useContext(Context);
 
   const [column, setColumn] = useState('population');
   const [comparison, setcomparison] = useState('maior que');
