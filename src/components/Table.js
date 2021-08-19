@@ -19,7 +19,7 @@ export default function Table() {
 
   const filterData = () => {
     const { filterByName: { name: filterName } } = filters;
-    if (filterName !== '') {
+    if (filterName) {
       return data.filter(({ name }) => name.toLowerCase().includes(filterName));
     }
     return data;
