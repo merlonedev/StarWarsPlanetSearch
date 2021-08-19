@@ -9,6 +9,7 @@ function Provider(props) {
   const [filted, setFilted] = useState([]);
   const [filters, setFilters] = useState({
     filterByName: { name: '' },
+    filterByNumericValues: [],
   });
 
   useEffect(() => {
@@ -23,8 +24,11 @@ function Provider(props) {
 
   useEffect(() => {
     const { filterByName: { name } } = filters;
-    const filter = planets.filter((planet) => planet.name.toLowerCase().includes(name));
-    setFilted(filter);
+
+    const filtedPlanets = planets.filter((planet) => (
+      planet.name.toLowerCase().includes((name.toLowerCase()))
+    ));
+    setFilted(filtedPlanets);
   }, [filters, planets]);
 
   const contextValue = { planets, filters, setFilters, filted };

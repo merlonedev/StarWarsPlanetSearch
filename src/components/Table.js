@@ -2,7 +2,23 @@ import React, { useContext } from 'react';
 import Context from '../context/Context';
 
 function App() {
-  const { filted } = useContext(Context);
+  const { filters } = useContext(Context);
+  let { filted } = useContext(Context);
+  const { filterByNumericValues } = filters;
+
+  if (filterByNumericValues) {
+    filterByNumericValues.forEach(({ column, comparison, value }) => {
+      filted = filted.filter((planet) => {
+        if (comparison === 'maior que') {
+          return Number(planet[column]) > value;
+        }
+        if (comparison === 'menor que') {
+          return Number(planet[column]) < value;
+        }
+        return planet[column] === value;
+      });
+    });
+  }
 
   return (
     <table>

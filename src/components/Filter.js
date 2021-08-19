@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
 import Context from '../context/Context';
+import NumericFilter from './NumericFilter';
 
 function App() {
-  const { filter, setFilters } = useContext(Context);
+  const { filters, setFilters } = useContext(Context);
 
   const handleInput = ({ target: { value } }) => {
     setFilters({
-      // ...filters,
+      ...filters,
       filterByName: {
         name: value,
       },
@@ -18,13 +19,15 @@ function App() {
       <label htmlFor="name-filter">
         Name:
         <input
-          value={ filter }
+          value={ filters.filterByName.name }
           onChange={ handleInput }
           type="text"
           id="name-filter"
           data-testid="name-filter"
         />
       </label>
+      <NumericFilter />
+
     </div>
   );
 }
