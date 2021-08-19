@@ -2,15 +2,12 @@ import React, { useContext } from 'react';
 import Context from '../context/Context';
 
 function SelectFilterProperties() {
-  const { column, setColumn } = useContext(Context);
-
-  const optionsArray = [
-    { value: 'population', text: 'population' },
-    { value: 'orbital_period', text: 'orbital_period' },
-    { value: 'diameter', text: 'diameter' },
-    { value: 'rotation_period', text: 'rotation_period' },
-    { value: 'surface_water', text: 'surface_water' },
-  ];
+  const {
+    column,
+    setColumn,
+    optionsProperties,
+    // setOptionsProperties,
+  } = useContext(Context);
 
   const handleChange = ({ target: { value } }) => setColumn(value);
 
@@ -26,9 +23,9 @@ function SelectFilterProperties() {
         value={ column }
         onChange={ handleChange }
       >
-        { optionsArray.map((option) => (
-          <option key={ Math.random() * NUMBER_RAMDOM } value={ option.value }>
-            { option.text }
+        { optionsProperties.map((option) => (
+          <option key={ Math.random() * NUMBER_RAMDOM } value={ option }>
+            { option}
           </option>
         )) }
       </select>

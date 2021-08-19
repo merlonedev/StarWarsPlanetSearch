@@ -6,8 +6,22 @@ const INITIAL_FILTERS_STATE = {
   filterByName: {
     name: '',
   },
-  filterByNumericValues: undefined,
+  filterByNumericValues: [],
 };
+
+const INITIAL_OPT_PROP_STATE = [
+  'population',
+  'orbital_period',
+  'diameter',
+  'rotation_period',
+  'surface_water',
+];
+
+const INITIAL_OPT_COMPAR_STATE = [
+  'maior que',
+  'menor que',
+  'igual a',
+];
 
 function ProviderContext({ children }) {
   const [planets, setPlanets] = useState([]);
@@ -18,11 +32,15 @@ function ProviderContext({ children }) {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState('');
+  const [optionsComparation, setOptionsComparation] = useState(INITIAL_OPT_COMPAR_STATE);
+  const [optionsProperties, setOptionsProperties] = useState(INITIAL_OPT_PROP_STATE);
 
   const handleClíckFilter = () => {
+    const { filterByNumericValues } = filters;
     setFilters({
       ...filters,
       filterByNumericValues: [
+        ...filterByNumericValues,
         {
           column,
           comparison,
@@ -30,6 +48,14 @@ function ProviderContext({ children }) {
         },
       ],
     });
+
+    const filterCollumn = optionsProperties
+      .filter((option) => option !== column);
+    setOptionsProperties(filterCollumn);
+
+    const filterComparison = optionsComparation
+      .filter((option) => option !== comparison);
+    setOptionsComparation(filterComparison);
   };
 
   useEffect(() => {
@@ -66,28 +92,31 @@ function ProviderContext({ children }) {
         .filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()));
     }
 
-    if (filterByNumericValues !== undefined) {
-      const { comparison: compare } = filterByNumericValues[0];
+    if (filterByNumericValues.length > 0) {
       const compareFilter = () => {
-        switch (compare) {
-        case 'igual a':
-          filtersTable = filtersTable
-            .filter((planet) => +planet[filterByNumericValues[0].column]
-            === +filterByNumericValues[0].value);
-          return filtersTable;
-        case 'menor que':
-          filtersTable = filtersTable
-            .filter((planet) => +planet[filterByNumericValues[0].column]
-            < +filterByNumericValues[0].value);
-          return filtersTable;
-        case 'maior que':
-          filtersTable = filtersTable
-            .filter((planet) => +planet[filterByNumericValues[0].column]
-            > +filterByNumericValues[0].value);
-          return filtersTable;
-        default:
-          return filtersTable;
-        }
+        const compareMap = filterByNumericValues
+          .map(({ comparison: comparisonMap, value: valueMap, column: columnMap }) => {
+            switch (comparisonMap) {
+            case 'igual a':
+              filtersTable = filtersTable
+                .filter((planet) => +planet[columnMap]
+                === +valueMap);
+              return filtersTable;
+            case 'menor que':
+              filtersTable = filtersTable
+                .filter((planet) => +planet[columnMap]
+                < +valueMap);
+              return filtersTable;
+            case 'maior que':
+              filtersTable = filtersTable
+                .filter((planet) => +planet[columnMap]
+                > +valueMap);
+              return filtersTable;
+            default:
+              return filtersTable;
+            }
+          });
+        return compareMap;
       };
       compareFilter();
     }
@@ -102,6 +131,10 @@ function ProviderContext({ children }) {
     column,
     comparison,
     value,
+    optionsComparation,
+    optionsProperties,
+    setOptionsProperties,
+    setOptionsComparation,
     setValue,
     setComparison,
     setColumn,

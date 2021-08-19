@@ -2,13 +2,12 @@ import React, { useContext } from 'react';
 import Context from '../context/Context';
 
 function SelectFilterComparation() {
-  const { comparison, setComparison } = useContext(Context);
-
-  const optionsArray = [
-    { value: 'maior que', text: 'maior que' },
-    { value: 'menor que', text: 'menor que' },
-    { value: 'igual a', text: 'igual a' },
-  ];
+  const {
+    comparison,
+    setComparison,
+    optionsComparation,
+    setOptionsComparation,
+  } = useContext(Context);
 
   const handleChange = ({ target: { value } }) => setComparison(value);
 
@@ -24,9 +23,9 @@ function SelectFilterComparation() {
         value={ comparison }
         onChange={ handleChange }
       >
-        { optionsArray.map((option) => (
-          <option key={ Math.random() * NUMBER_RAMDOM } value={ option.value }>
-            { option.text }
+        { optionsComparation.map((option) => (
+          <option key={ Math.random() * NUMBER_RAMDOM } value={ option }>
+            { option }
           </option>
         )) }
       </select>
