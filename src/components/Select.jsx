@@ -2,8 +2,6 @@ import React, { useContext, useState } from 'react';
 import { Button } from '@material-ui/core';
 import { PlanetContext } from '../Context/PlanetContext';
 
-const COLUMN = ['population', 'orbital_period', 'diameter',
-  'rotation_period', 'surface_water'];
 const COMPARISON = ['maior que', 'igual a', 'menor que'];
 
 function SelectInput() {
@@ -11,7 +9,7 @@ function SelectInput() {
   const [comparison, setComparison] = useState();
   const [value, setNumber] = useState();
 
-  const { handleFilter } = useContext(PlanetContext);
+  const { handleFilter, columnArray } = useContext(PlanetContext);
 
   const handleValue = ({ target: { id, value: valu } }) => {
     switch (id) {
@@ -30,13 +28,9 @@ function SelectInput() {
 
   const handleClick = () => {
     const filt = {
-      filterByNumericValues: [
-        {
-          column,
-          comparison,
-          value,
-        },
-      ],
+      column,
+      comparison,
+      value,
     };
     handleFilter(filt);
   };
@@ -75,7 +69,7 @@ function SelectInput() {
       <label htmlFor="column">
         Coluna
         <select { ...columnProps }>
-          {COLUMN.map((e) => <option value={ e } key={ e }>{e}</option>)}
+          {columnArray.map((e) => <option value={ e } key={ e }>{e}</option>)}
         </select>
       </label>
       <label htmlFor="comparison">

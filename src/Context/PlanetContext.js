@@ -12,12 +12,16 @@ const INITIAL_STATE = { filterByName: { name: '' },
   ],
 };
 
+const COLUMN = ['population', 'orbital_period', 'diameter',
+  'rotation_period', 'surface_water'];
+
 export const PlanetContext = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [data, setData] = useState('');
   const [filtred, setFiltered] = useState('');
   const [filter, setFilter] = useState(INITIAL_STATE);
+  const [columnArray, setColumn] = useState(COLUMN);
 
   const getAPI = async () => {
     const request = await FetchPlanets();
@@ -42,22 +46,24 @@ export const ContextProvider = ({ children }) => {
   }, [data, filter]);
 
   useEffect(() => {
-    const { column, comparison, value } = filter.filterByNumericValues[0];
-    switch (comparison) {
-    case 'maior que':
-      setFiltered(data
-        .filter((e) => Number(e[column]) > value && e[column] !== 'unknown'));
-      break;
-    case 'igual a':
-      setFiltered(data
-        .filter((e) => e[column] === value && e[column] !== 'unknown'));
-      break;
-    case 'menor que':
-      setFiltered(data
-        .filter((e) => Number(e[column]) < value && e[column] !== 'unknown'));
-      break;
-    default: setFiltered(data);
-    }
+    filter.filterByNumericValues.forEach((elm) => {
+      const { column, comparison, value } = elm;
+      switch (comparison) {
+      case 'maior que':
+        setFiltered(data
+          .filter((e) => Number(e[column]) > value && e[column] !== 'unknown'));
+        break;
+      case 'igual a':
+        setFiltered(data
+          .filter((e) => e[column] === value && e[column] !== 'unknown'));
+        break;
+      case 'menor que':
+        setFiltered(data
+          .filter((e) => Number(e[column]) < value && e[column] !== 'unknown'));
+        break;
+      default: setFiltered(data);
+      }
+    });
   }, [data, filter.filterByNumericValues]);
 
   const handleFilter = (event) => {
@@ -65,13 +71,15 @@ export const ContextProvider = ({ children }) => {
       const { name, value } = event.target;
       setFilter({ ...filter, filterByName: { [name]: value } });
     } else {
-      setFilter({ ...filter, ...event });
+      setFilter({ ...filter,
+        filterByNumericValues: [...filter.filterByNumericValues, event] });
+      setColumn(columnArray.filter((e) => e !== event.column));
     }
   };
 
   return (
     <PlanetContext.Provider
-      value={ { data, setData, filter, handleFilter, filtred } }
+      value={ { data, setData, filter, handleFilter, filtred, columnArray } }
     >
       {children}
     </PlanetContext.Provider>
