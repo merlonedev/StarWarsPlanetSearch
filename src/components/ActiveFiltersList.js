@@ -2,19 +2,17 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 function ActiveFiltersList() {
-  const { filters,
-    filters: { filterByNumericValues },
-    setFilters } = useContext(AppContext);
+  const { filters, setFilters } = useContext(AppContext);
+  const { filterByNumericValues } = filters;
 
   const deleteFilter = (index) => {
-    console.log(index);
-    const filtered = filterByNumericValues.splice(index, 1);
-    console.log(filtered);
+    filterByNumericValues.splice(index, 1);
     setFilters({
       ...filters,
-      filterByNumericValues: filtered,
+      filterByNumericValues,
     });
   };
+
   return (
     <ul>
       {
