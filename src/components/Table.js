@@ -4,6 +4,7 @@ import Context from '../context/Context';
 function Table() {
   const { planets } = useContext(Context);
   // console.log(data);
+  // const [planets, setPlanets] = useState([]);
 
   return (
     <div>

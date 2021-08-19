@@ -1,20 +1,17 @@
-import React/* , { useContext }  */from 'react';
-// import Context from '../context/Context';
-
-// filters: { filterByName: { name } }
+import React, { useContext } from 'react';
+import Context from '../context/Context';
 
 function InputFilter() {
-  // const { filters, setFilters } = useContext(Context);
-  // const { filterByName: { name } } = filters;
+  const { filters, setFilters } = useContext(Context);
+  const { filterByName: { name } } = filters;
+  // console.log(filters);
 
-  // function handleChange({ target }) {
-  //   setFilters({
-  //     filters: {
-  //       ...setFilters,
-  //       filterByName: { name: target.value },
-  //     },
-  //   });
-  // }
+  function handleChange({ target: { value } }) {
+    setFilters({
+      ...filters,
+      filterByName: { name: value },
+    });
+  }
 
   return (
     <div>
@@ -22,8 +19,8 @@ function InputFilter() {
         data-testid="name-filter"
         type="text"
         name="name"
-        // value={ name }
-        // onChange={ handleChange }
+        value={ name }
+        onChange={ handleChange }
         placeholder="planet name"
       />
     </div>
