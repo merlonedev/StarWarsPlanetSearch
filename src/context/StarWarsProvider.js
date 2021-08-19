@@ -3,7 +3,26 @@ import propTypes from 'prop-types';
 import StarWarsContext from './StarWarsContext';
 
 function StarWarsProvider({ children }) {
+  const filtersInitialState = {
+    filters: {
+      filterByName: {
+        name: '',
+      },
+    },
+  };
+
   const [data, setData] = useState([]);
+  const [filters, setFilters] = useState(filtersInitialState);
+
+  const filterName = (input) => {
+    setFilters({
+      filters: {
+        filterByName: {
+          name: input,
+        },
+      },
+    });
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -16,7 +35,7 @@ function StarWarsProvider({ children }) {
   }, []);
 
   const contextValue = {
-    data, setData,
+    data, filters, filterName,
   };
 
   return (

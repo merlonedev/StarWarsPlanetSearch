@@ -3,7 +3,7 @@ import StarWarsContext from '../context/StarWarsContext';
 import './Table.css';
 
 function Table() {
-  const { data } = useContext(StarWarsContext);
+  const { data, filters } = useContext(StarWarsContext);
 
   const renderTableHeader = () => {
     const dataKeys = ['Name', 'Rotation Period', 'Orbital Period',
@@ -12,27 +12,36 @@ function Table() {
     return dataKeys.map((columnName) => <th key={ columnName }>{ columnName }</th>);
   };
 
-  const renderTableInfo = () => {
+  const mapPlanetData = (input = '') => {
+    const filteredData = data
+      .filter((item) => item.name.toLowerCase().includes(input.toLowerCase()));
+    return filteredData.map((item) => (
+      <tr key={ item.name }>
+        <td>{ item.name }</td>
+        <td>{ item.rotation_period }</td>
+        <td>{ item.orbital_period }</td>
+        <td>{ item.diameter }</td>
+        <td>{ item.climate }</td>
+        <td>{ item.gravity }</td>
+        <td>{ item.terrain }</td>
+        <td>{ item.surface_water }</td>
+        <td>{ item.population }</td>
+        <td>{ item.films }</td>
+        <td>{ item.created }</td>
+        <td>{ item.edited }</td>
+        <td>{ item.url }</td>
+      </tr>));
+  };
+
+  const checkFiltersAndRender = () => {
+    const { filters: { filterByName } } = filters;
     if (data.length > 0) {
-      return (
-        data.map((item) => (
-          <tr key={ item.name }>
-            <td>{ item.name }</td>
-            <td>{ item.rotation_period }</td>
-            <td>{ item.orbital_period }</td>
-            <td>{ item.diameter }</td>
-            <td>{ item.climate }</td>
-            <td>{ item.gravity }</td>
-            <td>{ item.terrain }</td>
-            <td>{ item.surface_water }</td>
-            <td>{ item.population }</td>
-            <td>{ item.films }</td>
-            <td>{ item.created }</td>
-            <td>{ item.edited }</td>
-            <td>{ item.url }</td>
-          </tr>))
-      );
+      if (filterByName.name !== '') {
+        return mapPlanetData(filterByName.name);
+      }
+      return mapPlanetData('');
     }
+    return <p>LOADING TABLE...</p>;
   };
 
   return (
@@ -41,7 +50,7 @@ function Table() {
         <tr>{ renderTableHeader() }</tr>
       </thead>
       <tbody>
-        { renderTableInfo() }
+        { checkFiltersAndRender() }
       </tbody>
     </table>
   );
