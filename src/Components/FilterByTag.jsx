@@ -2,15 +2,11 @@ import React, { useContext, useState } from 'react';
 import dataContext from '../context/dataContext';
 
 function FilterByTag() {
-  const filterColumnTypes = [
-    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
-
   const [columnFilter, setColumnFilter] = useState('population');
-  const [comparisonFilter, setComparisonFilter] = useState('>');
+  const [comparisonFilter, setComparisonFilter] = useState('maior que');
   const [valueFilter, setValueFilter] = useState();
-  const [filterTags, setFilterTags] = useState(filterColumnTypes);
 
-  const { filterBy, setFilterBy } = useContext(dataContext);
+  const { filterBy, setFilterBy, setFilterTags, filterTags } = useContext(dataContext);
 
   const filterByTag = () => {
     const newFilter = {
