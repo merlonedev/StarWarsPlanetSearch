@@ -2,10 +2,9 @@ import React, { useState, useContext } from 'react';
 import PlanetContext from '../../context/PlanetContext';
 
 function FilterByNumber() {
-  const [collumFilterItens] = useState(['population',
-    'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
   const [comparisonFilterItens] = useState(['maior que', 'menor que', 'igual a']);
   const { handleChangeNumber } = useContext(PlanetContext);
+  const { options: { collumFilterItens } } = useContext(PlanetContext);
   return (
     <div>
       <form>

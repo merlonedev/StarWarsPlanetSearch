@@ -7,6 +7,8 @@ const PlanetProvider = ({ children }) => {
   const [filterByName, SetNewFilterByName] = useState({ name: '' });
   const [filterByNumericValues, SetfilterByNumericValues] = useState([{
     collumn: '', comparison: '', value: '' }]);
+  const [collumFilterItens, SetCollumFilterItens] = useState(['population',
+    'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
 
   useEffect(() => {
     const URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
@@ -27,8 +29,9 @@ const PlanetProvider = ({ children }) => {
     const collumn = document.querySelector('#column-filter').value;
     const comparison = document.querySelector('#comparison-filter').value;
     const valueNumber = document.querySelector('#value-filter').value;
-
+    SetCollumFilterItens(collumFilterItens.filter((c) => c !== collumn));
     SetfilterByNumericValues([{
+      ...filterByNumericValues,
       collumn,
       comparison,
       value: valueNumber }]);
@@ -100,6 +103,9 @@ const PlanetProvider = ({ children }) => {
     generateRows,
     generateColluns,
     handleChangeNumber,
+    options: {
+      collumFilterItens,
+    },
   };
 
   return (
