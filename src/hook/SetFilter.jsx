@@ -37,10 +37,10 @@ const SetGlobalFilter = () => {
   }, [data, filters]);
 
   const SetFilter = (target) => {
-    const { comparison, column, valueNumber } = target.filterByNumericValues[0];
     if (target.name) {
       setFiltered({ ...filters, filterByName: { [target.name]: target.value } });
     } else {
+      const { comparison, column, valueNumber } = target.filterByNumericValues[0];
       setFiltered({ ...filters, ...target });
       objFunc[comparison](column, valueNumber);
     }
