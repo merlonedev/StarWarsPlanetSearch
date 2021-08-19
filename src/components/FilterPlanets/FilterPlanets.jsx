@@ -5,15 +5,24 @@ import { columns, comparisons } from '../../helpers/options';
 import useFiltersPlanets from '../../hooks/useFiltersPlanets';
 
 function FilterPlanets() {
-  const [filters, setFilters] = useFiltersPlanets();
+  const [filters, setFilters, setNumericFilter] = useFiltersPlanets();
   const {
     filterByName: { name },
     filterByNumericValues: [{ column, comparison, value }],
+    filterByNumericValues,
   } = filters;
-  const handleChangeValue = () => undefined;
 
-  const handleChangeName = ({ target: { value: planet } }) => {
-    setFilters({ ...filters, filterByName: { name: planet } });
+  const handleChangeNumericFilter = ({ target: { name: title, value: param } }) => {
+    setFilters({
+      ...filters,
+      filterByNumericValues: [{ ...filterByNumericValues[0], [title]: param }],
+    });
+  };
+
+  const handleNumericFilter = () => setNumericFilter(true);
+
+  const handleChangeName = ({ target: { value: param } }) => {
+    setFilters({ ...filters, filterByName: { name: param } });
   };
 
   return (
@@ -32,6 +41,7 @@ function FilterPlanets() {
           options={ columns }
           value={ column }
           text="Coluna: "
+          onChange={ handleChangeNumericFilter }
         />
         <Select
           name="comparison"
@@ -39,15 +49,23 @@ function FilterPlanets() {
           options={ comparisons }
           value={ comparison }
           text="Comparação: "
+          onChange={ handleChangeNumericFilter }
         />
         <Input
           name="value"
           id="value-filter"
           value={ value }
           placeholder="Digite um Valor"
-          onChange={ handleChangeValue }
+          onChange={ handleChangeNumericFilter }
           type="number"
         />
+        <button
+          type="button"
+          data-testid="button-filter"
+          onClick={ handleNumericFilter }
+        >
+          Buscar
+        </button>
       </div>
     </section>
   );
