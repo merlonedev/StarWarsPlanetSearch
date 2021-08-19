@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import PlanetsContext from '../../contexts/PlanetsContext';
+import capitalize from '../../helpers/capitalize';
 
 function Table() {
   const { filteredPlanets, isFetching } = useContext(PlanetsContext);
@@ -14,7 +15,7 @@ function Table() {
       <thead>
         <tr>
           {tableHeader.map((item) => (
-            <th key={ item }>{item}</th>
+            <th key={ item }>{capitalize(item)}</th>
           ))}
         </tr>
       </thead>
