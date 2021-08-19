@@ -5,14 +5,17 @@ import Input from './Input';
 import Select from './Select';
 
 const Filters = () => {
+  const COLUMNS = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+  ];
+  const COMPARISON = ['maior que', 'menor que', 'igual a'];
+
   const { setFilters, filters } = useContext(contextTable);
   const [numFilterState, setNumFilterState] = useState({
-    columnOptions: [
-      'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
-    ],
-    comparisonOptions: ['maior que', 'menor que', 'igual a'],
-    column: 'population',
-    comparison: 'maior que',
+    columnOptions: COLUMNS,
+    comparisonOptions: COMPARISON,
+    column: COLUMNS[0],
+    comparison: COMPARISON[0],
     value: 0,
   });
 
@@ -33,8 +36,8 @@ const Filters = () => {
   };
 
   const handleClick = () => {
-    const { column, comparison, value } = numFilterState;
-    setFilters({
+    const { column, comparison, value, columnOptions } = numFilterState;
+    const newFilters = {
       ...filters,
       filterByNumericValues: [
         ...filters.filterByNumericValues,
@@ -44,11 +47,40 @@ const Filters = () => {
           value,
         },
       ],
-    });
+    };
+
+    const columnFilters = columnOptions.filter((columnFilter) => (
+      newFilters.filterByNumericValues
+        .every((newFilter) => newFilter.column !== columnFilter)
+    ));
+
+    if (columnOptions.length > 0) {
+      setNumFilterState({
+        ...numFilterState,
+        columnOptions: columnFilters,
+        column: columnFilters[0],
+        comparison: COMPARISON[0],
+        value: 0,
+      });
+
+      setFilters(newFilters);
+    }
   };
 
   return (
     <div>
+      <div>
+        {
+          filters.filterByNumericValues
+            .map(({ column, comparison, value }) => (
+              <div key={ column }>
+                <p>
+                  { `{ column: ${column}, comparison: ${comparison}, value: ${value}, }` }
+                </p>
+              </div>
+            ))
+        }
+      </div>
       <div>
         <Input
           inputType="text"
