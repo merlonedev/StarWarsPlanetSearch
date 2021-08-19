@@ -4,17 +4,12 @@ import ApiContext from '../../context/ApiContext';
 
 function FilterByName() {
   const {
-    data,
-    setFilteredData,
     filters,
     setFilters,
   } = useContext(ApiContext);
 
   const filter = ({ target: { value } }) => {
     setFilters({ ...filters, filterByName: { name: value } });
-    setFilteredData(data.filter(({ name }) => (
-      name.toLowerCase().includes(value)
-    )));
   };
 
   return (

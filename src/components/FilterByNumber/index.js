@@ -19,7 +19,7 @@ function FilterByNumber() {
 
   const [tableColumns, setTableColumns] = useState(columnsFilters);
   const [currentFilter, setCurrentFilter] = useState(INITIAL_STATE);
-  const { filters, setFilters, filteredData, setFilteredData } = useContext(ApiContext);
+  const { filters, setFilters } = useContext(ApiContext);
 
   const handleChange = ({ target: { name, value } }) => {
     setCurrentFilter({ ...currentFilter, [name]: value });
@@ -39,23 +39,6 @@ function FilterByNumber() {
       });
       setTableColumns(tableColumns.filter((current) => current !== currentFilter.column));
       setCurrentFilter(INITIAL_STATE);
-
-      switch (comparison) {
-      case 'maior que':
-        setFilteredData(filteredData.filter((cur) => (
-          parseInt(cur[column], 10) > value)));
-        break;
-      case 'menor que':
-        setFilteredData(filteredData.filter((cur) => (
-          parseInt(cur[column], 10) < value)));
-        break;
-      case 'igual a':
-        setFilteredData(filteredData.filter((cur) => (
-          parseInt(cur[column], 10) === parseInt(value, 10))));
-        break;
-      default:
-        return filteredData;
-      }
     }
   };
 

@@ -3,6 +3,10 @@ const filtersStructure = {
     name: '',
   },
   filterByNumericValues: [],
+  order: {
+    column: 'name',
+    sort: 'ASC',
+  },
 };
 
 export default filtersStructure;
