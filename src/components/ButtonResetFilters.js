@@ -5,10 +5,6 @@ function ButtonResetFilters() {
   const { setFilters, filters } = useContext(Context);
   const { filterByNumericValues } = filters;
 
-  // const handleResetFilter = () => {
-  //   setFilters(INITIAL_FILTERS_STATE);
-  // };
-
   const handleResetFilter = () => {
     const resetFilter = filterByNumericValues
       .filter((_filter, index) => index !== filterByNumericValues.length - 1);
