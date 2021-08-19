@@ -1,27 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+
+import Filter from './components/Filter';
+import Table from './components/Table';
+
+import usePlanets from './hooks/usePlanets';
 
 function App() {
-  const [residents, setResidents] = useState();
-
-  function getResidents() {
-    fetch('https://swapi-trybe.herokuapp.com/api/planets/')
-      .then((response) => response.json())
-      .then(({ results }) => setResidents(results.residents));
-  }
-
-  useEffect(getResidents);
-
+  const [planets, setPlanets] = usePlanets();
   return (
-    <table>
-      <tr>
-        <th>residents</th>
-      </tr>
-      <tr>
-        {residents.map((resident, i) => (
-          <td key={ i }>{resident}</td>
-        ))}
-      </tr>
-    </table>
+    <div>
+      <Filter planets={ planets } setPlanets={ setPlanets } />
+      <Table planets={ planets } />
+    </div>
   );
 }
 
