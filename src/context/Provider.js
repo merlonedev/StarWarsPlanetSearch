@@ -4,7 +4,7 @@ import MyContext from './MyContext';
 
 function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
-  const [name, setNameFilter] = useState('');
+  const [name, setFilterByName] = useState('');
   const [filterByNumericValues, setFilters] = useState([]);
 
   useEffect(() => {
@@ -16,6 +16,15 @@ function Provider({ children }) {
     getPlanets();
   }, []);
 
+  // function handleResetClick() {
+  //   setFilters({
+  //     ...filters,
+  //     filterByNumericValues: [
+  //       ...filters.filterByNumericValues.filter((element) => element.column !== column),
+  //     ],
+  //   });
+  // }
+
   const contextValue = {
     planets,
     filters: {
@@ -24,8 +33,9 @@ function Provider({ children }) {
       },
       filterByNumericValues,
     },
-    setNameFilter,
+    setFilterByName,
     setFilters,
+    // handleResetClick,
   };
 
   return (

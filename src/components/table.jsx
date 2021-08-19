@@ -7,7 +7,7 @@ function Table() {
   const planetData = filterByName.name
     ? planets.filter((planet) => planet.name.includes(filterByName.name)) : planets;
 
-  const defaultNumericFilterValue = {
+  const defaultFilterByNumericValues = {
     column: '',
     comparison: '',
     value: 0,
@@ -15,7 +15,7 @@ function Table() {
 
   const selectedFilter = filterByNumericValues.length
     ? filterByNumericValues[filterByNumericValues.length - 1]
-    : defaultNumericFilterValue;
+    : defaultFilterByNumericValues;
 
   const { column, comparison, value } = selectedFilter;
 

@@ -3,10 +3,14 @@ import MyContext from '../context/MyContext';
 
 function SearchBar() {
   const { filters: { filterByName: { name }, filterByNumericValues },
-    setNameFilter, setFilters } = useContext(MyContext);
+    setFilterByName, setFilters, removeFilter } = useContext(MyContext);
 
-  const initialColumnOpt = ['population',
-    'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+  const initialColumnOpt = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water'];
   const [column, setColumn] = useState(initialColumnOpt);
   const [comparison, setComparison] = useState('');
   const [value, setValue] = useState(0);
@@ -23,13 +27,22 @@ function SearchBar() {
     setFilters([...filterByNumericValues, filterState]);
   };
 
+  // const handleResetClick = () => {
+  //   setFilters({
+  //     ...filters,
+  //     filterByNumericValues: [
+  //       ...filters.filterByNumericValues.filter((element) => element.column !== column),
+  //     ],
+  //   });
+  // };
+
   return (
     <>
       <input
         type="text"
         data-testid="name-filter"
         value={ name }
-        onChange={ ({ target }) => setNameFilter(target.value) }
+        onChange={ ({ target }) => setFilterByName(target.value) }
       />
       <select
         data-testid="column-filter"
@@ -60,6 +73,14 @@ function SearchBar() {
       >
         Filtrar
       </button>
+      { filterByNumericValues.map((filter) => (
+        <p key={ filter.column } data-testid="filter">
+          <span>{filter.column}</span>
+          <span>{filter.comparison}</span>
+          <span>{filter.value}</span>
+          <button type="button" onClick={ () => removeFilter(filter.column) }>X</button>
+        </p>
+      ))}
     </>
   );
 }
