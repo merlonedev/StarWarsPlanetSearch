@@ -10,8 +10,7 @@ function Provider({ children }) {
       const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const a = await fetch(endpoint).then((dados) => dados.json());
       const planets = a.results;
-      const planetKeysFiltered = planets.filter((p) => p !== 'residents');
-      setData(planetKeysFiltered);
+      setData(planets);
     };
     fetchAPI();
   }, []);
