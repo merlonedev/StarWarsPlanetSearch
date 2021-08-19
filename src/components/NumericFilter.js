@@ -1,15 +1,15 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Context from '../context/Context';
 
 function NumericFilter() {
   const { filters, setFilters, colunmInfo, setColunmInfo } = useContext(Context);
   const [numericFilter, setNumericFilter] = useState({
-    column: 'population',
+    column: colunmInfo[0],
     comparison: 'maior que',
     value: '0',
   });
 
-  const handleClick = () => {
+  const handleClick = async () => {
     setFilters(
       {
         ...filters,
@@ -17,12 +17,15 @@ function NumericFilter() {
       },
     );
     setColunmInfo(colunmInfo.filter((info) => info !== numericFilter.column));
+  };
+
+  useEffect(() => {
     setNumericFilter({
       column: colunmInfo[0],
       comparison: 'maior que',
       value: '0',
     });
-  };
+  }, [colunmInfo]);
 
   const handleChange = ({ target: { name, value } }) => {
     setNumericFilter({
