@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import Context from '../context/Context';
 
 function SelectFilterProperties() {
-  const [column, setColumn] = useState('population');
+  const { column, setColumn } = useContext(Context);
 
   const optionsArray = [
     { value: 'population', text: 'population' },

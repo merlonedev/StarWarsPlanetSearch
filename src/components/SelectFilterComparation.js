@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import Context from '../context/Context';
 
 function SelectFilterComparation() {
-  const [comparison, setComparison] = useState('maior que');
+  const { comparison, setComparison } = useContext(Context);
 
   const optionsArray = [
     { value: 'maior que', text: 'maior que' },
