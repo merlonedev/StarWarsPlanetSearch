@@ -1,13 +1,13 @@
 import React, { useContext, useEffect } from 'react';
 import Context from '../ContextStuff/Context';
 import useFilterByNumericValues from '../hooks/useFilterByNumericValues';
-import useToColumnErase from '../hooks/useToColumnErase';
+import useToEraseOption from '../hooks/useToEraseOption';
 
 export default function Table() {
   const { systems,
     filters: { filterByName: { name }, filterByNumericValues } } = useContext(Context);
   const [useNumeric] = useFilterByNumericValues();
-  const [optionErase] = useToColumnErase();
+  const [optionErase] = useToEraseOption();
 
   useEffect(useNumeric, [filterByNumericValues]);
   useEffect(optionErase, [filterByNumericValues]);

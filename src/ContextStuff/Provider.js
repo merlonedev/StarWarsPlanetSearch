@@ -10,12 +10,15 @@ export default function Provider({ children }) {
     filterByName: { name: '' },
     filterByNumericValues: [],
   });
-  const [options, setOptions] = useState(['population', 'orbital_period', 'diameter',
-    'rotation_period', 'surface_water']);
+  const initialOptions = ['population', 'orbital_period', 'diameter',
+    'rotation_period', 'surface_water'];
+  const [options, setOptions] = useState(initialOptions);
 
   useEffect(() => { setSystems(data); }, [data]);
 
   const context = {
+    data,
+    initialOptions,
     systems,
     setSystems,
     filters,

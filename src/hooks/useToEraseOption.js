@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import Context from '../ContextStuff/Context';
 
-export default function useToColumnErase() {
+export default function useToEraseOption() {
   const { filters: { filterByNumericValues }, options, setOptions } = useContext(Context);
 
   const optionsErase = () => {
