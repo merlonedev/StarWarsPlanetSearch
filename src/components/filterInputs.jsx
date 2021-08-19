@@ -1,9 +1,44 @@
-import React, { useContext } from 'react';
-import { TextField } from '@material-ui/core';
+import React, { useContext, useState } from 'react';
+import { TextField, Button } from '@material-ui/core';
 import { MyContext } from '../context/Provider';
+import helperToOptions from '../helper';
 
 const FilterInputs = () => {
+  const [column, setColumn] = useState('population');
+  const [comparison, setComparison] = useState('Maior que');
+  const [valueNumber, setValue] = useState(0);
   const { SetFilter } = useContext(MyContext);
+
+  const handleChange = (e) => {
+    const { value, name } = e;
+    switch (name) {
+    case 'name':
+      setColumn(value);
+      break;
+    case 'comparison':
+      setComparison(value);
+      break;
+    case 'value':
+      setValue(value);
+      break;
+    default:
+      setValue(0);
+    }
+  };
+
+  const handleClick = () => {
+    const result = {
+      filterByNumericValues: [
+        {
+          column,
+          comparison,
+          valueNumber,
+        },
+      ],
+    };
+    SetFilter(result);
+  };
+
   const inputNameProps = {
     inputProps: { 'data-testid': 'name-filter' },
     name: 'name',
@@ -12,9 +47,65 @@ const FilterInputs = () => {
     variant: 'outlined',
     onChange: ({ target }) => SetFilter(target),
   };
+
+  const selectProps = {
+    role: 'select',
+    name: 'column',
+    'data-testid': 'column-filter',
+    id: 'demo-simple-select-column',
+    value: column,
+    onChange: ({ target }) => handleChange(target),
+  };
+
+  const selectComparisonProps = {
+    role: 'select',
+    name: 'comparison',
+    'data-testid': 'comparison-filter',
+    id: 'demo-simple-select-comparison',
+    value: comparison,
+    onChange: ({ target }) => handleChange(target),
+  };
+
+  const inputNumberProps = {
+    id: 'outlined-number',
+    name: 'value',
+    label: 'Value',
+    type: 'number',
+    inputProps: { 'data-testid': 'value-filter' },
+    variant: 'outlined',
+    onChange: ({ target }) => handleChange(target),
+  };
+
+  const buttonProps = {
+    variant: 'contained',
+    name: 'button',
+    type: 'button',
+    'data-testid': 'button-filter',
+    color: 'primary',
+    onClick: () => handleClick(),
+  };
+
   return (
     <section>
       <TextField { ...inputNameProps } />
+      <label htmlFor="demo-simple-select-column">
+        column
+        <select { ...selectProps }>
+          {helperToOptions.columnFilter
+            .map((e) => <option key={ e } value={ e }>{ e }</option>)}
+        </select>
+      </label>
+      <label htmlFor="demo-simple-select-comparison">
+        comparison
+        <select { ...selectComparisonProps }>
+          {helperToOptions.comparison
+            .map((e) => <option key={ e } value={ e }>{ e }</option>)}
+        </select>
+      </label>
+      <TextField { ...inputNumberProps } />
+      <Button { ...buttonProps }>
+        Filter
+      </Button>
     </section>
   );
 };
