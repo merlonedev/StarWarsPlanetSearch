@@ -61,7 +61,7 @@ export default function PlanetsProvider({ children }) {
       const planetsWithFilter = filteredPlanets(filteredData, filterByNumericValues);
       setFilteredData(...planetsWithFilter);
     }
-  }, [data, filters]);
+  }, [data, filteredData, filters]);
 
   return (
     <planetsContext.Provider
