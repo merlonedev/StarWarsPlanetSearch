@@ -30,7 +30,7 @@ function CreateTable() {
     function filtragem() { // Aqui, o filterByName e ByNumericValues já estão alterados no estado G.( mudei no Filter.jsx)
       let newData = data.filter(({ name }) => name.includes(filterByName)); // filtro 1( só o filtro do texto)
       filterByNumericValues.forEach(({ column, comparison, value }) => {
-        const filtro = newData // filtro só fica no escopo do forEach
+        const filtro = newData
           .filter((planeta) => {
             if (comparison === 'maior que') {
               return parseInt(planeta[column], 10) > parseInt(value, 10);
@@ -50,8 +50,8 @@ function CreateTable() {
     return (
       <tbody>
         {
-          filtragem().map((planeta) => (
-            <tr key={ planeta.name }>
+          filtragem().map((planeta, index) => (
+            <tr key={ index }>
               <td>{planeta.name}</td>
               <td>{planeta.rotation_period}</td>
               <td>{planeta.orbital_period}</td>
