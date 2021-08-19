@@ -5,7 +5,7 @@ import useFetchPlanets from '../hooks/useFetchPlanets';
 
 function Provider({ children }) {
   const [data, isFetching] = useFetchPlanets();
-  const [filteredPlanets, setFilteredPlanets] = useState(data);
+  const [filteredPlanets, setFilteredPlanets] = useState();
 
   const context = {
     isFetching,
