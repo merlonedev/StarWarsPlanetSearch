@@ -6,18 +6,22 @@ function useFetchPlanets() {
   const [isFetching, setIsFetching] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
 
-  useEffect(() => {
-    const getPlanets = async () => {
-      const planets = await fetchPlanetsApi();
-      planets.forEach((planet) => {
-        delete planet.residents;
-      });
-      setData(planets);
-      setIsFetching(false);
+  const getPlanets = () => {
+    const fetchApi = async () => {
+      setIsMounted(true);
+      if (!isMounted) {
+        const planets = await fetchPlanetsApi();
+        planets.forEach((planet) => {
+          delete planet.residents;
+        });
+        setData(planets);
+        setIsFetching(false);
+      }
     };
-    if (isMounted) getPlanets();
-    setIsMounted(true);
-  }, [isMounted]);
+    fetchApi();
+  };
+
+  useEffect(getPlanets);
 
   return [data, isFetching];
 }
