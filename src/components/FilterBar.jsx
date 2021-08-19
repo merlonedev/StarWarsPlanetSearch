@@ -2,11 +2,15 @@ import React, { useState, useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 function FilterBar() {
-  const { filters, setFilters } = useContext(AppContext);
+  const { filters, setFilters, tableColumns } = useContext(AppContext);
   const [inputFilters, setInputFilters] = useState({
     column: 'population',
     comparison: 'maior que',
     value: 0,
+  });
+  const [sortInputs, setSortInputs] = useState({
+    column: 'name',
+    sort: 'ASC',
   });
 
   const columnFilterList = [
@@ -41,6 +45,22 @@ function FilterBar() {
     });
   };
 
+  const sortFormHandle = ({ target: { name, value } }) => {
+    setSortInputs({
+      ...sortInputs,
+      [name]: value,
+    });
+  };
+
+  const sortFormSubmit = (e) => {
+    e.preventDefault();
+
+    setFilters({
+      ...filters,
+      order: sortInputs,
+    });
+  };
+
   return (
     <>
       <label htmlFor="name-filter">
@@ -54,6 +74,52 @@ function FilterBar() {
           value={ filters.filterByName.name }
         />
       </label>
+      <form onSubmit={ sortFormSubmit }>
+        <label htmlFor="column-sort">
+          <select
+            data-testid="column-sort"
+            id="column-sort"
+            name="column"
+            onChange={ sortFormHandle }
+            value={ sortInputs.column }
+          >
+            {tableColumns
+              .map((column) => (
+                <option key={ `sort-${column}` } value={ column }>{ column }</option>
+              ))}
+          </select>
+          <label htmlFor="column-sort-input-asc">
+            Ascendente
+            <input
+              checked={ sortInputs.sort === 'ASC' }
+              data-testid="column-sort-input-asc"
+              id="column-sort-input-asc"
+              name="sort"
+              onChange={ sortFormHandle }
+              type="radio"
+              value="ASC"
+            />
+          </label>
+          <label htmlFor="column-sort-input-desc">
+            Descendente
+            <input
+              checked={ sortInputs.sort === 'DESC' }
+              data-testid="column-sort-input-desc"
+              id="column-sort-input-desc"
+              name="sort"
+              onChange={ sortFormHandle }
+              type="radio"
+              value="DESC"
+            />
+          </label>
+        </label>
+        <button
+          data-testid="column-sort-button"
+          type="submit"
+        >
+          Ordernar
+        </button>
+      </form>
       <form onSubmit={ handleSubmit }>
         <label htmlFor="column-filter">
           Coluna
