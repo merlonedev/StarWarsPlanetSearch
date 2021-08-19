@@ -16,9 +16,7 @@ function Tables() {
     <Table size="small">
       <TableHead>
         <TableRow>
-          {
-            Object.keys(data[0]).map((e) => <TableCell key={ e }>{e}</TableCell>)
-          }
+          {Object.keys(data[0]).map((e) => <TableCell key={ e }>{e}</TableCell>)}
         </TableRow>
       </TableHead>
       <TableBody>

@@ -11,7 +11,6 @@ const INITIAL_STATE = { filterByName: { name: '' },
     },
   ],
 };
-
 const COLUMN = ['population', 'orbital_period', 'diameter',
   'rotation_period', 'surface_water'];
 
@@ -70,6 +69,10 @@ export const ContextProvider = ({ children }) => {
     if (event.target) {
       const { name, value } = event.target;
       setFilter({ ...filter, filterByName: { [name]: value } });
+    } else if (filter.filterByNumericValues[0].column === '') {
+      setFilter({ ...filter,
+        filterByNumericValues: [event] });
+      setColumn(columnArray.filter((e) => e !== event.column));
     } else {
       setFilter({ ...filter,
         filterByNumericValues: [...filter.filterByNumericValues, event] });
@@ -77,9 +80,23 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
+  const handleRemover = (colu) => {
+    const { filterByNumericValues } = filter;
+    const removed = filterByNumericValues
+      .filter((e) => e.column !== colu);
+    setColumn(COLUMN);
+    setFilter({ ...filter, filterByNumericValues: [removed] });
+  };
+
   return (
     <PlanetContext.Provider
-      value={ { data, setData, filter, handleFilter, filtred, columnArray } }
+      value={ { data,
+        setData,
+        filter,
+        handleFilter,
+        filtred,
+        columnArray,
+        handleRemover } }
     >
       {children}
     </PlanetContext.Provider>
