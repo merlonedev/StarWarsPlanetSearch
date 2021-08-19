@@ -5,29 +5,23 @@ import Context from '.';
 function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [name, setName] = useState('');
-  const [filters, setFilters] = useState(
-    {
-      column: null,
-      comparison: null,
-      value: null,
-    },
-  );
+  const [filters, setFilters] = useState([]);
+
+  const handleSetFilters = (filter) => {
+    setFilters([...filters, filter]);
+  };
   const contextValue = {
     data: {
       planets,
     },
     setPlanets,
     setName,
-    setFilters,
+    handleSetFilters,
     filters: {
       filterByName: {
         name,
       },
-      filterByNumericValues: {
-        column: filters.column,
-        comparison: filters.comparison,
-        value: filters.value,
-      },
+      filterByNumericValues: filters,
     },
   };
   return (

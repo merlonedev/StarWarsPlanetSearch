@@ -9,24 +9,20 @@ function Table() {
     data: { planets },
     filters: {
       filterByName: { name },
-      filterByNumericValues: {
-        column,
-        comparison,
-        value,
-      },
+      filterByNumericValues,
     },
   } = useContext(context);
 
   const doesInclude = (planetName) => planetName.toLowerCase()
     .includes(name.toLowerCase());
 
-  const compareValue = (planetValue) => {
+  const compareValue = (planetValue, value, comparison) => {
     switch (comparison) {
-    case 'bigger':
+    case 'maior que':
       return planetValue > value;
-    case 'smaller':
+    case 'menor que':
       return planetValue < value;
-    case 'equal':
+    case 'igual a':
       return planetValue === value;
     default:
       return true;
@@ -37,13 +33,19 @@ function Table() {
     const filterByName = planets.length > 0
       ? planets.filter((planet) => doesInclude(planet.name))
       : [];
-
-    const filterByValues = filterByName.filter((planet) => {
-      const planetColumnValue = parseInt(planet[column], 10);
-      const bool = compareValue(planetColumnValue);
-      return bool;
-    });
-    return filterByValues;
+    if (filterByNumericValues.length > 0) {
+      const filterByValues = filterByNumericValues.reduce((acc, filter) => {
+        const { column, value, comparison } = filter;
+        const filteredList = acc.filter((planet) => {
+          const planetColumnValue = parseInt(planet[column], 10);
+          const bool = compareValue(planetColumnValue, value, comparison);
+          return bool;
+        });
+        return filteredList;
+      }, filterByName);
+      return filterByValues;
+    }
+    return filterByName;
   };
   return (
     <table>
