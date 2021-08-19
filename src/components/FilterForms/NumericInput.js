@@ -4,10 +4,17 @@ import StarContext from '../../context/StarContext';
 function NumericInput() {
   const { filters, setFilters } = useContext(StarContext);
   const [formState, setFormState] = useState({
-    column: '',
-    comparison: '',
-    value: '',
+    column: 'population',
+    comparison: 'maior que',
+    value: '0',
   });
+  const [columns, setColumns] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   function handleChange({ target }) {
     const { value, name } = target;
@@ -19,6 +26,8 @@ function NumericInput() {
       filterByNumericValues: {
         ...formState,
       } });
+
+    setColumns(columns.filter((c) => c !== formState.column));
   }
 
   return (
@@ -29,13 +38,14 @@ function NumericInput() {
           data-testid="column-filter"
           name="column"
           id="column-input"
+          value={ formState.column }
           onChange={ handleChange }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {columns.map((c) => (
+            <option key={ c } value={ c }>
+              {c}
+            </option>
+          ))}
         </select>
       </label>
 
@@ -44,6 +54,7 @@ function NumericInput() {
         <select
           data-testid="comparison-filter"
           name="comparison"
+          value={ formState.comparison }
           id="comparison-input"
           onChange={ handleChange }
         >
@@ -58,17 +69,14 @@ function NumericInput() {
         <input
           data-testid="value-filter"
           type="number"
+          value={ formState.value }
           name="value"
           id="value-input"
           onChange={ handleChange }
         />
       </label>
 
-      <button
-        data-testid="button-filter"
-        type="button"
-        onClick={ handleClick }
-      >
+      <button data-testid="button-filter" type="button" onClick={ handleClick }>
         Filtrar
       </button>
     </>
