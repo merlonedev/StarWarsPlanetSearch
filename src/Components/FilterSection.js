@@ -10,20 +10,14 @@ const COLUMN_FILTER_OPTIONS = [
   'surface_water',
 ];
 
-const COMPARISON_FILTER_OPTIONS = [
-  'maior que',
-  'menor que',
-  'igual a',
-];
+const COMPARISON_FILTER_OPTIONS = ['maior que', 'menor que', 'igual a'];
+
+const DEFAULT_FILTER = { column: 'population', comparison: 'maior que', value: 0 };
 
 function FilterSection() {
   const { filters, setFilters } = useContext(SWContext);
 
-  const [localFilterNumbers, setLocalFilter] = useState({
-    column: 'population',
-    comparison: 'maior que',
-    value: 0,
-});
+  const [localFilterNumbers, setLocalFilter] = useState(DEFAULT_FILTER);
 
   const handleChange = ({ target }) => {
     setFilters({ ...filters, filterByName: { name: target.value } });
@@ -33,6 +27,16 @@ function FilterSection() {
     setLocalFilter(
       { ...localFilterNumbers, [name]: value },
     );
+  };
+
+  const sendNumberFiltersToContext = () => {
+    const { filterByNumericValues } = filters;
+    setFilters(
+      { ...filters,
+        filterByNumericValues: [...filterByNumericValues, localFilterNumbers],
+      },
+    );
+    return setLocalFilter(DEFAULT_FILTER);
   };
 
   return (
@@ -64,7 +68,7 @@ function FilterSection() {
             name="value"
             onChange={ handleChangeLocalFilter }
           />
-          <button type="button">Filtrar</button>
+          <button type="button" data-testid="button-filter" onClick={ sendNumberFiltersToContext }>Filtrar</button>
         </div>
       </form>
     </section>

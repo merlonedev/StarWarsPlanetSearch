@@ -3,8 +3,25 @@ import SWContext from '../Context/SWContext';
 
 function Table() {
   const { setData, filters } = useContext(SWContext);
+  const { filterByName: { name }, filterByNumericValues } = filters;
   let { data } = useContext(SWContext);
-  const { filterByName: { name } } = filters;
+
+  const { column, comparison, value } = filterByNumericValues[filterByNumericValues.length - 1];
+
+  if (filterByNumericValues.length > 1) {
+    data = data.filter((planet) => {
+      if (comparison === 'menor que') {
+        return planet[column] < value;
+      }
+
+      if (comparison === 'igual a') {
+        return planet[column] === value;
+      }
+
+      return planet[column] > value;
+    });
+  }
+
   if (name !== '') {
     data = data.filter((planet) => (
       (planet.name.toLowerCase()).includes(name.toLowerCase())
