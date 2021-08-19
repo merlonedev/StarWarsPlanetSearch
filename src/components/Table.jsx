@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 const Table = () => {
-  const { data, dataHeader } = useContext(AppContext);
+  const { filtred, dataHeader } = useContext(AppContext);
 
   return (
     <table>
@@ -12,7 +12,7 @@ const Table = () => {
       {/* Para esta parte consultei o repositório de Diogo Santana em: https://github.com/tryber/sd-012-project-starwars-planets-search/pull/21/files */}
       <tbody>
         {
-          data.map((planet) => ( // passa por todos os itens do array com planetas.
+          filtred.map((planet) => ( // passa por todos os itens do array com planetas.
             // não existe 'name' igual
             <tr key={ planet.name }>
               {
