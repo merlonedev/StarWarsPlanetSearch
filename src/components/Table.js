@@ -4,7 +4,7 @@ import TableHeader from './TableHeader';
 
 export default function Table() {
   return (
-    <main>
+    <main className="Table-component">
       <table>
         <TableHeader />
         <TableBody />

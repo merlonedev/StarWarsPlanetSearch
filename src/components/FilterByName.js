@@ -11,12 +11,15 @@ export default function FilterByName() {
   }
 
   return (
-    <input
-      type="text"
-      data-testid="name-filter"
-      id="name"
-      value={ name }
-      onChange={ handleChange }
-    />
+    <label htmlFor="name">
+      Busque aqui:
+      <input
+        type="text"
+        data-testid="name-filter"
+        id="name"
+        value={ name }
+        onChange={ handleChange }
+      />
+    </label>
   );
 }
