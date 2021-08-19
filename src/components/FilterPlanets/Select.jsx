@@ -1,50 +1,55 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Input(
+function renderOptions(options) {
+  return (
+    options.map((option) => (
+      <option key={ option } value={ option }>{option}</option>
+    ))
+  );
+}
+
+function Select(
   {
     id,
     value,
     onChange,
-    placeholder,
     text,
     className,
     name,
-    type,
+    options,
   },
 ) {
   return (
     <label htmlFor={ id }>
-      { text }
-      <input
+      {text}
+      <select
         id={ id }
         data-testid={ id }
         value={ value }
         onChange={ onChange }
-        placeholder={ placeholder }
         className={ className }
         name={ name }
-        type={ type }
-      />
+      >
+        {renderOptions(options)}
+      </select>
     </label>
   );
 }
 
-Input.propTypes = {
+Select.propTypes = {
   id: PropTypes.string.isRequired,
-  value: PropTypes.node.isRequired,
+  value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  placeholder: PropTypes.string.isRequired,
   text: PropTypes.string,
   className: PropTypes.string,
   name: PropTypes.string.isRequired,
-  type: PropTypes.string,
+  options: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-Input.defaultProps = {
+Select.defaultProps = {
   text: '',
   className: '',
-  type: 'text',
 };
 
-export default Input;
+export default Select;

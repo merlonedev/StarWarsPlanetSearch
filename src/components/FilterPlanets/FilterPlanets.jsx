@@ -1,27 +1,23 @@
-import React, { useState, useContext, useEffect } from 'react';
-import PlanetsContext from '../../contexts/PlanetsContext';
+import React from 'react';
 import Input from './Input';
+import Select from './Select';
+import { columns, comparisons } from '../../helpers/options';
+import useFiltersPlanets from '../../hooks/useFiltersPlanets';
 
 function FilterPlanets() {
-  const [filters, setFilters] = useState({ filterByName: { name: '' } });
-  const { setFilteredPlanets, data } = useContext(PlanetsContext);
-  const { filterByName: { name } } = filters;
+  const [filters, setFilters] = useFiltersPlanets();
+  const {
+    filterByName: { name },
+    filterByNumericValues: [{ column, comparison, value }],
+  } = filters;
+  const handleChangeValue = () => undefined;
 
-  const handleChangeName = ({ target: { value } }) => {
-    setFilters({ ...filters, filterByName: { name: value } });
+  const handleChangeName = ({ target: { value: planet } }) => {
+    setFilters({ ...filters, filterByName: { name: planet } });
   };
 
-  useEffect(() => {
-    const filtersPlanets = () => {
-      const byName = data
-        .filter((planet) => (planet.name.toLowerCase()).includes(name.toLowerCase()));
-      setFilteredPlanets(byName);
-    };
-    filtersPlanets();
-  }, [data, filters, name, setFilteredPlanets]);
-
   return (
-    <form>
+    <section>
       <Input
         name="name"
         id="name-filter"
@@ -29,7 +25,31 @@ function FilterPlanets() {
         placeholder="Digite o nome do Planeta"
         onChange={ handleChangeName }
       />
-    </form>
+      <div>
+        <Select
+          name="column"
+          id="column-filter"
+          options={ columns }
+          value={ column }
+          text="Coluna: "
+        />
+        <Select
+          name="comparison"
+          id="comparison-filter"
+          options={ comparisons }
+          value={ comparison }
+          text="Comparação: "
+        />
+        <Input
+          name="value"
+          id="value-filter"
+          value={ value }
+          placeholder="Digite um Valor"
+          onChange={ handleChangeValue }
+          type="number"
+        />
+      </div>
+    </section>
   );
 }
 
