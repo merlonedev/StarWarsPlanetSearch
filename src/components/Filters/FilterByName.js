@@ -10,7 +10,7 @@ const FilterByName = () => {
         value={ name }
         data-testid="name-filter"
         onChange={ ({ target: { value } }) => setName(value) }
-        placeholder="Filtrar por nome"
+        placeholder="Filter by Name"
       />
     </div>
   );
