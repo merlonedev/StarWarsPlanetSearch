@@ -41,7 +41,7 @@ function Table() {
       }
       return mapPlanetData('');
     }
-    return <p>LOADING TABLE...</p>;
+    return <tr><td>LOADING TABLE...</td></tr>;
   };
 
   return (
