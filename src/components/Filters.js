@@ -12,7 +12,7 @@ function Filters() {
     setName,
     handleSetFilters,
   } = useContext(context);
-  const [filters, { removeFilter, restoreFilter }] = useFilters();
+  const [filters, { removeFilter }] = useFilters();
 
   useEffect(() => {
     setColumn(filters[0]);
