@@ -14,6 +14,7 @@ function SearchForm() {
     setInputName(target.value);
   };
 
+  // essa parte da logica foi aprendida e aplicada após leitura do codigo do colega Luciano Almeida https://github.com/tryber/sd-012-project-starwars-planets-search/pull/102/commits/546930d309009ebddc0c870d8094c356a7f14992
   const handleChangeNumValue = ({ target }) => {
     const { filterByNumericValues } = filters;
     const newInput = target.name === 'value' ? +target.value : target.value;

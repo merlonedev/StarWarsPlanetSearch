@@ -12,6 +12,7 @@ function Table() {
     return dataKeys.map((columnName) => <th key={ columnName }>{ columnName }</th>);
   };
 
+  // aprendi a fazer esse filtro aqui https://scotch.io/tutorials/quick-and-simple-search-filter-using-vanilla-javascript
   const mapPlanetData = (input = '') => {
     const filteredData = data
       .filter((item) => item.name.toLowerCase().includes(input.toLowerCase()));
