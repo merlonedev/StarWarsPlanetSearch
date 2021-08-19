@@ -35,17 +35,17 @@ function StarProvider({ children }) {
       switch (comparison) {
       case 'maior que':
         setPlanets(
-          planets.filter((p) => parseInt(p[column], 10) > parseInt(value, 10)),
+          data.filter((p) => parseInt(p[column], 10) > parseInt(value, 10)),
         );
         break;
       case 'menor que':
         setPlanets(
-          planets.filter((p) => parseInt(p[column], 10) < parseInt(value, 10)),
+          data.filter((p) => parseInt(p[column], 10) < parseInt(value, 10)),
         );
         break;
       case 'igual a':
         setPlanets(
-          planets.filter((p) => p[column] === value),
+          data.filter((p) => p[column] === value),
         );
         break;
       default:

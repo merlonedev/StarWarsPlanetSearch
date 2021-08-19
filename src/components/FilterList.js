@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import StarContext from '../context/StarContext';
-import ResetBtn from './ResetBtn';
+import DeleteFilterBtn from './DeleteFilterBtn';
 
 function FilterList() {
   const { filters: { filterByNumericValues } } = useContext(StarContext);
@@ -9,9 +9,9 @@ function FilterList() {
     return (
       <ol>
         {filterByNumericValues.map((filter, i) => (
-          <li key={ i }>
+          <li data-testid="filter" key={ i }>
             {JSON.stringify(filter)}
-            <ResetBtn filter={ filter } />
+            <DeleteFilterBtn filter={ filter } />
           </li>
         ))}
       </ol>

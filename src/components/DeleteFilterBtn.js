@@ -2,12 +2,11 @@ import React, { useContext } from 'react';
 import { shape, string } from 'prop-types';
 import StarContext from '../context/StarContext';
 
-function ResetBtn({ filter }) {
+function DeleteFilterBtn({ filter }) {
   const { filters, setFilters } = useContext(StarContext);
 
   function resetFilters() {
     const { filterByNumericValues } = filters;
-    console.log(filterByNumericValues);
     setFilters({
       ...filters,
       filterByNumericValues: filterByNumericValues.filter((f) => f !== filter),
@@ -26,9 +25,9 @@ function ResetBtn({ filter }) {
   );
 }
 
-export default ResetBtn;
+export default DeleteFilterBtn;
 
-ResetBtn.propTypes = {
+DeleteFilterBtn.propTypes = {
   filter: shape({
     column: string,
     comparison: string,
