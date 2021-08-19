@@ -2,29 +2,8 @@ import React, { useContext } from 'react';
 import FilterContext from '../context/FilterContext';
 
 function Table() {
-  const { filters: { filterByName: { name }, filterByNumericValues, order },
-    data: { planets, tableHeadData } } = useContext(FilterContext);
-
-  let filteredPlanets = [...planets];
-
-  if (name) {
-    filteredPlanets = filteredPlanets.filter((planet) => planet.name.toLowerCase()
-      .includes(name.toLowerCase()));
-  }
-
-  if (filterByNumericValues) {
-    filterByNumericValues.forEach(({ column, comparison, value }) => {
-      filteredPlanets = filteredPlanets.filter((planet) => {
-        if (comparison === 'maior que') {
-          return Number(planet[column]) > value;
-        }
-        if (comparison === 'menor que') {
-          return Number(planet[column]) < value;
-        }
-        return planet[column] === value;
-      });
-    });
-  }
+  const { filters: { order },
+    data: { tableHeadData }, filteredList } = useContext(FilterContext);
 
   function orderString(a, b) {
     if (a[order.column] < b[order.column]) {
@@ -37,7 +16,7 @@ function Table() {
     return 0;
   }
 
-  filteredPlanets.sort((a, b) => {
+  filteredList.sort((a, b) => {
     if (Number(a[order.column])) {
       return a[order.column] - b[order.column];
     }
@@ -45,7 +24,7 @@ function Table() {
   });
 
   if (order.sort === 'DESC') {
-    filteredPlanets.reverse();
+    filteredList.reverse();
   }
 
   const tableHead = () => (
@@ -62,7 +41,7 @@ function Table() {
     <table>
       { tableHead() }
       <tbody>
-        { filteredPlanets.map((planet, index) => (
+        { filteredList.map((planet, index) => (
           <tr key={ index }>
             {tableHeadData.map((column, dataindex) => {
               if (column === 'name') {

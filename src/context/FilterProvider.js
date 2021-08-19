@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import FilterContext from './FilterContext';
 import useData from '../hooks/useData';
@@ -11,6 +11,7 @@ function FilterProvider({ children }) {
     column: 'name',
     sort: 'ASC',
   });
+  const [filteredList, setFilteredList] = useState([]);
 
   const addFilter = (newFilter) => setNumericFilters(
     [...numericFilters, newFilter],
@@ -21,6 +22,30 @@ function FilterProvider({ children }) {
   );
 
   const handleOrder = (params) => setOrder({ ...params });
+
+  useEffect(() => {
+    let filteredPlanets = [...planets];
+
+    if (name) {
+      filteredPlanets = filteredPlanets.filter((planet) => planet.name.toLowerCase()
+        .includes(name.toLowerCase()));
+    }
+
+    if (numericFilters) {
+      numericFilters.forEach(({ column, comparison, value }) => {
+        filteredPlanets = filteredPlanets.filter((planet) => {
+          if (comparison === 'maior que') {
+            return Number(planet[column]) > value;
+          }
+          if (comparison === 'menor que') {
+            return Number(planet[column]) < value;
+          }
+          return planet[column] === value;
+        });
+      });
+    }
+    setFilteredList([...filteredPlanets]);
+  }, [planets, name, numericFilters]);
 
   const value = {
     filters: {
@@ -34,6 +59,7 @@ function FilterProvider({ children }) {
       planets,
       tableHeadData,
     },
+    filteredList,
     addFilter,
     rmvFilter,
     handleOrder,
