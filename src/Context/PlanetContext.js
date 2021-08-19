@@ -5,9 +5,9 @@ import FetchPlanets from '../Helper/FetchPlanets';
 const INITIAL_STATE = { filterByName: { name: '' },
   filterByNumericValues: [
     {
-      column: 'population',
-      comparison: '>',
-      value: 2000,
+      column: '',
+      comparison: '',
+      value: '',
     },
   ],
 };
@@ -36,26 +36,29 @@ export const ContextProvider = ({ children }) => {
     if (data && filter) {
       setFiltered(data.filter((e) => e.name.toLowerCase()
         .includes(filter.filterByName.name.toLowerCase())));
-      const { column, comparison, value } = filter.filterByNumericValues[0];
-      switch (comparison) {
-      case 'maior que':
-        setFiltered(data
-          .filter((e) => Number(e[column]) > value && e[column] !== 'unknown'));
-        break;
-      case 'igual a':
-        setFiltered(data
-          .filter((e) => e[column] === value && e[column] !== 'unknown'));
-        break;
-      case 'menor que':
-        setFiltered(data
-          .filter((e) => Number(e[column]) < value && e[column] !== 'unknown'));
-        break;
-      default: setFiltered(data);
-      }
     } else {
       setFiltered(data);
     }
   }, [data, filter]);
+
+  useEffect(() => {
+    const { column, comparison, value } = filter.filterByNumericValues[0];
+    switch (comparison) {
+    case 'maior que':
+      setFiltered(data
+        .filter((e) => Number(e[column]) > value && e[column] !== 'unknown'));
+      break;
+    case 'igual a':
+      setFiltered(data
+        .filter((e) => e[column] === value && e[column] !== 'unknown'));
+      break;
+    case 'menor que':
+      setFiltered(data
+        .filter((e) => Number(e[column]) < value && e[column] !== 'unknown'));
+      break;
+    default: setFiltered(data);
+    }
+  }, [data, filter.filterByNumericValues]);
 
   const handleFilter = (event) => {
     if (event.target) {
