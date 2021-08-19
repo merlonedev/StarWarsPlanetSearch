@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Context from './Context';
 import Planets from '../Hooks/Planets';
-import FilterName from '../Hooks/FilterName';
+import Filter from '../Hooks/Filter';
+import ColumnOptions from '../Hooks/ColumnOptions';
 
 function Provider(props) {
   const [data, loading] = Planets();
-  const [filter, setFilter] = FilterName();
+  const [filter, setFilter] = Filter();
+  const [columnOptions, setColumnOptions] = ColumnOptions();
 
   const [state, setState] = useState({});
 
@@ -35,6 +37,8 @@ function Provider(props) {
     setFilter,
     loading,
     handleSetState,
+    columnOptions,
+    setColumnOptions,
   };
 
   return (

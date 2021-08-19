@@ -11,7 +11,7 @@ function Input({ labelText, type, name, id, dataTestid, value, func }) {
         name={ name }
         data-testid={ dataTestid }
         value={ value }
-        onChange={ func }
+        onChange={ func || '' }
       />
     </label>
   );
@@ -23,8 +23,16 @@ Input.propTypes = {
   name: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   dataTestid: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  func: PropTypes.func.isRequired,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  func: PropTypes.func,
+};
+
+Input.defaultProps = {
+  func: () => {},
+  value: 'string',
 };
 
 export default Input;

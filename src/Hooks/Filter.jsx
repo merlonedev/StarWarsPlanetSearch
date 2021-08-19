@@ -1,14 +1,14 @@
 import { useState } from 'react';
-// import Context from '../Context/Context';
 
-function FilterName() {
+function Filter() {
   const [filter, setFilter] = useState({
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [],
   });
 
   return [filter, setFilter];
 }
 
-export default FilterName;
+export default Filter;
