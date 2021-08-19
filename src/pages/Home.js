@@ -2,11 +2,7 @@ import React, { useContext } from 'react';
 import TabletPlanets from '../components/TablePlanets';
 import Context from '../context/Context';
 import InputFilterName from '../components/InputFilterName';
-import SelectFilterProperties from '../components/SelectFilterProperties';
-import SelectFilterComparation from '../components/SelectFilterComparation';
-import InputFilterValue from '../components/InputFilterValue';
-import ButtonFilter from '../components/ButtonFilter';
-import ButtonResetFilters from '../components/ButtonResetFilters';
+import NumberFilters from '../components/NumberFilters';
 
 function Home() {
   const { isLoading } = useContext(Context);
@@ -16,11 +12,7 @@ function Home() {
   return (
     <>
       <InputFilterName />
-      <SelectFilterProperties />
-      <SelectFilterComparation />
-      <InputFilterValue />
-      <ButtonFilter />
-      <ButtonResetFilters />
+      <NumberFilters />
       <TabletPlanets />
     </>
   );
