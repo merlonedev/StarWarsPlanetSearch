@@ -2,6 +2,9 @@ import React, { useEffect, useState, useContext } from 'react';
 import PlanetLine from './PlanetLine';
 import dataContext from '../context/dataContext';
 
+const ONE_NEGATIVE = -1;
+const ONE_POSITIVE = 1;
+
 function PlanetTable() {
   const [planets, setPlanets] = useState([]);
   const { state } = useContext(dataContext);
@@ -17,9 +20,53 @@ function PlanetTable() {
     getPlanets();
   }, []);
 
+  const orderStringArray = (Array) => {
+    const { columnOrder, sort } = state.filters.order;
+
+    switch (sort) {
+    case 'ASC':
+      Array.sort((a, b) => {
+        if (a[columnOrder] > b[columnOrder]) return ONE_POSITIVE;
+        if (a[columnOrder] < b[columnOrder]) return ONE_NEGATIVE;
+        return 0;
+      });
+      break;
+    case 'DESC':
+      Array.sort((a, b) => {
+        if (a[columnOrder] < b[columnOrder]) return ONE_POSITIVE;
+        if (a[columnOrder] > b[columnOrder]) return ONE_NEGATIVE;
+        return 0;
+      });
+      break;
+    default:
+      Array.sort();
+    }
+    return Array;
+  };
+
+  const orderNumberArray = (Array) => {
+    const { columnOrder, sort } = state.filters.order;
+
+    switch (sort) {
+    case 'ASC':
+      Array.sort((a, b) => a[columnOrder] - b[columnOrder]);
+      break;
+    case 'DESC':
+      Array.sort((a, b) => b[columnOrder] - a[columnOrder]);
+      break;
+    default:
+      Array.sort();
+    }
+    return Array;
+  };
+
   const filterPlanets = () => {
     let filteredPlanets = planets;
     const filtersByTag = state.filters.filterByNumericValues;
+    const stringColumns = [
+      'name', 'climate', 'climate', 'gravity',
+      'terrain', 'films', 'created', 'edited', 'url'];
+    const { columnOrder } = state.filters.order;
 
     if (state.filters.filterByName.name !== '') {
       filteredPlanets = filteredPlanets
@@ -46,6 +93,12 @@ function PlanetTable() {
         }
         return filteredPlanets;
       });
+    }
+
+    if (stringColumns.includes(columnOrder)) {
+      filteredPlanets = orderStringArray(filteredPlanets);
+    } else {
+      filteredPlanets = orderNumberArray(filteredPlanets);
     }
 
     return filteredPlanets;

@@ -6,9 +6,15 @@ function Provider({ children }) {
   const filterColumnTypes = [
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
 
+  const initialOrder = {
+    columnOrder: 'name',
+    sort: 'ASC',
+  };
+
   const [nameFilter, setNameFilter] = useState('');
   const [filterBy, setFilterBy] = useState([]);
   const [filterTags, setFilterTags] = useState(filterColumnTypes);
+  const [orderTag, setOrderTag] = useState(initialOrder);
 
   const state = {
     filters: {
@@ -16,6 +22,7 @@ function Provider({ children }) {
         name: nameFilter,
       },
       filterByNumericValues: filterBy,
+      order: orderTag,
     },
   };
 
@@ -26,6 +33,7 @@ function Provider({ children }) {
     filterBy,
     filterTags,
     setFilterTags,
+    setOrderTag,
   };
 
   return (
