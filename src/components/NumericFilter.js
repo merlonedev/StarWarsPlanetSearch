@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Context from '../context/Context';
 
 function NumericFilter() {
   const { filters, setFilters, colunmInfo, setColunmInfo } = useContext(Context);
-  const { filterByNumericValues } = filters;
   const [numericFilter, setNumericFilter] = useState({
     column: 'population',
     comparison: 'maior que',
