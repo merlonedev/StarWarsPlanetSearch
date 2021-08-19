@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 const Filters = () => {
-  const { filters, setFilters } = useContext(AppContext);
+  const { filters, setFilters, columnTypes } = useContext(AppContext);
 
   const [numericFilter, setNumericFilter] = useState({
     column: 'population',
@@ -28,13 +28,16 @@ const Filters = () => {
     }
   };
 
-  const filterClick = () => {
+  const filterClick = async () => {
     const newFilters = filters.filterByNumericValues;
     newFilters.push(numericFilter);
     setFilters({
       ...filters,
       filterByNumericValues: newFilters,
     });
+    const { column } = newFilters[newFilters.length - 1];
+    const index = columnTypes.indexOf(column);
+    columnTypes.splice(index, 1);
   };
 
   return (
@@ -52,11 +55,9 @@ const Filters = () => {
         onChange={ handleChangeNumeric }
         value={ numericFilter.column }
       >
-        <option>population</option>
-        <option>orbital_period</option>
-        <option>diameter</option>
-        <option>rotation_period</option>
-        <option>surface_water</option>
+        { columnTypes.map((column) => (
+          <option key={ column }>{ column }</option>
+        )) }
       </select>
       <select
         data-testid="comparison-filter"

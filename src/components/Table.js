@@ -4,8 +4,6 @@ import AppContext from '../context/AppContext';
 const Table = () => {
   const { data, filters } = useContext(AppContext);
 
-  // const [currentPlanets, setCurrentPlanets] = useState();
-
   const renderTableHeader = () => {
     const result = Object.keys(data[0]).map((title) => {
       if (title !== 'residents') {
@@ -67,7 +65,6 @@ const Table = () => {
         filteredPlanets = data.filter((planet) => (
           +planet[column] > +value
         ));
-        console.log(filteredPlanets);
       } else if (comparison === 'menor que') {
         filteredPlanets = data.filter((planet) => (
           +planet[column] < +value

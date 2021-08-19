@@ -8,6 +8,9 @@ const AppProvider = ({ children }) => {
     filterByName: { name: '' },
     filterByNumericValues: [],
   });
+  const [columnTypes, setColumnTypes] = useState([
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+  ]);
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -23,6 +26,8 @@ const AppProvider = ({ children }) => {
     data,
     filters,
     setFilters,
+    columnTypes,
+    setColumnTypes,
   };
 
   return (
