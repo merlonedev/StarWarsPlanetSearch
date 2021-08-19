@@ -2,7 +2,47 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 const Table = () => {
-  const { key, result } = useContext(AppContext);
+  const { key, result, filtrados } = useContext(AppContext);
+
+  // const renderResult = () => {
+  //   ();
+  // };
+
+  // const renderFilted = () => {
+  //   (filtrados.map(({
+  //     name,
+  //     rotation_period: rotationPeriod,
+  //     orbital_period: orbitalPeriod,
+  //     diameter,
+  //     climate,
+  //     gravity,
+  //     terrain,
+  //     surface_water: surfaceWater,
+  //     population,
+  //     films,
+  //     created,
+  //     edited,
+  //     url,
+  //   }, jonas) => (
+  //     <tr key={ jonas }>
+  //       <td>{ name }</td>
+  //       <td>{ rotationPeriod }</td>
+  //       <td>{ orbitalPeriod }</td>
+  //       <td>{ diameter }</td>
+  //       <td>{ climate }</td>
+  //       <td>{ gravity }</td>
+  //       <td>{ terrain }</td>
+  //       <td>{ surfaceWater }</td>
+  //       <td>{ population }</td>
+  //       <td>{ films }</td>
+  //       <td>{ created }</td>
+  //       <td>{ edited }</td>
+  //       <td>{ url }</td>
+  //     </tr>
+  //   )));
+  // };
+
+  const renderResolve = filtrados.length === 0 ? result : filtrados;
 
   return (
     <table>
@@ -17,7 +57,7 @@ const Table = () => {
       </thead>
       <tbody>
         {
-          result.map(({
+          renderResolve.map(({
             name,
             rotation_period: rotationPeriod,
             orbital_period: orbitalPeriod,

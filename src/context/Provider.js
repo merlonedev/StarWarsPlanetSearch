@@ -7,6 +7,13 @@ const Provider = ({ children }) => {
   const [data, setData] = useState([]);
   const [key, setKeys] = useState([]);
   const [result, setResult] = useState([]);
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [{}],
+  });
+  const [filtrados, setFiltrados] = useState([]);
 
   const context = {
     data,
@@ -15,6 +22,10 @@ const Provider = ({ children }) => {
     setKeys,
     result,
     setResult,
+    filters,
+    setFilters,
+    filtrados,
+    setFiltrados,
   };
 
   useEffect(() => {

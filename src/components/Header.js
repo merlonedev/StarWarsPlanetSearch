@@ -1,13 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import AppContext from '../context/AppContext';
 
 const Header = () => {
-  const { data, setResult } = useContext(AppContext);
-  const [filters, setFilters] = useState({
-    filterByName: {
-      name: '',
-    },
-  });
+  const { data, setResult, setFilters, filters } = useContext(AppContext);
 
   useEffect(() => {
     const filterPlanets = data
