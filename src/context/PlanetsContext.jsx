@@ -7,10 +7,42 @@ export const PlanetsContext = createContext();
 export const ContextProvider = ({ children }) => {
   const [data, setData] = useState();
   const [filteredData, setFiltered] = useState();
-  const [filters, setFilters] = useState();
+  const [filters, setFilters] = useState({ filterByName: '', filterByNumericValues: '' });
+  const [filtersOptions, setFiltersOptions] = useState(['population',
+    'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
 
   const updateFilters = ({ name, value }) => {
-    setFilters({ ...filters, [name]: value });
+    if (name === 'filterByName') {
+      setFilters({ ...filters, [name]: value });
+    } else {
+      setFilters({ ...filters, [name]: [...filters[name], value] });
+      setFiltersOptions(filtersOptions.filter((e) => e !== value.parameter));
+    }
+  };
+
+  const filterByComparison = () => {
+    filters.filterByNumericValues.forEach((e) => {
+      const { parameter, value, measure } = e;
+      switch (measure) {
+      case 'maior que':
+        setFiltered(
+          data.filter((key) => +key[parameter] > +value),
+        );
+        break;
+      case 'menor que':
+        setFiltered(
+          data.filter((key) => +key[parameter] < +value),
+        );
+        break;
+      case 'igual a':
+        setFiltered(
+          data.filter((key) => +key[parameter] === +value),
+        );
+        break;
+      default:
+        setFiltered(data);
+      }
+    });
   };
 
   const getPlanets = async () => {
@@ -28,17 +60,23 @@ export const ContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (data && filters) {
+    if (data && filters.filterByName !== '') {
       setFiltered(data.filter((e) => e.name.toLowerCase().includes(
         filters.filterByName.toLowerCase(),
       )));
+    } else if (filters.filterByNumericValues !== '') {
+      filterByComparison();
     } else {
       setFiltered(data);
     }
   }, [data, filters]);
 
   return (
-    <PlanetsContext.Provider value={ { filteredData, setData, updateFilters, data } }>
+    <PlanetsContext.Provider
+      value={ {
+        filteredData, setData, updateFilters, data, filterByComparison, filtersOptions,
+      } }
+    >
       {children}
     </PlanetsContext.Provider>
   );
