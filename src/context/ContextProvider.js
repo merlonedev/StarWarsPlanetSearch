@@ -8,6 +8,7 @@ function ContextProvider({ children }) {
       filterByName: {
         name: '',
       },
+      filterByNumericValues: [],
     },
   };
 

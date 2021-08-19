@@ -8,6 +8,7 @@ function Input(props) {
     value,
     onChange,
     className,
+    name,
   } = props;
 
   return (
@@ -17,6 +18,7 @@ function Input(props) {
       className={ className }
       value={ value }
       onChange={ onChange }
+      name={ name }
     />
   );
 }
@@ -25,6 +27,7 @@ Input.defaultProps = {
   type: 'text',
   testid: '',
   className: '',
+  name: '',
 };
 
 Input.propTypes = {
@@ -33,6 +36,7 @@ Input.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onChange: PropTypes.func.isRequired,
   className: PropTypes.string,
+  name: PropTypes.string,
 };
 
 export default Input;
