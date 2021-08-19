@@ -30,16 +30,19 @@ function Provider({ children }) {
     setFilterNameResult(results);
   }, [data, filters.filterByName]);
 
-  useEffect(() => {
+  function filterPlanetsNumeric() {
     // Logica do colega Eric Kreis - https://github.com/tryber/sd-012-project-starwars-planets-search/pull/35
-    filters.filterByNumericValues.forEach(({ column, comparison, value }) => (
+    filters.filterByNumericValues.forEach(({
+      column, comparison, value }) => (
       value && setFilterNameResult((prevState) => prevState.filter((planet) => {
         if (comparison === 'maior que') return Number(planet[column]) > value;
         if (comparison === 'menor que') return Number(planet[column]) < value;
         return planet[column] === value;
       }))
     ));
-  }, [filters.filterByNumericValues]);
+  }
+
+  useEffect(filterPlanetsNumeric, [filters.filterByNumericValues]);
 
   function handleChange({ target: { value } }) {
     setFilters((prevState) => ({ ...prevState, filterByName: { name: value } }));
