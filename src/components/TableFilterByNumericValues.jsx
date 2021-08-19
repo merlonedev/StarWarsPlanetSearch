@@ -8,8 +8,8 @@ function TableFilterByNumericValues() {
   } } } = useContext(PlanetContext);
 
   const filterNumber = data.filter((item) => {
-    if (comparison === 'maior_que') return item[column] >= value;
-    if (comparison === 'menor_que') return item[column] <= value;
+    if (comparison === 'maior que') return item[column] > +value;
+    if (comparison === 'menor que') return item[column] < +value;
     return item[column] === value;
   });
 

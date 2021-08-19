@@ -48,9 +48,9 @@ function FilterByNumericValues() {
             data-testid="comparison-filter"
             onChange={ handleChange }
           >
-            <option selected value="maior_que">maior que</option>
-            <option value="menor_que">menor que</option>
-            <option value="igual_a">igual a</option>
+            <option selected value="maior que">maior que</option>
+            <option value="menor que">menor que</option>
+            <option value="igual a">igual a</option>
           </select>
 
           <input

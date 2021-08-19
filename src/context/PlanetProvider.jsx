@@ -53,8 +53,6 @@ function PlanetProvider({ children }) {
     }
   }, [inputNumeric]);
 
-  console.log(filters);
-
   const contextValue = {
     data,
     setInputName,
