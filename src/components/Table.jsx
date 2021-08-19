@@ -2,9 +2,19 @@ import React, { useContext } from 'react';
 import PlanetContext from '../context/PlanetContext';
 import TableData from './TableData';
 import TableFilterByName from './TableFilterByName';
+import TableFilterByNumericValues from './TableFilterByNumericValues';
 
 function Table() {
   const { filters: { filterByName: { name } } } = useContext(PlanetContext);
+  const { filters: { filterByNumericValues: {
+    column, comparison, value,
+  } } } = useContext(PlanetContext);
+
+  const tableFilter = () => {
+    if (name) return <TableFilterByName />;
+    if (column || comparison || value) return <TableFilterByNumericValues />;
+    if (!name && !column && !comparison && !value) return <TableData />;
+  };
 
   return (
     <div>
@@ -25,7 +35,7 @@ function Table() {
           <th>terrain</th>
           <th>url</th>
         </tr>
-        { name ? <TableFilterByName /> : <TableData />}
+        { tableFilter() }
       </table>
     </div>
   );

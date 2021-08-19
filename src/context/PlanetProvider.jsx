@@ -6,10 +6,19 @@ import fetchPlanetsApi from '../services/fetchPlanetsApi';
 function PlanetProvider({ children }) {
   const [data, setData] = useState();
   const [inputName, setInputName] = useState();
+  const [inputNumeric, setInputNumeric] = useState();
+
   const [filters, setFilters] = useState({
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [
+      {
+        column: '',
+        comparison: '',
+        value: '',
+      },
+    ],
   });
 
   useEffect(() => {
@@ -29,10 +38,29 @@ function PlanetProvider({ children }) {
     }
   }, [inputName]);
 
+  useEffect(() => {
+    if (data) {
+      const { column, comparison, value } = inputNumeric;
+      setFilters({
+        ...filters,
+        filterByNumericValues: {
+          // dataFilter,
+          column,
+          comparison,
+          value,
+        },
+      });
+    }
+  }, [inputNumeric]);
+
+  console.log(filters);
+
   const contextValue = {
     data,
     setInputName,
     filters,
+    inputNumeric,
+    setInputNumeric,
   };
 
   return (

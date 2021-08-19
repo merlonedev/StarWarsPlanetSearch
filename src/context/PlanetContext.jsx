@@ -6,6 +6,13 @@ const INITIAL_STATE = {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [
+      {
+        column: '',
+        comparison: '',
+        value: '',
+      },
+    ],
   },
 };
 
