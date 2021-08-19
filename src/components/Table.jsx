@@ -3,20 +3,22 @@ import AppContext from '../context/Context';
 
 export default function Table() {
   const [filteredPlanets, setFilteredPlanets] = useState([]);
-  const { data, setPlanets, filters } = useContext(AppContext);
+  const { data, filters } = useContext(AppContext);
   useEffect(() => {
-    const fetchAPI = async () => {
-      const URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const { results } = await fetch(URL).then((r) => r.json());
-      setPlanets(results);
+    const filterByNumeric = (planets) => {
+      const { column, comparison, value } = filters.filterByNumericValues;
+      const filter = planets.filter((planet) => {
+        if (comparison === 'equal') { return Number(planet[column]) === Number(value); }
+        if (comparison === 'higher') { return Number(planet[column]) > Number(value); }
+        if (comparison === 'lower') { return Number(planet[column]) < Number(value); }
+        return planet;
+      });
+      setFilteredPlanets(filter);
     };
-    fetchAPI();
-  }, [setPlanets]);
-  useEffect(() => {
-    const filterPlanets = data
+    const filterByName = data
       .filter(({ name }) => name.toLowerCase().includes(filters.filterByName));
-    setFilteredPlanets(filterPlanets);
-  }, [data, filters.filterByName]);
+    filterByNumeric(filterByName);
+  }, [data, filters.filterByName, filters.filterByNumericValues]);
   if (!filteredPlanets.length) { return <div>LOADING...</div>; }
   return (
     <table>
