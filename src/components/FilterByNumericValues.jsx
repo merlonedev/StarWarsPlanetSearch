@@ -1,10 +1,19 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PlanetContext from '../context/PlanetContext';
 
 function FilterByNumericValues() {
   const { setInputNumeric } = useContext(PlanetContext);
 
   const [stateLocal, setStateLocal] = useState();
+  const [selectColumn, setSelectColumn] = useState(
+    [
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ],
+  );
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -25,6 +34,20 @@ function FilterByNumericValues() {
     });
   };
 
+  const renderSelectColumn = () => {
+    if (stateLocal) {
+      const { column } = stateLocal;
+      const optionsFilter = selectColumn.filter((item) => item !== column);
+      setSelectColumn(optionsFilter);
+    }
+  };
+
+  // componentDidUpdate - oculta column selecionada
+  useEffect(() => {
+    const render = async () => renderSelectColumn();
+    render();
+  }, [stateLocal]);
+
   return (
     <div>
       <form onSubmit={ handleSubmit }>
@@ -34,19 +57,19 @@ function FilterByNumericValues() {
             name="column"
             data-testid="column-filter"
             onChange={ handleChange }
+            defaultValue=""
           >
-            <option selected value="population">population</option>
-            <option value="orbital_period">orbital_period</option>
-            <option value="diameter">diameter</option>
-            <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option>
+            { selectColumn.map((item) => (
+              <option value={ item } key={ item }>{item}</option>
+            ))}
           </select>
           <select
             name="comparison"
             data-testid="comparison-filter"
             onChange={ handleChange }
+            defaultValue="maior que"
           >
-            <option selected value="maior que">maior que</option>
+            <option value="maior que">maior que</option>
             <option value="menor que">menor que</option>
             <option value="igual a">igual a</option>
           </select>

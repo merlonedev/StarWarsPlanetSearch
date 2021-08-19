@@ -9,16 +9,18 @@ function FilterByName() {
   };
 
   return (
-    <label htmlFor="input-name">
-      Pesquisar Planeta por Nome:
-      <input
-        type="text"
-        name="name"
-        id="input-name"
-        onChange={ handleChange }
-        data-testid="name-filter"
-      />
-    </label>
+    <form>
+      <label htmlFor="input-name">
+        Pesquisar Planeta por Nome:
+        <input
+          type="text"
+          name="name"
+          id="input-name"
+          onChange={ handleChange }
+          data-testid="name-filter"
+        />
+      </label>
+    </form>
   );
 }
 
