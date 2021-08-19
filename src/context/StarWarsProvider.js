@@ -7,9 +7,8 @@ export default function StarWarsProvider({ children }) {
   const [data, setData] = useState([]);
   const [fetchError, setFetchError] = useState('');
   const [filters, setFilters] = useState({
-    filterByName: {
-      name: '',
-    },
+    filterByName: { name: '' },
+    filterByNumericValues: [{ column: '', comparison: '', value: '' }],
   });
 
   useEffect(() => {
@@ -33,11 +32,20 @@ export default function StarWarsProvider({ children }) {
     }));
   };
 
+  const setFilterByNum = ({ column, comparison, value }) => {
+    setFilters((prevState) => ({ ...prevState,
+      filterByNumericValues: [
+        { column, comparison, value },
+      ],
+    }));
+  };
+
   const contextValue = {
     data,
     fetchError,
     filters,
     setFilterByName,
+    setFilterByNum,
   };
 
   return (

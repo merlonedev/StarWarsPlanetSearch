@@ -2,17 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { useGlobalContext } from '../../context/GlobalContext';
 
 export default function Table() {
-  const { data, filters } = useGlobalContext();
+  const { data, filters: { filterByName, filterByNumericValues } } = useGlobalContext();
   const [planets, setPlanets] = useState([]);
 
   useEffect(() => {
-    const { filterByName } = filters;
     if (!filterByName.name) {
       setPlanets(data);
     } else {
       setPlanets(data.filter(({ name }) => name.includes(filterByName.name)));
     }
-  }, [filters, data]);
+  }, [filterByName, data]);
+
+  useEffect(() => {
+    filterByNumericValues.forEach(({ column, comparison, value }) => (
+      value && setPlanets((prevPlanets) => prevPlanets.filter((planet) => {
+        if (comparison === 'maior que') {
+          return Number(planet[column]) > Number(value);
+        }
+        if (comparison === 'menor que') {
+          return Number(planet[column]) < Number(value);
+        }
+        return Number(planet[column]) === Number(value);
+      }))
+    ));
+  }, [filterByNumericValues]);
 
   return (
     <table className="table">
