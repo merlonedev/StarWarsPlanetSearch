@@ -46,7 +46,7 @@ const UsedFilters = () => {
           .filter((_filter, i) => i !== index));
       } }
     >
-      ❌
+      <span role="img" aria-label="delete">❌</span>
     </button>
   );
 
