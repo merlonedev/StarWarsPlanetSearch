@@ -3,7 +3,7 @@ import { shape, string } from 'prop-types';
 import StarContext from '../context/StarContext';
 
 function DeleteFilterBtn({ filter }) {
-  const { filters, setFilters } = useContext(StarContext);
+  const { filters, setFilters, columns, setColumns } = useContext(StarContext);
 
   function resetFilters() {
     const { filterByNumericValues } = filters;
@@ -11,6 +11,7 @@ function DeleteFilterBtn({ filter }) {
       ...filters,
       filterByNumericValues: filterByNumericValues.filter((f) => f !== filter),
     });
+    setColumns([...columns, filter.column].sort());
   }
 
   return (

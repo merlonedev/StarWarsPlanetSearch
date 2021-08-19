@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { arrayOf, node } from 'prop-types';
 import StarContext from '../context/StarContext';
 import usePlanets from '../hooks/usePlanets';
-// import fetchPlanets from '../services/planetsAPI';
 
 function StarProvider({ children }) {
   const [planets, setPlanets] = useState([]);
@@ -12,6 +11,14 @@ function StarProvider({ children }) {
     filterByName: { name: '' },
     filterByNumericValues: [],
   });
+
+  const [columns, setColumns] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ].sort());
 
   useEffect(() => {
     function getPlanets() {
@@ -62,6 +69,8 @@ function StarProvider({ children }) {
     loading,
     filters,
     setFilters,
+    columns,
+    setColumns,
   };
 
   return (

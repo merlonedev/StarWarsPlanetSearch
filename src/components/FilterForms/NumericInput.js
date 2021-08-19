@@ -2,19 +2,12 @@ import React, { useContext, useState } from 'react';
 import StarContext from '../../context/StarContext';
 
 function NumericInput() {
-  const { filters, setFilters } = useContext(StarContext);
+  const { filters, setFilters, columns, setColumns } = useContext(StarContext);
   const [formState, setFormState] = useState({
-    column: 'population',
+    column: 'diameter',
     comparison: 'maior que',
     value: '0',
   });
-  const [columns, setColumns] = useState([
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
-  ]);
 
   function handleChange({ target }) {
     const { value, name } = target;
