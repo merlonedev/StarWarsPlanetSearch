@@ -11,7 +11,7 @@ function Filters() {
     value: '',
   };
   const [state, setState] = useState(initialState);
-  // const [filters, setFilters] = useState([]);
+  const [filters, setFilters] = useState([]);
 
   const handleChange = (target) => {
     const { name, value } = target;
@@ -48,6 +48,8 @@ function Filters() {
         onSubmit={ (event) => {
           event.preventDefault();
           updateFilters('numericValue', state);
+          setFilters(...filters, column);
+          setState(initialState);
         } }
       >
         <label htmlFor="column">
@@ -61,9 +63,11 @@ function Filters() {
             onChange={ ({ target }) => handleChange(target) }
           >
             <option disabled value="">Selecione uma opção</option>
-            {columns.map((option) => (
-              <option key={ option } value={ option }>{option}</option>
-            ))}
+            {columns
+              .filter((item) => !filters.includes(item))
+              .map((option) => (
+                <option key={ option } value={ option }>{option}</option>
+              ))}
           </select>
         </label>
 
