@@ -8,7 +8,9 @@ export default function Filter() {
     comparison: 'higher',
     value: '',
   });
+
   const { setFilterByName, setFilterByNumericValues } = useContext(AppContext);
+
   const handleChange = ({ target }) => {
     const { value } = target;
     setNameSearch(value);
@@ -25,7 +27,9 @@ export default function Filter() {
   const columnFilters = [
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
   ];
+
   const { column, comparison, value } = numericSearch;
+
   return (
     <div className="filters">
       <label htmlFor="name">
@@ -59,9 +63,9 @@ export default function Filter() {
             id="comparison-filter"
             data-testid="comparison-filter"
           >
-            <option value="higher">maior que</option>
-            <option value="lower">menor que</option>
-            <option value="equal">igual a</option>
+            <option value="maior que">maior que</option>
+            <option value="menor que">menor que</option>
+            <option value="igual a">igual a</option>
           </select>
         </label>
         <input

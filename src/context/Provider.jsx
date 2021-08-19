@@ -10,16 +10,19 @@ export default function Provider({ children }) {
     comparison: '',
     value: '',
   });
+
   useEffect(() => {
     const fetchAPI = async () => {
       const URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const { results } = await fetch(URL).then((r) => r.json());
+      results.forEach((planet) => delete planet.residents);
       console.log('fecth');
       setPlanets(results);
       console.log('fetch');
     };
     fetchAPI();
   }, []);
+
   const INITIAL_STATE = {
     data,
     setFilterByName,
@@ -29,6 +32,7 @@ export default function Provider({ children }) {
       filterByNumericValues,
     },
   };
+
   return (
     <AppContext.Provider value={ INITIAL_STATE }>
       {children}
