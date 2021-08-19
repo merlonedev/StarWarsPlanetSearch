@@ -12,7 +12,7 @@ function Input() {
     id: 'outlined-basic',
     label: 'Name Filter',
     variant: 'outlined',
-    onChange: ({ target }) => handleFilter(target),
+    onChange: (event) => handleFilter(event),
   };
 
   return (
