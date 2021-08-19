@@ -21,7 +21,7 @@ function PlanetsTable() {
   }) => (
     <tbody key={ name }>
       <tr>
-        <td>{name}</td>
+        <td data-testid="planet-name">{name}</td>
         <td>{rotationPeriod}</td>
         <td>{orbitalPeriod}</td>
         <td>{diameter}</td>
@@ -42,7 +42,7 @@ function PlanetsTable() {
       <tbody>
         <tr>
           <th>Name</th>
-          <th>Rotational Period</th>
+          <th>Rotation Period</th>
           <th>Orbital Period</th>
           <th>Diameter</th>
           <th>Climate</th>

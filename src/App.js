@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import Provider from './context/Provider';
-import NameSearch from './components/NameFilter';
+import NameFilter from './components/NameFilter';
+import OrderFilter from './components/OrderFilter';
 import NumericFilter from './components/NumericFilter';
 import ActiveFiltersList from './components/ActiveFiltersList';
 import PlanetsTable from './components/PlanetsTable';
@@ -9,7 +10,8 @@ import PlanetsTable from './components/PlanetsTable';
 function App() {
   return (
     <Provider>
-      <NameSearch />
+      <NameFilter />
+      <OrderFilter />
       <NumericFilter />
       <ActiveFiltersList />
       <PlanetsTable />

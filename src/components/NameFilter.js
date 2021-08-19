@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
-function NameSearch() {
+function NameFilter() {
   const { filters, setFilters } = useContext(AppContext);
 
   const handleChange = ({ target: { value } }) => {
@@ -21,4 +21,4 @@ function NameSearch() {
   );
 }
 
-export default NameSearch;
+export default NameFilter;

@@ -7,6 +7,10 @@ const INITIAL_FILTERS = {
     name: '',
   },
   filterByNumericValues: [],
+  order: {
+    column: 'name',
+    sort: 'ASC',
+  },
 };
 
 const INITIAL_AVAILABLE_FILTERS = [
@@ -33,12 +37,37 @@ function Provider({ children }) {
     setAvailableFilters,
   };
 
+  const sortingFunction = (results) => {
+    const { order: { column, sort } } = filters;
+    if (sort === 'ASC') {
+      results = results.sort((a, b) => {
+        if (Number.isNaN(+a[column]) || Number.isNaN(+b[column])) {
+          return a[column].localeCompare(b[column]);
+        }
+        return +a[column] - +b[column];
+      });
+    }
+    if (sort === 'DESC') {
+      results = results.sort((b, a) => {
+        if (Number.isNaN(+a[column]) || Number.isNaN(+b[column])) {
+          console.log('NaN');
+          return a[column].localeCompare(b[column]);
+        }
+        console.log('Number');
+        return +a[column] - +b[column];
+      });
+    }
+    return results;
+  };
+
   useEffect(() => {
     const applyFilters = (results) => {
       setFilteredData(data);
       const { filterByName: { name }, filterByNumericValues } = filters;
 
-      let filtered = results.filter((result) => result.name.includes(name));
+      let filtered = sortingFunction(results);
+
+      filtered = results.filter((result) => result.name.includes(name));
 
       let filteredAvailable = INITIAL_AVAILABLE_FILTERS;
 
@@ -48,22 +77,13 @@ function Provider({ children }) {
           return test;
         });
         if (filter.comparison === 'maior que') {
-          filtered = filtered.filter((result) => {
-            const test = Number(result[filter.column]) > Number(filter.value);
-            return test;
-          });
+          filtered = filtered.filter((res) => +res[filter.column] > +filter.value);
         }
         if (filter.comparison === 'menor que') {
-          filtered = filtered.filter((result) => {
-            const test = Number(result[filter.column]) < Number(filter.value);
-            return test;
-          });
+          filtered = filtered.filter((res) => +res[filter.column] < +filter.value);
         }
         if (filter.comparison === 'igual a') {
-          filtered = filtered.filter((result) => {
-            const test = Number(result[filter.column]) === Number(filter.value);
-            return test;
-          });
+          filtered = filtered.filter((res) => +res[filter.column] === +filter.value);
         }
       });
       setAvailableFilters(filteredAvailable);
