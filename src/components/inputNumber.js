@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import StarContext from '../context/StarContext';
 
 const initialFilterState = {
@@ -21,15 +21,6 @@ function InputNumber() {
   const [selectedColumn, setSelectedColumn] = useState([]);
   const { filterNumber } = useContext(StarContext);
 
-  useEffect(() => {
-    const selected = columnList.filter((e) => !selectedColumn.includes(e));
-    setSelectedFilter(selected);
-    setFilter(() => ({
-      ...filter,
-      column: selected[0],
-    }));
-  }, [selectedColumn]);
-
   function handleChange({ target }) {
     const { id, value } = target;
     setFilter({
@@ -40,7 +31,14 @@ function InputNumber() {
 
   function handleClick() {
     filterNumber(filter);
-    setSelectedColumn([...selectedColumn, filter.column]);
+    const prevFilter = [...selectedColumn, filter.column];
+    setSelectedColumn(prevFilter);
+    const selected = columnList.filter((e) => !prevFilter.includes(e));
+    setSelectedFilter(selected);
+    setFilter({
+      ...filter,
+      column: selected[0],
+    });
   }
 
   return (
