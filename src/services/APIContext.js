@@ -27,4 +27,4 @@ StarWarsPlanets.propTypes = {
   children: PropTypes.element.isRequired,
 };
 
-export default StarWarsPlanets;
+export { StarWarsPlanets, Context };

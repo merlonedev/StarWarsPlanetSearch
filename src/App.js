@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
-import StarWarsPlanets from './services/APIContext';
+import { StarWarsPlanets } from './services/APIContext';
+import PlanetsTable from './components/table';
 
 function App() {
   return (
     <StarWarsPlanets>
-      <p>Olá</p>
+      <PlanetsTable />
     </StarWarsPlanets>
   );
 }
