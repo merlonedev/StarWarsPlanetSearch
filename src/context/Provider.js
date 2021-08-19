@@ -20,7 +20,15 @@ function Provider({ children }) {
     getDados();
   }, []);
 
-  const store = { dados, filtro };
+  const filterName = (e) => {
+    const { value } = e.target;
+    const dadosFiltrados = dados.filter(
+      (dado) => dado.name.toLowerCase().includes(value),
+    );
+    setFiltro(dadosFiltrados);
+  };
+
+  const store = { dados, filtro, filterName };
 
   return (
     <MyContext.Provider value={ store }>

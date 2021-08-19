@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import MyContext from '../context/context';
 
 function Table() {
-  const { dados } = useContext(MyContext);
+  const { filtro } = useContext(MyContext);
   return (
     <table>
-      <theader>
+      <thead>
         <tr>
           <th>name</th>
           <th>Rotation Period</th>
@@ -21,10 +21,9 @@ function Table() {
           <th>Edited</th>
           <th>URL</th>
         </tr>
-      </theader>
+      </thead>
       <tbody>
-        {console.log(dados)}
-        {dados.map((dado) => (
+        {filtro.map((dado) => (
           <tr key={ dado.name }>
             <td>{dado.name}</td>
             <td>{dado.rotation_period}</td>
