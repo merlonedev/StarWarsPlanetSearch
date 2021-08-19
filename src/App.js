@@ -42,6 +42,8 @@ function App() {
 
   const handleClick = () => {
     setfilterByNumericValues([UpdatebyNumericValues]);
+    const deleteOption = document.getElementById(UpdatebyNumericValues.column);
+    deleteOption.remove();
   };
 
   return (
@@ -58,11 +60,11 @@ function App() {
         data-testid="column-filter"
         onChange={ handleChangeOptions }
       >
-        <option value="diameter">diameter</option>
-        <option value="population">population</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="surface_water">surface_water</option>
+        <option id="diameter" value="diameter">diameter</option>
+        <option id="population" value="population">population</option>
+        <option id="orbital_period" value="orbital_period">orbital_period</option>
+        <option id="rotation_period" value="rotation_period">rotation_period</option>
+        <option id="surface_water" value="surface_water">surface_water</option>
       </select>
       <select
         name="comparison"
