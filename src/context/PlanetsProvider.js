@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import planetsContext from './PlanetsContext';
 import { filteredPlanetsByName, filteredPlanets } from '../helpers/filteredPlanets';
+import selectorOptions from '../helpers/selectOptions';
 
 export default function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [options, setOptions] = useState(selectorOptions);
   const [filteredData, setFilteredData] = useState([]);
   const [filters, setFilter] = useState({
     filterByName: {
@@ -24,9 +26,11 @@ export default function PlanetsProvider({ children }) {
   };
 
   const setSelectFilter = ({ column, comparison, value }) => {
+    const { filterByNumericValues } = filters;
     setFilter({
       ...filters,
       filterByNumericValues: [
+        ...filterByNumericValues,
         {
           column,
           comparison,
@@ -36,6 +40,7 @@ export default function PlanetsProvider({ children }) {
     });
   };
 
+  // pega os dados da API:
   async function fetchStarWarsPlanets() {
     setIsLoading(true);
     try {
@@ -48,9 +53,22 @@ export default function PlanetsProvider({ children }) {
     }
   }
 
+  // pega os dados da fetchStarWarsPlanets e renderiza de começo, como componentDidMount:
   useEffect(() => {
     fetchStarWarsPlanets();
   }, []);
+
+  useEffect(() => {
+    const { filterByNumericValues } = filters;
+    if (filterByNumericValues.length > 0) {
+      let newOptionsList = options;
+      const optionsToExclude = filterByNumericValues.map((item) => item.column);
+      optionsToExclude.forEach((option) => {
+        newOptionsList = newOptionsList.filter((item) => item !== option);
+      });
+      setOptions(newOptionsList);
+    }
+  }, [filters]);
 
   useEffect(() => {
     const { filterByNumericValues } = filters;
@@ -59,9 +77,9 @@ export default function PlanetsProvider({ children }) {
       setFilteredData(newData);
     } else {
       const planetsWithFilter = filteredPlanets(filteredData, filterByNumericValues);
-      setFilteredData(...planetsWithFilter);
+      setFilteredData(planetsWithFilter);
     }
-  }, [data, filteredData, filters]);
+  }, [data, filters]);
 
   return (
     <planetsContext.Provider
@@ -69,6 +87,7 @@ export default function PlanetsProvider({ children }) {
         fetchStarWarsPlanets,
         isLoading,
         filters,
+        options,
         setNameFilter,
         setSelectFilter,
         filteredData } }

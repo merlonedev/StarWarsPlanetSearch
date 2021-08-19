@@ -1,20 +1,24 @@
-export function filteredPlanets(array, object) {
-  const numericFilters = object.map((plan) => {
-    switch (plan.comparison) {
+export function filteredPlanets(array, allFilters) {
+  let filteredPlanetsByNumeric = array;
+  allFilters.forEach((filter) => {
+    switch (filter.comparison) {
     case 'maior que':
-      return array
-        .filter((newArray) => Number(newArray[plan.column]) > Number(plan.value));
+      filteredPlanetsByNumeric = filteredPlanetsByNumeric
+        .filter((newArray) => Number(newArray[filter.column]) > Number(filter.value));
+      break;
     case 'menor que':
-      return array
-        .filter((newArray) => Number(newArray[plan.column]) < Number(plan.value));
+      filteredPlanetsByNumeric = filteredPlanetsByNumeric
+        .filter((newArray) => Number(newArray[filter.column]) < Number(filter.value));
+      break;
     case 'igual a':
-      return array
-        .filter((newArray) => Number(newArray[plan.column]) === Number(plan.value));
+      filteredPlanetsByNumeric = filteredPlanetsByNumeric
+        .filter((newArray) => Number(newArray[filter.column]) === Number(filter.value));
+      break;
     default:
-      return array;
+      return filteredPlanetsByNumeric;
     }
   });
-  return numericFilters;
+  return filteredPlanetsByNumeric;
 }
 
 export function filteredPlanetsByName(array, object) {
