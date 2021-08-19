@@ -70,7 +70,7 @@ const FilterByNumericValues = () => {
         data-testid="button-filter"
         type="submit"
       >
-        Filtrar
+        Filter
       </button>
     </form>
   );

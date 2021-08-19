@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import Context from '../../context/Context';
 import FilterByName from './FilterByName';
 import FilterByNumericValues from './FilterByNumericValues';
+import OrderData from './OrderData';
 import UsedFilters from './UsedFilters';
 
 const Filters = () => {
@@ -10,6 +11,7 @@ const Filters = () => {
   return (
     <div>
       <FilterByName />
+      <OrderData />
       <FilterByNumericValues />
       { filterByNumericValue.length > 0 && <UsedFilters />}
     </div>
