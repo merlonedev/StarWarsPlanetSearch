@@ -5,6 +5,7 @@ export const MyContext = createContext();
 
 function NewProvider({ children }) {
   const [planets, setPlanets] = useState([]);
+  const [filter, setFilter] = useState([]);
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -17,6 +18,8 @@ function NewProvider({ children }) {
 
   const objects = {
     planets,
+    filter,
+    setFilter,
   };
 
   return (
