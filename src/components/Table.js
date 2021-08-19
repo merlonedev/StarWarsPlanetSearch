@@ -19,11 +19,13 @@ function Table() {
   function renderRow(planet) {
     return (
       <tr key={ planet.name }>
-        {Object.keys(planet).map(
-          (elem) => elem !== 'residents' && (
-            <td key={ `${planet.name}_${elem}` }>{planet[elem]}</td>
-          ),
-        )}
+        {Object.keys(planet).map((elem) => (elem !== 'residents' && elem === 'name' ? (
+          <td data-testid="planet-name" key={ `${planet.name}_${elem}` }>
+            {planet[elem]}
+          </td>
+        ) : (
+          <td key={ `${planet.name}_${elem}` }>{planet[elem]}</td>
+        )))}
       </tr>
     );
   }

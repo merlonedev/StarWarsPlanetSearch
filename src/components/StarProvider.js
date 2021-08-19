@@ -10,6 +10,7 @@ function StarProvider({ children }) {
   const [filters, setFilters] = useState({
     filterByName: { name: '' },
     filterByNumericValues: [],
+    // order: {},
   });
 
   const [columns, setColumns] = useState([
@@ -19,6 +20,8 @@ function StarProvider({ children }) {
     'rotation_period',
     'surface_water',
   ].sort());
+
+  // const [order, setOrder] = useState({});
 
   useEffect(() => {
     function getPlanets() {
@@ -37,22 +40,23 @@ function StarProvider({ children }) {
   }
 
   function filterPlanetsByNumeric() {
+    console.log('filter');
     const { filterByNumericValues } = filters;
     filterByNumericValues.forEach(({ comparison, column, value }) => {
       switch (comparison) {
       case 'maior que':
         setPlanets(
-          data.filter((p) => parseInt(p[column], 10) > parseInt(value, 10)),
+          planets.filter((p) => parseInt(p[column], 10) > parseInt(value, 10)),
         );
         break;
       case 'menor que':
         setPlanets(
-          data.filter((p) => parseInt(p[column], 10) < parseInt(value, 10)),
+          planets.filter((p) => parseInt(p[column], 10) < parseInt(value, 10)),
         );
         break;
       case 'igual a':
         setPlanets(
-          data.filter((p) => p[column] === value),
+          planets.filter((p) => p[column] === value),
         );
         break;
       default:
@@ -61,11 +65,34 @@ function StarProvider({ children }) {
     });
   }
 
+  // function sortOrder() {
+  //   const { column, sort } = order;
+
+  //   const newSort = planets.sort(({ [column]: a }, { [column]: b }) => {
+  //     let comp = 0;
+  //     const ONE_NEG = -1;
+
+  //     if (a > b) {
+  //       comp = 1;
+  //     } else if (a < b) {
+  //       comp = ONE_NEG;
+  //     }
+
+  //     return (
+  //       (sort === 'DESC') ? (comp * ONE_NEG) : comp
+  //     );
+  //   });
+
+  //   setPlanets(newSort);
+  // }
+
   useEffect(filterPlanetsByName, [filters]);
   useEffect(filterPlanetsByNumeric, [filters.filterByNumericValues]);
+  // useEffect(sortOrder, [order]);
 
   const contextValue = {
     planets,
+    setPlanets,
     loading,
     filters,
     setFilters,
