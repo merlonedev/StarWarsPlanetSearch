@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import MyContext from '../context/Context';
 
 function Table() {
-  const { data } = useContext(MyContext);
+  const { data, filteredPlanets } = useContext(MyContext);
   return (
     <table>
       <thead>
@@ -19,7 +19,7 @@ function Table() {
       </thead>
       <tbody>
         { data.length > 0
-        && data.map((planet, index) => (
+        && filteredPlanets.map((planet, index) => (
           <tr key={ index }>
             { Object.keys(planet).map((key) => (
               key !== 'residents' && <td key={ key }>{ planet[key] }</td>

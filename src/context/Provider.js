@@ -4,6 +4,12 @@ import MyContext from './Context';
 
 function MyProvider({ children }) {
   const [data, setData] = useState([]);
+  const [filteredPlanets, setFilteredPlanets] = useState([]);
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -15,8 +21,20 @@ function MyProvider({ children }) {
     getPlanets();
   }, [setData]);
 
+  const { filterByName: { name } } = filters;
+  useEffect(() => {
+    setFilteredPlanets(
+      data.filter((planet) => planet.name
+        .toLowerCase().includes(name.toLowerCase())),
+    );
+  }, [data, name]);
+
   const contextValue = {
     data,
+    filters,
+    setFilters,
+    filteredPlanets,
+    setFilteredPlanets,
   };
 
   return (
@@ -29,3 +47,5 @@ MyProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 export default MyProvider;
+// Link
+// https://codesandbox.io/embed/react-hooks-search-filter-4gnwc
