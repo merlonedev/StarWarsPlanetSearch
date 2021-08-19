@@ -46,7 +46,7 @@ Select.propTypes = {
     PropTypes.string,
   ).isRequired,
   // defaultValue: PropTypes.string.isRequired,
-  // defaultOption: PropTypkes.string.isRequired,
+  // defaultOption: PropTypes.string.isRequired,
   testId: PropTypes.string,
 };
 

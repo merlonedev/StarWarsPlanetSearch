@@ -30,9 +30,13 @@ export default function Header() {
           filterByNumericValues: [...prev.filterByNumericValues, filterByNumeric] }
       ));
       FILTER_OP = FILTER_OP.filter((item) => item !== column);
+      setFilterByNumeric({ column: FILTER_OP[0] });
+      console.log(filterByNumeric);
     } else {
       setFilters((prev) => ({ ...prev, filterByNumericValues }));
       FILTER_OP = FILTER_OP.filter((item) => item !== column);
+      setFilterByNumeric({ column: FILTER_OP[0] });
+      console.log(filterByNumeric);
     }
   };
 
