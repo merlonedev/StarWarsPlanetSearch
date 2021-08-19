@@ -1,15 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AppContext from '../context/Context';
 
+const INITIAL_COLUMN_FILTERS = [
+  'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+];
+
 export default function Filter() {
   const [nameSearch, setNameSearch] = useState('');
+  const [columnFilters, setColumnFilters] = useState(INITIAL_COLUMN_FILTERS);
   const [numericSearch, setNumericSearch] = useState({
     column: 'population',
-    comparison: 'higher',
+    comparison: 'maior que',
     value: '',
   });
 
-  const { setFilterByName, setFilterByNumericValues } = useContext(AppContext);
+  const {
+    setFilterByName, setFilterByNumericValues, filters,
+  } = useContext(AppContext);
+
+  const { filterByNumericValues } = filters;
 
   const handleChange = ({ target }) => {
     const { value } = target;
@@ -24,9 +33,12 @@ export default function Filter() {
   useEffect(() => {
     setFilterByName(nameSearch);
   }, [nameSearch, setFilterByName]);
-  const columnFilters = [
-    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
-  ];
+
+  const filterColumnsFilter = () => {
+    const filtered = columnFilters.filter((column) => column !== numericSearch.column);
+    setNumericSearch({ ...numericSearch, column: filtered[0] });
+    setColumnFilters(filtered);
+  };
 
   const { column, comparison, value } = numericSearch;
 
@@ -78,7 +90,8 @@ export default function Filter() {
         <button
           onClick={ (evt) => {
             evt.preventDefault();
-            setFilterByNumericValues(numericSearch);
+            setFilterByNumericValues([...filterByNumericValues, numericSearch]);
+            filterColumnsFilter();
           } }
           data-testid="button-filter"
           type="submit"

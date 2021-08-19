@@ -1,38 +1,48 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import AppContext from '../context/Context';
 
 export default function Table() {
-  const [filteredPlanets, setFilteredPlanets] = useState([]);
-
   const { data, filters } = useContext(AppContext);
 
-  useEffect(() => {
-    const filterByNumeric = (planets) => {
-      const { column, comparison, value } = filters.filterByNumericValues;
-      const filter = planets.filter((planet) => {
-        if (comparison === 'igual a') { return Number(planet[column]) === Number(value); }
-        if (comparison === 'maior que') { return Number(planet[column]) > Number(value); }
-        if (comparison === 'menor que') { return Number(planet[column]) < Number(value); }
-        return planet;
+  const filterByNumeric = (planets) => {
+    filters.filterByNumericValues
+      .forEach(({ column, comparison, value }) => {
+        if (comparison === 'igual a') {
+          planets = planets.filter((planet) => +planet[column] === +value);
+        }
+        if (comparison === 'maior que') {
+          planets = planets.filter((planet) => +planet[column] > +value);
+        }
+        if (comparison === 'menor que') {
+          planets = planets.filter((planet) => +planet[column] < +value);
+        }
       });
-      setFilteredPlanets(filter);
-    };
-    const filterByName = data
-      .filter(({ name }) => name.toLowerCase().includes(filters.filterByName));
-    filterByNumeric(filterByName);
-  }, [data, filters.filterByName, filters.filterByNumericValues]);
+    return planets;
+  };
 
-  if (!filteredPlanets.length) { return <div>LOADING...</div>; }
+  const filterPlanets = (planets) => {
+    let filtered = planets
+      .filter(({ name }) => name.toLowerCase()
+        .includes(filters.filterByName.toLowerCase()));
+    if (filters.filterByNumericValues.length) {
+      filtered = filterByNumeric(filtered);
+      return filtered;
+    }
+    return filtered;
+  };
+
+  if (!filterPlanets(data).length) { return <div>LOADING...</div>; }
 
   return (
     <table>
       <thead>
         <tr>
-          {Object.keys(filteredPlanets[0]).map((key, i) => (<th key={ i }>{key}</th>))}
+          {Object.keys(filterPlanets(data)[0])
+            .map((key, i) => (<th key={ i }>{key}</th>))}
         </tr>
       </thead>
       <tbody>
-        {filteredPlanets.map((planet, i) => (
+        {filterPlanets(data).map((planet, i) => (
           <tr key={ i }>
             {Object.values(planet).map((value, j) => (<td key={ j }>{value}</td>))}
           </tr>

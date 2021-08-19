@@ -5,20 +5,14 @@ import AppContext from './Context';
 export default function Provider({ children }) {
   const [data, setPlanets] = useState([]);
   const [filterByName, setFilterByName] = useState('');
-  const [filterByNumericValues, setFilterByNumericValues] = useState({
-    column: '',
-    comparison: '',
-    value: '',
-  });
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
   useEffect(() => {
     const fetchAPI = async () => {
       const URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const { results } = await fetch(URL).then((r) => r.json());
       results.forEach((planet) => delete planet.residents);
-      console.log('fecth');
       setPlanets(results);
-      console.log('fetch');
     };
     fetchAPI();
   }, []);
