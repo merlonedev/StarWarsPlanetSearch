@@ -4,12 +4,13 @@ import Button from './Button';
 import Input from './Input';
 import Select from './Select';
 
-let FILTER_OP = [
+const FILTER_OP = [
   'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
 const INITIAL_STATE = { column: 'population', comparison: 'maior que', value: 0 };
 
 export default function Header() {
   const { filters, setFilters } = useFilter();
+  const [filterOp, setFilterOp] = useState(FILTER_OP);
   const [filterByNumeric, setFilterByNumeric] = useState(INITIAL_STATE);
 
   const handleChange = ({ target: { value } }) => {
@@ -29,14 +30,14 @@ export default function Header() {
         { ...prev,
           filterByNumericValues: [...prev.filterByNumericValues, filterByNumeric] }
       ));
-      FILTER_OP = FILTER_OP.filter((item) => item !== column);
-      setFilterByNumeric({ column: FILTER_OP[0] });
-      console.log(filterByNumeric);
+      const newOptions = filterOp.filter((item) => item !== column);
+      setFilterOp(newOptions);
+      setFilterByNumeric({ ...filterByNumeric, column: newOptions[0], value: 0 });
     } else {
       setFilters((prev) => ({ ...prev, filterByNumericValues }));
-      FILTER_OP = FILTER_OP.filter((item) => item !== column);
-      setFilterByNumeric({ column: FILTER_OP[0] });
-      console.log(filterByNumeric);
+      const newOptions = filterOp.filter((item) => item !== column);
+      setFilterOp(newOptions);
+      setFilterByNumeric({ ...filterByNumeric, column: newOptions[0], value: 0 });
     }
   };
 
@@ -58,7 +59,7 @@ export default function Header() {
         id="column"
         label="Filter by: "
         onChange={ handleOption }
-        options={ FILTER_OP }
+        options={ filterOp }
         value={ column }
       />
       <Select
