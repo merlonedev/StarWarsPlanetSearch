@@ -40,9 +40,16 @@ export default function Header() {
       setFilterByNumeric({ ...filterByNumeric, column: newOptions[0], value: 0 });
     }
   };
+  const reset = ({ target: { value } }) => {
+    const { filterByNumericValues } = filters;
+    const remFiltro = filterByNumericValues.filter(({ column }) => column !== value);
+    setFilters((prev) => ({ ...prev, filterByNumericValues: remFiltro }));
+    setFilterOp((prev) => [...prev, value]);
+  };
 
   const { filterByName: { name } } = filters;
   const { column, comparison, value } = filterByNumeric;
+  const { filterByNumericValues } = filters;
   return (
     <header>
       <Input
@@ -83,6 +90,25 @@ export default function Header() {
         testId="button-filter"
         onClick={ addToContext }
       />
+      <div>
+        <span>
+          {filterByNumericValues && (
+            filterByNumericValues.map((item) => (
+              <ul key={ item.column } data-testid="filter">
+                <li>
+                  {JSON.stringify(item)}
+                  <Button
+                    type="button"
+                    label="X"
+                    value={ item.column }
+                    onClick={ reset }
+                  />
+                </li>
+              </ul>
+            ))
+          )}
+        </span>
+      </div>
     </header>
   );
 }
