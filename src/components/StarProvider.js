@@ -33,27 +33,24 @@ function StarProvider({ children }) {
 
   function filterPlanetsByNumeric() {
     const { filterByNumericValues } = filters;
+    if (!data.length) return;
+    let outList = [...data];
     filterByNumericValues.forEach(({ comparison, column, value }) => {
       switch (comparison) {
       case 'maior que':
-        setPlanets(
-          planets.filter((p) => parseInt(p[column], 10) > parseInt(value, 10)),
-        );
+        outList = outList.filter((p) => parseInt(p[column], 10) > parseInt(value, 10));
         break;
       case 'menor que':
-        setPlanets(
-          planets.filter((p) => parseInt(p[column], 10) < parseInt(value, 10)),
-        );
+        outList = outList.filter((p) => parseInt(p[column], 10) < parseInt(value, 10));
         break;
       case 'igual a':
-        setPlanets(
-          planets.filter((p) => p[column] === value),
-        );
+        outList = outList.filter((p) => p[column] === value);
         break;
       default:
         break;
       }
     });
+    setPlanets([...outList]);
   }
 
   function setPlanetsFromData() {
