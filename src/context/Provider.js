@@ -7,11 +7,13 @@ function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
   const [filtersProvider, setFiltersProvider] = useState({});
   const [planetList, setPlanetList] = useState([]);
+  const [headerArray, setHeaderArray] = useState([]);
 
   useEffect(() => {
     const fetchPlanets = async () => {
       const planets = await getPlanets();
       setData(planets);
+      setHeaderArray(Object.keys(planets[0]));
     };
     fetchPlanets();
   }, []);
@@ -33,6 +35,7 @@ function PlanetsProvider({ children }) {
   const contextValue = {
     setFiltersProvider,
     planetList,
+    headerArray,
   };
 
   return (
