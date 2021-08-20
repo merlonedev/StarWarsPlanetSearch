@@ -6,6 +6,21 @@ export const Context = createContext();
 
 export const StarWarsProvider = ({ children }) => {
   const [data, setData] = useState('');
+  const [filter, setFilter] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
+  const [filteredData, setFilteredData] = useState();
+
+  const filterPlanetsByName = ({ name, value }) => {
+    if (name === 'name') {
+      const dataFilter = data
+        .filter((d) => (d.name.toLowerCase()).includes(value.toLowerCase()));
+      setFilteredData(dataFilter);
+      setFilter({ ...filter, filterByName: { name: value } });
+    }
+  };
 
   const getPlanets = async () => {
     const request = await fetchPlanets();
@@ -14,6 +29,7 @@ export const StarWarsProvider = ({ children }) => {
       return planet;
     });
     setData(newPlanets);
+    setFilteredData(newPlanets);
   };
 
   useEffect(() => {
@@ -21,7 +37,7 @@ export const StarWarsProvider = ({ children }) => {
   }, []);
 
   return (
-    <Context.Provider value={ { data, setData } }>
+    <Context.Provider value={ { data, setData, filterPlanetsByName, filteredData } }>
       {children}
     </Context.Provider>
   );

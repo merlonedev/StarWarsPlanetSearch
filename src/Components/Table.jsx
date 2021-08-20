@@ -7,18 +7,23 @@ import TableRow from '@material-ui/core/TableRow';
 import { Context } from '../context/SWProvider';
 
 function Orders() {
-  const { data } = useContext(Context);
-  return data ? (
+  const { filteredData } = useContext(Context);
+  if (!filteredData) {
+    return <h1>Loading..</h1>;
+  } if (filteredData && filteredData.length === 0) {
+    return <h1>Não encontramos nada</h1>;
+  }
+  return (
     <Table size="small">
       <TableHead>
         <TableRow>
           {
-            Object.keys(data[0]).map((e) => <TableCell key={ e }>{e}</TableCell>)
+            Object.keys(filteredData[0]).map((e) => <TableCell key={ e }>{e}</TableCell>)
           }
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((e) => (
+        {filteredData.map((e) => (
           <TableRow key={ e.name }>
             <TableCell>{e.name}</TableCell>
             <TableCell>{e.rotation_period}</TableCell>
@@ -37,7 +42,7 @@ function Orders() {
         ))}
       </TableBody>
     </Table>
-  ) : <h1>Loading</h1>;
+  );
 }
 
 export default Orders;
