@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { arrayOf, node } from 'prop-types';
 import StarContext from '../context/StarContext';
 import usePlanets from '../hooks/usePlanets';
+import sortOrder from './helpers/sortOrder';
 
 function StarProvider({ children }) {
   const [planets, setPlanets] = useState([]);
@@ -10,7 +11,7 @@ function StarProvider({ children }) {
   const [filters, setFilters] = useState({
     filterByName: { name: '' },
     filterByNumericValues: [],
-    // order: {},
+    order: { column: 'name', sort: 'ASC' },
   });
 
   const [columns, setColumns] = useState([
@@ -20,15 +21,6 @@ function StarProvider({ children }) {
     'rotation_period',
     'surface_water',
   ].sort());
-
-  // const [order, setOrder] = useState({});
-
-  useEffect(() => {
-    function getPlanets() {
-      setPlanets(data);
-    }
-    getPlanets();
-  }, [data]);
 
   function filterPlanetsByName() {
     const { filterByName } = filters;
@@ -65,30 +57,16 @@ function StarProvider({ children }) {
     });
   }
 
-  // function sortOrder() {
-  //   const { column, sort } = order;
+  function setPlanetsFromData() {
+    if (data.length) {
+      setPlanets(sortOrder(data, filters));
+    }
+  }
 
-  //   const newSort = planets.sort(({ [column]: a }, { [column]: b }) => {
-  //     let comp = 0;
-  //     const ONE_NEG = -1;
-
-  //     if (a > b) {
-  //       comp = 1;
-  //     } else if (a < b) {
-  //       comp = ONE_NEG;
-  //     }
-
-  //     return (
-  //       (sort === 'DESC') ? (comp * ONE_NEG) : comp
-  //     );
-  //   });
-
-  //   setPlanets(newSort);
-  // }
-
+  useEffect(setPlanetsFromData, [data]);
   useEffect(filterPlanetsByName, [filters]);
   useEffect(filterPlanetsByNumeric, [filters.filterByNumericValues]);
-  // useEffect(sortOrder, [order]);
+  useEffect(setPlanetsFromData, [filters.order]);
 
   const contextValue = {
     planets,

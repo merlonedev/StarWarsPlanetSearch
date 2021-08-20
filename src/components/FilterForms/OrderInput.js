@@ -3,14 +3,13 @@ import StarContext from '../../context/StarContext';
 
 function OrderInput() {
   const {
+    filters,
+    setFilters,
     columns,
-    planets,
-    setPlanets,
   } = useContext(StarContext);
   const [numberTypeColumns] = useState(['name', ...columns]);
   const [orderFormState, setOrderFormState] = useState({
-    column: 'name',
-    sort: 'ASC',
+    ...filters.order,
   });
 
   function handleChange({ target }) {
@@ -19,24 +18,7 @@ function OrderInput() {
   }
 
   function handleClick() {
-    const { column, sort } = orderFormState;
-    console.log('oi');
-    const newSort = planets.sort(({ [column]: a }, { [column]: b }) => {
-      let comp = 0;
-      const ONE_NEG = -1;
-
-      if (a > b) {
-        comp = 1;
-      } else if (a < b) {
-        comp = ONE_NEG;
-      }
-
-      return (
-        (sort === 'DESC') ? (comp * ONE_NEG) : comp
-      );
-    });
-
-    setPlanets([...newSort]);
+    setFilters({ ...filters, order: { ...orderFormState } });
   }
 
   return (
