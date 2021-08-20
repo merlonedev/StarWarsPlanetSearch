@@ -117,7 +117,10 @@ function ProviderContext({ children }) {
         .map((plan) => (
           plan.reduce((acc, planet) => {
             const [key, valueReduce] = planet;
-
+            if (key === 'orbital_period') {
+              acc[key] = +valueReduce;
+              return acc;
+            }
             acc[key] = valueReduce;
             return acc;
           }, [])));
