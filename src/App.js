@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; // teste
 import './App.css';
 import Provider from './context/Provider';
 import Table from './components/Table';
