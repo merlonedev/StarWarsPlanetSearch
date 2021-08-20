@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useData, useFilter } from '../context/DataContext';
 import StarWarsAPI from '../services/StarWarsAPI';
+import { orderby, filterData } from '../helpers/functions';
 
 export default function Table() {
   const { data, setData } = useData();
@@ -17,38 +18,6 @@ export default function Table() {
     loadData();
   }, [setData]);
 
-  const filterData = () => {
-    const { filterByName, filterByNumericValues: fbnv } = filters;
-    const { name: filterName } = filterByName;
-    let filteredData = data;
-    if (filterName) {
-      filteredData = filteredData
-        .filter(({ name }) => name.toLowerCase().includes(filterName));
-    }
-    if (fbnv) {
-      fbnv.forEach((e) => {
-        switch (e.comparison) {
-        case 'maior que':
-          filteredData = filteredData
-            .filter((item) => (Number(item[e.column]) > Number(e.value)));
-          break;
-        case 'menor que':
-          filteredData = filteredData
-            .filter((item) => (Number(item[e.column]) < Number(e.value)));
-          break;
-        case 'igual a':
-          filteredData = filteredData
-            .filter((item) => (Number(item[e.column]) === Number(e.value)));
-          break;
-        default:
-          return filteredData;
-        }
-      });
-    }
-
-    return filteredData;
-  };
-
   if (loading) { return <span> Loading... </span>; }
   const headers = Object.keys(data[0]).filter((head) => head !== 'residents');
 
@@ -63,9 +32,9 @@ export default function Table() {
         </tr>
       </thead>
       <tbody>
-        {filterData().map((planet) => (
+        {orderby(filterData(filters, data), filters).map((planet) => (
           <tr key={ planet.url }>
-            <td>{ planet.name }</td>
+            <td data-testid="planet-name">{ planet.name }</td>
             <td>{ planet.rotation_period }</td>
             <td>{ planet.orbital_period }</td>
             <td>{ planet.diameter }</td>

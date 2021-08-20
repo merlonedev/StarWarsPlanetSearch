@@ -7,11 +7,13 @@ import Select from './Select';
 const FILTER_OP = [
   'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
 const INITIAL_STATE = { column: 'population', comparison: 'maior que', value: 0 };
+const INITIAL_SORT = { column: 'population', sort: 'ASC' };
 
 export default function Header() {
   const { filters, setFilters } = useFilter();
   const [filterOp, setFilterOp] = useState(FILTER_OP);
   const [filterByNumeric, setFilterByNumeric] = useState(INITIAL_STATE);
+  const [order, setOrder] = useState(INITIAL_SORT);
 
   const handleChange = ({ target: { value } }) => {
     value = value.toLowerCase();
@@ -40,6 +42,7 @@ export default function Header() {
       setFilterByNumeric({ ...filterByNumeric, column: newOptions[0], value: 0 });
     }
   };
+
   const remFilter = ({ target: { value } }) => {
     const { filterByNumericValues } = filters;
     const remFiltro = filterByNumericValues.filter(({ column }) => column !== value);
@@ -47,9 +50,18 @@ export default function Header() {
     setFilterOp((prev) => [...prev, value]);
   };
 
+  const handleOrder = ({ target: { name, value } }) => {
+    setOrder((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const orderSubmit = () => {
+    setFilters((prev) => ({ ...prev, order }));
+  };
+
   const { filterByName: { name } } = filters;
   const { column, comparison, value } = filterByNumeric;
   const { filterByNumericValues } = filters;
+  const { column: sColumn, sort } = order;
   return (
     <header>
       <Input
@@ -107,6 +119,39 @@ export default function Header() {
           ))
         )}
       </div>
+      <Select
+        testId="column-sort"
+        name="column"
+        id="column"
+        label="Order by: "
+        onChange={ handleOrder }
+        options={ filterOp }
+        value={ sColumn }
+      />
+      <Input
+        type="radio"
+        label="ASC"
+        testId="column-sort-input-asc"
+        name="sort"
+        onChange={ handleOrder }
+        value="ASC"
+        checked={ sort === 'ASC' }
+      />
+      <Input
+        type="radio"
+        label="DESC"
+        testId="column-sort-input-desc"
+        name="sort"
+        onChange={ handleOrder }
+        value="DESC"
+        checked={ sort === 'DESC' }
+      />
+      <Button
+        type="button"
+        label="ok"
+        testId="column-sort-button"
+        onClick={ orderSubmit }
+      />
     </header>
   );
 }
