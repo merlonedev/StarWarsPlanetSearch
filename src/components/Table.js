@@ -3,14 +3,14 @@ import MyContext from '../context/Context';
 
 export default function Table() {
   const value = useContext(MyContext);
-  const { data } = value;
+  const { planetList } = value;
   let tableHeader = [];
 
-  if (data.length > 0) {
-    tableHeader = Object.keys(data[0]);
+  if (planetList.length > 0) {
+    tableHeader = Object.keys(planetList[0]);
   }
 
-  if (!data.length > 0) {
+  if (!planetList.length > 0) {
     return (<h1>Loading</h1>);
   }
 
@@ -22,7 +22,7 @@ export default function Table() {
         </tr>
       </thead>
       <tbody>
-        { data.map((planets) => (
+        { planetList.map((planets) => (
           <tr key={ planets.name }>
             { tableHeader.map((header) => <td key={ header }>{ planets[header] }</td>) }
           </tr>
