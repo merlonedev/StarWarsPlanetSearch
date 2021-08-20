@@ -3,6 +3,7 @@ import TabletPlanets from '../components/TablePlanets';
 import Context from '../context/Context';
 import InputFilterName from '../components/InputFilterName';
 import NumberFilters from '../components/NumberFilters';
+import FilterSort from '../components/FilterSort';
 
 function Home() {
   const { isLoading } = useContext(Context);
@@ -13,6 +14,7 @@ function Home() {
     <>
       <InputFilterName />
       <NumberFilters />
+      <FilterSort />
       <TabletPlanets />
     </>
   );

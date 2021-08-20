@@ -41,6 +41,8 @@ function ProviderContext({ children }) {
   const [value, setValue] = useState('');
   const [optionsComparation, setOptionsComparation] = useState(INITIAL_OPT_COMPAR_STATE);
   const [optionsProperties, setOptionsProperties] = useState(INITIAL_OPT_PROP_STATE);
+  const [orderColumn, setOrderColumn] = useState('name');
+  const [orderRadios, setOrderRadios] = useState('ASC');
 
   const { filterByNumericValues, order: { column: sortColumn, sort } } = filters;
 
@@ -66,6 +68,16 @@ function ProviderContext({ children }) {
     setOptionsComparation(filterComparison);
 
     setValue('');
+  };
+
+  const handleClickOrder = () => {
+    setFilters({
+      ...filters,
+      order: {
+        column: orderColumn,
+        sort: orderRadios,
+      },
+    });
   };
 
   const sortASC = (paramColumn, list) => list.sort((a, b) => {
@@ -105,6 +117,7 @@ function ProviderContext({ children }) {
         .map((plan) => (
           plan.reduce((acc, planet) => {
             const [key, valueReduce] = planet;
+
             acc[key] = valueReduce;
             return acc;
           }, [])));
@@ -170,11 +183,16 @@ function ProviderContext({ children }) {
     value,
     optionsComparation,
     optionsProperties,
+    orderColumn,
+    orderRadios,
+    setOrderRadios,
+    setOrderColumn,
     setValue,
     setComparison,
     setColumn,
     handleClíckFilter,
     setFilters,
+    handleClickOrder,
     INITIAL_FILTERS_STATE,
   };
 
