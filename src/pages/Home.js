@@ -1,12 +1,14 @@
 import React from 'react';
 import Table from '../components/Table';
 import PlanetsProvider from '../context/PlanetsProvider';
-import SearchName from '../components/SearchName';
+import NameSearch from '../components/NameSearch';
+import NumberFilter from '../components/NumberFilter';
 
 function Home() {
   return (
     <PlanetsProvider>
-      <SearchName />
+      <NameSearch />
+      <NumberFilter />
       <Table />
     </PlanetsProvider>
   );

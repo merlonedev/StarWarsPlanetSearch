@@ -6,7 +6,7 @@ import PlanetsContext from '../context/PlanetsContext';
 * Link: https://github.com/tryber/sd-011-project-starwars-planets-search/pull/9/commits/3eca2162d48e989e4b737cf69f177f6f2699756c
 */
 
-function SearchName() {
+function NameSearch() {
   const { setFilters, filters } = useContext(PlanetsContext);
 
   const handleChange = ({ target: { value } }) => {
@@ -29,4 +29,4 @@ function SearchName() {
   );
 }
 
-export default SearchName;
+export default NameSearch;

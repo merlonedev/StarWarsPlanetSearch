@@ -9,6 +9,13 @@ function PlanetsProvider({ children }) {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [
+      {
+        column: 'population',
+        comparison: 'maior que',
+        value: '100000',
+      },
+    ],
   });
 
   /**
@@ -38,7 +45,7 @@ function PlanetsProvider({ children }) {
   return (
     <PlanetsContext.Provider
       value={
-        { filteredPlanets, planets: planetList, filters, setFilters }
+        { filteredPlanets, planetList, filters, setFilters, setFilteredPlanets }
       }
     >
       { children }
