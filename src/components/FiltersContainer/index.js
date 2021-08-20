@@ -1,25 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useMyContext } from '../../Context';
 
-const columns = [
-  'population',
-  'orbital_period',
-  'diameter',
-  'rotation_period',
-  'surface_water',
-];
+const filtrableColumns = {
+  numeric: [
+    'population',
+    'rotation_period',
+    'orbital_period',
+    'diameter',
+    'surface_water',
+  ],
 
-const txtColumns = [
-  'name',
-  'rotation_period',
-  'orbital_period',
-  'diameter',
-  'surface_water',
-  'population',
-  'climate',
-  'terrain',
-];
+  text: [
+    'name',
+    'rotation_period',
+    'orbital_period',
+    'diameter',
+    'climate',
+    'terrain',
+    'surface_water',
+    'population',
+  ],
+
+  comparative: [
+    'maior que',
+    'menor que',
+    'igual a',
+  ],
+};
 
 export default function FiltersContainer() {
   const {
@@ -29,8 +37,10 @@ export default function FiltersContainer() {
     filters: { filterByNumericValues },
   } = useMyContext();
 
+  const { numeric, text, comparative } = filtrableColumns;
+
   const [numericFilters, setNumericFilters] = useState({
-    column: columns[0],
+    column: numeric[0],
     comparison: 'maior que',
     value: '1000',
   });
@@ -40,15 +50,18 @@ export default function FiltersContainer() {
     sort: 'ASC',
   });
 
+  const availableColumns = useCallback(() => (
+    numeric.filter((column) => !filterByNumericValues
+      .map((filter) => filter.column).includes(column))
+  ), [numeric, filterByNumericValues]);
+
   useEffect(() => {
-    const [newFirstColumn] = columns.filter((column) => !filterByNumericValues
-      .some((numericFilter) => numericFilter.column === column))
-      .map((column) => column);
+    const [newFirstColumn] = availableColumns();
     setNumericFilters((prevNumericFilters) => ({
       ...prevNumericFilters,
       column: newFirstColumn,
     }));
-  }, [filterByNumericValues]);
+  }, [availableColumns]);
 
   const handleChangeNumeric = ({ target: { name, value } }) => {
     setNumericFilters((prevNumericFilters) => ({
@@ -73,26 +86,25 @@ export default function FiltersContainer() {
           placeholder="Digite o nome de um planeta"
           onChange={ handleNameFilter }
         />
-        <select
-          data-testid="column-filter"
-          name="column"
-          value={ numericFilters.column }
-          onChange={ handleChangeNumeric }
-        >
-          { columns.filter((column) => !filterByNumericValues
-            .some((numericFilter) => numericFilter.column === column))
-            .map((column) => (
-              <option key={ column } value={ column }>{ column }</option>)) }
-        </select>
+        { availableColumns().length > 0 && (
+          <select
+            data-testid="column-filter"
+            name="column"
+            value={ numericFilters.column }
+            onChange={ handleChangeNumeric }
+          >
+            { availableColumns().map((column) => (
+              <option key={ column } value={ column }>{ column }</option>))}
+          </select>
+        )}
         <select
           data-testid="comparison-filter"
           name="comparison"
           value={ numericFilters.comparison }
           onChange={ handleChangeNumeric }
         >
-          <option value="maior que">maior que</option>
-          <option value="menor que">menor que</option>
-          <option value="igual a">igual a</option>
+          { comparative.map((name) => (
+            <option key={ name } value={ name }>{ name }</option>)) }
         </select>
         <input
           type="number"
@@ -105,6 +117,7 @@ export default function FiltersContainer() {
           type="button"
           data-testid="button-filter"
           onClick={ () => handleFilterByNumeric(numericFilters) }
+          disabled={ availableColumns().length < 1 }
         >
           Adicionar filtro
         </button>
@@ -116,7 +129,7 @@ export default function FiltersContainer() {
           value={ orderFilter.column }
           onChange={ handleChangeOrder }
         >
-          { txtColumns.map((column) => (
+          { text.map((column) => (
             <option key={ uuidv4() } value={ column }>{ column }</option>)) }
         </select>
         <label htmlFor="acs-input">
