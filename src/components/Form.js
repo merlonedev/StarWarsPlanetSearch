@@ -3,7 +3,12 @@ import Context from '../context/Context';
 
 function Form() {
   const { planetName, handleName, filterByNumericValues,
-    handleFilter, handleClick } = useContext(Context);
+    handleClick, handleChange } = useContext(Context);
+  const columnsOptions = ['population', 'orbital_period',
+    'diameter', 'rotation_period', 'surface_water']
+    .filter((option) => (
+      !filterByNumericValues.filterByNumeric.some(({ column }) => column === option)
+    ));
 
   return (
     <form>
@@ -24,14 +29,14 @@ function Form() {
           name="column"
           id="column-filter"
           data-testid="column-filter"
-          value={ filterByNumericValues.column }
-          onChange={ handleFilter }
+          value={ filterByNumericValues.filterByNumeric.column }
+          onChange={ handleChange }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {
+            columnsOptions.map((column, index) => (
+              <option key={ index } valur={ column }>{ column }</option>
+            ))
+          }
         </select>
       </label>
       <label htmlFor="comparison-filter">
@@ -41,7 +46,7 @@ function Form() {
           id="comparison-filter"
           data-testid="comparison-filter"
           value={ filterByNumericValues.comparison }
-          onChange={ handleFilter }
+          onChange={ handleChange }
         >
           <option value="maior que">maior que</option>
           <option value="menor que">menor que</option>
@@ -55,7 +60,7 @@ function Form() {
             type="number"
             data-testid="value-filter"
             value={ filterByNumericValues.value }
-            onChange={ handleFilter }
+            onChange={ handleChange }
           />
         </label>
         <button

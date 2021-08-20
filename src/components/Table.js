@@ -3,7 +3,7 @@ import Context from '../context/Context';
 
 function Table() {
   const { api, planetFilter } = useContext(Context);
-
+  // console.log(planetFilter);
   const jonas = (result, index) => (
     <tr key={ index }>
       {

@@ -8,11 +8,17 @@ function Provider({ children }) {
   const [planetFilter, setPlanetFilter] = useState([]);
   const [filterByNumericValues, setFilterByNumericValues] = useState(
     {
-      column: 'population',
-      comparison: 'maior que',
-      value: '',
+      filterByName: {
+        name: '',
+      },
+      filterByNumeric: [{}],
     },
   );
+  const [selected, setSelected] = useState({
+    column: '',
+    comparison: '',
+    value: '',
+  });
 
   useEffect(() => {
     const getApi = async () => {
@@ -41,14 +47,14 @@ function Provider({ children }) {
     });
   };
 
-  const filterByNumericValuesFunc = ({ column, comparison, value }) => {
+  const filterByNumericValuesFunc = () => {
     const filterPlanet = api.filter((requisition) => {
       // console.log(requisition[column]);
       // console.log(comparison);
-      const columnFilter = Number(requisition[column]);
-      const valueFilter = Number(value);
+      const columnFilter = Number(requisition[selected.column]);
+      const valueFilter = Number(selected.value);
 
-      switch (comparison) {
+      switch (selected.comparison) {
       case 'maior que':
         return columnFilter > valueFilter;
 
@@ -61,10 +67,21 @@ function Provider({ children }) {
     });
 
     setPlanetFilter(filterPlanet);
+    setFilterByNumericValues({
+      ...filterByNumericValues,
+      filterByNumeric: [
+        ...filterByNumericValues.filterByNumeric,
+        selected,
+      ],
+    });
+  };
+
+  const handleChange = ({ target: { name, value } }) => {
+    setSelected({ ...selected, [name]: value });
   };
 
   const handleClick = () => {
-    filterByNumericValuesFunc(filterByNumericValues);
+    filterByNumericValuesFunc();
   };
 
   const context = {
@@ -75,6 +92,8 @@ function Provider({ children }) {
     handleFilter,
     handleClick,
     filterByNumericValues,
+    handleChange,
+    selected,
   };
 
   return (
