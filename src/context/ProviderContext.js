@@ -7,6 +7,10 @@ const INITIAL_FILTERS_STATE = {
     name: '',
   },
   filterByNumericValues: [],
+  order: {
+    column: 'name',
+    sort: 'ASC',
+  },
 };
 
 const INITIAL_OPT_PROP_STATE = [
@@ -23,6 +27,9 @@ const INITIAL_OPT_COMPAR_STATE = [
   'igual a',
 ];
 
+const NUMBER_ONE = 1;
+const NUMBER_ONE_NEGATIVE = -1;
+
 function ProviderContext({ children }) {
   const [planets, setPlanets] = useState([]);
   const [newListPlanets, setNewListPlanets] = useState([]);
@@ -34,7 +41,8 @@ function ProviderContext({ children }) {
   const [value, setValue] = useState('');
   const [optionsComparation, setOptionsComparation] = useState(INITIAL_OPT_COMPAR_STATE);
   const [optionsProperties, setOptionsProperties] = useState(INITIAL_OPT_PROP_STATE);
-  const { filterByNumericValues } = filters;
+
+  const { filterByNumericValues, order: { column: sortColumn, sort } } = filters;
 
   const handleClíckFilter = () => {
     setFilters({
@@ -60,10 +68,31 @@ function ProviderContext({ children }) {
     setValue('');
   };
 
+  const sortASC = (paramColumn, list) => list.sort((a, b) => {
+    if (a[paramColumn] > b[paramColumn]) {
+      return NUMBER_ONE;
+    }
+    if (a[paramColumn] < b[paramColumn]) {
+      return NUMBER_ONE_NEGATIVE;
+    }
+    return 0;
+  });
+
+  const sortDESC = (paramColumn, list) => list.sort((b, a) => {
+    if (a[paramColumn] < b[paramColumn]) {
+      return NUMBER_ONE_NEGATIVE;
+    }
+    if (a[paramColumn] > b[paramColumn]) {
+      return NUMBER_ONE;
+    }
+    return 0;
+  });
+
   useEffect(() => {
     (async () => {
       const END_POINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const { results } = await fetch(END_POINT).then((data) => data.json());
+
       setPlanets(results);
       setIsLoading(false);
     })();
@@ -79,11 +108,17 @@ function ProviderContext({ children }) {
             acc[key] = valueReduce;
             return acc;
           }, [])));
-      setNewListPlanets(newList);
-      setPlanetFilters(newList);
+
+      if (sort === 'ASC') {
+        setNewListPlanets(sortASC(sortColumn, newList));
+        setPlanetFilters(sortASC(sortColumn, newList));
+      } else {
+        setNewListPlanets(sortDESC(sortColumn, newList));
+        setPlanetFilters(sortDESC(sortColumn, newList));
+      }
     };
     planetsWithoutResidentProperty();
-  }, [planets]);
+  }, [planets, sortColumn, sort]);
 
   useEffect(() => {
     const { filterByName: { name } } = filters;

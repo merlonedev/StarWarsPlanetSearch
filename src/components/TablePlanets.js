@@ -24,9 +24,15 @@ function TabletPlanets() {
     planetFilters.map((planet) => (
       <tr key={ Math.random() * NUMBER_RAMDOM }>
         {
-          Object.values(planet).map((type) => (
-            <td key={ Math.random() * NUMBER_RAMDOM }>{ type }</td>
-          ))
+          Object.values(planet).map((type, index) => {
+            if (index === 0) {
+              return (
+                <td data-testid="planet-name" key={ Math.random() * NUMBER_RAMDOM }>
+                  { type }
+                </td>);
+            }
+            return <td key={ Math.random() * NUMBER_RAMDOM }>{ type }</td>;
+          })
         }
       </tr>
     ))

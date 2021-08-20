@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import Context from '../context/Context';
+import Context from '../../context/Context';
 
 function ButtonFilter() {
   const { handleClíckFilter } = useContext(Context);

@@ -1,9 +1,9 @@
 import React from 'react';
-import SelectFilterProperties from './SelectFilterProperties';
-import SelectFilterComparation from './SelectFilterComparation';
-import InputFilterValue from './InputFilterValue';
-import ButtonFilter from './ButtonFilter';
-import ButtonResetFilters from './ButtonResetFilters';
+import SelectFilterProperties from './NumberFiltersControlled/SelectFilterProperties';
+import SelectFilterComparation from './NumberFiltersControlled/SelectFilterComparation';
+import InputFilterValue from './NumberFiltersControlled/InputFilterValue';
+import ButtonFilter from './NumberFiltersControlled/ButtonFilter';
+import ButtonResetFilters from './NumberFiltersControlled/ButtonResetFilters';
 
 function NumberFilters() {
   return (
