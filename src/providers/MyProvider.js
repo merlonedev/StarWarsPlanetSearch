@@ -9,18 +9,26 @@ function MyProvider({ children }) {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [{
+      column: '', comparison: '', value: '',
+    }],
+  });
+  const [numericValue, setNumericValue] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: '0',
   });
 
   useEffect(() => {
     const getPlanets = async () => {
-      // const endpoint = 'https://swapi.dev/api/planets';
-      const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
+      const endpoint = 'https://swapi.dev/api/planets';
+      // const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const { results } = await fetch(endpoint)
         .then((dataJson) => dataJson.json());
       setData(results);
     };
     getPlanets();
-  });
+  }, [setData]);
 
   const { name } = filters.filterByName;
   useEffect(() => {
@@ -29,12 +37,29 @@ function MyProvider({ children }) {
     );
   }, [name, data]);
 
+  useEffect(() => {
+    const { filterByNumericValues } = filters;
+    filterByNumericValues.forEach(({ column, comparison, value }) => (
+      value && setFilterPlanets((thePlanet) => thePlanet.filter((planet) => {
+        if (comparison === 'maior que') {
+          return Number(planet[column]) > Number(value);
+        }
+        if (comparison === 'menor que') {
+          return Number(planet[column]) < Number(value);
+        }
+        return Number(planet[column]) === Number(value);
+      }))
+    ));
+  }, [filters]);
+
   const contextData = {
     data,
     filters,
     setFilters,
     filterPlanets,
     setFilterPlanets,
+    numericValue,
+    setNumericValue,
   };
 
   return (
