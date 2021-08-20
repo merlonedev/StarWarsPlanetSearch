@@ -6,6 +6,10 @@ const INITIAL_STATE = {
     name: '',
   },
   filterByNumericValues: [],
+  order: {
+    column: '',
+    sort: '',
+  },
 };
 
 const SetGlobalFilter = () => {
@@ -23,7 +27,6 @@ const SetGlobalFilter = () => {
       .filter((e) => +e[column] === +value && e[column] !== 'unknown')),
   };
   useEffect(() => {
-    console.log(filters.filterByNumericValues);
     if (data && filters.filterByName.name !== ''
     && filters.filterByNumericValues.length === 0) {
       const filtredList = data.filter((e) => (
@@ -51,9 +54,10 @@ const SetGlobalFilter = () => {
     setFiltered({ ...filters, filterByNumericValues: [...removedFilters] });
     setOptions([...optionsfiltered, i]);
   };
-
   return {
     removeFilter,
+    setFiltered,
+    setFilterData,
     optionsfiltered,
     SetFilter,
     filteredData,

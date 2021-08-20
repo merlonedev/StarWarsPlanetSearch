@@ -8,7 +8,9 @@ const FilterInputs = () => {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [valueNumber, setValue] = useState(0);
-  const { SetFilter, optionsfiltered } = useContext(MyContext);
+  const [sort, setSort] = useState();
+  const [columnSort, setColumnSort] = useState();
+  const { SetFilter, optionsfiltered, data, order } = useContext(MyContext);
 
   const handleChange = (e) => {
     const { value, name } = e;
@@ -22,6 +24,12 @@ const FilterInputs = () => {
     case 'value':
       setValue(value);
       break;
+    case 'order':
+      setSort(value);
+      break;
+    case 'columnSort':
+      setColumnSort(value);
+      break;
     default:
       setValue(0);
     }
@@ -34,6 +42,14 @@ const FilterInputs = () => {
       valueNumber,
     };
     SetFilter(result);
+  };
+
+  const handleOrder = () => {
+    const result = {
+      column: columnSort,
+      sort,
+    };
+    order(result);
   };
 
   const inputNameProps = {
@@ -103,6 +119,43 @@ const FilterInputs = () => {
         Filter
       </Button>
       <ActiveFilters />
+      <select
+        onChange={ ({ target }) => handleChange(target) }
+        data-testid="column-sort"
+        name="columnSort"
+      >
+        {data ? Object.keys(data[0])
+          .map((e, index) => <option key={ index }>{e}</option>) : null}
+      </select>
+      <label htmlFor="ASC">
+        ASC
+        <input
+          data-testid="column-sort-input-asc"
+          id="ASC"
+          name="order"
+          type="radio"
+          value="ASC"
+          onChange={ ({ target }) => handleChange(target) }
+        />
+      </label>
+      <label htmlFor="DESC">
+        DESC
+        <input
+          testid="column-sort-input-desc"
+          id="DESC"
+          value="DESC"
+          name="order"
+          type="radio"
+          onChange={ ({ target }) => handleChange(target) }
+        />
+      </label>
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ () => handleOrder() }
+      >
+        Order
+      </button>
     </section>
   );
 };
