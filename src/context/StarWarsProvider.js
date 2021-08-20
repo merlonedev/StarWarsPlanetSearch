@@ -33,7 +33,6 @@ function StarWarsProvider({ children }) {
     if (data.length > 0 && column !== '' && comparison !== '') {
       if (comparison === 'maior que') {
         const filteredData = data.filter((planet) => planet[column] > value);
-        console.log(comparison);
         setData(filteredData);
       }
       if (comparison === 'menor que') {
@@ -51,7 +50,7 @@ function StarWarsProvider({ children }) {
     const { column, comparison, value } = numValue;
     if (column !== '' && comparison !== '' && value !== 0) {
       const newComparisonOptions = comparisonOptions
-        .filter((item) => item !== comparison && item);
+        .filter((item) => item !== comparison);
       setComparisonOptions(newComparisonOptions);
       const newColumnOptions = columnOptions.filter((thing) => thing !== column);
       setColumnOptions(newColumnOptions);
