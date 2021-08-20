@@ -1,10 +1,14 @@
 import React from 'react';
+import SWProvider from './context/SWProvider';
+import Table from './components/Table';
 import './App.css';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <SWProvider>
+      <Table />
+    </SWProvider>
   );
 }
-// inicio de projeto
+
 export default App;
