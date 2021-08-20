@@ -40,7 +40,7 @@ export default function Header() {
       setFilterByNumeric({ ...filterByNumeric, column: newOptions[0], value: 0 });
     }
   };
-  const reset = ({ target: { value } }) => {
+  const remFilter = ({ target: { value } }) => {
     const { filterByNumericValues } = filters;
     const remFiltro = filterByNumericValues.filter(({ column }) => column !== value);
     setFilters((prev) => ({ ...prev, filterByNumericValues: remFiltro }));
@@ -96,12 +96,12 @@ export default function Header() {
             filterByNumericValues.map((item) => (
               <ul key={ item.column } data-testid="filter">
                 <li>
-                  {JSON.stringify(item)}
+                  {JSON.stringify(Object.values(item))}
                   <Button
                     type="button"
                     label="X"
                     value={ item.column }
-                    onClick={ reset }
+                    onClick={ remFilter }
                   />
                 </li>
               </ul>
