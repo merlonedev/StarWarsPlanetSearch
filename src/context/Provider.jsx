@@ -10,17 +10,7 @@ function Provider({ children }) {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [valuer, setValue] = useState(0);
-
-  // const [filterName, setFilterName] = useState([]); // de acordo com o requisito
-  // const [filterByNumericValues, setFilterByNumericValues] = useState([]); // de acordo com o requisito
-  // const [filterNumbers, setFilterNumbers] = useState([]);
-
-  // const filterSelect = (info) => {
-  //   setFilterByNumericValues([
-  //     ...filterByNumericValues,
-  //     info,
-  //   ]); // ANALISAR NOVAMENTE
-  // }
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);// guardar o column, comparison, valuer
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -53,7 +43,7 @@ function Provider({ children }) {
     setFiltered(datafilter);
   }, [data, filter]);
 
-  const filterOptions = (column1, value1, comparinson1) => {
+  const filterOptions = (column1, value1, comparinson1) => { // só é feita a condição mas não é feita
     if (comparinson1 === 'igual a') {
       const equalValue = filtered.filter(
         (planet) => +planet[column1] === +value1,
@@ -68,6 +58,13 @@ function Provider({ children }) {
       const smaller = filtered.filter((planet) => +planet[column1] < +value1);
       setFiltered(smaller);
     }
+    setFilterByNumericValues([ // aqui é armazenada a condição de cima
+      ...filterByNumericValues,
+      { column: column1,
+        valuer: value1,
+        comparison: comparinson1,
+      },
+    ]);
   };
 
   const handleChangeSelect = ({ target: { value } }) => {
@@ -100,8 +97,8 @@ function Provider({ children }) {
     filterOptions,
     filterPlanet,
     filter,
+    filterByNumericValues,
     handleChange,
-    // filterSelect,
     handleChangeSelect,
     handleCompareNumber,
     handleComparation,

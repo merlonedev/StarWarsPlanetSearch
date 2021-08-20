@@ -3,20 +3,15 @@ import MyContext from '../context/MyContext';
 
 function Select() {
   const {
-    // filterSelect,
     handleChangeSelect,
     handleCompareNumber,
     handleComparation,
     column,
+    filterByNumericValues,
     comparison,
     valuer,
     filterOptions,
   } = useContext(MyContext);
-  // const [inputFilters, setInputFilters] = useState({
-  //   selected: 'population', // infoPlanet
-  //   compareString: 'maior que', // compareString
-  //   value: 0, // infoNumber
-  // });
 
   const options = [
     'population',
@@ -24,32 +19,13 @@ function Select() {
     'diameter',
     'rotation_period',
     'surface_water',
-  ];
+  ].filter((option) => !filterByNumericValues.some((obj) => obj.column === option));
 
   const comparations = [
     'maior que',
     'menor que',
     'igual a',
   ];
-
-  // const handleChange = ({ target: { name, value } }) => {
-  //   const correctValue = (name === 'value' && value < 0) ? 0 : value; // input de numero
-  //   setInputFilters({
-  //     ...inputFilters,
-  //     [name]: correctValue,
-  //   });
-  // }
-
-  // const checkInfo = (infoPlanet, compareString, infoNumber) => {
-  //   switch(compareString) {
-  //     case 'maior que':
-  //       return (Number(infoPlanet) > Number(infoNumber));
-  //     case 'menor que':
-  //       return (Number(infoPlanet) < Number(infoNumber));
-  //     default:
-  //       return (Number(infoPlanet) === Number(infoNumber));
-  //   };
-  // }
 
   return (
     <>
