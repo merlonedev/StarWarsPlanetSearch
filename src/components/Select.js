@@ -10,7 +10,10 @@ const Select = () => {
   const columns = [
     'population',
     'orbital_period', 'diameter', 'rotation_period', 'surface_water',
-  ];
+  ].filter((option) => (
+    !filters.filterByNumericValues.some(({ column }) => column === option)
+  ));
+
   const [selects, setSelects] = useState({
     column: '',
     comparison: '',
