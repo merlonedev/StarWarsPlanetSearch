@@ -91,23 +91,21 @@ export default function Header() {
         onClick={ addToContext }
       />
       <div>
-        <span>
-          {filterByNumericValues && (
-            filterByNumericValues.map((item) => (
-              <ul key={ item.column } data-testid="filter">
-                <li>
-                  {JSON.stringify(Object.values(item))}
-                  <Button
-                    type="button"
-                    label="X"
-                    value={ item.column }
-                    onClick={ remFilter }
-                  />
-                </li>
-              </ul>
-            ))
-          )}
-        </span>
+        {filterByNumericValues && (
+          filterByNumericValues.map((item) => (
+            <ul key={ item.column } data-testid="filter">
+              <li>
+                {JSON.stringify(Object.values(item))}
+                <Button
+                  type="button"
+                  label="X"
+                  value={ item.column }
+                  onClick={ remFilter }
+                />
+              </li>
+            </ul>
+          ))
+        )}
       </div>
     </header>
   );
