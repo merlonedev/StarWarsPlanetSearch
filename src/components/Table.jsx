@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
 
 function Table() {
-  const { filter } = useContext(MyContext);
+  const { filtered } = useContext(MyContext);
   return (
 
     <table>
@@ -24,7 +24,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {filter.map((info) => (
+        {filtered.map((info) => (
           <tr key={ info.name }>
             <td>{info.name}</td>
             <td>{info.rotation_period}</td>

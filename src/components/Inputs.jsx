@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
 
 function Input() {
-  const { name, filterPlanet } = useContext(MyContext);
+  const { name, handleChange } = useContext(MyContext);
 
   return (
     <input
@@ -11,7 +11,7 @@ function Input() {
       type="text"
       placeholder="Procure o planeta"
       value={ name }
-      onChange={ filterPlanet }
+      onChange={ handleChange }
     />
   );
 }

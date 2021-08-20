@@ -120,16 +120,16 @@
     "selector-pseudo-element-no-unknown": true,
     "selector-type-case": "lower",
     "selector-type-no-unknown": true,
-    "shorthand-property-no-redundant-values": true,
+    "shorthand-property-no-redundant-comparations": true,
     "string-no-newline": true,
     "string-quotes": "single",
     "time-min-milliseconds": 100,
     "unit-case": "lower",
     "unit-no-unknown": true,
-    "value-keyword-case": "lower",
-    "value-list-comma-space-after": "always",
-    "value-list-comma-space-before": "always",
-    "value-list-max-empty-lines": 0,
-    "value-no-vendor-prefix": true
+    "comparation-keyword-case": "lower",
+    "comparation-list-comma-space-after": "always",
+    "comparation-list-comma-space-before": "always",
+    "comparation-list-max-empty-lines": 0,
+    "comparation-no-vendor-prefix": true
   }
 }

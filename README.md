@@ -232,7 +232,7 @@ A combinação desses três seletores deve filtrar os dados da tabela de acordo 
   - A seleção `population | maior que | 100000` - Seleciona somente planetas com mais de 100000 habitantes.
   - A seleção `diameter | menor que | 8000` - Seleciona somente planetas com diâmetro menor que 8000.
 
-Você deve usar **Context API e Hooks** para fazer o gerenciamento do estado da aplicação. No contexto, esses valores devem ser salvos nos campos `filters { filterByName: { name }, filterByNumericValues: [{ column, comparison, value }] }`. Por exemplo:
+Você deve usar **Context API e Hooks** para fazer o gerenciamento do estado da aplicação. No contexto, esses valores devem ser salvos nos campos `filters { filterByName: { name }, filterByNumericValues: [{ selected, compareString, value }] }`. Por exemplo:
 
 ```javascript
 {
@@ -243,8 +243,8 @@ Você deve usar **Context API e Hooks** para fazer o gerenciamento do estado da 
       },
       filterByNumericValues: [
         {
-          column: 'population',
-          comparison: 'maior que',
+          selected: 'population',
+          compareString: 'maior que',
           value: '100000',
         }
       ]
@@ -278,13 +278,13 @@ Por exemplo: O primeiro filtro tem as seguintes seleções: `population | maior 
     },
     filterByNumericValues: [
       {
-        column: 'population',
-        comparison: 'maior que',
+        selected: 'population',
+        compareString: 'maior que',
         value: '100000',
       },
       {
-        column: 'diameter',
-        comparison: 'menor que',
+        selected: 'diameter',
+        compareString: 'menor que',
         value: '8000',
       }
     ]
@@ -313,7 +313,7 @@ O que será verificado:
 
 ### 6 - Ordene as colunas de forma ascendente ou descendente
 
-A informação acerca da ordenação das colunas deve ser armazenada nos campos `filters: { filterByName: { name }, filterByNumericValues = [], order: { column: 'Name', sort: 'ASC'} }`, o campo column representa o nome da coluna a ordenar e a ordem representa a ordenação, sendo 'ASC' ascendente e 'DESC' descendente. Por padrão, a tabela começa ordenada pela coluna 'Name' em ordem ascendente. Por exemplo:
+A informação acerca da ordenação das colunas deve ser armazenada nos campos `filters: { filterByName: { name }, filterByNumericValues = [], order: { selected: 'Name', sort: 'ASC'} }`, o campo selected representa o nome da coluna a ordenar e a ordem representa a ordenação, sendo 'ASC' ascendente e 'DESC' descendente. Por padrão, a tabela começa ordenada pela coluna 'Name' em ordem ascendente. Por exemplo:
 
 ```javascript
 {
@@ -323,7 +323,7 @@ A informação acerca da ordenação das colunas deve ser armazenada nos campos 
     },
     filterByNumericValues : [],
     order: {
-      column: 'Name',
+      selected: 'Name',
       sort: 'ASC',
     }
   }
@@ -332,7 +332,7 @@ A informação acerca da ordenação das colunas deve ser armazenada nos campos 
 
 Essa ordenação deve ser feita via filtro: um dropdown selecionará a coluna a basear a ordenação e um par de radio buttons determinará se esta é ascendente ou descendente.
 
-O dropdown deve ser um elemento `select` com a propriedade `data-testid='column-sort'`, com as opções das colunas escolhíveis em seu interior. Deve haver também, dois `inputs` de tipo `radio`, com propriedades `data-testid='column-sort-input-asc'` e `data-testid='column-sort-input-desc'`, para definir o sentido da ordenação (com `value` sendo `ASC` ou `DESC`) e um botão para submeter a ordenação, com uma tag `button` e a propriedade `data-testid='column-sort-button'`.
+O dropdown deve ser um elemento `select` com a propriedade `data-testid='selected-sort'`, com as opções das colunas escolhíveis em seu interior. Deve haver também, dois `inputs` de tipo `radio`, com propriedades `data-testid='selected-sort-input-asc'` e `data-testid='selected-sort-input-desc'`, para definir o sentido da ordenação (com `value` sendo `ASC` ou `DESC`) e um botão para submeter a ordenação, com uma tag `button` e a propriedade `data-testid='selected-sort-button'`.
 
 Adicione o atributo `data-testid` com o valor `planet-name` em todos os elementos da tabela que possuem o nome de um planeta.
 
