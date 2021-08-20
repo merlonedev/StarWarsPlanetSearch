@@ -70,7 +70,9 @@ function Table() {
   );
 
   const filterTable = () => {
-    const newArray = data.filter((planet) => planet.name.includes(name));
+    const newArray = data.filter(
+      (planet) => planet.name.toLowerCase().includes(name.toLowerCase()),
+    );
     return (renderTableBody(newArray));
   };
 

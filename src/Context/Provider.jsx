@@ -5,6 +5,7 @@ import PlanetsContext from './PlanetsContext';
 function Provider({ children }) {
   const filters = {
     filterByName: { name: '' },
+    filterByNumericValues: [],
   };
 
   const data = [];

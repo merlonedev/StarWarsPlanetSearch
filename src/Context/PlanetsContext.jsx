@@ -2,6 +2,7 @@ import { createContext } from 'react';
 
 const filters = {
   filterByName: { name: '' },
+  filterByNumericValues: [],
 };
 
 const data = [];
