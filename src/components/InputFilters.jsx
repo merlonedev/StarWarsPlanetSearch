@@ -13,7 +13,7 @@ const InputFilters = () => {
   } = useContext(AppContext);
 
   const columns = ['population',
-    'orbital_period', 'diameter', 'rotation_period', 'surface_water']; // population, orbital_period...
+    'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
 
   const comparison = ['maior que', 'menor que', 'igual a'];
   return (
@@ -21,6 +21,7 @@ const InputFilters = () => {
       <input
         data-testid="name-filter"
         type="text"
+        placeholder="planeta"
         onChange={ handleChangeNameFilter }
       />
       <div>
@@ -39,6 +40,7 @@ const InputFilters = () => {
         <input
           type="number"
           data-testid="value-filter"
+          placeholder="digite um valor numérico"
           onChange={ handleChangeValueFilter }
         />
         <button
