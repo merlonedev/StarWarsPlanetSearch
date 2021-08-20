@@ -5,7 +5,7 @@ import './table.css';
 
 const Table = () => {
   const { data,
-    filter:
+    allFilters:
       { filterByName:
         { name: filterName }, filterByNumericalValues } } = useContext(StarWarsContext);
 

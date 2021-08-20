@@ -1,25 +1,40 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 const SelectFilter = () => {
+  const selectOptions = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ];
+
   const { filterNumeric } = useContext(StarWarsContext);
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [number, setNumber] = useState('');
+  const [options, setOptions] = useState(selectOptions);
 
-  const handleClick = () => filterNumeric({ column, comparison, number });
+  const handleClick = () => {
+    if (number) {
+      filterNumeric({ column, comparison, number });
+      setOptions(...[options.filter((item) => item !== column)]);
+    }
+  };
+
+  useEffect(() => setColumn(options[0]), [options]);
 
   return (
     <div>
       <select
         data-testid="column-filter"
+        value={ column }
         onChange={ ({ target: { value } }) => setColumn(value) }
       >
-        <option value="population">population</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="diameter">diameter</option>
-        <option value="surface_water">surface_water</option>
+        {options.map((opt) => (
+          <option value={ opt } key={ opt }>{opt}</option>
+        ))}
       </select>
 
       <select

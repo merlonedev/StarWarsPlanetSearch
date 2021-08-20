@@ -7,7 +7,7 @@ import fetchApi from '../services/fetchApi';
 const Provider = ({ children }) => {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState({
-    filter: {
+    allFilters: {
       filterByName: {
         name: '',
       },
@@ -25,7 +25,7 @@ const Provider = ({ children }) => {
   const filterName = ({ target }) => {
     setFilters({
       ...filters,
-      filter: { ...filters.filter,
+      allFilters: { ...filters.allFilters,
         filterByName: {
           name: target.value,
         },
@@ -35,8 +35,9 @@ const Provider = ({ children }) => {
 
   const filterNumeric = (newFilter) => setFilters(
     { ...filters,
-      filter: { ...filters.filter,
-        filterByNumericalValues: [...filters.filter.filterByNumericalValues, newFilter],
+      allFilters: { ...filters.allFilters,
+        filterByNumericalValues:
+        [...filters.allFilters.filterByNumericalValues, newFilter],
       },
     },
   );
@@ -44,7 +45,6 @@ const Provider = ({ children }) => {
   const context = {
     data,
     ...filters,
-    setFilters,
     filterName,
     filterNumeric,
   };
