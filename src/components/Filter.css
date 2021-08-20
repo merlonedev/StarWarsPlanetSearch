@@ -1,0 +1,23 @@
+.name-filter-container {
+  align-items: center;
+  background-color: rgb(235, 210, 50);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  height: 2em;
+  justify-content: center;
+  margin: auto;
+  margin-bottom: 0.6em;
+  width: 40%;
+}
+
+.name-filter-label {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.name-filter {
+  width: 95%;
+}
