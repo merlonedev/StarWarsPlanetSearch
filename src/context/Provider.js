@@ -4,6 +4,7 @@ import PlanetsContext from './PlanetsContext';
 
 function Provider({ children }) {
   const [data, setData] = useState([]);
+  const [nameSearch, setNameSearch] = useState('');
 
   useEffect(() => {
     const fetchAPI = async () => {
@@ -16,12 +17,12 @@ function Provider({ children }) {
   }, []);
 
   const context = {
-    data, setData,
+    data, setData, nameSearch, setNameSearch,
   };
   return (
     <PlanetsContext.Provider value={ context }>
       { children }
-      { console.log(data) }
+      { console.log(nameSearch)}
     </PlanetsContext.Provider>
   );
 }
