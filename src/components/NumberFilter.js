@@ -7,15 +7,10 @@ function NumberFilter() {
     filters,
     setFilteredPlanets,
     planetList,
+    columnOptions,
+    setColumnOptions,
   } = useContext(PlanetsContext);
 
-  const colunmOptions = [
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
-  ];
   const comparator = ['maior que', 'menor que', 'igual a'];
 
   const handleChange = ({ target: { name, value } }) => {
@@ -28,26 +23,32 @@ function NumberFilter() {
         },
       ],
     });
+
+    /**
+    * Consultei o repositório de Victor Faria para resolver essa parte.
+    * Link: // https://github.com/tryber/sd-011-project-starwars-planets-search/pull/4/files
+    */
+    const { column } = filters.filterByNumericValues[0];
+    const filteredSelect = columnOptions.filter((item) => item !== column);
+    setColumnOptions([...filteredSelect]);
   };
 
   const filterByNumber = () => {
     const { column, comparison, value } = filters.filterByNumericValues[0];
-    if (column !== '' && comparison !== '' && value !== '') {
-      const newData = planetList
-        .filter((planet) => {
-          if (comparison === 'maior que') return Number(planet[column]) > Number(value);
-          if (comparison === 'menor que') return Number(planet[column]) < Number(value);
-          if (comparison === 'igual a') return Number(planet[column]) === Number(value);
-          return true;
-        });
-      setFilteredPlanets(newData);
-    }
+    const newSearch = planetList
+      .filter((planet) => {
+        if (comparison === 'maior que') return Number(planet[column]) > Number(value);
+        if (comparison === 'menor que') return Number(planet[column]) < Number(value);
+        if (comparison === 'igual a') return Number(planet[column]) === Number(value);
+        return true;
+      });
+    setFilteredPlanets(newSearch);
   };
 
   return (
     <form>
       <select data-testid="column-filter" name="column" onChange={ handleChange }>
-        {colunmOptions
+        {columnOptions
           .map(
             (column) => <option key={ column }>{ column }</option>,
           )}
