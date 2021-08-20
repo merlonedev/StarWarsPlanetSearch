@@ -3,7 +3,7 @@ import PlanetsContext from '../Context/PlanetsContext';
 
 function Search() {
   const [column, setColumn] = useState('');
-  const [comparison, setComparison] = useState('higher');
+  const [comparison, setComparison] = useState('maior que');
   const [valueState, setValueState] = useState(0);
   const {
     state: {
@@ -29,18 +29,20 @@ function Search() {
   };
 
   const handleActivateFilter = () => {
-    const newFilter = {
-      ...filters,
-      filterByNumericValues: [
-        ...filters.filterByNumericValues, {
-          column,
-          comparison,
-          value: valueState,
-        },
-      ],
-    };
-
-    handleSetState('filters', newFilter);
+    if (column.length > 0) {
+      const newFilter = {
+        ...filters,
+        filterByNumericValues: [
+          ...filters.filterByNumericValues, {
+            column,
+            comparison,
+            value: valueState,
+          },
+        ],
+      };
+      handleSetState('filters', newFilter);
+      setColumn('');
+    }
   };
 
   const renderColumnSelect = () => (
@@ -52,6 +54,7 @@ function Search() {
         id="column-filter"
         onChange={ handleColumnChange }
       >
+        <option disabled value="">selecione uma opção</option>
         <option value="population">population</option>
         <option value="rotation_period">rotation_period</option>
         <option value="orbital_period">orbital_period</option>

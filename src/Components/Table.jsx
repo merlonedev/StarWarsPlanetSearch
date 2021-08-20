@@ -4,7 +4,7 @@ import '../style/Table.css';
 
 function Table() {
   const { state: { data, filters } } = useContext(PlanetsContext);
-  const { filterByName: { name } } = filters;
+  const { filterByNumericValues, filterByName: { name } } = filters;
 
   const renderTableHeader = () => (
     <thead className="table-header">
@@ -70,9 +70,29 @@ function Table() {
   );
 
   const filterTable = () => {
-    const newArray = data.filter(
+    let newArray = data.filter(
       (planet) => planet.name.toLowerCase().includes(name.toLowerCase()),
     );
+    if (filterByNumericValues) {
+      filterByNumericValues.forEach((filter) => {
+        switch (filter.comparison) {
+        case ('maior que'):
+          newArray = newArray.filter(
+            (planet) => parseFloat(planet[filter.column]) > parseFloat(filter.value),
+          );
+          break;
+        case ('menor que'):
+          newArray = newArray.filter(
+            (planet) => parseFloat(planet[filter.column]) < parseFloat(filter.value),
+          );
+          break;
+        default:
+          newArray = newArray.filter(
+            (planet) => parseFloat(planet[filter.column]) === parseFloat(filter.value),
+          );
+        }
+      });
+    }
     return (renderTableBody(newArray));
   };
 
