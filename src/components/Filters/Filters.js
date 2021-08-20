@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import PlanetsContext from '../../context/PlanetsContext';
 import NameFilter from './NameFilter';
+import SelectFilters from './SelectFilters';
 
 function Filters() {
   const { filters, setFilters } = useContext(PlanetsContext);
@@ -29,8 +30,9 @@ function Filters() {
   };
 
   return (
-    <section>
+    <section className="filters-content">
       <NameFilter handleChangeFilters={ handleChangeFilters } />
+      <SelectFilters handleChangeFilters={ handleChangeFilters } />
     </section>
   );
 }
