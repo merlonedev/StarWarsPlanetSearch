@@ -32,7 +32,6 @@ function StarProvider({ children }) {
   }
 
   function filterPlanetsByNumeric() {
-    console.log('filter');
     const { filterByNumericValues } = filters;
     filterByNumericValues.forEach(({ comparison, column, value }) => {
       switch (comparison) {
