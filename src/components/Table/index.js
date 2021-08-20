@@ -23,19 +23,21 @@ export default function Table() {
       });
       return order.sort === 'DESC' ? array.reverse() : array;
     }
-    array.sort((a, b) => Number(a[order.column]) - Number(b[order.column]));
+    array.sort((a, b) => +a[order.column] - +b[order.column]);
     return order.sort === 'DESC' ? array.reverse() : array;
   }, [order.column, order.sort]);
 
+  // Operador + antes de um valor retorna a versão númerica do mesmo.
+  // CRÉDITOS:: Roberval Filho;
   const numericFiltering = (array, column, comparison, value) => (
     array.filter((planet) => {
       if (comparison === 'maior que') {
-        return Number(planet[column]) > Number(value);
+        return +planet[column] > +value;
       }
       if (comparison === 'menor que') {
-        return Number(planet[column]) < Number(value);
+        return +planet[column] < +value;
       }
-      return Number(planet[column]) === Number(value);
+      return +planet[column] === +value;
     })
   );
 
