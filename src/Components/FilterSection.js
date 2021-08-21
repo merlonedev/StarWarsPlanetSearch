@@ -13,8 +13,8 @@ let COLUMN_OPTIONS = [
 let COMPARISON_OPTIONS = ['maior que', 'menor que', 'igual a'];
 
 const DEFAULT_FILTER = {
-  column: COLUMN_OPTIONS[0],
-  comparison: COMPARISON_OPTIONS[0],
+  column: 'population',
+  comparison: 'maior que',
   value: 0,
 };
 
@@ -38,12 +38,15 @@ function FilterSection() {
 
     COLUMN_OPTIONS = COLUMN_OPTIONS.filter((item) => item !== column);
     COMPARISON_OPTIONS = COMPARISON_OPTIONS.filter((item) => item !== comparison);
-
     setFilters(
       { ...filters,
         filterByNumericValues: [...filterByNumericValues, localFilterNumbers],
       },
     );
+    setLocalFilter({
+      column: COLUMN_OPTIONS[0],
+      comparison: COMPARISON_OPTIONS[0],
+      value: 0 });
   };
 
   return (
