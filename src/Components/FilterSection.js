@@ -2,16 +2,6 @@ import React, { useContext, useState } from 'react';
 import Select from './Inputs/Select';
 import SWContext from '../Context/SWContext';
 
-let COLUMN_OPTIONS = [
-  'population',
-  'orbital_period',
-  'diameter',
-  'rotation_period',
-  'surface_water',
-];
-
-let COMPARISON_OPTIONS = ['maior que', 'menor que', 'igual a'];
-
 const DEFAULT_FILTER = {
   column: 'population',
   comparison: 'maior que',
@@ -19,8 +9,15 @@ const DEFAULT_FILTER = {
 };
 
 function FilterSection() {
-  const { filters, setFilters } = useContext(SWContext);
+  const {
+    filters,
+    setFilters,
+    dropboxOptions,
+    setDropboxOptions,
+  } = useContext(SWContext);
+
   const { filterByNumericValues } = filters;
+  const { COLUMN_OPTIONS, COMPARISON_OPTIONS } = dropboxOptions;
   const [localFilterNumbers, setLocalFilter] = useState(DEFAULT_FILTER);
 
   const handleChange = ({ target }) => {
@@ -36,8 +33,12 @@ function FilterSection() {
   const sendNumberFiltersToContext = () => {
     const { column, comparison } = localFilterNumbers;
 
-    COLUMN_OPTIONS = COLUMN_OPTIONS.filter((item) => item !== column);
-    COMPARISON_OPTIONS = COMPARISON_OPTIONS.filter((item) => item !== comparison);
+    const newColumns = COLUMN_OPTIONS.filter((item) => item !== column);
+    const newComparisons = COMPARISON_OPTIONS.filter((item) => item !== comparison);
+    setDropboxOptions({
+      COLUMN_OPTIONS: newColumns,
+      COMPARISON_OPTIONS: newComparisons,
+    });
     setFilters(
       { ...filters,
         filterByNumericValues: [...filterByNumericValues, localFilterNumbers],

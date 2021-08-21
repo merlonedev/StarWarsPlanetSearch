@@ -14,11 +14,24 @@ function Provider({ children }) {
       },
     ],
   });
+  const [dropboxOptions, setDropboxOptions] = useState({
+    COLUMN_OPTIONS: [
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ],
+    COMPARISON_OPTIONS: ['maior que', 'menor que', 'igual a'],
+  });
+
   const contextValue = {
     data,
     setData,
     filters,
     setFilters,
+    dropboxOptions,
+    setDropboxOptions,
   };
 
   return (
