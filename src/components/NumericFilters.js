@@ -2,24 +2,57 @@ import React, { useState, useContext } from 'react';
 import myContext from '../context/myContext';
 
 function NumericFilters() {
-  const { setColumn, setComparison, setValue } = useContext(myContext);
-  const [columnState, setColumnState] = useState('');
-  const [comparisonState, setComparisonState] = useState('');
-  const [valueState, setValueState] = useState('');
+  const { filters, setFilters } = useContext(myContext);
+  const [localFilters, setLocalFilters] = useState({
+    column: '',
+    comparison: '',
+    value: '',
+  });
 
   const dropFilters = [
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
   ];
+
   const dropNumerics = ['maior que', 'menor que', 'igual a'];
 
+  if (localFilters.comparison === 'maior que') {
+    setLocalFilters({
+      ...localFilters,
+      comparison: '>',
+    });
+  }
+
+  if (localFilters.comparison === 'menor que') {
+    setLocalFilters({
+      ...localFilters,
+      comparison: '<',
+    });
+  }
+
+  if (localFilters.comparison === 'igual a') {
+    setLocalFilters({
+      ...localFilters,
+      comparison: '===',
+    });
+  }
+
   const handleChange = ({ target }) => {
-    const { name } = target;
-    if (name === 'column') setColumnState(target.value);
-    if (name === 'comparison') setComparisonState(target.value);
-    if (name === 'value') setValueState(target.value);
+    const { name, value } = target;
+    setLocalFilters({
+      ...localFilters,
+      [name]: value,
+    });
   };
 
-  const handleClick = () => {};
+  const handleClick = () => {
+    setFilters({
+      ...filters,
+      filterByNumericValues: [
+        ...filters.filterByNumericValues,
+        localFilters,
+      ],
+    });
+  };
 
   return (
     <>
@@ -46,6 +79,7 @@ function NumericFilters() {
       <button
         type="button"
         data-testid="button-filter"
+        onClick={ () => handleClick() }
       >
         Adicionar filtro
       </button>

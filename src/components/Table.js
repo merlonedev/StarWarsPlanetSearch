@@ -5,16 +5,14 @@ function Table() {
   const { infos, loading, filters } = useContext(myContext);
   const { filterByName, filterByNumericValues } = filters;
   let { data } = useContext(myContext);
+  console.log(filterByNumericValues);
 
   if (filterByName.name) {
     data = data.filter((datas) => datas.name
       .toLowerCase().includes(filterByName.name.toLowerCase()));
   }
 
-  // if (filterByNumericValues) {
-  //   const { value, comparison, column } = filterByNumericValues[0];
-  //   data = data.filter((datas) => datas.includes(column));
-  // }
+  // data = filterByNumericValues.forEach((filter) => data.filter((datas) => datas.forEach().toLowerCase().includes(filter)));
 
   function tableBody(planets) {
     return (

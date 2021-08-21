@@ -5,27 +5,21 @@ import useData from '../hooks/useData';
 
 function Provider({ children }) {
   const [data, infos, loading] = useData();
-  const [name, setName] = useState('');
-  const [column, setColumn] = useState('');
-  const [comparison, setComparison] = useState('');
-  const [value, setValue] = useState('');
+  const [filters, setFilters] = useState({
+    filterByName: { name: '' },
+    filterByNumericValues: [{
+      column: '',
+      comparison: '',
+      value: '',
+    }],
+  });
 
   const contextV = {
     data,
     infos,
     loading,
-    filters: {
-      filterByName: { name },
-      filterByNumericValues: [{
-        column,
-        comparison,
-        value,
-      }],
-    },
-    setName,
-    setColumn,
-    setComparison,
-    setValue,
+    filters,
+    setFilters,
   };
 
   return (
