@@ -1,0 +1,17 @@
+.tablePlanets {
+  width: 100%;
+  height: 60%;
+  border: 1px solid black;
+}
+
+.tablePlanets thead th {
+  width: 20%;
+  height: 60%;
+  border: 1px solid black; 
+}
+
+.tablePlanets tbody td {
+  width: 80%;
+  height: 60%;
+  border: 1px solid black; 
+}
