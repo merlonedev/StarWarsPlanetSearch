@@ -1,8 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import myContext from '../context/myContext';
 
 function NumericFilters() {
   const { setColumn, setComparison, setValue } = useContext(myContext);
+  const [columnState, setColumnState] = useState('');
+  const [comparisonState, setComparisonState] = useState('');
+  const [valueState, setValueState] = useState('');
 
   const dropFilters = [
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
@@ -11,10 +14,12 @@ function NumericFilters() {
 
   const handleChange = ({ target }) => {
     const { name } = target;
-    if (name === 'column') setColumn(target.value);
-    if (name === 'comparison') setComparison(target.value);
-    if (name === 'value') setValue(target.value);
+    if (name === 'column') setColumnState(target.value);
+    if (name === 'comparison') setComparisonState(target.value);
+    if (name === 'value') setValueState(target.value);
   };
+
+  const handleClick = () => {};
 
   return (
     <>
