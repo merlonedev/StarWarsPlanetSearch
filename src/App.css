@@ -20,3 +20,11 @@ input {
   margin-bottom: 10px;
   width: 300px;
 }
+
+.radio {
+  margin-left: 15px;
+}
+
+.radio input {
+  width: 30px;
+}

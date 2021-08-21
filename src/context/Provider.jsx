@@ -6,6 +6,7 @@ export default function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [filterName, setFilterName] = useState('');
   const [filterNumericValues, setFilterNumericValues] = useState([]);
+  const [order, setOrder] = useState({ column: 'Name', sort: 'ASC' });
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -22,9 +23,11 @@ export default function Provider({ children }) {
     filters: {
       filterName,
       filterNumericValues,
+      order,
     },
     setFilterName,
     setFilterNumericValues,
+    setOrder,
   };
 
   return (

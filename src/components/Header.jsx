@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import Context from '../context/context';
+import SortSelector from './SortSelector';
 
 function Header() {
   const { setFilterName } = useContext(Context);
@@ -43,8 +44,6 @@ function Header() {
       />
       <div>
         <select
-          id="column-filter"
-          name="column-filter"
           data-testid="column-filter"
           value={ column }
           onChange={ ({ target: { value: val } }) => setColumn(val) }
@@ -66,7 +65,6 @@ function Header() {
           type="number"
           value={ value }
           onChange={ ({ target: { value: val } }) => setValue(val) }
-
         />
         <button
           data-testid="button-filter"
@@ -75,6 +73,7 @@ function Header() {
         >
           Filtrar
         </button>
+        <SortSelector />
       </div>
     </header>
   );
