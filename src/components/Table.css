@@ -1,6 +1,6 @@
 .planets {
-  table-layout: auto;
   border-collapse: collapse;
+  table-layout: auto;
   width: 100%;
 }
 
@@ -24,6 +24,6 @@
   background-color: white;
 }
 
-.planets tr:nth-child(odd) {
-  background-color: rgb(196, 196, 196);  
+.planets tr:nth-child( odd ) {
+  background-color: rgb(196, 196, 196);
 }

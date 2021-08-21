@@ -1,4 +1,6 @@
 body {
-  background-image: url('https://i.giphy.com/media/9E7kUhnT9eDok/giphy-downsized.gif');
-  background-size: 35%;
+  background-color: white;
+  margin: 0;
+
+  /* width: max-content; */
 }

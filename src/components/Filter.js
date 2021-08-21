@@ -81,10 +81,12 @@ const Filter = () => {
     }
   };
 
-  const handleClick = () => { setAddFilter(true); };
+  const handleClickAdd = () => { setAddFilter(true); };
+
+  const handleClickRemove = () => (0);
 
   return (
-    <>
+    <div className="menu-filters-container">
       <div className="name-filter-container">
         <label htmlFor="name-filter" className="name-filter-label">
           <input
@@ -144,12 +146,43 @@ const Filter = () => {
           type="button"
           data-testid="button-filter"
           className="button-filter"
-          onClick={ handleClick }
+          onClick={ handleClickAdd }
         >
           Adicionar filtros
         </button>
       </div>
-    </>
+
+      { filters.filterByNumericValues.length > 0 ? (
+        <div className="values-container">
+          { filters.filterByNumericValues.map((numericFilter, index) => (
+            <div
+              className="value-container"
+              id={ `value-container-${index}` }
+              key={ index }
+              data-testid="filter"
+            >
+              <span
+                className="numeric-value-filter"
+                id={ `numeric-value-filter-${index}` }
+              >
+                { `{"column":"${numericFilter.column}","comparison":"`
+                + `${numericFilter.comparison}","value":${numericFilter.value}}` }
+              </span>
+              <button
+                type="button"
+                className="numeric-value-remove"
+                id={ `numeric-value-remove-${index}` }
+                onClick={ handleClickRemove }
+              >
+                X
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <> </>
+      ) }
+    </div>
   );
 };
 
