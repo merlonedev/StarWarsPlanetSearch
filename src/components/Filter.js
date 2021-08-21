@@ -5,9 +5,10 @@ import './Filter.css';
 
 const Filter = () => {
   const [filterName, setFilterName] = useState('');
+  const [filterColumn, setFilterColumn] = useState(options.columnFilter);
   const [filterNumber, setFilterNumber] = useState({
-    column: 'population',
-    comparison: 'maior que',
+    column: filterColumn[0].name,
+    comparison: options.comparisonFilter[0].name,
     value: 0,
   });
   const [addFilter, setAddFilter] = useState(false);
@@ -20,8 +21,6 @@ const Filter = () => {
     setFilterByNumericValues,
     setDataFiltered,
   } = useContext(AppContext);
-
-  const columnOptions = options.columnFilter;
 
   const filterByNumeric = (toFilter) => toFilter.filter((filtered) => {
     switch (filterNumber.comparison) {
@@ -40,7 +39,7 @@ const Filter = () => {
     if (filters.filterByNumericValues.length > 0) {
       setDataFiltered(data.filter((filtered) => filtered.name.toLowerCase()
         .includes(filterName)));
-      setAddFilter(true);
+      setDataFiltered((prevState) => filterByNumeric(prevState));
     } else {
       setDataFiltered(data.filter((filtered) => filtered.name.toLowerCase()
         .includes(filterName)));
@@ -49,12 +48,19 @@ const Filter = () => {
 
   useEffect(() => {
     if (addFilter) {
-      setFilterByNumericValues([{
+      setFilterByNumericValues((prevState) => ([...prevState, {
         column: filterNumber.column,
         comparison: filterNumber.comparison,
         value: filterNumber.value,
-      }]);
+      }]));
       setDataFiltered(filterByNumeric(dataFiltered));
+      setFilterColumn(filterColumn.filter((column) => column.name !== filterNumber
+        .column));
+      setFilterNumber({
+        column: filterColumn[0].name,
+        comparison: options.comparisonFilter[0].name,
+        value: 0,
+      });
       setAddFilter(false);
     }
   }, [addFilter]);
@@ -103,7 +109,7 @@ const Filter = () => {
             value={ filterNumber.column }
             onChange={ handleChange }
           >
-            { columnOptions.map((option) => (
+            { filterColumn.map((option) => (
               <option key={ option.name } value={ option.name }>{ option.name }</option>
             )) }
           </select>
