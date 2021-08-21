@@ -1,34 +1,38 @@
-// import React, { useContext } from 'react';
-// import SWProvider from '../context/SWProvider';
+import React, { useContext } from 'react';
+import SWContext from '../context/SWContext';
 
-// function Input() {
-//   // const { planetFilters, setPlanetFilters } = useContext(SWProvider);
-//   // const { filterByName: { name } } = planetFilters;
+function Input() {
+  const { planetFilters, setPlanetFilters } = useContext(SWContext);
+  const { filterByName: { name } } = planetFilters;
 
-//   // const handleChange = ({ target: { value } }) => {
-//   //   setPlanetFilters({
-//   //     ...planetFilters,
-//   //     filterByName: {
-//   //       name: value,
-//   //     },
-//   //   });
-//   // };
+  const handleNamePlanet = ({ target: { value } }) => {
+    setPlanetFilters({
+      ...planetFilters,
+      filterByName: {
+        name: value,
+      },
+    });
+  };
 
-//   return (
-//     <form>
-//       <label htmlFor="name-filter">
-//         Search planet:
-//         <input
-//           data-testid="name-filter"
-//           id="name-filter"
-//           name="name-filter"
-//           type="text"
-//           // value={ name }
-//           // onChange={ handleChange }
-//         />
-//       </label>
-//     </form>
-//   );
-// }
+  const renderInput = () => (
+    <form>
+      <label htmlFor="name-filter">
+        Search planet:
+        <input
+          data-testid="name-filter"
+          id="name-filter"
+          name="name-filter"
+          type="text"
+          value={ name }
+          onChange={ handleNamePlanet }
+        />
+      </label>
+    </form>
+  );
 
-// export default Input;
+  return (
+    renderInput()
+  );
+}
+
+export default Input;

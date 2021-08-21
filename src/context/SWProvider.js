@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import SWContext from './SWContext';
 import getApi from '../services/getAPI';
+import SWContext from './SWContext';
 
 function SWProvider({ children }) {
   const [planets, setPlanets] = useState('');
+  const [planetFilters, setPlanetFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
 
   const fetching = async () => {
     const request = await getApi();
@@ -19,7 +24,12 @@ function SWProvider({ children }) {
     fetching();
   }, []);
 
-  const valueContext = { planets, setPlanets };
+  const valueContext = {
+    planets,
+    setPlanets,
+    planetFilters,
+    setPlanetFilters,
+  };
 
   return (
     <SWContext.Provider value={ valueContext }>
