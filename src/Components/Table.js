@@ -39,7 +39,7 @@ function Table() {
       setData(results);
     };
     getPlanets();
-  }, []);
+  }, [setData]);
 
   return (
     <table>
