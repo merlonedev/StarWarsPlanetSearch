@@ -25,13 +25,23 @@ const InputFilters = () => {
         onChange={ handleChangeNameFilter }
       />
       <div>
-        <select data-testid="column-filter" onChange={ handleChange } name="filtredBy">
+        <select
+          data-testid="column-filter"
+          onChange={ handleChange }
+          name="filtredBy"
+          value={ filtredBy_ }
+        >
           {
             columns.map((filterBy) => (
               <option key={ uuidv4() } value={ filterBy }>{ filterBy }</option>))
           }
         </select>
-        <select data-testid="comparison-filter" onChange={ handleChange } name="compare">
+        <select
+          data-testid="comparison-filter"
+          onChange={ handleChange }
+          name="compare"
+          value={ compare_ }
+        >
           {
             comparison.map((comparation) => (
               <option key={ uuidv4() } value={ comparation }>{ comparation }</option>))

@@ -62,7 +62,7 @@ const Provider = ({ children }) => {
     setFiltred(dataFilter);
   }, [data, inputName]);
 
-  const handleChange = ({ target: { value, name } }) => { // options: population
+  const handleChange = ({ target: { name, value } }) => { // options: population
     setFilterField({
       ...filterField,
       [name]: value,

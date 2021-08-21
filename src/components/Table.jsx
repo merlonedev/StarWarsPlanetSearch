@@ -15,9 +15,12 @@ const Table = () => {
           filtred.map((planet) => ( // passa por todos os itens do array com planetas.
             // não existe 'name' igual
             <tr key={ planet.name }>
+              <button type="button" data-testid="filter">X</button>
               {
                 dataHeader.map((info) => ( // passa pelo array que contêm somente o title da tabela. Cada título corresponde à chave que se quer acessar no array com os planetas. Ex.: planet[name] "trás o nome do planeta", planet[rotation_period] "trás o valor da órbita". Cada linha trás essas informações de cada planeta.
-                  <td key={ uuidv4() }>{ planet[info] }</td>
+                  <td key={ uuidv4() }>
+                    { planet[info] }
+                  </td>
                 ))
               }
             </tr>
