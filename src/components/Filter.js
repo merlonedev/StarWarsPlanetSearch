@@ -12,6 +12,7 @@ const Filter = () => {
     value: 0,
   });
   const [addFilter, setAddFilter] = useState(false);
+  const [removeFilter, setRemoveFilter] = useState(false);
 
   const {
     data,
@@ -65,6 +66,14 @@ const Filter = () => {
     }
   }, [addFilter]);
 
+  useEffect(() => {
+    if (removeFilter) {
+      setDataFiltered(data.filter((filtered) => filtered.name.toLowerCase()
+        .includes(filterName)));
+      setRemoveFilter(false);
+    }
+  }, [removeFilter]);
+
   const handleChange = ({ target: { name, value } }) => {
     switch (name) {
     case 'name': setFilterName(value); break;
@@ -83,7 +92,12 @@ const Filter = () => {
 
   const handleClickAdd = () => { setAddFilter(true); };
 
-  const handleClickRemove = () => (0);
+  const handleClickRemove = ({ target: { id } }) => {
+    setFilterColumn(filterColumn.concat({ name: id }));
+    setFilterByNumericValues(filters.filterByNumericValues
+      .filter((numericValue) => numericValue.column !== id));
+    setRemoveFilter(true);
+  };
 
   return (
     <div className="menu-filters-container">
@@ -171,7 +185,7 @@ const Filter = () => {
               <button
                 type="button"
                 className="numeric-value-remove"
-                id={ `numeric-value-remove-${index}` }
+                id={ `${numericFilter.column}` }
                 onClick={ handleClickRemove }
               >
                 X
