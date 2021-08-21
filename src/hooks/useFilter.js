@@ -1,30 +1,41 @@
 import { useEffect, useState } from 'react';
 
-function useFilter(planets, setPlanets) {
+function useFilter() {
   const INIT = {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [
+      {
+        column: 'population',
+        comparison: 'maior que',
+        value: '',
+      },
+      {
+        column: 'diameter',
+        comparison: 'menor que',
+        value: '',
+      },
+    ],
   };
 
+  const [result, setResult] = useState(planets);
   const [filters, setFilters] = useState(INIT);
 
-  function planetsByName() {
-    const filter = filters.filterByName.name;
-    const regex = RegExp(filter);
-    if (!filter) return planets;
-
-    planets.results = planets.results
-      .filter(({ name }) => regex.test(name));
-  }
-
   function filterPlanets() {
-    planetsByName();
-    setPlanets(planets);
+    const { name: filter } = filters.filterByName;
+    if (filter) {
+      const regex = RegExp(filter);
+      setResult({
+        ...planets,
+        results: planets.results.filter(({ name }) => regex.test(name)),
+      });
+    }
+    setResult(planets);
   }
 
   useEffect(filterPlanets, [filters]);
-  return [filters, setFilters];
+  return [result, setFilters];
 }
 
 export default useFilter;

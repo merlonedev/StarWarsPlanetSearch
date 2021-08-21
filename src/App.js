@@ -2,16 +2,14 @@ import React from 'react';
 
 import Filter from './components/Filter';
 import Table from './components/Table';
-
-import usePlanets from './hooks/usePlanets';
+import Provider from './Provider';
 
 function App() {
-  const [planets, setPlanets] = usePlanets();
   return (
-    <div>
-      <Filter planets={ planets } setPlanets={ setPlanets } />
-      <Table planets={ planets } />
-    </div>
+    <Provider>
+      <Filter />
+      <Table />
+    </Provider>
   );
 }
 
