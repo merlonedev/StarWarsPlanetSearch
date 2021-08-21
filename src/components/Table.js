@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 function Table() {
-  // const { planets } = useContext(PlanetsContext);
   const { filteredPlanets } = useContext(PlanetsContext);
   const results = [
     'Name',
