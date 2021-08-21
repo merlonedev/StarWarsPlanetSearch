@@ -32,7 +32,7 @@ function Provider({ children }) {
   // Requisito 02 - Ajuda da monitora Letícia e ainda olhei o código do colega para fazer o filter corretamente: https://github.com/tryber/sd-012-project-starwars-planets-search/pull/2/files
   useEffect(() => {
     const filterPlanet = () => {
-      const { filterByName, filterByNumericValues } = filters;
+      // const { filterByName, filterByNumericValues } = filters;
       // const { filterByNumericValues } =
 
       const filtering = data

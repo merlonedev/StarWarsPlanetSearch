@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import Context from '../context/Context';
 
 function SelectFilter() {
-  const { filters, setFilters } = useContext(Context);
-  const { filterByNumericValues: { name } } = filters;
+  const { /*  filters, */ setFilters } = useContext(Context);
+  // const { filterByNumericValues: { name } } = filters;
 
   // const { planets } = useContext(Context);
   // console.log(planets[0]);
