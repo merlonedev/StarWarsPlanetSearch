@@ -8,7 +8,7 @@ function Provider({ children }) {
   const [name, setName] = useState('');
   const [column, setColumn] = useState('');
   const [comparison, setComparison] = useState('');
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState('');
 
   const contextV = {
     data,
@@ -25,7 +25,6 @@ function Provider({ children }) {
     setName,
     setColumn,
     setComparison,
-    value,
     setValue,
   };
 

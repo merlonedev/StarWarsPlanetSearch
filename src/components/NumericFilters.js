@@ -16,22 +16,6 @@ function NumericFilters() {
     if (name === 'value') setValue(target.value);
   };
 
-  // const handleChangeColumn = ({ target }) => {
-  //   const { value } = target;
-  //   console.log(target.name);
-  //   setColumn(value);
-  // };
-
-  // const handleChangeNum = ({ target }) => {
-  //   const { value } = target;
-  //   setComparison(value);
-  // };
-
-  // const handleChangeNumber = ({ target }) => {
-  //   const { value } = target;
-  //   setValue(value);
-  // };
-
   return (
     <>
       <select

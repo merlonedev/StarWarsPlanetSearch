@@ -3,13 +3,18 @@ import myContext from '../context/myContext';
 
 function Table() {
   const { infos, loading, filters } = useContext(myContext);
+  const { filterByName, filterByNumericValues } = filters;
   let { data } = useContext(myContext);
-  const { filterByName } = filters;
 
   if (filterByName.name) {
     data = data.filter((datas) => datas.name
       .toLowerCase().includes(filterByName.name.toLowerCase()));
   }
+
+  // if (filterByNumericValues) {
+  //   const { value, comparison, column } = filterByNumericValues[0];
+  //   data = data.filter((datas) => datas.includes(column));
+  // }
 
   function tableBody(planets) {
     return (
