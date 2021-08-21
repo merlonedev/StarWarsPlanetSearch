@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
-import Table from './pages/Table';
+import MainPage from './pages/MainPage';
 import PlanetProvider from './context/PlanetProvider';
 
 function App() {
   return (
     <PlanetProvider>
-      <Table />
+      <MainPage />
     </PlanetProvider>
   );
 }
