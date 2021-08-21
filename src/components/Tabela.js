@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
 
 function Tabela() {
-  const { data, keys } = useContext(MyContext);
+  const { dataFiltered, keys } = useContext(MyContext);
 
   return (
     <table>
@@ -18,7 +18,7 @@ function Tabela() {
         </tr>
       </thead>
       <tbody>
-        {data.map((value) => (
+        {dataFiltered.map((value) => (
           <tr key={ value.name }>
             <td>{value.name}</td>
             <td>{value.rotation_period}</td>
