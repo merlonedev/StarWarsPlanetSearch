@@ -10,47 +10,54 @@ function FilterPlanets() {
   const [selectedFilters, setSelectedFilters] = useState([]);
 
   const [optionsColumns,
-    handleColumnOptions,
-    setHandleColumnSelection] = useHandleColumnOptions();
-
-  const { selected, indexFilter } = handleColumnOptions;
+    selectedColumns,
+    setSelectedColumns] = useHandleColumnOptions();
 
   const {
     filterByName: { name },
     filterByNumericValues,
+    filterByNumericValuesInputs,
   } = filters;
 
-  const { column, comparison, value } = filterByNumericValues[indexFilter];
+  const { column, comparison, value } = filterByNumericValuesInputs;
 
   const handleChangeNumericFilter = ({ target: { name: title, value: param } }) => {
-    const newParam = filterByNumericValues.map((filter, index) => (
-      index === indexFilter
-        ? { ...filterByNumericValues[indexFilter], [title]: param }
-        : filter
-    ));
+    const lessThanZero = param < 0 ? 0 : param;
+    const newValue = title === 'value' ? lessThanZero : param;
     setFilters({
       ...filters,
-      filterByNumericValues: newParam,
+      filterByNumericValuesInputs: { ...filterByNumericValuesInputs, [title]: newValue },
     });
   };
 
-  const handleNumericFilter = () => {
-    setHandleColumnSelection({
-      selected: [...selected, column],
-      indexFilter: indexFilter + 1,
-    });
+  const handleBtnNumericFilter = () => {
+    setSelectedColumns([...selectedColumns, column]);
     setFilters({
       ...filters,
-      filterByNumericValues: [...filterByNumericValues,
-        { column: optionsColumns[1], comparison: comparisons[0], value: 0 },
-      ],
+      filterByNumericValues: [...filterByNumericValues, filterByNumericValuesInputs],
+      filterByNumericValuesInputs: {
+        column: optionsColumns[1],
+        comparison: 'maior que',
+        value: 0,
+      },
       numericFilter: true,
     });
-    setSelectedFilters([...filterByNumericValues]);
+    setSelectedFilters([...selectedFilters, filterByNumericValuesInputs]);
   };
 
   const handleChangeName = ({ target: { name: title, value: param } }) => {
     setFilters({ ...filters, filterByName: { [title]: param } });
+  };
+
+  const removeNumericFilter = ({ target: { id } }) => {
+    setFilters({
+      ...filters,
+      reset: true,
+      filterByNumericValues: filterByNumericValues
+        .filter((filter) => filter.column !== id),
+    });
+    setSelectedFilters(selectedFilters.filter((filter) => filter.column !== id));
+    setSelectedColumns([selectedColumns.filter((item) => item !== id)]);
   };
 
   return (
@@ -90,7 +97,7 @@ function FilterPlanets() {
         <button
           type="button"
           data-testid="button-filter"
-          onClick={ handleNumericFilter }
+          onClick={ handleBtnNumericFilter }
         >
           Buscar
         </button>
@@ -103,7 +110,13 @@ function FilterPlanets() {
               key={ filter.column }
             >
               {JSON.stringify(filter)}
-              <button type="button">X</button>
+              <button
+                id={ filter.column }
+                onClick={ removeNumericFilter }
+                type="button"
+              >
+                X
+              </button>
             </li>
           ))}
         </ul>

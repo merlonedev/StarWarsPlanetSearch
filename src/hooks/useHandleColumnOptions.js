@@ -2,21 +2,18 @@ import { useState, useEffect } from 'react';
 import { columns } from '../helpers/options';
 
 function useHandleColumnOptions() {
-  const [handleColumnOptions, setHandleColumnSelection] = useState({
-    selected: [],
-    indexFilter: 0,
-
-  });
+  const [selectedColumns, setSelectedColumns] = useState([]);
   const [optionsColumns, setOptionsColumns] = useState(columns);
-  const { selected } = handleColumnOptions;
+
   const filterOptions = () => {
-    const newOptions = optionsColumns.filter((option) => !selected.includes(option));
+    const newOptions = optionsColumns
+      .filter((option) => !selectedColumns.includes(option));
     setOptionsColumns(newOptions);
   };
 
-  useEffect(filterOptions, [selected]);
+  useEffect(filterOptions, [selectedColumns]);
 
-  return [optionsColumns, handleColumnOptions, setHandleColumnSelection];
+  return [optionsColumns, selectedColumns, setSelectedColumns];
 }
 
 export default useHandleColumnOptions;

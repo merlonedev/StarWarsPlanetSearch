@@ -3,14 +3,14 @@ import PlanetsContext from '../contexts/PlanetsContext';
 
 const INITIAL_FILTER = {
   filterByName: { name: '' },
-  filterByNumericValues: [
-    {
-      column: 'population',
-      comparison: 'maior que',
-      value: 0,
-    },
-  ],
+  filterByNumericValues: [],
+  filterByNumericValuesInputs: {
+    column: 'population',
+    comparison: 'maior que',
+    value: 0,
+  },
   numericFilter: false,
+  reset: false,
 };
 
 const greaterThen = 'maior que';
@@ -24,6 +24,7 @@ function useFiltersPlanets() {
     filterByName: { name },
     filterByNumericValues,
     numericFilter,
+    reset,
   } = filters;
 
   const filterByName = () => {
@@ -34,42 +35,53 @@ function useFiltersPlanets() {
   };
 
   const filterByValues = () => {
-    if (numericFilter) {
-      const index = filterByNumericValues.length - 2;
+    if (numericFilter || reset) {
+      const planets = filtering.length && filterByNumericValues.length
+        ? filtering : data;
 
-      const { column, comparison, value } = filterByNumericValues[index];
-      const planets = filtering.length ? filtering : data;
       const searchByName = planets
         .filter((planet) => (planet.name.toLowerCase()).includes(name.toLowerCase()));
-      const filterByValuesGreaterThen = searchByName
-        .filter((planet) => Number(planet[column]) > Number(value));
-      const filterByValuesLessThan = searchByName
-        .filter((planet) => Number(planet[column]) < Number(value));
-      const filterByValuesEqualTo = searchByName
-        .filter((planet) => Number(planet[column]) === Number(value));
-      switch (comparison) {
-      case greaterThen:
-        setFilteredPlanets(filterByValuesGreaterThen);
-        setFiltering(filterByValuesGreaterThen);
-        setFilters({ ...filters, numericFilter: false });
-        break;
-      case lessThan:
-        setFilteredPlanets(filterByValuesLessThan);
-        setFiltering(filterByValuesLessThan);
-        setFilters({ ...filters, numericFilter: false });
-        break;
-      default:
-        setFilteredPlanets(filterByValuesEqualTo);
-        setFiltering(filterByValuesEqualTo);
-        setFilters({ ...filters, numericFilter: false });
-        break;
+
+      if (!filterByNumericValues.length) {
+        setFilteredPlanets(searchByName);
+        setFiltering(searchByName);
+        return setFilters({ ...filters, numericFilter: false, reset: false });
       }
+
+      filterByNumericValues.forEach((filter) => {
+        const { column, comparison, value } = filter;
+
+        const filterByValuesGreaterThen = searchByName
+          .filter((planet) => Number(planet[column]) > Number(value));
+
+        const filterByValuesLessThan = searchByName
+          .filter((planet) => Number(planet[column]) < Number(value));
+
+        const filterByValuesEqualTo = searchByName
+          .filter((planet) => Number(planet[column]) === Number(value));
+
+        switch (comparison) {
+        case greaterThen:
+          setFilteredPlanets(filterByValuesGreaterThen);
+          setFiltering(filterByValuesGreaterThen);
+          break;
+        case lessThan:
+          setFilteredPlanets(filterByValuesLessThan);
+          setFiltering(filterByValuesLessThan);
+          break;
+        default:
+          setFilteredPlanets(filterByValuesEqualTo);
+          setFiltering(filterByValuesEqualTo);
+          break;
+        }
+      });
+      setFilters({ ...filters, numericFilter: false, reset: false });
     }
   };
 
   useEffect(filterByName, [data, name]);
 
-  useEffect(filterByValues, [numericFilter]);
+  useEffect(filterByValues, [numericFilter, reset]);
 
   return [filters, setFilters];
 }
