@@ -2,12 +2,6 @@ import React, { useContext, useState } from 'react';
 import Select from './Inputs/Select';
 import SWContext from '../Context/SWContext';
 
-const DEFAULT_FILTER = {
-  column: 'population',
-  comparison: 'maior que',
-  value: 0,
-};
-
 function FilterSection() {
   const {
     filters,
@@ -18,7 +12,11 @@ function FilterSection() {
 
   const { filterByNumericValues } = filters;
   const { COLUMN_OPTIONS, COMPARISON_OPTIONS } = dropboxOptions;
-  const [localFilterNumbers, setLocalFilter] = useState(DEFAULT_FILTER);
+  const [localFilterNumbers, setLocalFilter] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: 0,
+  });
 
   const handleChange = ({ target }) => {
     setFilters({ ...filters, filterByName: { name: target.value } });
@@ -45,10 +43,37 @@ function FilterSection() {
       },
     );
     setLocalFilter({
-      column: COLUMN_OPTIONS[0],
-      comparison: COMPARISON_OPTIONS[0],
+      column: newColumns[0],
+      comparison: newComparisons[0],
       value: 0 });
   };
+
+  const deleteFilter = ({ target }) => {
+    const newFilters = filterByNumericValues.filter((item) => item.column !== target.id);
+    setFilters({ ...filters,
+      filterByNumericValues: newFilters,
+    });
+  };
+
+  const renderFilters = () => (
+    filterByNumericValues.map((item) => {
+      if (item.column) {
+        return (
+          <div data-testid="filter" key={ item.column }>
+            <p>
+              {item.column}
+              |
+              {item.comparison}
+              |
+              {item.value}
+            </p>
+            <button type="button" onClick={ deleteFilter } id={ item.column }>X</button>
+          </div>
+        );
+      }
+      return null;
+    })
+  );
 
   return (
     <section>
@@ -88,6 +113,7 @@ function FilterSection() {
           </button>
         </div>
       </form>
+      {renderFilters()}
     </section>
   );
 }
