@@ -5,6 +5,11 @@ export const context = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [data, setData] = useState([]);
+  const [filter, setFilter] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
   useEffect(() => {
     const getPlanets = async () => {
       const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
@@ -13,7 +18,7 @@ export const ContextProvider = ({ children }) => {
     };
     getPlanets();
   }, []);
-  const contextValue = { data, setData };
+  const contextValue = { data, filter, setFilter };
   return (
     <context.Provider value={ contextValue }>
       {children}

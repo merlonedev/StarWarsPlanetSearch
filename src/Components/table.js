@@ -2,7 +2,11 @@ import React, { useContext } from 'react';
 import { context } from '../Context/Context';
 
 function Table() {
-  const { data } = useContext(context);
+  const { data, filter } = useContext(context);
+  const { filterByName: { name } } = filter;
+  const filterByName = data
+    .filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()));
+
   let columns = [];
   const indexOf = 9;
 
@@ -21,7 +25,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          { data.map((planet) => (
+          { filterByName.map((planet) => (
             <tr key={ planet.name }>
               { columns.map((column) => <td key={ column }>{ planet[column] }</td>) }
             </tr>
