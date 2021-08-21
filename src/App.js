@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
 import { ContextProvider } from './Context/Context';
-import Table from './Components/table';
-import FilterName from './Components/FilterName';
+import Table from './Components/Table';
+import FilterForm from './Components/FilterForm';
 
 function App() {
   return (
     <ContextProvider>
-      <FilterName />
+      <FilterForm />
       <Table />
     </ContextProvider>
   );

@@ -9,6 +9,7 @@ export const ContextProvider = ({ children }) => {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [],
   });
   useEffect(() => {
     const getPlanets = async () => {
