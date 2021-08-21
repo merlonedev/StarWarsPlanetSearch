@@ -1,29 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Input({ id, name, onChange, testID }) {
+function Select({ id, name, onChange, testID, options }) {
   return (
     <label htmlFor={ id }>
       { name }
-      <input
+      <select
         id={ id }
         data-testid={ testID }
         onChange={ onChange }
-      />
+      >
+        { options }
+      </select>
     </label>
   );
 }
 
-const { string, func } = PropTypes;
-Input.propTypes = {
+const { string, func, arrayOf } = PropTypes;
+Select.propTypes = {
   id: string.isRequired,
   name: string.isRequired,
   testID: string,
   onChange: func.isRequired,
+  options: arrayOf(string).isRequired,
 };
 
-Input.defaultProps = {
+Select.defaultProps = {
   testID: '',
 };
 
-export default Input;
+export default Select;
