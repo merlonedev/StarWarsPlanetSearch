@@ -5,15 +5,30 @@ import fetchApiHeader from '../services/fetchApiHeader';
 import AppContext from './AppContext';
 
 const Provider = ({ children }) => {
+  const columns = ['population',
+    'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
   const [data, setData] = useState([]); // vem da api
   const [dataHeader, setDataHeader] = useState([]); // vem da api
-  const [filters, setInputNameFilter] = useState({
-    filterByName: { name: '' },
+  const [inputName, setInputName] = useState({ filterByName: '' });
+  const [filtred, setFiltred] = useState([]); // renderiza em <Table />
+  const [filterField, setFilterField] = useState({
+    filtredBy: 'population',
+    inputValueFilter: '',
+    compare: 'maior que',
   });
-  const [filtred, setFiltred] = useState([]);
-  const [filtredBy, setFiltredBy] = useState('population');
-  const [inputValueFilter, setInputValueFilter] = useState(0);
-  const [compare, setCompare] = useState('maior que');
+  const [columnsFilterBy, setColumnsFilterBy] = useState(columns);
+  const [selectedFilter, setSelectedFilter] = useState([]);
+
+  const handleClick = () => {
+    const remainsFiltred = [...selectedFilter, filterField.filtredBy];
+    setSelectedFilter(remainsFiltred);
+    const selected = columns.filter((e) => !remainsFiltred.includes(e));
+    setColumnsFilterBy(selected);
+    setFilterField({
+      ...filterField,
+      filtredBy: selected[0],
+    });
+  };
 
   useEffect(() => {
     const getApiItems = async () => {
@@ -32,11 +47,9 @@ const Provider = ({ children }) => {
   }, []);
 
   const handleChangeNameFilter = ({ target: { value } }) => {
-    setInputNameFilter({
-      ...filters,
-      filterByName: {
-        name: value,
-      },
+    setInputName({
+      ...inputName,
+      filterByName: value,
     });
   };
 
@@ -45,21 +58,17 @@ const Provider = ({ children }) => {
   useEffect(() => {
     const dataFilter = data.filter((planet) => (planet.name
       .toLowerCase()
-      .includes(filters.filterByName.name.toLowerCase())));
+      .includes(inputName.filterByName.toLowerCase())));
     setFiltred(dataFilter);
-  }, [data, filters]);
+  }, [data, inputName]);
 
-  const handleChangeFiltredBy = ({ target: { value } }) => { // options: population
-    setFiltredBy(value);
+  const handleChange = ({ target: { value, name } }) => { // options: population
+    setFilterField({
+      ...filterField,
+      [name]: value,
+    });
   };
 
-  const handleChangeCompare = ({ target: { value } }) => { // number
-    setCompare(value);
-  };
-
-  const handleChangeValueFilter = ({ target: { value } }) => { // maior que
-    setInputValueFilter(value);
-  };
   /* feito com a ajude de Ryan Laiber */
   const filterOptions = (filtredByInfo, inputValue, compareInfo) => { // chamada no clique do botão
     if (compareInfo === 'igual a') {
@@ -81,16 +90,13 @@ const Provider = ({ children }) => {
     filtred,
     setData,
     dataHeader,
-    filters,
-    setInputNameFilter,
+    inputName,
     handleChangeNameFilter,
     filterOptions,
-    filtredBy,
-    inputValueFilter,
-    compare,
-    handleChangeFiltredBy,
-    handleChangeCompare,
-    handleChangeValueFilter,
+    handleChange,
+    columnsFilterBy,
+    filterField,
+    handleClick,
   };
 
   return (
