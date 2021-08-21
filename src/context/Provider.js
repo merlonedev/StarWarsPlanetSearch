@@ -8,6 +8,7 @@ function PlanetsProvider({ children }) {
   const [planetList, setPlanetList] = useState([]);
   const [headerArray, setHeaderArray] = useState([]);
   const [name, setName] = useState('');
+  const [filterByNumericValues, setNumericFilter] = useState([]);
 
   useEffect(() => {
     const fetchPlanets = async () => {
@@ -29,18 +30,39 @@ function PlanetsProvider({ children }) {
     handleFilter();
   }, [name, data]);
 
+  useEffect(() => {
+    const handleFilter = () => {
+      let filteredArray = [...data];
+      if (!filterByNumericValues.length) return;
+      const [latestFilter] = filterByNumericValues;
+      const { column, comparison, value } = latestFilter;
+
+      if (comparison === 'maior que') {
+        filteredArray = filteredArray
+          .filter((item) => Number(item[column]) > Number(value));
+        return setPlanetList(filteredArray);
+      }
+      if (comparison === 'menor que') {
+        filteredArray = filteredArray
+          .filter((item) => Number(item[column]) < Number(value));
+        return setPlanetList(filteredArray);
+      }
+      filteredArray = filteredArray
+        .filter((item) => Number(item[column]) === Number(value));
+      return setPlanetList(filteredArray);
+    };
+    handleFilter();
+  }, [filterByNumericValues, data]);
+
   const contextValue = {
     planetList,
     headerArray,
     filters: {
       filterByName: { name },
-      filterByNumericValues: [
-        {
-          column: 'population',
-        },
-      ],
+      filterByNumericValues,
     },
     setName,
+    setNumericFilter,
   };
 
   return (
