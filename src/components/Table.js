@@ -20,7 +20,6 @@ function Table() {
           if (
             parseInt(planetsFiltered[filter.column], 10) > parseInt(filter.value, 10)
           ) {
-            console.log('Maior');
             withCustomFilters.push(getFilteredPlanets[index]);
           }
           break;
@@ -28,7 +27,6 @@ function Table() {
           if (
             parseInt(planetsFiltered[filter.column], 10) < parseInt(filter.value, 10)
           ) {
-            console.log('Menor');
             withCustomFilters.push(getFilteredPlanets[index]);
           }
           break;
@@ -36,7 +34,6 @@ function Table() {
           if (
             parseInt(planetsFiltered[filter.column], 10) === parseInt(filter.value, 10)
           ) {
-            console.log('Igual');
             withCustomFilters.push(getFilteredPlanets[index]);
           }
           break;

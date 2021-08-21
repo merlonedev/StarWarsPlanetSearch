@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import Context from '../context/Context';
 import Input from './Input';
+import Option from './Option';
 
 function Filters() {
   const numericFiltersState = {
@@ -9,7 +10,12 @@ function Filters() {
     value: '0',
   };
 
+  const options = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+  ];
+
   const [numericFilters, setNumericFilters] = useState(numericFiltersState);
+  const [columnOptions, setColumnOptions] = useState(options);
   const { filtersState, setFiltersState } = useContext(Context);
 
   const { filters: { filterByName: { name } } } = filtersState;
@@ -47,6 +53,10 @@ function Filters() {
       },
     };
     setFiltersState(newState);
+
+    const selectedOptions = Object.values(numericFilters)[0];
+    const newOptions = columnOptions.filter((option) => option !== selectedOptions);
+    setColumnOptions(newOptions);
   };
 
   return (
@@ -64,11 +74,7 @@ function Filters() {
           onChange={ handleStateChange }
           name="column"
         >
-          <option>population</option>
-          <option>orbital_period</option>
-          <option>diameter</option>
-          <option>rotation_period</option>
-          <option>surface_water</option>
+          { columnOptions.map((option) => <Option key={ option } option={ option } />) }
         </select>
         <select
           data-testid="comparison-filter"
