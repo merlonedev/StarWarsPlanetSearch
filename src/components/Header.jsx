@@ -4,10 +4,10 @@ import Context from '../context/context';
 function Header() {
   const { setFilterName } = useContext(Context);
   const {
-    filters: { filterNumericValues }, setfilterNumericValues } = useContext(Context);
+    filters: { filterNumericValues }, setFilterNumericValues } = useContext(Context);
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
-  const [value, setValue] = useState('100000');
+  const [value, setValue] = useState(0);
   const [filter, setFilter] = useState([
     'population',
     'orbital_period',
@@ -26,7 +26,8 @@ function Header() {
       comparison,
       value,
     };
-    setfilterNumericValues([...filterNumericValues, numerics]);
+    setFilterNumericValues([...filterNumericValues, numerics]);
+
     const filterSelected = filter.filter((select) => select !== column);
     setFilter([...filterSelected]);
   };
@@ -42,12 +43,14 @@ function Header() {
       />
       <div>
         <select
+          id="column-filter"
+          name="column-filter"
           data-testid="column-filter"
           value={ column }
           onChange={ ({ target: { value: val } }) => setColumn(val) }
 
         >
-          {filter.map((fil) => <option key={ fil } value={ fil }>{fil}</option>)}
+          {filter.map((fil, index) => <option key={ index } value={ fil }>{fil}</option>)}
         </select>
         <select
           data-testid="comparison-filter"

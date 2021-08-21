@@ -5,7 +5,7 @@ import Context from './context';
 export default function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [filterName, setFilterName] = useState('');
-  const [filterNumericValues, setfilterNumericValues] = useState([]);
+  const [filterNumericValues, setFilterNumericValues] = useState([]);
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -24,7 +24,7 @@ export default function Provider({ children }) {
       filterNumericValues,
     },
     setFilterName,
-    setfilterNumericValues,
+    setFilterNumericValues,
   };
 
   return (
