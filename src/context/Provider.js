@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import MyContext from './Context';
 import getPlanets from '../services/PlanetsFetch';
@@ -9,11 +9,14 @@ function PlanetsProvider({ children }) {
   const [headerArray, setHeaderArray] = useState([]);
   const [name, setName] = useState('');
   const [filterByNumericValues, setNumericFilter] = useState([]);
+  const filteredArray = useRef([...data]);
 
   useEffect(() => {
     const fetchPlanets = async () => {
       const planets = await getPlanets();
       setData(planets);
+      filteredArray.current = [...planets];
+      setPlanetList(planets);
       setHeaderArray(Object.keys(planets[0]));
     };
     fetchPlanets();
@@ -22,37 +25,35 @@ function PlanetsProvider({ children }) {
   // Filtros feitos com a ajuda do David Gonzaga - turma 12
   useEffect(() => {
     const handleFilter = () => {
-      let filteredArray = [...data];
-      filteredArray = filteredArray.filter(({ name: nameValue }) => (
+      filteredArray.current = data.filter(({ name: nameValue }) => (
         nameValue.toLowerCase().includes(name.toLowerCase())));
-      setPlanetList(filteredArray);
+      setPlanetList(filteredArray.current);
     };
     handleFilter();
   }, [name, data]);
 
   useEffect(() => {
+    if (!filterByNumericValues.length) return;
     const handleFilter = () => {
-      let filteredArray = [...data];
-      if (!filterByNumericValues.length) return;
       const [latestFilter] = filterByNumericValues;
       const { column, comparison, value } = latestFilter;
 
       if (comparison === 'maior que') {
-        filteredArray = filteredArray
+        filteredArray.current = filteredArray.current
           .filter((item) => Number(item[column]) > Number(value));
-        return setPlanetList(filteredArray);
+        return setPlanetList(filteredArray.current);
       }
       if (comparison === 'menor que') {
-        filteredArray = filteredArray
+        filteredArray.current = filteredArray.current
           .filter((item) => Number(item[column]) < Number(value));
-        return setPlanetList(filteredArray);
+        return setPlanetList(filteredArray.current);
       }
-      filteredArray = filteredArray
+      filteredArray.current = filteredArray.current
         .filter((item) => Number(item[column]) === Number(value));
-      return setPlanetList(filteredArray);
+      return setPlanetList(filteredArray.current);
     };
     handleFilter();
-  }, [filterByNumericValues, data]);
+  }, [filterByNumericValues]);
 
   const contextValue = {
     planetList,

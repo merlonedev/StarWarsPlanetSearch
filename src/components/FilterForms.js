@@ -36,72 +36,82 @@ function FilterForms() {
   };
 
   return (
-    <form>
-      <label htmlFor="filterByName">
-        Planeta
-        <input
-          type="text"
-          value={ nameValue }
-          data-testid="name-filter"
-          onChange={ ({ target: { value } }) => setName(value) }
-          id="filterByName"
-          name="name"
-          placeholder="Nome do planeta"
-        />
-      </label>
+    <div>
 
-      <label htmlFor="filterByNumericValues">
-        Atributos
-        <select
-          id="filterByNumericValues"
-          name="column"
-          data-testid="column-filter"
-          value={ column }
-          onChange={ ({ target: { value } }) => setColuna(value) }
+      <form>
+        <label htmlFor="filterByName">
+          Planeta
+          <input
+            type="text"
+            value={ nameValue }
+            data-testid="name-filter"
+            onChange={ ({ target: { value } }) => setName(value) }
+            id="filterByName"
+            name="name"
+            placeholder="Nome do planeta"
+          />
+        </label>
+
+        <label htmlFor="filterByNumericValues">
+          Atributos
+          <select
+            id="filterByNumericValues"
+            name="column"
+            data-testid="column-filter"
+            value={ column }
+            onChange={ ({ target: { value } }) => setColuna(value) }
+          >
+            { displayOptions().map((item) => (
+              <option
+                key={ item }
+                value={ item }
+              >
+                { item }
+              </option>)) }
+          </select>
+        </label>
+
+        <label htmlFor="comparison">
+          Comparação
+          <select
+            id="comparison"
+            data-testid="comparison-filter"
+            value={ comparison }
+            onChange={ ({ target: { value } }) => setcomparison(value) }
+          >
+            <option value="maior que">maior que</option>
+            <option value="menor que">menor que</option>
+            <option value="igual a">igual a</option>
+          </select>
+        </label>
+
+        <label htmlFor="valueInput">
+          Numeros
+          <input
+            type="number"
+            id="valueInput"
+            value={ inputValue }
+            data-testid="value-filter"
+            onChange={ ({ target: { value } }) => setValue(value) }
+          />
+        </label>
+
+        <button
+          type="button"
+          onClick={ handleClick }
+          data-testid="button-filter"
         >
-          { displayOptions().map((item) => (
-            <option
-              key={ item }
-              value={ item }
-            >
-              { item }
-            </option>)) }
-        </select>
-      </label>
-
-      <label htmlFor="comparison">
-        Comparação
-        <select
-          id="comparison"
-          data-testid="comparison-filter"
-          value={ comparison }
-          onChange={ ({ target: { value } }) => setcomparison(value) }
-        >
-          <option value="maior que">maior que</option>
-          <option value="menor que">menor que</option>
-          <option value="igual a">igual a</option>
-        </select>
-      </label>
-
-      <label htmlFor="valueInput">
-        Numeros
-        <input
-          type="number"
-          id="valueInput"
-          value={ inputValue }
-          data-testid="value-filter"
-          onChange={ ({ target: { value } }) => setValue(value) }
-        />
-      </label>
-
-      <button
-        type="button"
-        onClick={ handleClick }
-        data-testid="button-filter"
-      >
-        Salvar
-      </button>
-    </form>
+          Salvar
+        </button>
+      </form>
+      <ul>
+        { filterByNumericValues.map((item) => (
+          <li key={ item.column }>
+            { `Filtro aplicado: ${item.column} ${item.comparison} ${item.value} ` }
+            <button type="button"> X </button>
+          </li>)) }
+      </ul>
+    </div>
   );
 }
 
