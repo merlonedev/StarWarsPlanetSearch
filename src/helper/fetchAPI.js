@@ -3,7 +3,6 @@ const fetchAPI = async (setData) => {
   const { results } = await fetch(URL).then((response) => response.json());
 
   setData(results);
-  console.log(results);
 };
 
 export default fetchAPI;
