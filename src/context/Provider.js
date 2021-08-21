@@ -6,6 +6,7 @@ function Provider({ children }) {
   const [data, setData] = useState([]);
   const [dataFiltered, setDataFiltered] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -27,8 +28,9 @@ function Provider({ children }) {
     data,
     dataFiltered,
     setDataFiltered,
-    filters: { filterByName },
+    filters: { filterByName, filterByNumericValues },
     setFilterByName,
+    setFilterByNumericValues,
   };
 
   return (
@@ -39,7 +41,7 @@ function Provider({ children }) {
 }
 
 Provider.propTypes = {
-  children: PropTypes.shape().isRequired,
+  children: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
 
 export default Provider;

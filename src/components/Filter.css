@@ -21,3 +21,45 @@
 .name-filter {
   width: 95%;
 }
+
+.number-filter-container {
+  align-items: center;
+  background-color: rgb(235, 210, 50);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: row;
+  height: 2.5em;
+  justify-content: space-evenly;
+  margin: auto;
+  margin-bottom: 0.6em;
+  width: 40%;
+}
+
+.column-filter-label {
+  width: 23%;
+
+}
+
+.column-filter {
+  width: 100%;
+}
+
+.comparison-filter-label {
+  width: 22%;
+}
+
+.comparison-filter {
+  width: 100%;
+}
+
+.value-filter-label {
+  width: 21%;
+}
+
+.value-filter {
+  width: 100%;
+}
+
+.button-filter {
+  width: 19%;
+}

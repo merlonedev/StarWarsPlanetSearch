@@ -3,7 +3,7 @@ import AppContext from '../context/AppContext';
 import options from '../data';
 import './Filter.css';
 
-const Filter = () => {
+const Filter2 = () => {
   const [filterName, setFilterName] = useState('');
   const [filterNumber, setFilterNumber] = useState({
     column: 'population',
@@ -24,24 +24,44 @@ const Filter = () => {
   const columnOptions = options.columnFilter;
 
   const filterByNumeric = (toFilter) => toFilter.filter((filtered) => {
+    console.log(toFilter);
     switch (filterNumber.comparison) {
-    case 'maior que': return parseInt(filtered[`${filterNumber
-      .column}`], 10) > parseInt(filterNumber.value, 10);
-    case 'menor que': return parseInt(filtered[`${filterNumber
-      .column}`], 10) < parseInt(filterNumber.value, 10);
-    case 'igual a': return parseInt(filtered[`${filterNumber
-      .column}`], 10) === parseInt(filterNumber.value, 10);
+    case 'maior que':
+      console.log(`${parseInt(filtered[`${filterNumber.column}`], 10)}`
+        + ` > ${parseInt(filterNumber.value, 10)} -> `
+        + `${parseInt(filtered[`${filterNumber.column}`], 10) > parseInt(filterNumber
+          .value, 10)}`);
+      return parseInt(filtered[`${filterNumber.column}`], 10) > parseInt(filterNumber
+        .value, 10);
+    case 'menor que':
+      console.log(`${parseInt(filtered[`${filterNumber.column}`], 10)}`
+        + ` < ${parseInt(filterNumber.value, 10)} -> `
+        + `${parseInt(filtered[`${filterNumber.column}`], 10) < parseInt(filterNumber
+          .value, 10)}`);
+      return parseInt(filtered[`${filterNumber.column}`], 10) < parseInt(filterNumber
+        .value, 10);
+    case 'igual a':
+      console.log(`${parseInt(filtered[`${filterNumber.column}`], 10)}`
+        + ` = ${parseInt(filterNumber.value, 10)} -> `
+        + `${parseInt(filtered[`${filterNumber.column}`], 10) === parseInt(filterNumber
+          .value, 10)}`);
+      return parseInt(filtered[`${filterNumber.column}`], 10) === parseInt(filterNumber
+        .value, 10);
     default: return filtered;
     }
   });
 
   useEffect(() => {
     setFilterByName({ name: filterName });
+    console.log(filters.filterByNumericValues.length);
     if (filters.filterByNumericValues.length > 0) {
+      console.log('Entrou no If');
       setDataFiltered(data.filter((filtered) => filtered.name.toLowerCase()
         .includes(filterName)));
-      setAddFilter(true);
+      setDataFiltered((prevState) => filterByNumeric(prevState));
+      // setAddFilter(true);
     } else {
+      console.log('Entrou no Else');
       setDataFiltered(data.filter((filtered) => filtered.name.toLowerCase()
         .includes(filterName)));
     }
@@ -147,4 +167,4 @@ const Filter = () => {
   );
 };
 
-export default Filter;
+export default Filter2;
