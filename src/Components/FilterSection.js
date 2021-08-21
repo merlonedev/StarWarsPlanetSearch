@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import Select from './Inputs/Select';
 import SWContext from '../Context/SWContext';
 
-const COLUMN_FILTER_OPTIONS = [
+let COLUMN_OPTIONS = [
   'population',
   'orbital_period',
   'diameter',
@@ -10,13 +10,17 @@ const COLUMN_FILTER_OPTIONS = [
   'surface_water',
 ];
 
-const COMPARISON_FILTER_OPTIONS = ['maior que', 'menor que', 'igual a'];
+let COMPARISON_OPTIONS = ['maior que', 'menor que', 'igual a'];
 
-const DEFAULT_FILTER = { column: 'population', comparison: 'maior que', value: 0 };
+const DEFAULT_FILTER = {
+  column: COLUMN_OPTIONS[0],
+  comparison: COMPARISON_OPTIONS[0],
+  value: 0,
+};
 
 function FilterSection() {
   const { filters, setFilters } = useContext(SWContext);
-
+  const { filterByNumericValues } = filters;
   const [localFilterNumbers, setLocalFilter] = useState(DEFAULT_FILTER);
 
   const handleChange = ({ target }) => {
@@ -30,13 +34,16 @@ function FilterSection() {
   };
 
   const sendNumberFiltersToContext = () => {
-    const { filterByNumericValues } = filters;
+    const { column, comparison } = localFilterNumbers;
+
+    COLUMN_OPTIONS = COLUMN_OPTIONS.filter((item) => item !== column);
+    COMPARISON_OPTIONS = COMPARISON_OPTIONS.filter((item) => item !== comparison);
+
     setFilters(
       { ...filters,
         filterByNumericValues: [...filterByNumericValues, localFilterNumbers],
       },
     );
-    return setLocalFilter(DEFAULT_FILTER);
   };
 
   return (
@@ -51,13 +58,13 @@ function FilterSection() {
         <div>
           <Select
             testID="column-filter"
-            options={ COLUMN_FILTER_OPTIONS }
+            options={ COLUMN_OPTIONS }
             name="column"
             onChange={ handleChangeLocalFilter }
           />
           <Select
             testID="comparison-filter"
-            options={ COMPARISON_FILTER_OPTIONS }
+            options={ COMPARISON_OPTIONS }
             name="comparison"
             onChange={ handleChangeLocalFilter }
           />

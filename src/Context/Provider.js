@@ -8,8 +8,8 @@ function Provider({ children }) {
     filterByName: { name: '' },
     filterByNumericValues: [
       {
-        column: 'population',
-        comparison: 'maior que',
+        column: '',
+        comparison: '',
         value: 0,
       },
     ],
