@@ -4,6 +4,7 @@ import Table from '../Components/Table';
 import InputNameFilter from '../Components/InputNameFilter';
 import FilterByNumbers from '../Components/FilterByNumbers';
 import DisplayFilters from '../Components/DisplayFilters';
+import OrderColumns from '../Components/OrderColumns';
 
 export default function ThePage() {
   return (
@@ -11,6 +12,7 @@ export default function ThePage() {
       <InputNameFilter />
       <FilterByNumbers />
       <DisplayFilters />
+      <OrderColumns />
       <Table />
     </Provider>
   );

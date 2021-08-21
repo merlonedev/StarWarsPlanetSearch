@@ -9,6 +9,7 @@ export default function Provider({ children }) {
   const [filters, setFilters] = useState({
     filterByName: { name: '' },
     filterByNumericValues: [],
+    order: { column: 'name', sort: 'ASC' },
   });
   const initialOptions = ['population', 'orbital_period', 'diameter',
     'rotation_period', 'surface_water'];
