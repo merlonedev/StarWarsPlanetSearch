@@ -17,6 +17,7 @@ function Table() {
 
   const filterNumDefault = { column: '', comparison: '', value: 0 };
 
+  // seleção de filtros do context ou default
   const selection = filterNumericValues.length
     ? filterNumericValues[filterNumericValues.length - 1]
     : filterNumDefault;

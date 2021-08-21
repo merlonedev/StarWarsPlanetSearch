@@ -8,6 +8,13 @@ function Header() {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState('100000');
+  const [filter, setFilter] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   const handleChange = ({ target: { value: val } }) => {
     setFilterName(val);
@@ -20,6 +27,8 @@ function Header() {
       value,
     };
     setfilterNumericValues([...filterNumericValues, numerics]);
+    const filterSelected = filter.filter((select) => select !== column);
+    setFilter([...filterSelected]);
   };
 
   return (
@@ -38,11 +47,7 @@ function Header() {
           onChange={ ({ target: { value: val } }) => setColumn(val) }
 
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {filter.map((fil) => <option key={ fil } value={ fil }>{fil}</option>)}
         </select>
         <select
           data-testid="comparison-filter"
