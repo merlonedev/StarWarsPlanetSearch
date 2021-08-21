@@ -29,7 +29,9 @@ function Search() {
   };
 
   const handleActivateFilter = () => {
-    if (column.length > 0) {
+    if (column.length > 0 && !filters.filterByNumericValues.some(
+      (filter) => filter.column === column,
+    )) {
       const newFilter = {
         ...filters,
         filterByNumericValues: [
@@ -41,8 +43,13 @@ function Search() {
         ],
       };
       handleSetState('filters', newFilter);
-      setColumn('');
     }
+    const columns = [
+      'population', 'rotation_period', 'orbital_period', 'diameter', 'surface_water',
+    ].filter((col) => !filters.filterByNumericValues.some(
+      (filter) => filter.column === col,
+    ));
+    setColumn(columns[0]);
   };
 
   const renderColumnSelect = () => (
@@ -54,12 +61,33 @@ function Search() {
         id="column-filter"
         onChange={ handleColumnChange }
       >
-        <option disabled value="">selecione uma opção</option>
-        <option value="population">population</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="diameter">diameter</option>
-        <option value="surface_water">surface_water</option>
+        {(!filters.filterByNumericValues || filters.filterByNumericValues.length === 0)
+          && <option disabled value="">selecione uma opção</option>}
+
+        {(!filters.filterByNumericValues || !filters.filterByNumericValues.some(
+          (filter) => filter.column === 'population',
+        ))
+          && <option value="population">population</option>}
+
+        {(!filters.filterByNumericValues || !filters.filterByNumericValues.some(
+          (filter) => filter.column === 'rotation_period',
+        ))
+          && <option value="rotation_period">rotation_period</option>}
+
+        {(!filters.filterByNumericValues || !filters.filterByNumericValues.some(
+          (filter) => filter.column === 'orbital_period',
+        ))
+          && <option value="orbital_period">orbital_period</option>}
+
+        {(!filters.filterByNumericValues || !filters.filterByNumericValues.some(
+          (filter) => filter.column === 'diameter',
+        ))
+          && <option value="diameter">diameter</option>}
+
+        {(!filters.filterByNumericValues || !filters.filterByNumericValues.some(
+          (filter) => filter.column === 'surface_water',
+        ))
+          && <option value="surface_water">surface_water</option>}
       </select>
     </label>
   );
