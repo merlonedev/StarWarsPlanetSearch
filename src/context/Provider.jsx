@@ -6,11 +6,14 @@ import ApiStarWars from '../service/ApiStarWars ';
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [dataHead, setDataHead] = useState([]);
+  const [filters, setFilters] = useState({ filterByName: { name: '' } });
   const contextValue = {
     data,
     setData,
     dataHead,
     setDataHead,
+    filters,
+    setFilters,
   };
 
   useEffect(() => {

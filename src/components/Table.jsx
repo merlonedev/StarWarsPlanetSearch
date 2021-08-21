@@ -2,8 +2,14 @@ import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function Table() {
-  const { data, dataHead } = useContext(StarWarsContext);
-
+  const { dataHead, filters } = useContext(StarWarsContext);
+  const { filterByName: { name } } = filters;
+  let { data } = useContext(StarWarsContext);
+  if (name !== '') {
+    data = data.filter((planet) => (
+      (planet.name.toLowerCase()).includes(name.toLowerCase())
+    ));
+  }
   return (
     <div>
       <table>
