@@ -5,7 +5,7 @@ const COLUMNS_FILTER_ARRAY = ['population',
   'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
 
 function FilterForms() {
-  const [column, setColuna] = useState('population');
+  const [column, setColuna] = useState('');
   const [comparison, setcomparison] = useState('maior que');
   const [inputValue, setValue] = useState(0);
 
@@ -15,6 +15,7 @@ function FilterForms() {
     setNumericFilter } = consumer;
 
   const handleClick = () => {
+    if (!column) return;
     const newObject = {
       column,
       comparison,
@@ -33,6 +34,12 @@ function FilterForms() {
       return options;
     }
     return options;
+  };
+
+  const deleteFunction = (columnValue) => {
+    const nomeQualquer = filterByNumericValues
+      .filter(({ column: col }) => col !== columnValue);
+    setNumericFilter(nomeQualquer);
   };
 
   return (
@@ -106,9 +113,9 @@ function FilterForms() {
       </form>
       <ul>
         { filterByNumericValues.map((item) => (
-          <li key={ item.column }>
+          <li key={ item.column } data-testid="filter">
             { `Filtro aplicado: ${item.column} ${item.comparison} ${item.value} ` }
-            <button type="button"> X </button>
+            <button type="button" onClick={ () => deleteFunction(item.column) }>X</button>
           </li>)) }
       </ul>
     </div>

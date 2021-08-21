@@ -33,27 +33,29 @@ function PlanetsProvider({ children }) {
   }, [name, data]);
 
   useEffect(() => {
-    if (!filterByNumericValues.length) return;
     const handleFilter = () => {
-      const [latestFilter] = filterByNumericValues;
-      const { column, comparison, value } = latestFilter;
+      if (!filterByNumericValues.length) return setPlanetList([...data]);
+      filteredArray.current = [...data];
+      filterByNumericValues.forEach((latestFilter) => {
+        const { column, comparison, value } = latestFilter;
 
-      if (comparison === 'maior que') {
+        if (comparison === 'maior que') {
+          filteredArray.current = filteredArray.current
+            .filter((item) => Number(item[column]) > Number(value));
+          return setPlanetList(filteredArray.current);
+        }
+        if (comparison === 'menor que') {
+          filteredArray.current = filteredArray.current
+            .filter((item) => Number(item[column]) < Number(value));
+          return setPlanetList(filteredArray.current);
+        }
         filteredArray.current = filteredArray.current
-          .filter((item) => Number(item[column]) > Number(value));
+          .filter((item) => Number(item[column]) === Number(value));
         return setPlanetList(filteredArray.current);
-      }
-      if (comparison === 'menor que') {
-        filteredArray.current = filteredArray.current
-          .filter((item) => Number(item[column]) < Number(value));
-        return setPlanetList(filteredArray.current);
-      }
-      filteredArray.current = filteredArray.current
-        .filter((item) => Number(item[column]) === Number(value));
-      return setPlanetList(filteredArray.current);
+      });
     };
     handleFilter();
-  }, [filterByNumericValues]);
+  }, [filterByNumericValues, data]);
 
   const contextValue = {
     planetList,
@@ -64,6 +66,8 @@ function PlanetsProvider({ children }) {
     },
     setName,
     setNumericFilter,
+    data,
+    filteredArray,
   };
 
   return (
