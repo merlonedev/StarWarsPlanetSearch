@@ -6,19 +6,41 @@ function Table() {
     data,
     filters: {
       filterName,
+      filterNumericValues,
     },
   } = useContext(Context);
-
-  let dtPlanets = data;
 
   const headerTable = [
     'Nome', 'Período de Rotação', 'Período Orbital', 'Diâmetro', 'Clima',
     'Gravidade', 'Terreno', 'Superfície Àgua', 'População',
     'Filmes', 'Criado em', 'Editado', 'URL'];
 
-  if (filterName) {
-    dtPlanets = dtPlanets.filter(({ name }) => name.toLowerCase().includes(filterName));
-  }
+  const filterNumDefault = { column: '', comparison: '', value: 0 };
+
+  const selection = filterNumericValues.length
+    ? filterNumericValues[filterNumericValues.length - 1]
+    : filterNumDefault;
+
+  const dtPlanets = data.filter(({ name }) => name.toLowerCase().includes(filterName));
+
+  const filteredNumerics = dtPlanets.filter((p) => {
+    const { column, comparison, value } = selection;
+    switch (comparison) {
+    case 'maior que':
+      return +p[column] > +value;
+
+    case 'menor que':
+      return +p[column] < +value;
+
+    case 'igual a':
+      return +p[column] === +value;
+
+    default:
+      return true;
+    }
+  });
+
+  const filtered = filteredNumerics;
 
   return (
     <table>
@@ -28,7 +50,7 @@ function Table() {
         </tr>
       </thead>
       <tbody className="table-body">
-        {dtPlanets.map((dt, index) => {
+        {filtered.map((dt, index) => {
           const {
             climate, created, diameter, edited, films, gravity,
             name, orbital_period: orbitalPeriod, population,
