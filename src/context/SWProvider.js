@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import SWContext from './SWContext';
+import getApi from '../services/getAPI';
 
 function SWProvider({ children }) {
-  const [planets, setPlanets] = useState([]);
+  const [planets, setPlanets] = useState('');
+
+  const fetching = async () => {
+    const request = await getApi();
+    const newPlanets = Object.values(request.results).map((item) => {
+      delete item.residents;
+      return item;
+    });
+    setPlanets(newPlanets);
+  };
 
   useEffect(() => {
-    const getApi = async () => {
-      const END_POINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const { results } = await fetch(END_POINT).then((data) => data.json());
-      setPlanets(results);
-    };
-    getApi();
+    fetching();
   }, []);
 
-  const valueContext = { planets };
+  const valueContext = { planets, setPlanets };
 
   return (
     <SWContext.Provider value={ valueContext }>
