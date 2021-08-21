@@ -19,6 +19,10 @@ const Provider = ({ children }) => {
   const [columnsFilterBy, setColumnsFilterBy] = useState(columns);
   const [selectedFilter, setSelectedFilter] = useState([]);
 
+  // const handleClickErase = ({ target: value }) => {
+  //   setErase;
+  // };
+
   const handleClick = () => {
     const remainsFiltred = [...selectedFilter, filterField.filtredBy];
     setSelectedFilter(remainsFiltred);
@@ -97,6 +101,7 @@ const Provider = ({ children }) => {
     columnsFilterBy,
     filterField,
     handleClick,
+    // handleClickErase,
   };
 
   return (

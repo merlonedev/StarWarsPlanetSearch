@@ -65,6 +65,19 @@ const InputFilters = () => {
           Enviar
         </button>
       </div>
+      <div>
+        <ul>
+          <li>
+            {
+              `{filtredBy: ${filtredBy_},
+              compare: ${compare_}
+              inputValueFilter: ${inputValueFilter_}}`
+            }
+            <button type="button" data-testid="filter">X</button>
+          </li>
+        </ul>
+
+      </div>
     </div>
   );
 };
