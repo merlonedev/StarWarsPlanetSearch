@@ -12,6 +12,7 @@ export default function MainPage() {
     const populateData = async () => {
       const data = await fetchAPI();
       setPlanetData(data.results);
+      console.log(data);
       await setFetching(false);
     };
     populateData();

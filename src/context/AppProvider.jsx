@@ -3,22 +3,25 @@ import PropTypes from 'prop-types';
 import AppContext from './AppContext';
 
 function AppProvider({ children }) {
-  const [data, setPlanetData] = useState();
+  const [planets, setPlanets] = useState();
+  const [data, setPlanetData] = useState([]);
   const [filters, setFilter] = useState({
-    filters: {
-      filterByName: {
-        name: '',
-      },
-      filterByNumericValues: [{
-        column: '',
-        comparison: '',
-        value: '',
-      }],
+    filterByName: {
+      name: '',
     },
+    filterByNumericValues: [],
   });
 
   return (
-    <AppContext.Provider value={ { data, setPlanetData, filters, setFilter } }>
+    <AppContext.Provider
+      value={ {
+        data,
+        setPlanetData,
+        filters,
+        setFilter,
+        planets,
+        setPlanets } }
+    >
       {children}
     </AppContext.Provider>
   );

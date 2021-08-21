@@ -1,14 +1,35 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AppContext from '../context/AppContext';
 
 export default function Table() {
   const { data, filters } = useContext(AppContext);
-  let planets = data;
+  const [planets, setPlanets] = useState(data);
   const keys = Object.keys(data[0]).filter((name) => name !== 'residents');
   const { filterByName: { name } } = filters;
-  if (name) {
-    planets = planets.filter((planet) => (planet.name).toLowerCase().includes(name));
-  }
+  const { filterByNumericValues } = filters;
+
+  const filterPlanets = () => {
+    const comps = {
+      'maior que': (coluna, valor) => Number(coluna) > Number(valor),
+      'menor que': (coluna, valor) => Number(coluna) < Number(valor),
+      'igual a': (coluna, valor) => Number(coluna) === Number(valor),
+    };
+
+    if (!filterByNumericValues.length) {
+      setPlanets(data);
+    }
+    if (filterByNumericValues.length === 1) {
+      filterByNumericValues
+        .forEach(({ column, comparison, value }) => setPlanets(
+          data.filter((dat) => comps[comparison](dat[column], value)),
+        ));
+    }
+    if (name) {
+      setPlanets(planets.filter((planet) => (planet.name).toLowerCase().includes(name)));
+    }
+  };
+
+  useEffect(filterPlanets, [filters]);
 
   return (
     <div className="table-responsive-sm">

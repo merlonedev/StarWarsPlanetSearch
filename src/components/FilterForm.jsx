@@ -11,13 +11,13 @@ export default function FilterForm() {
   const [slcFilter, setSelect] = useState({
     column: 'population', comparison: 'maior que', value: '' });
   const { filters, setFilter } = useContext(AppContext);
+  const { filterByNumericValues } = filters;
 
   const handleNameChange = ({ target: { value } }) => {
     setFilter({
       ...filters,
-      filters: { filterByName: { name: value.toLowerCase() } },
+      filterByName: { name: value.toLowerCase() },
     });
-    console.log(filters);
   };
 
   const handleColumnChange = ({ target: { value } }) => {
@@ -43,13 +43,14 @@ export default function FilterForm() {
 
   const handleClick = () => {
     setFilter({
-      filters: { ...filters, filterByNumericValues: [{ ...slcFilter }] },
+      ...filters,
+      filterByNumericValues: [...filterByNumericValues, { ...slcFilter }],
     });
     console.log(filters);
   };
 
   return (
-    <form>
+    <form className="form-row">
       <label htmlFor="name">
         Name
         <input
@@ -59,7 +60,7 @@ export default function FilterForm() {
           data-testid="name-filter"
         />
       </label>
-      <select data-testid="comparison-filter" onChange={ handleColumnChange }>
+      <select data-testid="column-filter" onChange={ handleColumnChange }>
         {params.map((param) => <option key={ param }>{param}</option>)}
       </select>
       <select data-testid="comparison-filter" onChange={ handleCompChange }>
@@ -72,7 +73,7 @@ export default function FilterForm() {
         <input
           id="numerical"
           type="number"
-          data-tesdid="value-filter"
+          data-testid="value-filter"
           onChange={ handleValChange }
         />
       </label>
