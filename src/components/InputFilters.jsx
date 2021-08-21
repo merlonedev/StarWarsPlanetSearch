@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import AppContext from '../context/AppContext';
 
 const InputFilters = () => {
@@ -26,14 +27,14 @@ const InputFilters = () => {
       <div>
         <select data-testid="column-filter" onChange={ handleChange } name="filtredBy">
           {
-            columns.map((filterBy, index) => (
-              <option key={ index } value={ filterBy }>{ filterBy }</option>))
+            columns.map((filterBy) => (
+              <option key={ uuidv4() } value={ filterBy }>{ filterBy }</option>))
           }
         </select>
         <select data-testid="comparison-filter" onChange={ handleChange } name="compare">
           {
             comparison.map((comparation) => (
-              <option key={ comparation } value={ comparation }>{ comparation }</option>))
+              <option key={ uuidv4() } value={ comparation }>{ comparation }</option>))
           }
         </select>
         <input
