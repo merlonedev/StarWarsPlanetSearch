@@ -18,11 +18,11 @@ export default function Table() {
     loadData();
   }, [setData]);
 
-  if (loading) { return <span> Loading... </span>; }
+  if (loading) { return <div className="loading"> Loading... </div>; }
   const headers = Object.keys(data[0]).filter((head) => head !== 'residents');
 
   return (
-    <table>
+    <table className="table-wars">
       <thead>
         <tr>
           {headers.map((head) => (

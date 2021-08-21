@@ -2,7 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function Input(props) {
-  const { type, name, label, onChange, value, id, testId, holder, checked } = props;
+  const {
+    type,
+    name,
+    label,
+    onChange,
+    value,
+    id,
+    testId,
+    holder,
+    checked,
+    className,
+  } = props;
   return (
     <label htmlFor={ name }>
       { label }
@@ -15,6 +26,7 @@ export default function Input(props) {
         data-testid={ testId }
         placeholder={ holder }
         checked={ checked }
+        className={ className }
       />
     </label>
   );
@@ -33,6 +45,7 @@ Input.propTypes = {
   testId: PropTypes.string,
   holder: PropTypes.string,
   checked: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 Input.defaultProps = {
@@ -44,4 +57,5 @@ Input.defaultProps = {
   testId: '',
   holder: '',
   checked: false,
+  className: '',
 };

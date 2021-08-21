@@ -46,3 +46,32 @@ export function filterData(filters, data) {
 
   return filteredData;
 }
+
+export function addToContext(params) {
+  const {
+    filters,
+    filterByNumeric,
+    setFilters,
+    setFilterOp,
+    setFilterByNumeric,
+    filterOp,
+  } = params;
+
+  const filterByNumericValues = [filterByNumeric];
+  const { column } = filterByNumeric;
+
+  if (filters.filterByNumericValues) {
+    setFilters((prev) => (
+      { ...prev,
+        filterByNumericValues: [...prev.filterByNumericValues, filterByNumeric] }
+    ));
+    const newOptions = filterOp.filter((item) => item !== column);
+    setFilterOp(newOptions);
+    setFilterByNumeric({ ...filterByNumeric, column: newOptions[0], value: 0 });
+  } else {
+    setFilters((prev) => ({ ...prev, filterByNumericValues }));
+    const newOptions = filterOp.filter((item) => item !== column);
+    setFilterOp(newOptions);
+    setFilterByNumeric({ ...filterByNumeric, column: newOptions[0], value: 0 });
+  }
+}
