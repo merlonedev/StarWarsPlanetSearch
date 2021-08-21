@@ -1,57 +1,90 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Context from '../context/Context';
 
+const INITIAL_STATE = {
+  column: 'population',
+  comparison: 'maior que',
+  value: 0,
+};
+
 function SelectFilter() {
-  const { /*  filters, */ setFilters } = useContext(Context);
-  // const { filterByNumericValues: { name } } = filters;
+  const { filters, setFilters } = useContext(Context);
+  const { filterByNumericValues } = filters;
+
+  const [numericFilter, setNumericFilter] = useState({ ...INITIAL_STATE });
+  const { column, comparison, value } = numericFilter;
 
   // const { planets } = useContext(Context);
   // console.log(planets[0]);
 
-  const arrayOfColumns = [
-    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
-  ];
-  const arrayOfTypesOfComparisons = [
-    'maior que', 'menor que', 'igual a',
-  ];
-
-  function handleChange({ target: { value } }) {
-    setFilters({
-      filterByNumericValues: { name: value },
+  function handleChange({ target }) {
+    setNumericFilter({
+      ...numericFilter,
+      [target.name]: target.value,
     });
   }
 
-  function handleClick(event) {
-    event.preventDefault();
+  function handleClickFilter() {
     setFilters({
-
+      ...filters,
+      filterByNumericValues: [
+        ...filterByNumericValues,
+        numericFilter,
+      ],
     });
+    // setNumericFilter({ ...INITIAL_STATE });
   }
 
   return (
     <div>
       {/* { console.log(planets[0]) } */}
+      <label htmlFor="column">
+        <select
+          data-testid="column-filter"
+          value={ column }
+          id="column"
+          name="column"
+          onChange={ handleChange }
 
-      <select data-testid="column-filter">
-        { arrayOfColumns.map((column) => (
-          <option key={ column } value={ column }>{ column }</option>
-        )) }
-      </select>
-      <select data-testid="comparison-filter">
-        { arrayOfTypesOfComparisons.map((types) => (
-          <option key={ types } value={ types }>{ types }</option>
-        ))}
-      </select>
-      <input
-        data-testid="value-filter"
-        type="number"
-        placeholder="0"
-        onChange={ handleChange }
-      />
+        >
+          <option value="population">population</option>
+          <option value="orbital_period">orbital_period</option>
+          <option value="diameter'">diameter</option>
+          <option value="rotation_period">rotation_period</option>
+          <option value="surface_water">surface_water</option>
+        </select>
+      </label>
+
+      <label htmlFor="comparison">
+        <select
+          data-testid="comparison-filter"
+          value={ comparison }
+          id="comparison"
+          name="comparison"
+          onChange={ handleChange }
+        >
+          <option value="maior que">maior que</option>
+          <option value="menor que">menor que</option>
+          <option value="igual a">igual a</option>
+        </select>
+      </label>
+
+      <label htmlFor="value">
+        <input
+          data-testid="value-filter"
+          value={ value }
+          id="value"
+          name="value"
+          type="number"
+          // placeholder="0"
+          onChange={ handleChange }
+        />
+      </label>
+
       <button
         data-testid="button-filter"
         type="button"
-        onClick={ handleClick }
+        onClick={ handleClickFilter }
       >
         Add filter
       </button>
