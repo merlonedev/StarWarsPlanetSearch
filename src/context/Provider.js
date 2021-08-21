@@ -9,6 +9,13 @@ function Provider({ children }) {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [
+      {
+        column: 'population',
+        comparison: 'maior que',
+        value: 0,
+      },
+    ],
   });
 
   useEffect(() => {
@@ -20,19 +27,21 @@ function Provider({ children }) {
       // console.log(result.results);
     };
     getData();
-  }, [data]);
+  }, [/* data */]);
 
   // Requisito 02 - Ajuda da monitora Letícia e ainda olhei o código do colega para fazer o filter corretamente: https://github.com/tryber/sd-012-project-starwars-planets-search/pull/2/files
   useEffect(() => {
-    const filterNamePlanet = () => {
-      const { filterByName } = filters;
-      const filterName = data
+    const filterPlanet = () => {
+      const { filterByName, filterByNumericValues } = filters;
+      // const { filterByNumericValues } =
+
+      const filtering = data
         .filter((planet) => planet.name
           .includes(filterByName.name));
       // console.log(filterName);
-      setPlanets(filterName);
+      setPlanets(filtering);
     };
-    filterNamePlanet();
+    filterPlanet();
   }, [data, filters]);
 
   const contextValue = {
