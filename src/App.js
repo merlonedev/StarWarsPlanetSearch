@@ -1,9 +1,14 @@
 import React from 'react';
 import './App.css';
+import contextProvider from './Context/ContextProvider';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <contextProvider>
+      <div>
+        <p>hello</p>
+      </div>
+    </contextProvider>
   );
 }
 
