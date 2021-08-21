@@ -5,9 +5,9 @@ import getPlanets from '../services/PlanetsFetch';
 
 function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
-  const [filtersProvider, setFiltersProvider] = useState({});
   const [planetList, setPlanetList] = useState([]);
   const [headerArray, setHeaderArray] = useState([]);
+  const [name, setName] = useState('');
 
   useEffect(() => {
     const fetchPlanets = async () => {
@@ -18,24 +18,29 @@ function PlanetsProvider({ children }) {
     fetchPlanets();
   }, []);
 
+  // Filtros feitos com a ajuda do David Gonzaga - turma 12
   useEffect(() => {
     const handleFilter = () => {
-      const { filters } = filtersProvider;
-      if (filters) {
-        const { filterByName: { name: nameValue } } = filters;
-        let filteredArray = [...data];
-        filteredArray = filteredArray.filter(({ name }) => name.toLowerCase()
-          .includes(nameValue.toLowerCase()));
-        setPlanetList(filteredArray);
-      }
+      let filteredArray = [...data];
+      filteredArray = filteredArray.filter(({ name: nameValue }) => (
+        nameValue.toLowerCase().includes(name.toLowerCase())));
+      setPlanetList(filteredArray);
     };
     handleFilter();
-  }, [filtersProvider, data]);
+  }, [name, data]);
 
   const contextValue = {
-    setFiltersProvider,
     planetList,
     headerArray,
+    filters: {
+      filterByName: { name },
+      filterByNumericValues: [
+        {
+          column: 'population',
+        },
+      ],
+    },
+    setName,
   };
 
   return (

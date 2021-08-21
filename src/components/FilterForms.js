@@ -1,50 +1,11 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import MyContext from '../context/Context';
 
 const COLUMNS_FILTER_ARRAY = ['population',
   'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
-
-const INITIAL_STATE = { filters: {
-  filterByName: { name: '' },
-  filterByNumericValues: [
-    {
-      column: 'population',
-      comparison: '',
-      value: '',
-    },
-  ],
-} };
-
 function FilterForms() {
-  const [filters, setFilters] = useState({ ...INITIAL_STATE });
-
-  const { filters: { filterByName: { name: nameValue } } } = filters;
-
   const consumer = useContext(MyContext);
-  const { setFiltersProvider } = consumer;
-
-  const handleStringChange = ({ target: { id, value, name } }) => {
-    setFilters({
-      ...filters,
-      filters: {
-        [id]: {
-          [name]: value,
-        },
-      } });
-  };
-
-  const handleNumericChange = ({ target: { value, name } }) => {
-    setFilters({
-      ...filters,
-      filters: {
-        filterByNumericValues: [{
-          [name]: value,
-        }],
-      },
-    });
-  };
-
-  useEffect(() => setFiltersProvider(filters));
+  const { setName, filters: { filterByName: { name: nameValue } } } = consumer;
 
   return (
     <form>
@@ -54,7 +15,7 @@ function FilterForms() {
           type="text"
           value={ nameValue }
           data-testid="name-filter"
-          onChange={ handleStringChange }
+          onChange={ ({ target: { value } }) => setName(value) }
           id="filterByName"
           name="name"
           placeholder="Nome do planeta"
