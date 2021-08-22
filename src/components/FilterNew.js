@@ -1,6 +1,6 @@
 import React from 'react';
 import Context from '../context/Context';
-import { selectOptions, range } from '../service/data';
+import { SELECTION_OPTIONS, SELECTION_RANGE } from '../service/data';
 
 export default function FilterNew() {
   const { filters, FilterByNumericValue } = React.useContext(Context);
@@ -8,7 +8,7 @@ export default function FilterNew() {
   const [comparison, setComparison] = React.useState('');
   const [value, setValue] = React.useState('');
   const { column: oldColumn } = filters.filterByNumericValues[0];
-  const selectOptionWithoutColumn = selectOptions.filter((opt) => opt !== oldColumn);
+  const selectOptionWithoutColumn = SELECTION_OPTIONS.filter((opt) => opt !== oldColumn);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -26,7 +26,7 @@ export default function FilterNew() {
         data-testid="comparison-filter"
         onChange={ (e) => setComparison(e.target.value) }
       >
-        {range.map((item, i) => (
+        {SELECTION_RANGE.map((item, i) => (
           <option key={ i } value={ item }>
             { item }
           </option>))}
@@ -42,6 +42,12 @@ export default function FilterNew() {
         onClick={ (e) => handleSubmit(e) }
       >
         Filtrar
+      </button>
+      <button
+        type="submit"
+        data-testid="filter"
+      >
+        X
       </button>
     </form>
   );

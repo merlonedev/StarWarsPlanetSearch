@@ -1,4 +1,4 @@
-const headerTable = [
+const HEADER_TABLE = [
   'Name',
   'Rotation period',
   'Orbital period',
@@ -14,14 +14,14 @@ const headerTable = [
   'Url',
 ];
 
-const selectOptions = [
+const SELECTION_OPTIONS = [
   'population',
   'orbital_period',
   'diameter',
   'rotation_period',
   'surface_water'];
 
-const range = [
+const SELECTION_RANGE = [
   'maior que', 'menor que', 'igual a',
 ];
 
@@ -31,4 +31,4 @@ const INITIAL_STATE = {
   },
   filterByNumericValues: [],
 };
-export { headerTable, selectOptions, range, INITIAL_STATE };
+export { HEADER_TABLE, SELECTION_OPTIONS, SELECTION_RANGE, INITIAL_STATE };
