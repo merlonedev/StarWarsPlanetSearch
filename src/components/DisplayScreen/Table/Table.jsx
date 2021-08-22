@@ -27,7 +27,6 @@ const Table = () => {
         filteredData = filteredData
           .filter((planet) => switchComparison(planet, column, comparison, value));
       });
-      console.log(filteredData);
       return filteredData;
     }
     return planets;

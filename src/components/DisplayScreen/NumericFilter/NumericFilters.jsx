@@ -1,13 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Context from '../../../context/Context';
-import { optionsColumn, optionsComparison } from '../../../helper/SelectOptions';
+import { optionsComparison } from '../../../helper/SelectOptions';
 
 const NumericFilters = () => {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState(0);
 
-  const { setFilterByNumericValues } = useContext(Context);
+  const {
+    setFilterByNumericValues,
+    columnsOptions,
+  } = useContext(Context);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -21,6 +24,10 @@ const NumericFilters = () => {
     ]));
   };
 
+  useEffect(() => {
+    if (columnsOptions.length > 0) setColumn(columnsOptions[0]);
+  }, [columnsOptions]);
+
   return (
     <form onSubmit={ handleSubmit }>
       <select
@@ -28,7 +35,7 @@ const NumericFilters = () => {
         value={ column }
         onChange={ ({ target }) => setColumn(target.value) }
       >
-        {optionsColumn.map((opt) => <option key={ opt }>{opt}</option>)}
+        {columnsOptions.map((opt) => <option key={ opt }>{opt}</option>)}
       </select>
       <select
         data-testid="comparison-filter"
