@@ -5,9 +5,9 @@ function NameFilter() {
   const { setFilterByName } = useContext(StarContext);
 
   return (
-    <div>
+    <div className="filters">
       <label htmlFor="search-name">
-        Search Name
+        Search Name:
         <input
           id="search-name"
           data-testid="name-filter"

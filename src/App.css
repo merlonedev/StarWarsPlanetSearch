@@ -35,6 +35,8 @@ h1 {
 }
 
 table {
+  background-color: #ffea00;
+  box-shadow: 0 0 2px #ffff8f , 0 0 8px #ffea00 , 0 0 16px #ffea00;
   color: black;
   width: 100%;
 }
@@ -47,14 +49,13 @@ table {
 }
 
 th {
-  box-shadow: 0 0 2px #ffff8f , 0 0 8px #ffea00 , 0 0 16px #ffea00;
   padding: 2px;
 }
 
 .table-body {
-  background-color: #ffea00;
+  background-color: darkgrey;
   font-size: 10px;
-  opacity: 80%;
+  opacity: 90%;
   text-align: center;
 }
 
@@ -62,4 +63,15 @@ td {
   border: 2px;
   font-weight: 600;
   line-height: 20px;
+}
+
+.filters {
+  color: #ffea00;
+  margin: 5px;
+  padding: 5px;
+}
+
+.filters input {
+  background-color: #ffea00;
+  border-radius: 8px;
 }

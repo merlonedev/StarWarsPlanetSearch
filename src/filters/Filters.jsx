@@ -3,7 +3,9 @@ import NameFilter from './NameFilter';
 
 function Filters() {
   return (
-    <NameFilter />
+    <session>
+      <NameFilter />
+    </session>
   );
 }
 
