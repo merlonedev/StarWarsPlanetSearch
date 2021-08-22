@@ -1,26 +1,22 @@
 import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
+import Input from './Input';
 
 function NameFilter() {
-  const { name, setName } = useContext(MyContext);
+  const { filters: { filterByName: { name } }, setName } = useContext(MyContext);
 
   function handleChange({ target }) {
     setName(target.value);
   }
 
   return (
-    <div>
-      <label htmlFor="name">
-        Filter by name
-        <input
-          data-testid="name-filter"
-          type="text"
-          name="filter-by-name"
-          onChange={ handleChange }
-          value={ name }
-        />
-      </label>
-    </div>
+    <Input
+      id="name-filter"
+      labelName="Filtrar por nome"
+      type="text"
+      value={ name }
+      onChange={ handleChange }
+    />
   );
 }
 

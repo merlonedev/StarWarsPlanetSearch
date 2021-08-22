@@ -6,6 +6,10 @@ function Provider({ children }) {
   const [data, setData] = useState([]);
   const [filterName, setFilterName] = useState([]);
   const [name, setName] = useState('');
+  const [column, setColumn] = useState('');
+  const [comparison, setComparison] = useState('');
+  const [value, setValue] = useState();
+  const [filterByNumericValues, setFilterByNumericValues] = useState({});
 
   useEffect(() => {
     const getData = async () => {
@@ -24,13 +28,37 @@ function Provider({ children }) {
     setFilterName(filtered);
   }, [data, name]);
 
+  function handleFilterByNumericValues() {
+    setFilterByNumericValues({ column, comparison, value });
+  }
+
+  useEffect(() => {
+    const { column: col, comparison: comp, value: val } = filterByNumericValues;
+    const numericFilters = data.filter((planets) => {
+      if (comp === 'maior que') return +planets[col] > +val;
+      if (comp === 'menor que') return +planets[col] < +val;
+      if (comp === 'igual a') return +planets[col] === +val;
+      return true;
+    });
+    setFilterName(numericFilters);
+  }, [data, filterByNumericValues]);
+
   const contextValue = {
     data,
     setData,
     filterName,
     setFilterName,
-    name,
     setName,
+    filters: {
+      filterByName: {
+        name,
+      },
+      filterByNumericValues,
+    },
+    handleFilterByNumericValues,
+    setColumn,
+    setComparison,
+    setValue,
   };
 
   return (
