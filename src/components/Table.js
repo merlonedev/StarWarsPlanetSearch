@@ -24,7 +24,7 @@ function Table() {
     }
   };
 
-  const tableBody = (a = data) => {
+  const tableBody = (a) => {
     if (a.length) {
       return (
         <tbody>
@@ -84,15 +84,19 @@ function Table() {
 
   const filterByValue = (tableInfo = data) => {
     const { filterByNumericValues } = filters;
-    const { column, comparison, value } = filterByNumericValues[0];
+    // const { column, comparison, value } = filterByNumericValues[0];
+    let dataStorage = tableInfo;
 
-    if (column.length > 0) {
-      const filteredByValue = tableInfo.filter((planet) => {
-        const comparator = (
-          operatorFunc[comparison](parseInt(planet[column], 10), parseInt(value, 10)));
-        return comparator;
+    if (filterByNumericValues.length) {
+      filterByNumericValues.filter(({ column, comparison, value }) => {
+        dataStorage = dataStorage.filter((item) => {
+          const comparator = (
+            operatorFunc[comparison](parseInt(item[column], 10), parseInt(value, 10)));
+          return comparator;
+        });
+        return dataStorage;
       });
-      return tableBody(filteredByValue);
+      return tableBody(dataStorage);
     }
     return tableBody(tableInfo);
   };

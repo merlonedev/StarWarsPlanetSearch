@@ -9,13 +9,7 @@ function Provider(props) {
       filterByName: {
         name: '',
       },
-      filterByNumericValues: [
-        {
-          column: '',
-          comparison: '',
-          value: '',
-        },
-      ],
+      filterByNumericValues: [],
     },
   );
 
@@ -30,7 +24,10 @@ function Provider(props) {
 
   const handleSetNumeric = (value) => {
     const newState = { ...filters,
-      filterByNumericValues: [value],
+      filterByNumericValues: [
+        ...filters.filterByNumericValues,
+        value,
+      ],
     };
     setFilter(newState);
   };

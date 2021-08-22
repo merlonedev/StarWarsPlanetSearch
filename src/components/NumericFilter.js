@@ -1,39 +1,55 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import planetsContext from '../context/PlanetsContext';
 
+const columnOptions = [
+  'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+const sizeFilter = [
+  'maior que', 'menor que', 'igual a',
+];
+const obj = {
+  column: 'population',
+  comparison: 'maior que',
+  value: '0',
+};
+
 function NumericFilter() {
-  const { handleSetNumeric } = useContext(planetsContext);
-
-  const columnOptions = [
-    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
-  const sizeFilter = [
-    'maior que', 'menor que', 'igual a',
-  ];
-
-  const obj = {
-    column: 'population',
-    comparison: 'maior que',
-    value: '0',
-  };
+  const { filters, setFilter } = useContext(planetsContext);
+  const [initialFilter, setInitialFilter] = useState(obj);
+  const [initialOptions, setInitialOptions] = useState(columnOptions);
+  const [baseComparison] = useState(sizeFilter);
 
   const storageFilters = ({ target }) => {
     const { value, id } = target;
+    setInitialFilter({ ...initialFilter, [id]: value });
     obj[id] = value;
   };
 
-  const a = () => {
-    handleSetNumeric(obj);
+  const sendFilters = () => {
+    const { column, comparison, value } = initialFilter;
+    const teste = { column, comparison, value };
+    const result = initialOptions.filter((select) => select !== teste.column);
+    setInitialOptions(result);
+
+    setFilter({ ...filters,
+      filterByNumericValues: [...filters.filterByNumericValues, teste],
+    });
+
+    setInitialFilter({ ...initialFilter,
+      column: initialOptions.length ? initialOptions[0] : '',
+      value: '0',
+    });
+    // document.getElementById('value').value = '';
   };
 
   return (
-    <div>
+    <>
       <select
         id="column"
         data-testid="column-filter"
         onChange={ storageFilters }
       >
         {
-          columnOptions.map((option) => (
+          initialOptions.map((option) => (
             <option key={ option } value={ option }>
               {option}
             </option>))
@@ -45,7 +61,7 @@ function NumericFilter() {
         onChange={ storageFilters }
       >
         {
-          sizeFilter.map((size) => (
+          baseComparison.map((size) => (
             <option key={ size } value={ size }>
               {size}
             </option>))
@@ -61,11 +77,11 @@ function NumericFilter() {
       <button
         type="button"
         data-testid="button-filter"
-        onClick={ a }
+        onClick={ sendFilters }
       >
         ADD Filter
       </button>
-    </div>
+    </>
   );
 }
 
