@@ -1,7 +1,8 @@
 .menu-filters-container {
-  background-image: url('https://i.giphy.com/media/9E7kUhnT9eDok/giphy-downsized.gif');
-  background-size: 11em;
-  padding: 0.5em;
+  background-image: url('../images/bb8.gif') , url('../images/unleashed.gif');
+  background-size: 16em;
+  padding-bottom: 0.5em;
+  padding-top: 0.5em;
 }
 
 .name-filter-container {
@@ -28,6 +29,59 @@
   width: 95%;
 }
 
+.order-sort-container {
+  align-items: center;
+  background-color: rgb(235, 210, 50);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: row;
+  font-size: 0.9em;
+  height: 2.8em;
+  justify-content: space-evenly;
+  margin: auto;
+  margin-bottom: 0.6em;
+  width: 40%;
+}
+
+.column-sort-label {
+  width: 23%;
+}
+
+.column-sort {
+  height: 1.6em;
+  width: 100%;
+}
+
+.radio-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 50%;
+}
+
+.asc-label {
+  display: flex;
+  flex-direction: row;
+}
+
+.asc-radio {
+  order: 1;
+}
+
+.desc-label {
+  display: flex;
+  flex-direction: row;
+}
+
+.desc-radio {
+  order: 1;
+}
+
+.button-sort {
+  height: 1.6em;
+  width: 16%;
+}
+
 .number-filter-container {
   align-items: center;
   background-color: rgb(235, 210, 50);
@@ -46,6 +100,7 @@
 }
 
 .column-filter {
+  height: 1.6em;
   width: 100%;
 }
 
@@ -54,6 +109,7 @@
 }
 
 .comparison-filter {
+  height: 1.6em;
   width: 100%;
 }
 
@@ -76,6 +132,7 @@
   flex-direction: column;
   height: 4em;
   justify-content: center;
+  margin: 0;
   margin-top: 0.6em;
   width: 100%;
 }
@@ -91,5 +148,13 @@
 }
 
 .numeric-value-remove {
+  background-color: rgb(255, 65, 70);
+  border: transparent;
+  border-radius: 50%;
+  color: white;
+  font-family: Courier New , Courier , monospace;
+  font-weight: 600;
+  height: 1.6em;
   margin-left: 0.5em;
+  width: 1.6em;
 }

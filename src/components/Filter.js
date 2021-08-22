@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AppContext from '../context/AppContext';
+import { NameFilter, OrderFilter, NumberFilter } from '.';
+import sortByColumn from '../util/util';
 import options from '../data';
 import './Filter.css';
 
@@ -11,8 +13,11 @@ const Filter = () => {
     comparison: options.comparisonFilter[0].name,
     value: 0,
   });
+  const [column, setColumn] = useState('name');
+  const [sort, setSort] = useState('asc');
   const [addFilter, setAddFilter] = useState(false);
   const [removeFilter, setRemoveFilter] = useState(false);
+  const [addOrder, setAddOrder] = useState(false);
 
   const {
     data,
@@ -20,6 +25,7 @@ const Filter = () => {
     filters,
     setFilterByName,
     setFilterByNumericValues,
+    setOrder,
     setDataFiltered,
   } = useContext(AppContext);
 
@@ -55,7 +61,7 @@ const Filter = () => {
         value: filterNumber.value,
       }]));
       setDataFiltered(filterByNumeric(dataFiltered));
-      setFilterColumn(filterColumn.filter((column) => column.name !== filterNumber
+      setFilterColumn(filterColumn.filter((removed) => removed.name !== filterNumber
         .column));
       setFilterNumber({
         column: filterColumn[0].name,
@@ -74,10 +80,18 @@ const Filter = () => {
     }
   }, [removeFilter]);
 
+  useEffect(() => {
+    if (addOrder) {
+      setOrder({ column, sort });
+      setDataFiltered(sortByColumn(column, sort, dataFiltered));
+      setAddOrder(false);
+    }
+  }, [addOrder]);
+
   const handleChange = ({ target: { name, value } }) => {
     switch (name) {
     case 'name': setFilterName(value); break;
-    case 'column': setFilterNumber((prevState) => ({
+    case 'column-filter': setFilterNumber((prevState) => ({
       ...prevState, column: value,
     })); break;
     case 'comparison': setFilterNumber((prevState) => ({
@@ -86,6 +100,9 @@ const Filter = () => {
     case 'value': setFilterNumber((prevState) => ({
       ...prevState, value,
     })); break;
+    case 'column-sort': setColumn(value); break;
+    case 'asc': setSort('asc'); break;
+    case 'desc': setSort('desc'); break;
     default: break;
     }
   };
@@ -99,73 +116,25 @@ const Filter = () => {
     setRemoveFilter(true);
   };
 
-  return (
-    <div className="menu-filters-container">
-      <div className="name-filter-container">
-        <label htmlFor="name-filter" className="name-filter-label">
-          <input
-            type="text"
-            className="name-filter"
-            id="name-filter"
-            data-testid="name-filter"
-            name="name"
-            placeholder="Nome do planeta"
-            value={ filterName }
-            onChange={ handleChange }
-          />
-        </label>
-      </div>
-      <div className="number-filter-container">
-        <label htmlFor="column-filter" className="column-filter-label">
-          <select
-            className="column-filter"
-            id="column-filter"
-            data-testid="column-filter"
-            name="column"
-            value={ filterNumber.column }
-            onChange={ handleChange }
-          >
-            { filterColumn.map((option) => (
-              <option key={ option.name } value={ option.name }>{ option.name }</option>
-            )) }
-          </select>
-        </label>
-        <label htmlFor="comparison-filter" className="comparison-filter-label">
-          <select
-            className="comparison-filter"
-            id="comparison-filter"
-            data-testid="comparison-filter"
-            name="comparison"
-            value={ filterNumber.comparison }
-            onChange={ handleChange }
-          >
-            { options.comparisonFilter.map((option) => (
-              <option key={ option.name } value={ option.name }>{ option.name }</option>
-            )) }
-          </select>
-        </label>
-        <label htmlFor="value-filter" className="value-filter-label">
-          <input
-            type="number"
-            className="value-filter"
-            id="value-filter"
-            data-testid="value-filter"
-            name="value"
-            placeholder=""
-            value={ filterNumber.value }
-            onChange={ handleChange }
-          />
-        </label>
-        <button
-          type="button"
-          data-testid="button-filter"
-          className="button-filter"
-          onClick={ handleClickAdd }
-        >
-          Adicionar filtros
-        </button>
-      </div>
+  const handleClickOrder = () => { setAddOrder(true); };
 
+  return (
+    <div className="menu-container">
+      <div className="menu-filters-container">
+        <NameFilter filterName={ filterName } handleChange={ handleChange } />
+        <OrderFilter
+          column={ column }
+          sort={ sort }
+          handleChange={ handleChange }
+          handleClickOrder={ handleClickOrder }
+        />
+        <NumberFilter
+          filterNumber={ filterNumber }
+          filterColumn={ filterColumn }
+          handleChange={ handleChange }
+          handleClickAdd={ handleClickAdd }
+        />
+      </div>
       { filters.filterByNumericValues.length > 0 ? (
         <div className="values-container">
           { filters.filterByNumericValues.map((numericFilter, index) => (
@@ -188,7 +157,7 @@ const Filter = () => {
                 id={ `${numericFilter.column}` }
                 onClick={ handleClickRemove }
               >
-                X
+                x
               </button>
             </div>
           ))}
@@ -197,6 +166,7 @@ const Filter = () => {
         <> </>
       ) }
     </div>
+
   );
 };
 

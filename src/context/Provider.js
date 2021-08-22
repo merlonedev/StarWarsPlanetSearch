@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import AppContext from './AppContext';
+import sortByColumn from '../util/util';
 
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [dataFiltered, setDataFiltered] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  const [order, setOrder] = useState({ column: '', sort: '' });
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -19,7 +21,7 @@ function Provider({ children }) {
         return withoutResidents;
       });
       setData(result);
-      setDataFiltered(result);
+      setDataFiltered(sortByColumn('name', 'asc', result));
     };
     getPlanets();
   }, []);
@@ -28,9 +30,10 @@ function Provider({ children }) {
     data,
     dataFiltered,
     setDataFiltered,
-    filters: { filterByName, filterByNumericValues },
+    filters: { filterByName, filterByNumericValues, order },
     setFilterByName,
     setFilterByNumericValues,
+    setOrder,
   };
 
   return (
