@@ -18,7 +18,7 @@ function Table() {
             {console.log(residents.map((teste) => (<th key={ teste }>{ teste }</th>)))}
           </tr>
         </thead>
-        {/* Aprendi a fazer a lógica com a ajuda do Lucas Santos */}
+        {/* Aprendi com a ajuda do Lucas Santos */}
         <tbody>
           {data.map((nofilter) => (
             <tr key={ nofilter.name }>
