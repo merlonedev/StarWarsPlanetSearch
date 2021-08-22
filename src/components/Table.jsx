@@ -1,20 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
+import MyContext from '../context/MyContext';
 
 function Table() {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    const getData = async () => {
-      const url = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const planets = await fetch(url);
-      const planetsJson = await planets.json();
-      const { results } = planetsJson;
-      setData(results);
-    };
-
-    getData();
-  }, []);
-
+  const { data, filterName } = useContext(MyContext);
+  if (data.length === 0) return <p>Loading</p>;
+  if (filterName.length === 0) return <p>Ops! Não existe esse planeta!</p>;
   return (
     <div>
       <table>
@@ -36,21 +26,21 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          { data.map((planet) => (
-            <tr key={ planet.name }>
-              <td>{ planet.name }</td>
-              <td>{ planet.rotation_period }</td>
-              <td>{ planet.orbital_period }</td>
-              <td>{ planet.diameter }</td>
-              <td>{ planet.climate }</td>
-              <td>{ planet.gravity }</td>
-              <td>{ planet.terrain }</td>
-              <td>{ planet.surface_water }</td>
-              <td>{ planet.population }</td>
-              <td>{ planet.films }</td>
-              <td>{ planet.created }</td>
-              <td>{ planet.edited }</td>
-              <td>{ planet.url }</td>
+          { filterName.map((filtered) => (
+            <tr key={ filtered.name }>
+              <td>{ filtered.name }</td>
+              <td>{ filtered.rotation_period }</td>
+              <td>{ filtered.orbital_period }</td>
+              <td>{ filtered.diameter }</td>
+              <td>{ filtered.climate }</td>
+              <td>{ filtered.gravity }</td>
+              <td>{ filtered.terrain }</td>
+              <td>{ filtered.surface_water }</td>
+              <td>{ filtered.population }</td>
+              <td>{ filtered.films }</td>
+              <td>{ filtered.created }</td>
+              <td>{ filtered.edited }</td>
+              <td>{ filtered.url }</td>
             </tr>
           ))}
         </tbody>
