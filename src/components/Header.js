@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import FilterContext from '../context/FilterContext';
-import useData from '../hooks/useData';
 
 function Header() {
   const columnOptions = ['population', 'orbital_period', 'diameter',
@@ -8,11 +7,13 @@ function Header() {
   const comparisonOptions = ['maior que', 'menor que', 'igual a'];
 
   const { addFilter, rmvFilter, handleOrder, setName,
-    filters: { filterByNumericValues } } = useContext(FilterContext);
+    data: { tableHeadData },
+    filters: { filterByNumericValues, filterByName: { name } },
+  } = useContext(FilterContext);
+
   const [column, setColumn] = useState(columnOptions[0]);
   const [comparison, setComparison] = useState('maior que');
   const [number, setNumber] = useState('');
-  const [, tableHeadData] = useData();
   const [sortColumn, setSortColumn] = useState('name');
   const [sortOrder, setsortOrder] = useState('ASC');
 
@@ -37,11 +38,13 @@ function Header() {
         type="text"
         placeholder="Digite um planeta"
         data-testid="name-filter"
+        value={ name }
         onChange={ ({ target: { value } }) => setName(value) }
       />
       <div>
         <select
           data-testid="column-sort"
+          value={ sortColumn }
           onChange={ ({ target: { value } }) => setSortColumn(value) }
         >
           {tableHeadData.map((option) => (
@@ -76,6 +79,7 @@ function Header() {
       </div>
       <select
         data-testid="column-filter"
+        value={ column }
         onChange={ ({ target: { value } }) => setColumn(value) }
       >
         {availableColumns.map((option) => (
@@ -84,6 +88,7 @@ function Header() {
       </select>
       <select
         data-testid="comparison-filter"
+        value={ comparison }
         onChange={ ({ target: { value } }) => setComparison(value) }
       >
         {comparisonOptions.map((option) => (
@@ -94,6 +99,7 @@ function Header() {
         type="number"
         min="0"
         data-testid="value-filter"
+        value={ number }
         onChange={ ({ target: { value } }) => setNumber(value) }
       />
       <button type="button" data-testid="button-filter" onClick={ handleFilter }>
