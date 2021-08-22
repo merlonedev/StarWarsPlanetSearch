@@ -1,0 +1,37 @@
+body {
+  background-color: #333;
+  color: white;
+  font-family: Roboto , Helvetica , sans-serif;
+}
+
+.table {
+  background: #111;
+  border-collapse: collapse;
+  border-radius: 5px;
+  font-size: small;
+  margin-top: 40px;
+}
+
+.table td {
+  border: 1px dashed #333;
+  border-radius: 3px;
+  padding: 10px;
+  text-align: center;
+}
+
+.thead {
+  background-color: rgb(206, 41, 118);
+  color: white;
+  padding: 0 10px;
+}
+
+form {
+  background-color: rgb(206, 41, 118);
+  border: 5px solid rgb(141, 0, 66);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  padding: 20px;
+  width: 300px;
+}
