@@ -3,38 +3,25 @@ import myContext from '../context/myContext';
 
 function NumericFilters() {
   const { filters, setFilters } = useContext(myContext);
+  const { filterByNumericValues } = filters;
+  console.log(filterByNumericValues);
   const [localFilters, setLocalFilters] = useState({
     column: 'population',
     comparison: 'maior que',
     value: '',
   });
 
-  const colFilters = [
+  let colFilters = [
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
   ];
 
   const dropNumerics = ['maior que', 'menor que', 'igual a'];
 
-  // if (localFilters.comparison === 'maior que') {
-  //   setLocalFilters({
-  //     ...localFilters,
-  //     comparison: '>',
-  //   });
-  // }
-
-  // if (localFilters.comparison === 'menor que') {
-  //   setLocalFilters({
-  //     ...localFilters,
-  //     comparison: '<',
-  //   });
-  // }
-
-  // if (localFilters.comparison === 'igual a') {
-  //   setLocalFilters({
-  //     ...localFilters,
-  //     comparison: '===',
-  //   });
-  // }
+  if (filterByNumericValues.length > 0) {
+    filterByNumericValues.forEach(({ column }) => {
+      colFilters = colFilters.filter((col) => col !== column);
+    });
+  }
 
   const handleChange = ({ target }) => {
     const { name, value } = target;

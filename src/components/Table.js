@@ -14,7 +14,6 @@ function Table() {
 
   // Agradecimentos à todos os meus colegas que me ajudaram a enxergar e aplicar a lógica nesse filtro
   if (filterByNumericValues.length > 0) {
-    console.log(filterByNumericValues);
     filterByNumericValues.forEach(({ column, comparison, value }) => {
       filteredData = filteredData.filter((planet) => {
         if (comparison === 'maior que') {
@@ -33,19 +32,19 @@ function Table() {
     return (
       planets.map((planet) => (
         <tr key={ planet.name }>
-          <td>{planet.name}</td>
-          <td>{planet.rotation_period}</td>
-          <td>{planet.orbital_period}</td>
-          <td>{planet.diameter}</td>
-          <td>{planet.climate}</td>
-          <td>{planet.gravity}</td>
-          <td>{planet.terrain}</td>
-          <td>{planet.surface_water}</td>
-          <td>{planet.population}</td>
-          <td>{planet.films}</td>
-          <td>{planet.created}</td>
-          <td>{planet.edited}</td>
-          <td>{planet.url}</td>
+          <td key={ planet.name }>{planet.name}</td>
+          <td key={ planet.rotation_period }>{planet.rotation_period}</td>
+          <td key={ planet.orbital_period }>{planet.orbital_period}</td>
+          <td key={ planet.diameter }>{planet.diameter}</td>
+          <td key={ planet.climate }>{planet.climate}</td>
+          <td key={ planet.gravity }>{planet.gravity}</td>
+          <td key={ planet.terrain }>{planet.terrain}</td>
+          <td key={ planet.surface_water }>{planet.surface_water}</td>
+          <td key={ planet.population }>{planet.population}</td>
+          <td key={ planet.films }>{planet.films}</td>
+          <td key={ planet.created }>{planet.created}</td>
+          <td key={ planet.edited }>{planet.edited}</td>
+          <td key={ planet.url }>{planet.url}</td>
         </tr>
       ))
     );
