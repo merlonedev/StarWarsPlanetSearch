@@ -4,18 +4,15 @@ import myContext from './myContext';
 import useData from '../hooks/useData';
 
 function Provider({ children }) {
-  const [data, infos, loading] = useData();
+  const [data, infos, loading, setData] = useData();
   const [filters, setFilters] = useState({
     filterByName: { name: '' },
-    filterByNumericValues: [{
-      column: '',
-      comparison: '',
-      value: '',
-    }],
+    filterByNumericValues: [],
   });
 
   const contextV = {
     data,
+    setData,
     infos,
     loading,
     filters,

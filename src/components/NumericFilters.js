@@ -4,37 +4,37 @@ import myContext from '../context/myContext';
 function NumericFilters() {
   const { filters, setFilters } = useContext(myContext);
   const [localFilters, setLocalFilters] = useState({
-    column: '',
-    comparison: '',
+    column: 'population',
+    comparison: 'maior que',
     value: '',
   });
 
-  const dropFilters = [
+  const colFilters = [
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
   ];
 
   const dropNumerics = ['maior que', 'menor que', 'igual a'];
 
-  if (localFilters.comparison === 'maior que') {
-    setLocalFilters({
-      ...localFilters,
-      comparison: '>',
-    });
-  }
+  // if (localFilters.comparison === 'maior que') {
+  //   setLocalFilters({
+  //     ...localFilters,
+  //     comparison: '>',
+  //   });
+  // }
 
-  if (localFilters.comparison === 'menor que') {
-    setLocalFilters({
-      ...localFilters,
-      comparison: '<',
-    });
-  }
+  // if (localFilters.comparison === 'menor que') {
+  //   setLocalFilters({
+  //     ...localFilters,
+  //     comparison: '<',
+  //   });
+  // }
 
-  if (localFilters.comparison === 'igual a') {
-    setLocalFilters({
-      ...localFilters,
-      comparison: '===',
-    });
-  }
+  // if (localFilters.comparison === 'igual a') {
+  //   setLocalFilters({
+  //     ...localFilters,
+  //     comparison: '===',
+  //   });
+  // }
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -61,7 +61,7 @@ function NumericFilters() {
         name="column"
         onChange={ (e) => handleChange(e) }
       >
-        { dropFilters.map((info) => <option value={ info } key={ info }>{info}</option>) }
+        { colFilters.map((info) => <option value={ info } key={ info }>{info}</option>) }
       </select>
       <select
         data-testid="comparison-filter"

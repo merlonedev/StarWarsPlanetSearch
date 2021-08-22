@@ -4,15 +4,30 @@ import myContext from '../context/myContext';
 function Table() {
   const { infos, loading, filters } = useContext(myContext);
   const { filterByName, filterByNumericValues } = filters;
-  let { data } = useContext(myContext);
-  console.log(filterByNumericValues);
+  const { data } = useContext(myContext);
+  let filteredData = [...data];
 
   if (filterByName.name) {
-    data = data.filter((datas) => datas.name
+    filteredData = filteredData.filter((datas) => datas.name
       .toLowerCase().includes(filterByName.name.toLowerCase()));
   }
 
-  // data = filterByNumericValues.forEach((filter) => data.filter((datas) => datas.forEach().toLowerCase().includes(filter)));
+  // Agradecimentos à todos os meus colegas que me ajudaram a enxergar e aplicar a lógica nesse filtro
+  if (filterByNumericValues.length > 0) {
+    console.log(filterByNumericValues);
+    filterByNumericValues.forEach(({ column, comparison, value }) => {
+      filteredData = filteredData.filter((planet) => {
+        if (comparison === 'maior que') {
+          return Number(planet[column]) > Number(value);
+        }
+        if (comparison === 'menor que') {
+          return Number(planet[column]) < Number(value);
+        }
+        return Number(planet[column]) === Number(value);
+      });
+      return filteredData;
+    });
+  }
 
   function tableBody(planets) {
     return (
@@ -53,7 +68,7 @@ function Table() {
         </thead>
         <tbody>
           {
-            tableBody(data)
+            tableBody(filteredData)
           }
         </tbody>
       </table>
