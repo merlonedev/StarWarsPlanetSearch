@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import MyContext from '../context/Context';
-import { sortPlanetList, sortPlanetListByName } from '../services/SortFunction';
+import { sortPlanetListByName } from '../services/SortFunction';
 
 const LOADING_IMG_URL = 'https://lh3.googleusercontent.com/GycGYWfgDpOZm-W_hAeCcEDcLvKNOKa3H4bppWdl2CQvvcAZOGCPLmCChYxpmyhCX0WIuZehKA-jatnz=s1600';
 
@@ -19,11 +19,8 @@ export default function Table() {
   }
 
   const checkFilter = () => {
-    if (orderField && orderField === 'name') {
+    if (orderField && orderRule) {
       return sortPlanetListByName(planetList, orderField, orderRule);
-    }
-    if (orderField && orderField !== 'name') {
-      return sortPlanetList(planetList, orderField, orderRule);
     }
     return planetList;
   };

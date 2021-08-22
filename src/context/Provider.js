@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import MyContext from './Context';
 import getPlanets from '../services/PlanetsFetch';
-// import sortPlanetList from '../services/SortFunction';
 
 function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);

@@ -14,7 +14,7 @@ function FilterForms() {
 
   const { setName,
     filters: { filterByName: { name: nameValue }, filterByNumericValues },
-    setNumericFilter, setOrderField, setOrderRule } = consumer;
+    setNumericFilter, setOrderField, setOrderRule, headerArray } = consumer;
 
   const handleClick = () => {
     if (!column) return;
@@ -23,7 +23,7 @@ function FilterForms() {
       comparison,
       value: inputValue,
     };
-    setNumericFilter([newObject, ...filterByNumericValues]);
+    setNumericFilter([...filterByNumericValues, newObject]);
   };
 
   // Logica de negar todo o some feita com ajuda do David Gonzaga - turma 12
@@ -128,10 +128,10 @@ function FilterForms() {
       <div>
         <span>Ordene seu busca por </span>
         <select
-          onClick={ ({ target: { value } }) => setComponentOrderField(value) }
+          onChange={ ({ target: { value } }) => setComponentOrderField(value) }
           data-testid="column-sort"
         >
-          { ['name', ...COLUMNS_FILTER_ARRAY].map((item) => (
+          { headerArray.map((item) => (
             <option
               key={ item }
               value={ item }

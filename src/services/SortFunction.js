@@ -1,41 +1,25 @@
-function removeUnknown(array, coluna) {
-  if (coluna === 'population') {
-    return array.filter(({ population }) => population !== 'unknown');
-  }
-  return array;
-}
-export function sortPlanetList(array = [], coluna, criterio) {
-  const crescente = 1;
-  const decrescente = -1;
-  const noUnknown = removeUnknown(array, coluna);
+export function sortPlanetList(array, coluna, criterio) {
   if (criterio === 'ASC') {
-    noUnknown.sort((a, b) => {
-      if (Number(a[coluna]) > Number(b[coluna])) return crescente;
-      if (Number(a[coluna]) < Number(b[coluna])) return decrescente;
-      return 0;
-    });
-    return removeUnknown(noUnknown);
+    array.sort((a, b) => a[coluna] - b[coluna]);
+    return array;
   }
   if (criterio === 'DESC') {
-    noUnknown.sort((a, b) => {
-      if (Number(b[coluna]) > Number(a[coluna])) return crescente;
-      if (Number(b[coluna]) < Number(a[coluna])) return decrescente;
-      return 0;
-    });
-    return removeUnknown(noUnknown);
+    array.sort((a, b) => b[coluna] - a[coluna]);
+    return array;
   }
 }
 
-export function sortPlanetListByName(array = [], coluna, criterio) {
+export function sortPlanetListByName(newArray, coluna, criterio) {
   const crescente = 1;
   const decrescente = -1;
+  const array = [...newArray];
   if (criterio === 'ASC') {
     array.sort((a, b) => {
       if (a[coluna] > b[coluna]) return crescente;
       if (a[coluna] < b[coluna]) return decrescente;
       return 0;
     });
-    return array;
+    return sortPlanetList(array, coluna, criterio);
   }
   if (criterio === 'DESC') {
     array.sort((a, b) => {
@@ -43,6 +27,6 @@ export function sortPlanetListByName(array = [], coluna, criterio) {
       if (b[coluna] < a[coluna]) return decrescente;
       return 0;
     });
-    return array;
+    return sortPlanetList(array, coluna, criterio);
   }
 }
