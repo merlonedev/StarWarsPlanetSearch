@@ -2,9 +2,10 @@ import React, { useContext } from 'react';
 import Loading from './Loading';
 import SWContext from '../context/SWContext';
 
-function Table() {
+const Table = () => {
   const { planets, planetFilters } = useContext(SWContext);
-  const { filterByName: { name } } = planetFilters;
+  const { filterByName: { name }, filterByNumericValues } = planetFilters;
+
   if (!planets) return Loading;
 
   const renderTableHead = () => (
@@ -16,32 +17,46 @@ function Table() {
     </thead>
   );
 
-  const renderTableBody = () => {
-    const filterByName = planets
+  const filtering = () => {
+    let filterByName = planets
       .filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()));
-    return (
-      <tbody>
-        {filterByName.map((result) => (
-          <tr key={ result.name }>
-            { Object.keys(planets[0])
-              .map((key) => <td key={ key }>{ result[key] }</td>)}
-          </tr>
-        )) }
-      </tbody>
-    );
+    filterByNumericValues.forEach(({ column, comparison, value }) => {
+      switch (comparison) {
+      case 'maior que':
+        filterByName = filterByName.filter((planet) => +planet[column] > +value);
+        return filterByName;
+      case 'menor que':
+        filterByName = filterByName.filter((planet) => +planet[column] < +value);
+        return filterByName;
+      case 'igual a':
+        filterByName = filterByName.filter((planet) => +planet[column] === +value);
+        return filterByName;
+      default:
+        return filterByName;
+      }
+    });
+    return filterByName;
   };
 
-  const renderTable = () => (
+  const renderTableBody = () => (
+    <tbody>
+      {filtering().map((result) => (
+        <tr key={ result.name }>
+          { Object.keys(planets[0])
+            .map((key) => <td key={ key }>{ result[key] }</td>)}
+        </tr>
+      )) }
+    </tbody>
+  );
+
+  const RenderTable = () => (
     <table>
       { renderTableHead() }
       { renderTableBody() }
     </table>
   );
 
-  return (
-    renderTable()
-
-  );
-}
+  return RenderTable();
+};
 
 export default Table;

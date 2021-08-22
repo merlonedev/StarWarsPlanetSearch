@@ -1,13 +1,13 @@
 import React from 'react';
 import SWProvider from './context/SWProvider';
 import Table from './components/Table';
-import Input from './components/Input';
 import './App.css';
+import Filters from './components/Filters';
 
 function App() {
   return (
     <SWProvider>
-      <Input />
+      <Filters />
       <Table />
     </SWProvider>
   );

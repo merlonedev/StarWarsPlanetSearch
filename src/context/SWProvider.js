@@ -9,6 +9,7 @@ function SWProvider({ children }) {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [],
   });
 
   const fetching = async () => {
