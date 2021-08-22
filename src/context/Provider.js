@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import MyContext from './Context';
 import getPlanets from '../services/PlanetsFetch';
+// import sortPlanetList from '../services/SortFunction';
 
 function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
@@ -10,12 +11,13 @@ function PlanetsProvider({ children }) {
   const [name, setName] = useState('');
   const [filterByNumericValues, setNumericFilter] = useState([]);
   const filteredArray = useRef([...data]);
+  const [orderField, setOrderField] = useState('name');
+  const [orderRule, setOrderRule] = useState('ASC');
 
   useEffect(() => {
     const fetchPlanets = async () => {
       const planets = await getPlanets();
       setData(planets);
-      filteredArray.current = [...planets];
       setPlanetList(planets);
       setHeaderArray(Object.keys(planets[0]));
     };
@@ -68,6 +70,10 @@ function PlanetsProvider({ children }) {
     setNumericFilter,
     data,
     filteredArray,
+    setOrderField,
+    orderField,
+    orderRule,
+    setOrderRule,
   };
 
   return (

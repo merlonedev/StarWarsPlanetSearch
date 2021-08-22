@@ -8,11 +8,13 @@ function FilterForms() {
   const [column, setColuna] = useState('');
   const [comparison, setcomparison] = useState('maior que');
   const [inputValue, setValue] = useState(0);
-
+  const [componentOrderField, setComponentOrderField] = useState('');
+  const [componentOrderRule, setComponentOrderRule] = useState('');
   const consumer = useContext(MyContext);
+
   const { setName,
     filters: { filterByName: { name: nameValue }, filterByNumericValues },
-    setNumericFilter } = consumer;
+    setNumericFilter, setOrderField, setOrderRule } = consumer;
 
   const handleClick = () => {
     if (!column) return;
@@ -40,6 +42,11 @@ function FilterForms() {
     const nomeQualquer = filterByNumericValues
       .filter(({ column: col }) => col !== columnValue);
     setNumericFilter(nomeQualquer);
+  };
+
+  const confirmOrder = () => {
+    setOrderField(componentOrderField);
+    setOrderRule(componentOrderRule);
   };
 
   return (
@@ -118,6 +125,50 @@ function FilterForms() {
             <button type="button" onClick={ () => deleteFunction(item.column) }>X</button>
           </li>)) }
       </ul>
+      <div>
+        <span>Ordene seu busca por </span>
+        <select
+          onClick={ ({ target: { value } }) => setComponentOrderField(value) }
+          data-testid="column-sort"
+        >
+          { ['name', ...COLUMNS_FILTER_ARRAY].map((item) => (
+            <option
+              key={ item }
+              value={ item }
+            >
+              { item }
+            </option>)) }
+        </select>
+        <label htmlFor="crescenteInput">
+          Crescente
+          <input
+            type="Radio"
+            id="seletor"
+            name="seletor"
+            value="ASC"
+            data-testid="column-sort-input-asc"
+            onClick={ ({ target: { value } }) => setComponentOrderRule(value) }
+          />
+        </label>
+        <label htmlFor="decrescenteInput">
+          Decrescente
+          <input
+            type="Radio"
+            id="decrescenteInput"
+            name="seletor"
+            value="DESC"
+            data-testid="column-sort-input-desc"
+            onClick={ ({ target: { value } }) => setComponentOrderRule(value) }
+          />
+        </label>
+        <button
+          type="button"
+          data-testid="column-sort-button"
+          onClick={ confirmOrder }
+        >
+          Confirmar
+        </button>
+      </div>
     </div>
   );
 }
