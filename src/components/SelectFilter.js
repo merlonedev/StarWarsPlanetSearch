@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import Context from '../context/Context';
+import './Filters.css';
 
 function SelectFilter() {
   const { filters, setFilters, columns, setColumns } = useContext(Context);

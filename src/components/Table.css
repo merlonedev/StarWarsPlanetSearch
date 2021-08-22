@@ -1,0 +1,18 @@
+table {
+  background-color: gray;
+  color: rgb(47, 50, 49);
+  margin: 30px;
+}
+
+body {
+  color: rgb(128, 132, 131);
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: rgb(54, 58, 58);
+  color: rgb(193, 186, 186);
+  padding: 10px;
+}

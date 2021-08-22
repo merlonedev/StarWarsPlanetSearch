@@ -8,9 +8,9 @@ import Provider from './context/Provider';
 function App() {
   return (
     <Provider>
-      <h2>Project Starwars Planets Search</h2>
+      <h1>Project Starwars Planets Search</h1>
       <div>
-        <h4>Planets Seacrh</h4>
+        <h2>Planets Seacrh</h2>
         <InputFilter />
         <SelectFilter />
       </div>

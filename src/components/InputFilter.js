@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import Context from '../context/Context';
+import './Filters.css';
 
 function InputFilter() {
   const { filters, setFilters } = useContext(Context);

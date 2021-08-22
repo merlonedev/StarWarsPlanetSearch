@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import Context from '../context/Context';
+import './Table.css';
 
 function Table() {
   const { planets } = useContext(Context);
@@ -8,7 +9,6 @@ function Table() {
 
   return (
     <div>
-      <h3>Planets</h3>
       <table>
         <thead>
           <tr>
