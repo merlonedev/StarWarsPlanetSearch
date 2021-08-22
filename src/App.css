@@ -43,6 +43,7 @@ table {
   background-color: black;
   color: #ffea00;
   font-family: monospace;
+  font-size: 10px;
 }
 
 th {
@@ -52,10 +53,13 @@ th {
 
 .table-body {
   background-color: #ffea00;
-  font-size: 12px;
-  opacity: 60%;
+  font-size: 10px;
+  opacity: 80%;
+  text-align: center;
 }
 
 td {
   border: 2px;
+  font-weight: 600;
+  line-height: 20px;
 }

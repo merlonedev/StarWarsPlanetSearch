@@ -26,8 +26,8 @@ function Table() {
             <th>url</th>
           </tr>
         </thead>
+        <TableBody />
       </table>
-      <TableBody />
     </div>
   );
 }
