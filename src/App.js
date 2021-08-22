@@ -11,7 +11,7 @@ function App() {
     comparison: 'maior que',
     value: 0,
   });
-  const [numberFilter, setNumberFilter] = useState({});
+  const [numberFilter, setNumberFilter] = useState([]);
 
   const contextValue = {
     data,
@@ -19,9 +19,8 @@ function App() {
       filterByName: {
         name,
       },
-      filterByNumericValues: [
+      filterByNumericValues:
         numberFilter,
-      ],
     },
   };
 
@@ -50,9 +49,13 @@ function App() {
 
   const handleSendFilter = () => {
     const getColumnOption = document.getElementById(numberState.column);
-    getColumnOption.remove();
 
-    setNumberFilter(numberState);
+    setNumberFilter([
+      ...numberFilter,
+      numberState,
+    ]);
+
+    getColumnOption.remove();
   };
 
   return (

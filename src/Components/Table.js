@@ -1,13 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import MyContext from '../Context/MyContext';
 
 function Table() {
   const { data, filters } = useContext(MyContext);
   const { filterByName: { name } } = filters;
-  const { filterByNumericValues: [{ column, comparison, value }] } = filters;
+  const { filterByNumericValues } = filters;
   const nameLowerCase = name.toLowerCase();
   const dataFilteredByName = data.filter((planet) => planet.name.toLowerCase()
     .includes(nameLowerCase));
+  const [filteredData, setFilteredData] = useState(dataFilteredByName);
   const tableHeads = Object.keys(data[0]);
   const filteredHeads = tableHeads.filter((head) => head !== 'residents');
 
@@ -26,7 +27,13 @@ function Table() {
 
   // Utilização do NumberConstructor feita com base na dica da colega Adriana Biberg
 
-  const filteredData = compare(column, comparison, value, dataFilteredByName);
+  useEffect(() => {
+    filterByNumericValues.forEach(({ column, comparison, value }) => {
+      const filtered = compare(column, comparison, value, filteredData);
+      setFilteredData(filtered);
+      console.log(filterByNumericValues);
+    });
+  }, [filterByNumericValues]);
 
   return (
     <table>
