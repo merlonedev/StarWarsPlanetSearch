@@ -1,39 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import PlanetsContext from './PlanetsContext';
 
 function Provider(props) {
-  const [state, setState] = useState({
-    data: '',
-    filters: {
+  const [data, setState] = useState([]);
+  const [filters, setFilter] = useState(
+    {
       filterByName: {
         name: '',
       },
-      filterByID: {
-        teste: '',
-      },
+      filterByNumericValues: [
+        {
+          column: '',
+          comparison: '',
+          value: '',
+        },
+      ],
     },
-  });
-
-  const handleSetState = (key, value) => {
-    const newState = { ...state, [key]: value };
-    setState(newState);
-  };
+  );
 
   const handleSetName = (value) => {
-    const newState = { ...state,
-      filters: {
-        ...state.filters,
-        filterByName: {
-          name: value,
-        },
+    const newState = { ...filters,
+      filterByName: {
+        name: value,
       },
     };
-    setState(newState);
+    setFilter(newState);
   };
 
+  const handleSetNumeric = (value) => {
+    const newState = { ...filters,
+      filterByNumericValues: [value],
+    };
+    setFilter(newState);
+  };
+
+  useEffect(() => {
+    const getPlanets = async () => {
+      const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
+      const { results } = await fetch(endpoint).then((result) => result.json());
+      setState(results);
+    };
+
+    getPlanets();
+  }, []);
+
   const { children } = props;
-  const contextValue = { state, handleSetState, handleSetName };
+  const contextValue = { data,
+    filters,
+    setFilter,
+    handleSetName,
+    handleSetNumeric,
+    setState };
   return (
     <PlanetsContext.Provider value={ contextValue }>
       {

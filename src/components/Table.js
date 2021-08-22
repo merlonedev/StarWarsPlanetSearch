@@ -1,28 +1,14 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import planetsContext from '../context/PlanetsContext';
 
 function Table() {
-  const { state, handleSetState } = useContext(planetsContext);
-  const filteredName = state.filters.filterByName.name;
-  const data = filteredName
-    ? state.data.filter(
-      (planet) => planet.name.toLowerCase().includes(filteredName.toLowerCase()),
-    ) : state.data;
-  const header = state.data
-    ? Object.keys(state.data[0]).filter((headers) => headers !== 'residents') : '';
+  const { data, filters } = useContext(planetsContext);
 
-  useEffect(() => {
-    const getPlanets = async () => {
-      const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const { results } = await fetch(endpoint).then((result) => result.json());
-      handleSetState('data', results);
-    };
-
-    getPlanets();
-  }, []);
-  return (
-    data ? (
-      <table>
+  const tableHeader = () => {
+    if (data.length > 1) {
+      const header = data
+        ? Object.keys(data[0]).filter((column) => column !== 'residents') : '';
+      return (
         <thead>
           <tr>
             {
@@ -34,68 +20,100 @@ function Table() {
             }
           </tr>
         </thead>
+      );
+    }
+  };
+
+  const tableBody = (a = data) => {
+    if (a.length) {
+      return (
         <tbody>
-          {data === ''
-            ? console.log('vazio')
-            : data.map(({ name,
-              rotation_period: rotationPeriod,
-              orbital_period: orbitalPeriod,
-              surface_water: surfaceWater,
-              diameter,
-              population,
-              climate,
-              created,
-              edited,
-              films,
-              gravity,
-              terrain,
-              url,
-            }) => (
-              <tr key={ name }>
-                <td>
-                  {name}
-                </td>
-                <td>
-                  {rotationPeriod}
-                </td>
-                <td>
-                  {orbitalPeriod}
-                </td>
-                <td>
-                  {diameter}
-                </td>
-                <td>
-                  {climate}
-                </td>
-                <td>
-                  {gravity}
-                </td>
-                <td>
-                  {terrain}
-                </td>
-                <td>
-                  {surfaceWater}
-                </td>
-                <td>
-                  {population}
-                </td>
-                <td>
-                  {films}
-                </td>
-                <td>
-                  {created}
-                </td>
-                <td>
-                  {edited}
-                </td>
-                <td>
-                  {url}
-                </td>
-              </tr>
-            ))}
+          { a.map((planet, i) => (
+            <tr key={ i }>
+              <td>
+                { planet.name }
+              </td>
+              <td>
+                { planet.rotation_period }
+              </td>
+              <td>
+                { planet.orbital_period }
+              </td>
+              <td>
+                { planet.diameter }
+              </td>
+              <td>
+                { planet.climate }
+              </td>
+              <td>
+                { planet.gravity }
+              </td>
+              <td>
+                { planet.terrain }
+              </td>
+              <td>
+                { planet.surface_water }
+              </td>
+              <td>
+                { planet.population }
+              </td>
+              <td>
+                { planet.films }
+              </td>
+              <td>
+                { planet.created }
+              </td>
+              <td>
+                { planet.edited }
+              </td>
+              <td>
+                { planet.url }
+              </td>
+            </tr>
+          ))}
         </tbody>
-      </table>)
-      : <h1>Loading :)</h1>);
+      );
+    }
+  };
+
+  const operatorFunc = {
+    'maior que': (x, y) => x > y,
+    'menor que': (x, y) => x < y,
+    'igual a': (x, y) => x === y,
+  };
+
+  const filterByValue = (tableInfo = data) => {
+    const { filterByNumericValues } = filters;
+    const { column, comparison, value } = filterByNumericValues[0];
+
+    if (column.length > 0) {
+      const filteredByValue = tableInfo.filter((planet) => {
+        const comparator = (
+          operatorFunc[comparison](parseInt(planet[column], 10), parseInt(value, 10)));
+        return comparator;
+      });
+      return tableBody(filteredByValue);
+    }
+    return tableBody(tableInfo);
+  };
+
+  const filterName = () => {
+    const { filterByName } = filters;
+    const { name } = filterByName;
+    if (name.length > 0) {
+      const filteredByName = data.filter(
+        (planet) => planet.name.toLowerCase().includes(name.toLowerCase()),
+      );
+      return filterByValue(filteredByName);
+    }
+    return (filterByValue(data));
+  };
+
+  return (
+    <table>
+      {tableHeader()}
+      {filterName()}
+    </table>);
 }
 
 export default Table;
