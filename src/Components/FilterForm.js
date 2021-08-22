@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { context } from '../Context/Context';
 
 const FilterForm = () => {
@@ -9,8 +9,7 @@ const FilterForm = () => {
     comparison: 'maior que',
     value: 0,
   });
-
-  const columnFilter = [
+  const columnOptions = [
     'population',
     'orbital_period',
     'diameter',
@@ -18,7 +17,15 @@ const FilterForm = () => {
     'surface_water',
   ];
 
+  const [columnOption, setColumnOptions] = useState(columnOptions);
+
   const comparisonFilter = ['maior que', 'menor que', 'igual a'];
+
+  useEffect(() => {
+    const optionSelected = filterByNumericValues.map(({ column }) => column);
+    const newOptions = columnOption.filter((option) => option !== optionSelected[0]);
+    setColumnOptions(newOptions);
+  }, [filterByNumericValues]);
 
   const handleNameChange = ({ target: { value } }) => {
     setFilter({
@@ -43,20 +50,22 @@ const FilterForm = () => {
     });
   };
 
-  const { value } = changeFilter;
+  const { column, comparison, value } = changeFilter;
   const renderNumericalForm = () => (
     <div>
       <select
         name="column"
+        value={ column }
         data-testid="column-filter"
         onChange={ handleChangeNumericValues }
       >
-        { columnFilter.map((option) => (
+        { columnOption.map((option) => (
           <option key={ option } value={ option }>{ option }</option>
         )) }
       </select>
       <select
         name="comparison"
+        value={ comparison }
         data-testid="comparison-filter"
         onChange={ handleChangeNumericValues }
       >
