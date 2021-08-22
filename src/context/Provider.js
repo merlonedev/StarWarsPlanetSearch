@@ -18,6 +18,7 @@ const Provider = ({ children }) => {
   });
   const [columnsFilterBy, setColumnsFilterBy] = useState(columns);
   const [selectedFilter, setSelectedFilter] = useState([]);
+  const [shouldReset, setShouldReset] = useState(false);
 
   /* Consultei o repositório de Diogo Sant'Anna em: https://github.com/tryber/sd-012-project-starwars-planets-search/pull/21/files */
   const handleClickErase = ({ target: { id } }) => {
@@ -26,6 +27,7 @@ const Provider = ({ children }) => {
     setSelectedFilter(update);
     const found = remainsFiltred.find((e) => e === id);
     setColumnsFilterBy([...columnsFilterBy, found]);
+    setShouldReset(true);
   };
 
   const handleClick = () => {
@@ -69,7 +71,7 @@ const Provider = ({ children }) => {
       .toLowerCase()
       .includes(inputName.filterByName.toLowerCase())));
     setFiltered(dataFilter);
-  }, [data, inputName]);
+  }, [data, inputName, shouldReset]);
 
   const handleChange = ({ target: { name, value } }) => { // options: population
     setFilterField({
