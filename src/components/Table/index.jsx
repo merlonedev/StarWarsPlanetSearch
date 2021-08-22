@@ -1,13 +1,24 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import MyContext from '../../context';
 
 const Table = () => {
-  const { data } = useContext(MyContext);
+  const { data, nameFilter } = useContext(MyContext);
+  const nameState = nameFilter.filters.filterByName.name;
+  const [planets, setPlanets] = useState([]);
+
+  useEffect(() => {
+    if (!nameState) {
+      setPlanets(data);
+    } else {
+      setPlanets(data
+        .filter(({ name }) => name.toLowerCase().includes(nameState.toLowerCase())));
+    }
+  }, [nameState, data]);
+
+  if (data.length === 0) return <div>Loading...</div>;
 
   return (
-  // console.log(api, data)
     <table>
-      <colgroup span="4" className="columns" />
       <thead>
         <tr>
           <th>Name</th>
@@ -28,7 +39,7 @@ const Table = () => {
 
       <tbody>
         {
-          data.map(({
+          planets.map(({
             name,
             rotation_period: rotationPeriod,
             orbital_period: orbitalPeriod,

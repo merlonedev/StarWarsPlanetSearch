@@ -4,6 +4,13 @@ import MyContext from '..';
 
 const Provider = ({ children }) => {
   const [api, setApi] = useState([]);
+  const [nameFilter, setNameFilter] = useState({
+    filters: {
+      filterByName: {
+        name: '',
+      },
+    },
+  });
 
   useEffect(() => {
     const getApi = async () => {
@@ -16,8 +23,9 @@ const Provider = ({ children }) => {
 
   const contextValue = {
     data: api,
+    nameFilter,
+    setNameFilter,
   };
-  console.log(contextValue);
 
   return (
     <MyContext.Provider value={ contextValue }>
