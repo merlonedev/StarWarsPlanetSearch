@@ -12,26 +12,31 @@ const Provider = ({ children }) => {
   const [inputName, setInputName] = useState({ filterByName: '' });
   const [filtred, setFiltred] = useState([]); // renderiza em <Table />
   const [filterField, setFilterField] = useState({
-    filtredBy: 'population',
+    filteredBy: 'population',
     inputValueFilter: '',
     compare: 'maior que',
   });
   const [columnsFilterBy, setColumnsFilterBy] = useState(columns);
   const [selectedFilter, setSelectedFilter] = useState([]);
 
-  // const handleClickErase = ({ target: value }) => {
-  //   setErase;
-  // };
+  const handleClickErase = ({ target: { id } }) => {
+    const remainsFiltred = [...selectedFilter];
+    const updated = remainsFiltred.filter((e) => e !== id);
+    setSelectedFilter(updated);
+    const found = remainsFiltred.find((e) => e === id);
+    setColumnsFilterBy([...columnsFilterBy, found]);
+  };
 
   const handleClick = () => {
-    const remainsFiltred = [...selectedFilter, filterField.filtredBy];
+    const remainsFiltred = [...selectedFilter, filterField.filteredBy];
     setSelectedFilter(remainsFiltred);
     const selected = columns.filter((e) => !remainsFiltred.includes(e));
     setColumnsFilterBy(selected);
     setFilterField({
       ...filterField,
-      filtredBy: selected[0],
+      filteredBy: selected[0],
     });
+    console.log(remainsFiltred);
   };
 
   useEffect(() => {
@@ -101,7 +106,8 @@ const Provider = ({ children }) => {
     columnsFilterBy,
     filterField,
     handleClick,
-    // handleClickErase,
+    selectedFilter,
+    handleClickErase,
   };
 
   return (

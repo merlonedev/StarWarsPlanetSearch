@@ -9,12 +9,33 @@ const InputFilters = () => {
     columnsFilterBy: columns,
     filterField,
     handleClick,
+    selectedFilter,
+    handleClickErase,
   } = useContext(AppContext);
-  const { filtredBy: filtredBy_,
+  const { filteredBy: filteredBy_,
     inputValueFilter: inputValueFilter_,
     compare: compare_ } = filterField;
 
   const comparison = ['maior que', 'menor que', 'igual a'];
+
+  const renderSelectedFilters = () => (
+    <ul>
+      {selectedFilter.map((info) => (
+        <li key={ uuidv4() }>
+          { JSON.stringify(info) }
+          <button
+            type="button"
+            data-testid="filter"
+            id={ info }
+            onClick={ handleClickErase }
+          >
+            X
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+
   return (
     <div>
       <input
@@ -28,8 +49,8 @@ const InputFilters = () => {
         <select
           data-testid="column-filter"
           onChange={ handleChange }
-          name="filtredBy"
-          value={ filtredBy_ }
+          name="filteredBy"
+          value={ filteredBy_ }
         >
           {
             columns.map((filterBy) => (
@@ -58,7 +79,7 @@ const InputFilters = () => {
           type="button"
           data-testid="button-filter"
           onClick={ () => {
-            filterOptions(filtredBy_, inputValueFilter_, compare_);
+            filterOptions(filteredBy_, inputValueFilter_, compare_);
             handleClick();
           } }
         >
@@ -66,17 +87,9 @@ const InputFilters = () => {
         </button>
       </div>
       <div>
-        <ul>
-          <li>
-            {
-              `{filtredBy: ${filtredBy_},
-              compare: ${compare_}
-              inputValueFilter: ${inputValueFilter_}}`
-            }
-            <button type="button" data-testid="filter">X</button>
-          </li>
-        </ul>
-
+        {
+          (selectedFilter.length) ? (renderSelectedFilters()) : (<p />)
+        }
       </div>
     </div>
   );
