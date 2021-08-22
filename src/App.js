@@ -4,7 +4,9 @@ import PlanetsTable from './components/PlanetsTable';
 
 function App() {
   return (
+
     <PlanetsTable />
+
   );
 }
 
