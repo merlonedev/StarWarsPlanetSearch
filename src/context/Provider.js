@@ -2,6 +2,14 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Context from './Context';
 
+const INITIAL_COLUMNS = [
+  'rotation_period',
+  'orbital_period',
+  'diameter',
+  'surface_water',
+  'population',
+];
+
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [planets, setPlanets] = useState([]);
@@ -9,14 +17,15 @@ function Provider({ children }) {
     filterByName: {
       name: '',
     },
-    filterByNumericValues: [/*
+    filterByNumericValues: [
       {
-        column: 'population',
-        comparison: 'maior que',
-        value: 0,
-      }, */
+        column: '',
+        comparison: '',
+        value: '',
+      },
     ],
   });
+  const [columns, setColumns] = useState(INITIAL_COLUMNS);
 
   useEffect(() => {
     const getData = async () => {
@@ -81,7 +90,12 @@ function Provider({ children }) {
   }, [data, filters]);
 
   const contextValue = {
-    planets, setPlanets, filters, setFilters,
+    planets,
+    setPlanets,
+    filters,
+    setFilters,
+    columns,
+    setColumns,
   };
 
   return (

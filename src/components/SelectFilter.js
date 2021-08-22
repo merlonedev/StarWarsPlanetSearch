@@ -1,21 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Context from '../context/Context';
 
-const INITIAL_STATE = {
-  column: 'population',
-  comparison: 'maior que',
-  value: 0,
-};
-
 function SelectFilter() {
-  const { filters, setFilters } = useContext(Context);
+  const { filters, setFilters, columns, setColumns } = useContext(Context);
   const { filterByNumericValues } = filters;
+  // console.log(columns);
 
-  const [numericFilter, setNumericFilter] = useState({ ...INITIAL_STATE });
+  const [numericFilter, setNumericFilter] = useState({});
   const { column, comparison, value } = numericFilter;
+  const comparisons = ['maior que', 'menor que', 'igual a'];
 
-  // const { planets } = useContext(Context);
-  // console.log(planets[0]);
+  // const [usedColumns, setUsedColumns] = useState([]);
 
   function handleChange({ target }) {
     setNumericFilter({
@@ -32,8 +27,18 @@ function SelectFilter() {
         numericFilter,
       ],
     });
-    // setNumericFilter({ ...INITIAL_STATE });
+    // Requisito 4 - ideia di filter tirada do colega David: https://github.com/tryber/sd-012-project-starwars-planets-search/pull/13/commits/1689e5bfc4cbe412e6ea50bf6d911a67dab073e6
+    setColumns(columns.filter((col) => !column.includes(col)));
   }
+
+  // Requisito 4
+  useEffect(() => {
+    setNumericFilter({
+      column: columns[0],
+      comparions: 'maior que',
+      value: '0',
+    });
+  }, [columns]);
 
   return (
     <div>
@@ -47,11 +52,11 @@ function SelectFilter() {
           onChange={ handleChange }
 
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter'">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {
+            columns.map((option) => (
+              <option key={ option }>{option}</option>
+            ))
+          }
         </select>
       </label>
 
@@ -63,9 +68,11 @@ function SelectFilter() {
           name="comparison"
           onChange={ handleChange }
         >
-          <option value="maior que">maior que</option>
-          <option value="menor que">menor que</option>
-          <option value="igual a">igual a</option>
+          {
+            comparisons.map((option) => (
+              <option key={ option }>{option}</option>
+            ))
+          }
         </select>
       </label>
 
@@ -76,7 +83,6 @@ function SelectFilter() {
           id="value"
           name="value"
           type="number"
-          // placeholder="0"
           onChange={ handleChange }
         />
       </label>
