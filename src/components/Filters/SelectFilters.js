@@ -1,16 +1,15 @@
 import React, {} from 'react';
-import PropTypes from 'prop-types';
 // import PlanetsContext from '../../context/PlanetsContext';
 
-function SelectFilters(props) {
-  const { handleChangeFilters } = props;
-  // const { data } = useContext(PlanetsContext);
-  // console.log('options', Object.keys(data[0]));
+function SelectFilters() {
+
   const columns = ['population',
     'orbital_period',
     'diameter',
     'rotation_period',
     'surface_water'];
+
+  const handleChangeFilters = () => console.log('oi');
 
   return (
     <form>
@@ -58,9 +57,5 @@ function SelectFilters(props) {
     </form>
   );
 }
-
-SelectFilters.propTypes = {
-  handleChangeFilters: PropTypes.func.isRequired,
-};
 
 export default SelectFilters;

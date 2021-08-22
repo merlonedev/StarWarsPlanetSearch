@@ -4,11 +4,14 @@ import './Table.css';
 
 function Table() {
   const { data, filters } = useContext(PlanetsContext);
-  // console.log(data);
   if (!data.length) return <p>Loading...</p>;
 
-  const { filters: { filterByName: { name } } } = filters;
-  const planets = data.filter((planet) => (planet.name).toLowerCase().includes(name));
+  const filteredPlanets = (planets) => {
+    const { filters: { filterByName: { name } } } = filters;
+    const filterName = planets
+      .filter((planet) => (planet.name).toLowerCase().includes(name.toLowerCase()));
+    return filterName;
+  };
 
   return (
     <table className="table-content">
@@ -30,7 +33,7 @@ function Table() {
         </tr>
       </thead>
       <tbody className="table-body">
-        { planets.map((planet) => (
+        { filteredPlanets(data).map((planet) => (
           <tr key={ planet.name }>
             <td>{planet.name}</td>
             <td>{planet.rotation_period}</td>
