@@ -2,8 +2,19 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import StarwarsContext from './context/context';
 
+const columnFilters = [
+  'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+];
+
 export default function Provider({ children }) {
   const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [],
+  });
+  const [columnFiltersState] = useState(columnFilters);
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -18,6 +29,9 @@ export default function Provider({ children }) {
 
   const context = {
     data,
+    filters,
+    setFilters,
+    columnFiltersState,
   };
 
   return (
