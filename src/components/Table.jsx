@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import AppContext from '../context/AppContext';
 
 const Table = () => {
-  const { filtred, dataHeader } = useContext(AppContext);
+  const { filtered, dataHeader } = useContext(AppContext);
   return (
     <table>
       <thead>
@@ -12,7 +12,7 @@ const Table = () => {
       {/* Para esta parte consultei o repositório de Diogo Santana em: https://github.com/tryber/sd-012-project-starwars-planets-search/pull/21/files */}
       <tbody>
         {
-          filtred.map((planet) => ( // passa por todos os itens do array com planetas.
+          filtered.map((planet) => ( // passa por todos os itens do array com planetas.
             // não existe 'name' igual
             <tr key={ planet.name }>
               {

@@ -10,7 +10,7 @@ const Provider = ({ children }) => {
   const [data, setData] = useState([]); // vem da api
   const [dataHeader, setDataHeader] = useState([]); // vem da api
   const [inputName, setInputName] = useState({ filterByName: '' });
-  const [filtred, setFiltred] = useState([]); // renderiza em <Table />
+  const [filtered, setFiltered] = useState([]); // renderiza em <Table />
   const [filterField, setFilterField] = useState({
     filteredBy: 'population',
     inputValueFilter: '',
@@ -19,24 +19,24 @@ const Provider = ({ children }) => {
   const [columnsFilterBy, setColumnsFilterBy] = useState(columns);
   const [selectedFilter, setSelectedFilter] = useState([]);
 
+  /* Consultei o repositório de Diogo Sant'Anna em: https://github.com/tryber/sd-012-project-starwars-planets-search/pull/21/files */
   const handleClickErase = ({ target: { id } }) => {
     const remainsFiltred = [...selectedFilter];
-    const updated = remainsFiltred.filter((e) => e !== id);
-    setSelectedFilter(updated);
+    const update = remainsFiltred.filter((e) => e !== id);
+    setSelectedFilter(update);
     const found = remainsFiltred.find((e) => e === id);
     setColumnsFilterBy([...columnsFilterBy, found]);
   };
 
   const handleClick = () => {
-    const remainsFiltred = [...selectedFilter, filterField.filteredBy];
-    setSelectedFilter(remainsFiltred);
-    const selected = columns.filter((e) => !remainsFiltred.includes(e));
+    const ArrFilteredBy = [...selectedFilter, filterField.filteredBy];
+    setSelectedFilter(ArrFilteredBy);
+    const selected = columns.filter((filteredBy) => !ArrFilteredBy.includes(filteredBy));
     setColumnsFilterBy(selected);
     setFilterField({
       ...filterField,
       filteredBy: selected[0],
     });
-    console.log(remainsFiltred);
   };
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const Provider = ({ children }) => {
     const dataFilter = data.filter((planet) => (planet.name
       .toLowerCase()
       .includes(inputName.filterByName.toLowerCase())));
-    setFiltred(dataFilter);
+    setFiltered(dataFilter);
   }, [data, inputName]);
 
   const handleChange = ({ target: { name, value } }) => { // options: population
@@ -81,22 +81,22 @@ const Provider = ({ children }) => {
   /* feito com a ajude de Ryan Laiber */
   const filterOptions = (filtredByInfo, inputValue, compareInfo) => { // chamada no clique do botão
     if (compareInfo === 'igual a') {
-      const equal = filtred.filter((planet) => +planet[filtredByInfo] === +inputValue);
-      setFiltred(equal);
+      const equal = filtered.filter((planet) => +planet[filtredByInfo] === +inputValue);
+      setFiltered(equal);
     }
     if (compareInfo === 'maior que') {
-      const bigger = filtred.filter((planet) => +planet[filtredByInfo] > +inputValue);
-      setFiltred(bigger);
+      const bigger = filtered.filter((planet) => +planet[filtredByInfo] > +inputValue);
+      setFiltered(bigger);
     }
     if (compareInfo === 'menor que') {
-      const smaller = filtred.filter((planet) => +planet[filtredByInfo] < +inputValue);
-      setFiltred(smaller);
+      const smaller = filtered.filter((planet) => +planet[filtredByInfo] < +inputValue);
+      setFiltered(smaller);
     }
   };
 
   const context = {
     data,
-    filtred,
+    filtered,
     setData,
     dataHeader,
     inputName,
