@@ -37,9 +37,12 @@ export default function Table() {
       <tbody>
         { filteredPlanets.map((planet) => (
           <tr key={ planet.name }>
-            { headers.map((head, id) => (
-              <td key={ id }>{ planet[head] }</td>
-            ))}
+            { headers.map((head, id) => {
+              if (planet[head] === planet.name) {
+                return <td key={ id } data-testid="planet-name">{ planet[head] }</td>;
+              }
+              return <td key={ id }>{ planet[head] }</td>;
+            })}
           </tr>
         ))}
       </tbody>
