@@ -1,39 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Proptypes from 'prop-types';
-import StarWarsPlanetsContext from './StarWarsPlanetsContext';
-import useFetchData from '../hooks/useFetchData';
+import Context from './Context';
+import { optionsColumn } from '../helper/SelectOptions';
 
 const Provider = ({ children }) => {
-  const [
-    state, loading, input, setInput,
-    column, setColumn, comparison, setComparison,
-    value, setValue, setState, stateCopy, setStateCopy,
-  ] = useFetchData();
+  const [state, setState] = useState([]);
+  const [input, setInput] = useState('');
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  const [columnsOptions, setColumnsOptions] = useState(optionsColumn);
+
+  useEffect(() => {
+    const getPlanets = async () => {
+      const endPoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
+      const result = await fetch(endPoint);
+      const resultJson = await result.json();
+      const { results } = resultJson;
+      setState(results);
+    };
+
+    getPlanets();
+  }, []);
+
+  useEffect(() => {
+    if (filterByNumericValues > 0) {
+      let filteredColumns = [...optionsColumn];
+      filterByNumericValues.forEach(({ column }) => {
+        filteredColumns = filteredColumns.filter((item) => item !== column);
+      });
+      setColumnsOptions(filteredColumns);
+    }
+  }, [filterByNumericValues]);
 
   const contextValue = {
     data: state,
-    setState,
     filters: {
       filterByName: {
         name: input,
       },
+      filterByNumericValues,
     },
-    loading,
     setInput,
-    column,
-    setColumn,
-    comparison,
-    setComparison,
-    value,
-    setValue,
-    stateCopy,
-    setStateCopy,
+    setFilterByNumericValues,
   };
 
   return (
-    <StarWarsPlanetsContext.Provider value={ contextValue }>
+    <Context.Provider value={ contextValue }>
       {children}
-    </StarWarsPlanetsContext.Provider>
+    </Context.Provider>
   );
 };
 

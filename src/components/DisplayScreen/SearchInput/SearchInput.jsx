@@ -1,23 +1,24 @@
 import React, { useContext } from 'react';
-import StarWarsPlanetsContext from '../../../context/StarWarsPlanetsContext';
+import Context from '../../../context/Context';
 
 const SearchInput = () => {
   const {
     filters: { filterByName: { name } }, setInput,
-  } = useContext(StarWarsPlanetsContext);
+  } = useContext(Context);
 
-  const handleInput = ({ target }) => {
-    const { value } = target;
-    setInput(value);
-  };
+  const inputNameFilter = () => (
+    <div>
+      <input
+        data-testid="name-filter"
+        type="text"
+        value={ name }
+        onChange={ ({ target: { value } }) => setInput(value) }
+      />
+    </div>
+  );
 
   return (
-    <input
-      data-testid="name-filter"
-      type="text"
-      value={ name }
-      onChange={ handleInput }
-    />
+    inputNameFilter()
   );
 };
 export default SearchInput;

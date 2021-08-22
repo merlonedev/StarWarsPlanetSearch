@@ -1,7 +1,7 @@
 import React from 'react';
 import Table from './Table/Table';
 import SearchInput from './SearchInput/SearchInput';
-import NumericFilter from './NumericFilter/NumericFilter';
+import NumericFilters from './NumericFilter/NumericFilters';
 
 const SearchScreen = () => (
   <div>
@@ -9,7 +9,7 @@ const SearchScreen = () => (
       <SearchInput />
     </div>
     <div>
-      <NumericFilter />
+      <NumericFilters />
     </div>
     <div>
       <Table />
