@@ -1,28 +1,19 @@
-import PropTypes from 'prop-types';
 import React, { createContext } from 'react';
-import useFilter from './hooks/useFilter';
-import usePlanets from './hooks/usePlanets';
+import PropTypes from 'prop-types';
 
 export const Context = createContext();
 
-function Provider({ children }) {
-  const [planets, setPlanets] = usePlanets();
-  const [result, setFilter] = useFilter();
-
-  const [state] = useState({
-    Planets: [planets, setPlanets],
-    Filter: [result, setFilter],
-  });
-
+function Provider({ children, value }) {
   return (
-    <Context.Provider value={ state }>
+    <Context.Provider { ...{ value } }>
       {children}
     </Context.Provider>
   );
 }
 
 Provider.propTypes = {
-  children: PropTypes.objectOf().isRequired,
+  children: PropTypes.arrayOf(PropTypes.any).isRequired,
+  value: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default Provider;

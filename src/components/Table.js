@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Context } from '../Provider';
 
-function Table({ planets }) {
+function Table() {
+  const { Filter: [, result] } = useContext(Context);
+
   function loading() {
     return <h1>Carregando...</h1>;
   }
 
   function createTable() {
-    const values = planets.results;
+    const values = result.results;
     const keys = Object.keys(values[0]);
     return (
       <table>
@@ -25,7 +28,7 @@ function Table({ planets }) {
   }
 
   return (
-    (planets.results.length === 0)
+    (result.results.length === 0)
       ? loading()
       : createTable()
   );

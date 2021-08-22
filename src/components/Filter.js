@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import Apply from './Apply';
 import Input from './Input';
 import Select from './Select';
+
 import { Context } from '../Provider';
 
 function Filter() {
-  const { Filter: [filters, setFilters] } = useContext(Context);
+  const { Filter: [filters,, setFilters] } = useContext(Context);
 
   function handleChange(value, id) {
     if (id === 'name') {
@@ -27,7 +28,7 @@ function Filter() {
   return (
     <form>
       <fieldset>
-        <Input id="name" handleChange={ handleChange } />
+        <Input id="name" type="text" handleChange={ handleChange } />
       </fieldset>
       <fieldset>
         <Select id="column" handleChange={ handleChange }>
@@ -42,7 +43,7 @@ function Filter() {
           <option value="menor que">{'<'}</option>
           <option value="igual a">=</option>
         </Select>
-        <Input id="value" handleChange={ handleChange } type="number" />
+        <Input id="value" type="number" handleChange={ handleChange } />
         <Apply />
       </fieldset>
     </form>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function useFilter() {
+function useFilter(planets) {
   const INIT = {
     filterByName: {
       name: '',
@@ -19,23 +19,32 @@ function useFilter() {
     ],
   };
 
+  let isFiltrable;
   const [result, setResult] = useState(planets);
   const [filters, setFilters] = useState(INIT);
 
-  function filterPlanets() {
+  function filterByName() {
     const { name: filter } = filters.filterByName;
+
     if (filter) {
-      const regex = RegExp(filter);
       setResult({
         ...planets,
-        results: planets.results.filter(({ name }) => regex.test(name)),
+        results: planets.results.filter(
+          ({ name }) => RegExp(filter).test(name),
+        ),
       });
+      return true;
     }
-    setResult(planets);
+    return false;
   }
 
-  useEffect(filterPlanets, [filters]);
-  return [result, setFilters];
+  function filterPlanets() {
+    isFiltrable = filterByName();
+    if (!isFiltrable) setResult(planets);
+  }
+
+  useEffect(filterPlanets, [filters, planets]);
+  return [filters, result, setFilters];
 }
 
 export default useFilter;

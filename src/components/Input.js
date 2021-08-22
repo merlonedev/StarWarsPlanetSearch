@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Input({ id, handleChange, type } = { type: 'text' }) {
+function Input({ id, type, handleChange }) {
   return (
     <label htmlFor={ id }>
       {`${id.toUpperCase()}: `}

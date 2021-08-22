@@ -17,7 +17,7 @@ function Select({ id, handleChange, children }) {
 }
 
 Select.propTypes = {
-  children: PropTypes.arrayOf().isRequired,
+  children: PropTypes.arrayOf(PropTypes.any).isRequired,
   handleChange: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
 };
