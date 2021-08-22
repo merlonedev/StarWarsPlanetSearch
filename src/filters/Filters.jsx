@@ -1,10 +1,12 @@
 import React from 'react';
 import NameFilter from './NameFilter';
+import NumberFilter from './NumberFilter';
 
 function Filters() {
   return (
-    <session>
+    <session className="filter-box">
       <NameFilter />
+      <NumberFilter />
     </session>
   );
 }

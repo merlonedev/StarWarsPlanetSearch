@@ -5,6 +5,11 @@ import StarContext from './StarContext';
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
+  const [filterByNumericValues, setFilterByNumericValues] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: '',
+  });
   const newData = useRef(data);
 
   useEffect(() => {
@@ -26,7 +31,15 @@ function Provider({ children }) {
     setData(filteredData);
   }, [setData, newData, filterByName]);
 
-  const starValue = { data, setData, filterByName, setFilterByName, newData };
+  const starValue = {
+    data,
+    setData,
+    filterByName,
+    setFilterByName,
+    newData,
+    filterByNumericValues,
+    setFilterByNumericValues,
+  };
 
   return (
     <StarContext.Provider value={ starValue }>

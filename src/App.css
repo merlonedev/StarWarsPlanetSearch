@@ -66,12 +66,18 @@ td {
 }
 
 .filters {
+  background-color: #0000;
   color: #ffea00;
   margin: 5px;
   padding: 5px;
 }
 
-.filters input {
+.filter-box input {
   background-color: #ffea00;
   border-radius: 8px;
+}
+
+.filter-box {
+  align-content: space-around;
+  display: flex;
 }
