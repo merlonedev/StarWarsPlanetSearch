@@ -2,11 +2,11 @@ import React, { useContext } from 'react';
 import Context from '../context/Context';
 
 function Table() {
-  const { tablePlanet } = useContext(Context);
+  const { searchPlanet } = useContext(Context);
 
   return (
-    <table className="table">
-      <thead>
+    <table className="table table-bordered border-primary">
+      <thead className="table table-dark table-borderless">
         <tr>
           <th>Name:</th>
           <th>Climate:</th>
@@ -24,7 +24,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { tablePlanet.map((planet, index) => (
+        { searchPlanet.map((planet, index) => (
           <tr key={ index }>
             <td>{ planet.name }</td>
             <td>{ planet.climate }</td>
