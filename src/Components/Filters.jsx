@@ -36,6 +36,18 @@ function CreateFilter() {
     } }); // quando eu clico no botão, eu pego bynumericvalues do LOCAL e atualizo no bynumericvalues do ESTADO GLOBAL
     // uso esses spreads todos pra não sobrescrever o que já tinha antes no estado global.
   };
+  // ARRAY PROS SELECTS
+  const categories = ['population',
+    'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+  const filterCategories = categories
+    .filter((category) => {
+      const verifyCategory = filterGeral.filters.filterByNumericValues
+        .find((filter) => filter.column === category);
+      if (verifyCategory) {
+        return false; // false pro filter
+      }
+      return true;
+    });
 
   return (
     <form>
@@ -50,11 +62,11 @@ function CreateFilter() {
       </label>
       <label htmlFor="filtro2">
         <select data-testid="column-filter" onChange={ (x) => changeInputs(x, 'column') }>
-          <option>population</option>
-          <option>orbital_period</option>
-          <option>diameter</option>
-          <option>rotation_period</option>
-          <option>surface_water</option>
+          {
+            filterCategories
+              .map((category) => <option key={ category }>{category}</option>)
+          }
+
         </select>
       </label>
       <label htmlFor="filtro3">
@@ -80,7 +92,7 @@ function CreateFilter() {
         onClick={ handleClick }
         disabled={ filters.filterByNumericValues.value === '' }
       >
-        Filtragem
+        Adicione o Filtro
       </button>
     </form>
 

@@ -50,8 +50,8 @@ function CreateTable() {
     return (
       <tbody>
         {
-          filtragem().map((planeta, index) => (
-            <tr key={ index }>
+          filtragem().map((planeta) => (
+            <tr key={ planeta.name }>
               <td>{planeta.name}</td>
               <td>{planeta.rotation_period}</td>
               <td>{planeta.orbital_period}</td>
