@@ -9,21 +9,22 @@ const FilterForm = () => {
     comparison: 'maior que',
     value: 0,
   });
-  const columnOptions = [
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
-  ];
 
-  const [columnOption, setColumnOptions] = useState(columnOptions);
+  const [columnOption, setColumnOptions] = useState([]);
 
   const comparisonFilter = ['maior que', 'menor que', 'igual a'];
 
   useEffect(() => {
+    const columnOptions = [
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ];
     const optionSelected = filterByNumericValues.map(({ column }) => column);
-    const newOptions = columnOption.filter((option) => option !== optionSelected[0]);
+    console.log(optionSelected);
+    const newOptions = columnOptions.filter((option) => !optionSelected.includes(option));
     setColumnOptions(newOptions);
   }, [filterByNumericValues]);
 
