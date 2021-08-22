@@ -4,19 +4,36 @@ import myContext from '../context/myContext';
 // context
 
 function Table() {
-  const { data, filters: { filterByName } } = useContext(myContext);
+  const { data,
+    filters: { filterByName, filterByNumericValues }, setData } = useContext(myContext);
 
   if (!data.length) return <h1>Loading...</h1>;
 
   const newData = [...data];
+
   newData.forEach((deleted) => delete deleted.residents);
-  const applyFilters = newData.filter((chosen) => chosen.name.includes(filterByName));
+  let applyFilters = newData.filter((chosen) => chosen.name.includes(filterByName));
+
+  if (filterByNumericValues.length) {
+    filterByNumericValues
+      .forEach(({ column, comparison, value }) => {
+        applyFilters = applyFilters.filter((whichOne) => {
+          if (comparison === 'maior que') {
+            return +whichOne[column] > +value;
+          }
+          if (comparison === 'menor que') {
+            return +whichOne[column] < +value;
+          }
+          return +whichOne[column] === +value;
+        });
+      });
+  }
 
   return (
     <table>
       <thead>
         <tr>
-          {Object.keys(applyFilters[0])
+          {Object.keys(newData[0])
             .map((header) => (
               <th key={ header }>
                 {header}
