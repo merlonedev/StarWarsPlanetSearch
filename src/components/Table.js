@@ -5,7 +5,7 @@ import myContext from '../context/myContext';
 
 function Table() {
   const { data,
-    filters: { filterByName, filterByNumericValues }, setData } = useContext(myContext);
+    filters: { filterByName, filterByNumericValues } } = useContext(myContext);
 
   if (!data.length) return <h1>Loading...</h1>;
 
