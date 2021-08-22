@@ -3,9 +3,10 @@ import Context from '../context/Context';
 import { headerTable } from '../service/data';
 import FilterByNumber from './FilterByNumber';
 import FilterByText from './FilterByText';
+import FilterNew from './FilterNew';
 
 export default function Home() {
-  const { planets, filtered } = React.useContext(Context);
+  const { planets, filtered, newFilter } = React.useContext(Context);
 
   const planetFilteredByText = filtered || planets;
 
@@ -13,6 +14,7 @@ export default function Home() {
     <div>
       <FilterByText />
       <FilterByNumber />
+      {newFilter && <FilterNew />}
       <table>
         <thead>
           <tr>

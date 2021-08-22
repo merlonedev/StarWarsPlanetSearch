@@ -26,11 +26,9 @@ const range = [
 ];
 
 const INITIAL_STATE = {
-  filters: {
-    filterByName: {
-      name: '',
-    },
-    filterByNumericValues: [{ column: '', comparison: '', value: '' }],
+  filterByName: {
+    name: '',
   },
+  filterByNumericValues: [],
 };
 export { headerTable, selectOptions, range, INITIAL_STATE };

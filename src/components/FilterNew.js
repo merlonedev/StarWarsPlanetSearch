@@ -2,24 +2,22 @@ import React from 'react';
 import Context from '../context/Context';
 import { selectOptions, range } from '../service/data';
 
-export default function FilterByNumber() {
-  const { FilterByNumericValue, newFilter } = React.useContext(Context);
+export default function FilterNew() {
+  const { filters, FilterByNumericValue } = React.useContext(Context);
   const [column, setColumn] = React.useState('');
   const [comparison, setComparison] = React.useState('');
   const [value, setValue] = React.useState('');
+  const { column: oldColumn } = filters.filterByNumericValues[0];
+  const selectOptionWithoutColumn = selectOptions.filter((opt) => opt !== oldColumn);
 
   function handleSubmit(e) {
     e.preventDefault();
     FilterByNumericValue({ column, comparison, value });
   }
-
   return (
     <form>
-      <select
-        data-testid={ newFilter ? '' : 'column-filter' }
-        onChange={ (e) => setColumn(e.target.value) }
-      >
-        {selectOptions.map((option, i) => (
+      <select data-testid="column-filter" onChange={ (e) => setColumn(e.target.value) }>
+        {selectOptionWithoutColumn.map((option, i) => (
           <option key={ i } value={ option }>
             { option }
           </option>))}

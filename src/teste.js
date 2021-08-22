@@ -1,4 +1,12 @@
-const a = 'orbital_period';
-const b = a.charAt(0).toUpperCase() + a.slice(1);
-const c = b.replace('_', ' ');
-console.log(c);
+const ob = {
+  filterByName: {
+    name: '',
+  },
+  filterByNumericValues: [],
+};
+const valor = 34;
+const v = 11;
+
+ob.filterByNumericValues = [valor];
+ob.filterByNumericValues.push(v);
+console.log(ob);
