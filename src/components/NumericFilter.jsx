@@ -4,19 +4,15 @@ import Input from './Input';
 import MyContext from '../context/MyContext';
 
 function NumericFilter() {
-  const { setColumn, setComparison,
+  const { setColumn, setComparison, defaultColumn,
     setValue, handleFilterByNumericValues } = useContext(MyContext);
-  const columns = [
-    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
-  ];
   const faixas = ['maior que', 'menor que', 'igual a'];
-
   return (
     <div>
       <Select
         id="column-filter"
         labelText="Selecione a coluna"
-        options={ columns }
+        options={ defaultColumn }
         onChange={ ({ target }) => { setColumn(target.value); } }
       />
       <Select

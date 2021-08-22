@@ -10,6 +10,9 @@ function Provider({ children }) {
   const [comparison, setComparison] = useState('');
   const [value, setValue] = useState();
   const [filterByNumericValues, setFilterByNumericValues] = useState({});
+  const [defaultColumn, setDefaultColumn] = useState([
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+  ]);
 
   useEffect(() => {
     const getData = async () => {
@@ -19,7 +22,6 @@ function Provider({ children }) {
       const { results } = planetsJson;
       setData(results);
     };
-
     getData();
   }, []);
 
@@ -30,6 +32,8 @@ function Provider({ children }) {
 
   function handleFilterByNumericValues() {
     setFilterByNumericValues({ column, comparison, value });
+    const removeColumn = defaultColumn.filter((col) => col !== column);
+    setDefaultColumn(removeColumn);
   }
 
   useEffect(() => {
@@ -42,6 +46,11 @@ function Provider({ children }) {
     });
     setFilterName(numericFilters);
   }, [data, filterByNumericValues]);
+
+  // useEffect(() => {
+  //   const removeColumn = defaultColumn.filter((col) => col === column);
+  //   setDefaultColumn(removeColumn);
+  // }, [column, defaultColumn]);
 
   const contextValue = {
     data,
@@ -59,6 +68,7 @@ function Provider({ children }) {
     setColumn,
     setComparison,
     setValue,
+    defaultColumn,
   };
 
   return (
