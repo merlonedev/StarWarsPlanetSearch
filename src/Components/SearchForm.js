@@ -7,8 +7,8 @@ function SearchForm() {
     setInputName,
     filters,
     setNumValue,
-    renderFilterByNumValues,
-    columnOptions, comparisonOptions, handleOptions } = useContext(StarWarsContext);
+    filterDataByNumValues,
+    columnOptions, comparisonOptions } = useContext(StarWarsContext);
 
   const handleChangeName = ({ target }) => {
     setInputName(target.value);
@@ -25,8 +25,7 @@ function SearchForm() {
   };
 
   const handleClick = () => {
-    handleOptions();
-    renderFilterByNumValues();
+    filterDataByNumValues();
   };
 
   return (

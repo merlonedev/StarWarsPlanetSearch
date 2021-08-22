@@ -28,32 +28,40 @@ function StarWarsProvider({ children }) {
     getData();
   }, []);
 
-  const renderFilterByNumValues = () => {
+  const handleOptions = () => {
     const { column, comparison, value } = numValue;
-    if (data.length > 0 && column !== '' && comparison !== '') {
+    if (value !== 0) {
+      const newCompOptions = comparisonOptions
+        .filter((item) => item !== comparison);
+      setComparisonOptions(newCompOptions);
+      const newColumnOptions = columnOptions.filter((thing) => thing !== column);
+      setColumnOptions(newColumnOptions);
+      setNumValue({
+        column: newColumnOptions[0],
+        comparison: newCompOptions[0],
+        value: 0,
+      });
+    }
+  };
+
+  const filterDataByNumValues = () => {
+    const { column, comparison, value } = numValue;
+    if (data.length > 0) {
       if (comparison === 'maior que') {
         const filteredData = data.filter((planet) => planet[column] > value);
         setData(filteredData);
+        handleOptions();
       }
       if (comparison === 'menor que') {
         const filteredData = data.filter((planet) => planet[column] < value);
         setData(filteredData);
+        handleOptions();
       }
       if (comparison === 'igual a') {
         const filteredData = data.filter((planet) => planet[column] === value);
         setData(filteredData);
+        handleOptions();
       }
-    }
-  };
-
-  const handleOptions = () => {
-    const { column, comparison, value } = numValue;
-    if (column !== '' && comparison !== '' && value !== 0) {
-      const newComparisonOptions = comparisonOptions
-        .filter((item) => item !== comparison);
-      setComparisonOptions(newComparisonOptions);
-      const newColumnOptions = columnOptions.filter((thing) => thing !== column);
-      setColumnOptions(newColumnOptions);
     }
   };
 
@@ -67,7 +75,7 @@ function StarWarsProvider({ children }) {
       filterByNumericValues: [numValue],
     },
     setNumValue,
-    renderFilterByNumValues,
+    filterDataByNumValues,
     columnOptions,
     comparisonOptions,
     handleOptions,
