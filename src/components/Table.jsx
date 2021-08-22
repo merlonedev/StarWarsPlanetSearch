@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import StarWarsContext from '../context';
 
 // prettier-ignore
 export default function Table() {
   const [data, setData] = useState({});
+  const { filters } = useContext(StarWarsContext);
 
   useEffect(() => {
     const fetchPlanets = async () => {
@@ -35,22 +37,29 @@ export default function Table() {
         </tr>
       </thead>
       <tbody>
-        {arrayOfData.map((d) => (
-          <tr key={ d.name }>
-            <td>{d.name}</td>
-            <td>{d.rotation_period}</td>
-            <td>{d.orbital_period}</td>
-            <td>{d.diameter}</td>
-            <td>{d.climate}</td>
-            <td>{d.gravity}</td>
-            <td>{d.terrain}</td>
-            <td>{d.surface_water}</td>
-            <td>{d.population}</td>
-            <td>{d.films}</td>
-            <td>{d.created}</td>
-            <td>{d.edited}</td>
-            <td>{d.url}</td>
-          </tr>))}
+        {arrayOfData
+          .filter((d) => {
+            if (filters.filterByName) {
+              return d.name.includes(filters.filterByName);
+            }
+            return d;
+          })
+          .map((d) => (
+            <tr key={ d.name }>
+              <td>{d.name}</td>
+              <td>{d.rotation_period}</td>
+              <td>{d.orbital_period}</td>
+              <td>{d.diameter}</td>
+              <td>{d.climate}</td>
+              <td>{d.gravity}</td>
+              <td>{d.terrain}</td>
+              <td>{d.surface_water}</td>
+              <td>{d.population}</td>
+              <td>{d.films}</td>
+              <td>{d.created}</td>
+              <td>{d.edited}</td>
+              <td>{d.url}</td>
+            </tr>))}
       </tbody>
     </table>
   );
