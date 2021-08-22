@@ -2,7 +2,20 @@ import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
 
 function Table() {
-  const { data } = useContext(MyContext);
+  const { data, filter } = useContext(MyContext);
+  const { filterByName: { name } } = filter;
+  const handleFilter = data.filter((result) => result
+    .name.toLowerCase().includes(name.toLowerCase()));
+
+  // TENTANDO FAZER O FILTRO DENTRO DE UM IF PARA AS DEMAIS QUESTÕES
+  // const handleFilter = (inputName) => {
+  //   const filtered = [...filter];
+  //   if (inputName) {
+  //     data.filter((result) => result
+  //       .name.toLowerCase().includes(name.toLowerCase()));
+  //   }
+  //   return filtered;
+  // };
 
   return (
     <table>
@@ -24,7 +37,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { data.map((results) => (
+        { handleFilter.map((results) => (
           <tr key={ results.name }>
             <td>{ results.name }</td>
             <td>{ results.rotation_period }</td>
