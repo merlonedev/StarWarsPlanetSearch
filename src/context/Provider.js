@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import AppContext from './AppContext';
-import sortByColumn from '../util/util';
+import * as util from '../util/util';
 
 function Provider({ children }) {
   const [data, setData] = useState([]);
@@ -21,7 +21,7 @@ function Provider({ children }) {
         return withoutResidents;
       });
       setData(result);
-      setDataFiltered(sortByColumn('name', 'asc', result));
+      setDataFiltered(util.sortByColumn('name', 'asc', result));
     };
     getPlanets();
   }, []);

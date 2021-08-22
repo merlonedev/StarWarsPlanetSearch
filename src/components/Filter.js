@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AppContext from '../context/AppContext';
-import { NameFilter, OrderFilter, NumberFilter } from '.';
-import sortByColumn from '../util/util';
+import { NameFilter, OrderFilter, NumberFilter, SelectedColumns } from '.';
+import * as util from '../util/util';
 import options from '../data';
 import './Filter.css';
 
@@ -29,24 +29,12 @@ const Filter = () => {
     setDataFiltered,
   } = useContext(AppContext);
 
-  const filterByNumeric = (toFilter) => toFilter.filter((filtered) => {
-    switch (filterNumber.comparison) {
-    case 'maior que': return parseInt(filtered[`${filterNumber
-      .column}`], 10) > parseInt(filterNumber.value, 10);
-    case 'menor que': return parseInt(filtered[`${filterNumber
-      .column}`], 10) < parseInt(filterNumber.value, 10);
-    case 'igual a': return parseInt(filtered[`${filterNumber
-      .column}`], 10) === parseInt(filterNumber.value, 10);
-    default: return filtered;
-    }
-  });
-
   useEffect(() => {
     setFilterByName({ name: filterName });
     if (filters.filterByNumericValues.length > 0) {
       setDataFiltered(data.filter((filtered) => filtered.name.toLowerCase()
         .includes(filterName)));
-      setDataFiltered((prevState) => filterByNumeric(prevState));
+      setDataFiltered((prevState) => util.filterByNumeric(filterNumber, prevState));
     } else {
       setDataFiltered(data.filter((filtered) => filtered.name.toLowerCase()
         .includes(filterName)));
@@ -60,7 +48,7 @@ const Filter = () => {
         comparison: filterNumber.comparison,
         value: filterNumber.value,
       }]));
-      setDataFiltered(filterByNumeric(dataFiltered));
+      setDataFiltered(util.filterByNumeric(filterNumber, dataFiltered));
       setFilterColumn(filterColumn.filter((removed) => removed.name !== filterNumber
         .column));
       setFilterNumber({
@@ -83,7 +71,7 @@ const Filter = () => {
   useEffect(() => {
     if (addOrder) {
       setOrder({ column, sort });
-      setDataFiltered(sortByColumn(column, sort, dataFiltered));
+      setDataFiltered(util.sortByColumn(column, sort, dataFiltered));
       setAddOrder(false);
     }
   }, [addOrder]);
@@ -136,37 +124,11 @@ const Filter = () => {
         />
       </div>
       { filters.filterByNumericValues.length > 0 ? (
-        <div className="values-container">
-          { filters.filterByNumericValues.map((numericFilter, index) => (
-            <div
-              className="value-container"
-              id={ `value-container-${index}` }
-              key={ index }
-              data-testid="filter"
-            >
-              <span
-                className="numeric-value-filter"
-                id={ `numeric-value-filter-${index}` }
-              >
-                { `{"column":"${numericFilter.column}","comparison":"`
-                + `${numericFilter.comparison}","value":${numericFilter.value}}` }
-              </span>
-              <button
-                type="button"
-                className="numeric-value-remove"
-                id={ `${numericFilter.column}` }
-                onClick={ handleClickRemove }
-              >
-                x
-              </button>
-            </div>
-          ))}
-        </div>
+        <SelectedColumns filters={ filters } handleClickRemove={ handleClickRemove } />
       ) : (
         <> </>
       ) }
     </div>
-
   );
 };
 
