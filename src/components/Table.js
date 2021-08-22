@@ -1,22 +1,24 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import context from '../context/context';
 
 function Table() {
-  const [isItLoading, setIsItLoading] = useState(true);
-  const { planets, getPlanets } = useContext(context);
+  const { planets, filters, isItLoading } = useContext(context);
+  const { name } = filters.filterByName;
+  const filterByName = planets.filter((planet) => planet.name.includes(name));
 
-  useEffect(() => {
-    getPlanets()
-      .then(setIsItLoading(false));
-  }, [getPlanets]);
+  let planetArray = [];
+  if (name === '') {
+    planetArray = planets;
+  } else {
+    planetArray = filterByName;
+  }
 
   if (isItLoading === true) {
-    console.log(planets);
     return <h1>loading</h1>;
   }
 
   // tags passadas pelo Lucas Fernando no slack da turma
-
+  console.log(planets);
   return (
     <table>
       <tr>
@@ -35,7 +37,7 @@ function Table() {
         <th>url</th>
       </tr>
 
-      { planets.map((planet, index) => (
+      { planetArray.map((planet, index) => (
         <tr key={ index }>
           <td>{planet.name}</td>
           <td>{planet.rotation_period}</td>
