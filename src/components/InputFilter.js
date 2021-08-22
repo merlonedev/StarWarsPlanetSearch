@@ -23,6 +23,7 @@ function InputFilter() {
         value={ name }
         onChange={ handleChange }
         placeholder="Planet name"
+        className="input-filter"
       />
     </div>
   );

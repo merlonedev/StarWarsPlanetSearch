@@ -42,7 +42,7 @@ function SelectFilter() {
   }, [columns]);
 
   return (
-    <div>
+    <div className="select-filter">
       {/* { console.log(planets[0]) } */}
       <label htmlFor="column">
         <select
