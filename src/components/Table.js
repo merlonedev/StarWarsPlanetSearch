@@ -2,58 +2,54 @@ import React, { useContext } from 'react';
 import FilterContext from '../context/FilterContext';
 
 function Table() {
-  const { filters: { order },
-    data: { tableHeadData }, filteredList } = useContext(FilterContext);
+  const { filters: { order: { column, sort } }, data: { tableHeadData },
+    filteredList } = useContext(FilterContext);
 
   function orderString(a, b) {
-    if (a[order.column] < b[order.column]) {
+    if (a[column] < b[column]) {
       const oneNegative = -1;
       return oneNegative;
     }
-    if (a[order.column] > b[order.column]) {
+    if (a[column] > b[column]) {
       return 1;
     }
     return 0;
   }
 
   filteredList.sort((a, b) => {
-    if (Number(a[order.column])) {
-      return a[order.column] - b[order.column];
+    if (Number(a[column])) {
+      return a[column] - b[column];
     }
     return orderString(a, b);
   });
 
-  if (order.sort === 'DESC') {
+  if (sort === 'DESC') {
     filteredList.reverse();
   }
 
-  const tableHead = () => (
-    <thead>
-      <tr>
-        { tableHeadData.map((column, index) => (
-          <th key={ index }>{column}</th>
-        ))}
-      </tr>
-    </thead>
-  );
-
   return (
     <table>
-      { tableHead() }
+      <thead>
+        <tr>
+          { tableHeadData.map((dataColumn, dataIndex) => (
+            <th key={ dataIndex }>{dataColumn}</th>
+          ))}
+        </tr>
+      </thead>
       <tbody>
-        { filteredList.map((planet, index) => (
-          <tr key={ index }>
-            {tableHeadData.map((column, dataindex) => {
-              if (column === 'name') {
+        { filteredList.map((planet, planetIndex) => (
+          <tr key={ planetIndex }>
+            {tableHeadData.map((dataColumn, dataIndex) => {
+              if (dataColumn === 'name') {
                 return (
                   <td
-                    key={ dataindex }
+                    key={ dataIndex }
                     data-testid="planet-name"
                   >
-                    { planet[column]}
+                    { planet[dataColumn]}
                   </td>);
               }
-              return <td key={ dataindex }>{ planet[column]}</td>;
+              return <td key={ dataIndex }>{ planet[dataColumn]}</td>;
             })}
           </tr>
         ))}
