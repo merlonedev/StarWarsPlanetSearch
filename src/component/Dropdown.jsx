@@ -1,22 +1,26 @@
 import React, { useContext } from 'react';
 import MyContext from '../context/myContext';
 
+const selectOption = [
+  'population',
+  'orbital_period',
+  'diameter',
+  'rotation_period',
+  'surface_water'];
+
 const Dropdown = () => {
   const { filters, setFilter } = useContext(MyContext);
   const { filterByNumericValues } = filters;
   const filter = { column: 'population', comparison: 'maior que', value: '0' };
-  const selectOption = [
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water'];
   const selectValue = ['maior que', 'menor que', 'igual a'];
   const handleChange = ({ target: { id, value } }) => {
     filter[id] = value;
   };
   const handleSubmit = () => {
     setFilter({ ...filters, filterByNumericValues: [...filterByNumericValues, filter] });
+    console.log(selectOption);
+    selectOption.splice(selectOption.indexOf(filter.column), 1);
+    console.log(selectOption);
   };
   return (
     <div>

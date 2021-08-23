@@ -17,10 +17,11 @@ const allFilter = (data, filters) => {
     filterColumn
       .forEach((i) => {
         filterByColunms = planetByName
-          .filter((item) => comparisonTest[i.comparison](parseInt(item[i.column], 10), parseInt(i
+          .filter((item) => comparisonTest[i
+            .comparison](parseInt(item[i
+            .column], 10), parseInt(i
             .value, 10)));
       });
-    console.log(filterByColunms);
     return filterByColunms;
   }
   return planetByName;
