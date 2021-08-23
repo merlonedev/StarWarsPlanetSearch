@@ -1,0 +1,9 @@
+form {
+  display: flex;
+  justify-content: space-around;
+  padding: 9px;
+}
+
+.mb-3 label {
+  margin-right: 9px;
+}

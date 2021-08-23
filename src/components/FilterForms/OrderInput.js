@@ -27,6 +27,7 @@ function OrderInput() {
         Column
         <select
           data-testid="column-sort"
+          className="form-select"
           name="column"
           id=""
           onChange={ handleChange }
@@ -39,10 +40,11 @@ function OrderInput() {
         </select>
       </label>
 
-      <label htmlFor="name-input" className="form-label">
+      <label htmlFor="asc-radio" className="form-label">
         ASC
         <input
           data-testid="column-sort-input-asc"
+          className="form-check-input"
           type="radio"
           name="sort"
           value="ASC"
@@ -51,10 +53,11 @@ function OrderInput() {
         />
       </label>
 
-      <label htmlFor="name-input" className="form-label">
+      <label htmlFor="desc-radio" className="form-label">
         DESC
         <input
           data-testid="column-sort-input-desc"
+          className="form-check-input"
           type="radio"
           name="sort"
           value="DESC"
@@ -63,7 +66,12 @@ function OrderInput() {
         />
       </label>
 
-      <button data-testid="column-sort-button" type="button" onClick={ handleClick }>
+      <button
+        data-testid="column-sort-button"
+        className="btn btn-primary"
+        type="button"
+        onClick={ handleClick }
+      >
         Ordenar
       </button>
     </div>
