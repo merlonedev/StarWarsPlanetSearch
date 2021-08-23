@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Context from './context';
 
+const INITIAL_STATE = {
+  data: [],
+  loading: true,
+  filterByName: '',
+};
+
 function Provider(props) {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [globalState, setGlobalState] = useState(INITIAL_STATE);
   const { children } = props;
-  const generalStore = { data, loading, setData, setLoading };
+  const generalStore = { globalState, setGlobalState };
 
   return (
     <Context.Provider value={ generalStore }>

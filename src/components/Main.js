@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import Loading from './Loading';
-import Table from './Table';
+import Loaded from './Loaded';
 import Context from '../context/context';
 
 function Main() {
-  const { loading } = useContext(Context);
+  const { globalState: { loading } } = useContext(Context);
   return (
     <div>
-      { loading ? <Loading /> : <Table />}
+      { loading ? <Loading /> : <Loaded />}
     </div>
   );
 }

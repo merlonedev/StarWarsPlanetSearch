@@ -2,7 +2,10 @@ import React, { useContext } from 'react';
 import Context from '../context/context';
 
 function Table() {
-  const { data } = useContext(Context);
+  const { globalState: { data, filterByName } } = useContext(Context);
+
+  const dataTable = data.results
+    .filter(({ name: planet }) => planet.includes(filterByName));
 
   const makeDataTable = () => {
     const headerFields = Object.keys(data.results[0])
@@ -22,7 +25,7 @@ function Table() {
             </tr>
           </thead>
           <tbody>
-            { data.results.map((planetData, i) => (
+            { dataTable.map((planetData, i) => (
               <tr key={ i }>
                 { headerFields.map((field, j) => (
                   <td key={ String(i) + String(j) }>{ planetData[field] }</td>))}
