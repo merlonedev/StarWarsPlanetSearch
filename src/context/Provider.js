@@ -8,9 +8,9 @@ function Provider({ children }) {
   const [name, setName] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [valor, setValor] = useState();
-  const options = ['population',
-    'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
-  const options2 = ['maior que', 'menor que', 'igual a'];
+  const [options, setOptions] = useState(['population',
+    'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
+  const [options2, setOptions2] = useState(['maior que', 'menor que', 'igual a']);
 
   useEffect(() => {
     const getDados = async () => {
@@ -49,6 +49,20 @@ function Provider({ children }) {
     setValor(value);
   };
 
+  const changeFilters = () => {
+    const newOptions = options.indexOf(name);
+    const newOptions2 = options2.indexOf(comparison);
+    const num = -1;
+    if (newOptions > num) {
+      options.splice(newOptions, 1);
+    }
+    if (newOptions2 > num) {
+      options2.splice(newOptions2, 1);
+    }
+    setOptions(options);
+    setOptions2(options2);
+  };
+
   const Filtrar = () => {
     const dadosFiltrados = dados.filter((dado) => {
       switch (comparison) {
@@ -63,6 +77,7 @@ function Provider({ children }) {
       }
     });
     setFiltro(dadosFiltrados);
+    changeFilters();
   };
 
   const store = { dados,
