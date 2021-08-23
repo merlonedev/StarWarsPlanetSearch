@@ -6,11 +6,32 @@ function Table() {
   const { data, filters } = useContext(PlanetsContext);
   if (!data.length) return <p>Loading...</p>;
 
+  const filterNumeric = (planets) => {
+    filters.filterByNumericValues
+      .forEach(({ column, comparison, value }) => {
+        if (comparison === 'maior que') {
+          planets = planets.filter((planet) => +planet[column] > +value);
+        }
+        if (comparison === 'igual a') {
+          planets = planets.filter((planet) => +planet[column] === +value);
+        }
+        if (comparison === 'menor que') {
+          planets = planets.filter((planet) => +planet[column] < +value);
+        }
+      });
+    return planets;
+  };
+
   const filteredPlanets = (planets) => {
     const { filterByName: { name } } = filters;
-    const filterName = planets
+    let filter = planets
       .filter((planet) => (planet.name).toLowerCase().includes(name.toLowerCase()));
-    return filterName;
+
+    if (filters.filterByNumericValues.length) {
+      filter = filterNumeric(filter);
+      return filter;
+    }
+    return filter;
   };
 
   return (
