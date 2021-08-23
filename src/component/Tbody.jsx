@@ -1,10 +1,28 @@
 import React, { useContext } from 'react';
 import MyContext from '../context/myContext';
 
+const comparisonTest = {
+  'maior que': (a, b) => (a > b),
+  'menor que': (a, b) => (a < b),
+  'igual a': (a, b) => (a === b),
+};
+
 const allFilter = (data, filters) => {
-  const { filterByName } = filters;
+  const { filterByName, filterByNumericValues } = filters;
   const planetByName = filterByName !== '' ? data.filter((item) => item.name
     .includes(filterByName)) : data;
+  const filterColumn = filterByNumericValues.filter((item) => item.value !== '');
+  if (filterColumn.length > 0) {
+    let filterByColunms = [];
+    filterColumn
+      .forEach((i) => {
+        filterByColunms = planetByName
+          .filter((item) => comparisonTest[i.comparison](parseInt(item[i.column], 10), parseInt(i
+            .value, 10)));
+      });
+    console.log(filterByColunms);
+    return filterByColunms;
+  }
   return planetByName;
 };
 

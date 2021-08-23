@@ -4,6 +4,13 @@ import MyContext from './myContext';
 
 const INICIAL_FILTER = {
   filterByName: '',
+  filterByNumericValues: [
+    {
+      column: '',
+      comparison: '',
+      value: '',
+    },
+  ],
 };
 
 const Provider = ({ children }) => {
