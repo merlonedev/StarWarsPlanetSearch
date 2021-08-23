@@ -9,7 +9,8 @@ function FilterBar() {
     'diameter',
     'rotation_period',
     'surface_water',
-  ];
+  ].filter((columnValue) => !filters.filterByNumericValues
+    .some(({ column }) => column === columnValue));
 
   const comparisonFilterList = ['maior que', 'menor que', 'igual a'];
 
