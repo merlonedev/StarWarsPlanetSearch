@@ -40,6 +40,6 @@
   }
 }
 
-table.simpleBorder td {
+.simpleBorder td {
   border: 1px solid black;
 }
