@@ -1,24 +1,15 @@
-import React, {useContext, useEffect} from 'react';
+import React from 'react';
 import Table from './Components/Table';
-import FetchApi from './Service/FetchApi';
 import './App.css';
 import Filter from './Components/Filter';
-import MyContext from './Context/MyContext';
+import Provider from './Context/Provider';
 
 function App() {
-  
-  const { planets, setPlanets } = useContext(MyContext);
-  useEffect(() => {    
-    FetchApi(setPlanets)
-  }, [])
-  
-
-  console.log(planets)
   return (
-    <div>
+    <Provider>
       <Filter />
       <Table />
-    </div>
+    </Provider>
   );
 }
 
