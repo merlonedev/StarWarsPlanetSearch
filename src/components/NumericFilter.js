@@ -8,6 +8,7 @@ const comparisons = ['maior que', 'menor que', 'igual a'];
 function NumericFilter() {
   const [localState, setLocalState] = useState({ column: '', comparison: '', value: 0 });
   const { globalState, setGlobalState } = useContext(Context);
+  const { numericFilter: { column: globalColumn} } = globalState;
   const { column, comparison } = localState;
 
   const inputHandler = ({ target: { id, value } }) => {
@@ -19,7 +20,8 @@ function NumericFilter() {
   };
 
   const createSelectInput = (properties) => {
-    const [id, text, value, dataTest, options] = properties;
+    const [id, text, value, dataTest, allOptions] = properties;
+    const options = allOptions.filter((opt) => (opt !== globalColumn));
     return (
       <label htmlFor={ id }>
         {text}
