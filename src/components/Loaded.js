@@ -1,26 +1,15 @@
-import React, { useContext } from 'react';
-import Table from './Table';
+import React from 'react';
+import NameFilter from './NameFilter';
 import NumericFilter from './NumericFilter';
-import Context from '../context/context';
+import Table from './Table';
 
 function Loaded() {
-  const { globalState, setGlobalState } = useContext(Context);
-
-  const inputHandler = ({ target: { id, value } }) => {
-    setGlobalState({ ...globalState, [id]: value });
-  };
-
   return (
-    <div>
-      <input
-        type="text"
-        data-testid="name-filter"
-        id="filterByName"
-        onChange={ inputHandler }
-      />
+    <>
+      <NameFilter />
       <NumericFilter />
       <Table />
-    </div>
+    </>
   );
 }
 
