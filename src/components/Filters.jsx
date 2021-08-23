@@ -28,9 +28,9 @@ const Filters = () => {
             data-testid="comparison-filter"
             onChange={ handleName }
           >
-            <option value="maior que" selected="selected">maior que</option>
-            <option value="menor que">menor que</option>
-            <option value="igual a"> igual a</option>
+            <option value="maior que">maior que</option>
+            <option value="igual a">igual a</option>
+            <option value="menor que"> menor que</option>
           </select>
         </label>
         <input
@@ -44,7 +44,7 @@ const Filters = () => {
           data-testid="button-filter"
           onClick={ handleButtonSearch }
         >
-          Adicionar
+          Filtrar
         </button>
       </div>
     </header>

@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import MyContext from './MyContext';
 
 const StarWarsProvider = ({ children }) => {
-  const filtersName = {
-    filterByName: {
-      name: '',
-    },
+  const filterByName = {
+    name: '',
   };
 
   const filterByNumericValues = {
@@ -15,7 +13,7 @@ const StarWarsProvider = ({ children }) => {
     value: '100000',
   };
   const [planets, setplanets] = useState([]);
-  const [searchPlanets, setsearchPlanets] = useState(filtersName);
+  const [searchPlanets, setsearchPlanets] = useState(filterByName);
   const [filtersValue, setfiltersValue] = useState(filterByNumericValues);
 
   useEffect(() => {
@@ -30,7 +28,7 @@ const StarWarsProvider = ({ children }) => {
   const handleNameFilter = ({ target: { value } }) => {
     setsearchPlanets((prevFilters) => ({
       ...prevFilters,
-      filterByName: { name: value },
+      name: value,
     }));
   };
 
@@ -43,7 +41,7 @@ const StarWarsProvider = ({ children }) => {
 
   const filtersPlanets = () => (
     planets.filter((filter) => filter.name.toLowerCase()
-      .includes(searchPlanets.filterByName.name.toLowerCase()))
+      .includes(searchPlanets.name.toLowerCase()))
   );
 
   const handleButtonSearch = () => {
