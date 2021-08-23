@@ -82,10 +82,10 @@ const Provider = ({ children }) => {
     setColumnsFilterBy(selected);
   };
 
-  /* feito com a ajuda de David Gonzaga */
+  /* useEffect feito com a ajuda de David Gonzaga */
   useEffect(() => {
     let arrayInit = [...data];
-    /* feito com a ajude de Ryan Laiber */
+    /* filterByNumericValue feito com a ajuda de Ryan Laiber */
     const filterByNumericValue = ({ filteredBy: filtredByInfo,
       inputValueFilter: inputValue, compare: compareInfo }) => { // chamada no clique do botão
       if (compareInfo === 'igual a') {
