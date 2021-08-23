@@ -30,7 +30,7 @@ const Filters = () => {
           >
             <option value="maior que">maior que</option>
             <option value="igual a">igual a</option>
-            <option value="menor que"> menor que</option>
+            <option value="menor que">menor que</option>
           </select>
         </label>
         <input
