@@ -5,24 +5,41 @@ import PlanetsContext from './PlanetsContext';
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [nameSearch, setNameSearch] = useState('');
+  const [numberSearch, setNumberSearch] = useState('');
+  const [comparison, setComparison] = useState('');
+  const [param, setParam] = useState('');
 
   useEffect(() => {
     const fetchAPI = async () => {
       const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const a = await fetch(endpoint).then((dados) => dados.json());
       const planets = a.results;
+      planets.map((planet) => console.log(typeof planet.population));
       setData(planets);
     };
     fetchAPI();
   }, []);
 
   const context = {
-    data, setData, nameSearch, setNameSearch,
+    data,
+    setData,
+    nameSearch,
+    setNameSearch,
+    numberSearch,
+    setNumberSearch,
+    comparison,
+    setComparison,
+    param,
+    setParam,
   };
   return (
     <PlanetsContext.Provider value={ context }>
       { children }
-      { console.log(nameSearch)}
+      {/* console.log(data) }
+      { console.log(nameSearch) }
+      { console.log(numberSearch) }
+      { console.log(comparison) }
+      { console.log(param) */}
     </PlanetsContext.Provider>
   );
 }
