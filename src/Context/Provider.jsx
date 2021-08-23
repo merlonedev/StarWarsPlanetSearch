@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import MyContext from './MyContext';
+import PropTypes from 'prop-types';
 
 const Provider = ({ children }) => {
   const [planets, setPlanets] = useState([]);
