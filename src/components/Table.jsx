@@ -3,8 +3,9 @@ import MyContext from '../context/MyContext';
 import Planet from './Planet';
 
 function Table() {
-  const { data } = useContext(MyContext);
-  console.log(data);
+  const { data, filterByName } = useContext(MyContext);
+  const newData = data.filter((planet) => (
+    planet.name.toUpperCase().includes(filterByName)));
   return (
     <table>
       <tbody>
@@ -23,7 +24,7 @@ function Table() {
           <th>Editado</th>
           <th>imagem</th>
         </tr>
-        {data.map((planet, index) => <Planet key={ index } planet={ planet } />)}
+        {newData.map((planet, index) => <Planet key={ index } planet={ planet } />)}
       </tbody>
     </table>
   );
