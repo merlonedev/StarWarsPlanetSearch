@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import MyContext from '../context/MyContext';
+import Planet from './Planet';
 
 function Table() {
+  const { data } = useContext(MyContext);
+  console.log(data);
   return (
     <table>
       <tbody>
@@ -19,6 +23,7 @@ function Table() {
           <th>Editado</th>
           <th>imagem</th>
         </tr>
+        {data.map((planet, index) => <Planet key={ index } planet={ planet } />)}
       </tbody>
     </table>
   );
