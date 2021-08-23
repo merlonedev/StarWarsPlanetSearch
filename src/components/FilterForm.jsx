@@ -8,8 +8,8 @@ export default function FilterForm() {
     selectedFilters,
     setFilters,
     setSelectedFilters } = useContext(StarWarsContext);
-  const [column, setColumn] = useState('');
-  const [comparison, setComparison] = useState('');
+  const [column, setColumn] = useState('population');
+  const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState('');
 
   // const columnOptions = [

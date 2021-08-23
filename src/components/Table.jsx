@@ -54,32 +54,25 @@ export default function Table() {
           .filter((planet) => {
             const { filterByNumericValues: filterEntries } = filters;
             if (filterEntries) {
-              for (const filter in filterEntries) {
-                const { column, comparison, value } = filterEntries[filter];
-                console.log('Comparison é: ', comparison);
-                switch (comparison) {
-                case 'maior que':
-                  console.log('Existe filterByNumericValues +');
-                  return +planet[column] > value;
-                case 'menor que':
-                  console.log('Existe filterByNumericValues -');
-                  return +planet[column] < value;
-                case 'igual a':
-                  console.log('Existe filterByNumericValues =');
-                  return planet[column] === value;
-                default:
-                  console.log('Existe filterByNumericValues DEFAULT');
-                  return true;
-                }
+              const { column, comparison, value } = filterEntries[0];
+              console.log('V Column é: ', +planet[column], typeof +planet[column]);
+              console.log('Value é: ', +value, typeof +value);
+              if (comparison === 'maior que') {
+                console.log('Existe filterByNumericValues +');
+                return +planet[column] > +value;
+              } if (comparison === 'menor que') {
+                console.log('Existe filterByNumericValues -');
+                return +planet[column] < +value;
+              } if (comparison === 'igual a') {
+                console.log('Existe filterByNumericValues =');
+                return planet[column] === value;
               }
+              console.log('Existe filterByNumericValues DEFAULT');
+              return true;
             }
             console.log('Não existe filterByNumericValues');
-            return planet;
+            return true;
           })
-          // .map((planet) => {
-          //   console.log('Pos-filtro: ', planet);
-          //   return planet;
-          // })
           .map((planet) => (
             <tr key={ planet.name }>
               <td>{planet.name}</td>
