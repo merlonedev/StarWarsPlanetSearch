@@ -2,16 +2,16 @@ import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 function Table() {
-  const { data, nameSearch, numberSearch, comparison,
-    param } = useContext(PlanetsContext);
+  const { data, nameSearch } = useContext(PlanetsContext);
   if (!data.length) return <h1>Loading</h1>;
+  const planets = data.filter((planet) => planet.name.includes(nameSearch));
 
-  const dataFiltered = Object.keys(data[0]).filter((key) => key !== 'residents');
+  /* const dataFiltered = Object.keys(data[0]0.filter((key) => key !== 'residents');
   const planets = data.filter((planet) => planet.name.includes(nameSearch));
   let planetsFil = [];
-  console.log(param);
+  console.log(param); */
 
-  if (comparison === 'maior que') {
+  /* if (comparison === 'maior que') {
     planetsFil = data.filter((planet) => parseInt(planet.diameter, 10) > numberSearch);
   }
   if (comparison === 'menor que') {
@@ -30,16 +30,16 @@ function Table() {
     ala = planetsFil;
   } else {
     ala = planets;
-  }
+  } */
   return (
     <table className="table table-striped">
       <thead>
         <tr>
-          { dataFiltered.map((key) => <th key={ key } scope="col">{ key }</th>) }
+          { Object.keys(data[0]).map((key) => <th key={ key } scope="col">{ key }</th>) }
         </tr>
       </thead>
       <tbody>
-        { ala.map((planet) => (
+        { planets.map((planet) => (
           <tr key={ planet }>
             {Object.values(planet).map((value) => <td key={ value }>{ value }</td>)}
           </tr>))}
