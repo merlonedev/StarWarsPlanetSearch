@@ -26,7 +26,7 @@ const InputFilters = () => {
           <button
             type="button"
             data-testid="filter"
-            id={ info }
+            id={ info.filteredBy }
             onClick={ handleClickErase }
           >
             X

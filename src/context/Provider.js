@@ -18,22 +18,21 @@ const Provider = ({ children }) => {
   });
   const [columnsFilterBy, setColumnsFilterBy] = useState(columns);
   const [selectedFilter, setSelectedFilter] = useState([]);
-  const [shouldReset, setShouldReset] = useState(false);
 
   /* Consultei o repositório de Diogo Sant'Anna em: https://github.com/tryber/sd-012-project-starwars-planets-search/pull/21/files */
   const handleClickErase = ({ target: { id } }) => {
     const remainsFiltred = [...selectedFilter];
-    const update = remainsFiltred.filter((e) => e !== id);
+    const update = remainsFiltred.filter((e) => e.filteredBy !== id);
     setSelectedFilter(update);
-    const found = remainsFiltred.find((e) => e === id);
-    setColumnsFilterBy([...columnsFilterBy, found]);
-    setShouldReset(true);
+    const { filteredBy } = remainsFiltred.find((e) => e.filteredBy === id);
+    setColumnsFilterBy([...columnsFilterBy, filteredBy]);
   };
 
   const handleClick = () => {
-    const ArrFilteredBy = [...selectedFilter, filterField.filteredBy];
-    setSelectedFilter(ArrFilteredBy);
-    const selected = columns.filter((filteredBy) => !ArrFilteredBy.includes(filteredBy));
+    const arrObjFilteredBy = [...selectedFilter, filterField];
+    const arrayFiltereBy = arrObjFilteredBy.map(({ filteredBy }) => filteredBy);
+    setSelectedFilter(arrObjFilteredBy);
+    const selected = columns.filter((filteredBy) => !arrayFiltereBy.includes(filteredBy));
     setColumnsFilterBy(selected);
     setFilterField({
       ...filterField,
@@ -71,7 +70,7 @@ const Provider = ({ children }) => {
       .toLowerCase()
       .includes(inputName.filterByName.toLowerCase())));
     setFiltered(dataFilter);
-  }, [data, inputName, shouldReset]);
+  }, [data, inputName]);
 
   const handleChange = ({ target: { name, value } }) => { // options: population
     setFilterField({
