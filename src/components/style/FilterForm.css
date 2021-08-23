@@ -4,6 +4,13 @@ form {
   padding: 9px;
 }
 
+.mb-3 {
+  border: solid 1px lightgrey;
+  border-radius: 6px;
+  box-shadow: 0 0 9px -3px lightgrey;
+  padding: 3px;
+}
+
 .mb-3 label {
   margin-right: 9px;
 }
