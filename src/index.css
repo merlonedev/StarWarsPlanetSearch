@@ -21,3 +21,14 @@ table, th, td {
 tr:nth-child(odd) {
   background: rgba(0, 0, 0, 0.050);
 }
+
+span {
+  margin: 0 5px;
+  display: inline-block;
+}
+
+.rule {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}

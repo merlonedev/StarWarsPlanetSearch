@@ -5,42 +5,56 @@ function useFilter(planets) {
     filterByName: {
       name: '',
     },
-    filterByNumericValues: [
-      {
-        column: 'population',
-        comparison: 'maior que',
-        value: '',
-      },
-      {
-        column: 'diameter',
-        comparison: 'menor que',
-        value: '',
-      },
-    ],
+    filterByNumericValues: [],
   };
 
-  let isFiltrable;
   const [result, setResult] = useState(planets);
   const [filters, setFilters] = useState(INIT);
 
   function filterByName() {
-    const { name: filter } = filters.filterByName;
-
-    if (filter) {
-      setResult({
+    const { name: filterName } = filters.filterByName;
+    if (filterName) {
+      return {
         ...planets,
         results: planets.results.filter(
-          ({ name }) => RegExp(filter).test(name),
+          ({ name }) => RegExp(filterName).test(name),
         ),
-      });
-      return true;
+      };
     }
-    return false;
+    return planets;
+  }
+
+  function filterByRules(data) {
+    const { filterByNumericValues: rules } = filters;
+    const { results } = data;
+
+    if (rules.length > 0) {
+      const filtered = results.filter((planet) => (
+        rules.every(({ column, comparison, value }) => {
+          column = Number(planet[column]);
+          value = Number(value);
+          switch (comparison) {
+          case 'maior que':
+            return column > value;
+          case 'menor que':
+            return column < value;
+          case 'igual a':
+            return column === value;
+          default:
+            return false;
+          }
+        })
+      ));
+
+      return { ...data, results: filtered };
+    }
+    return data;
   }
 
   function filterPlanets() {
-    isFiltrable = filterByName();
-    if (!isFiltrable) setResult(planets);
+    let data = filterByName();
+    data = filterByRules(data);
+    setResult(data);
   }
 
   useEffect(filterPlanets, [filters, planets]);

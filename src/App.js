@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Provider from './Provider';
 import Filter from './components/Filter';
@@ -11,8 +11,15 @@ function App() {
   const [planets] = usePlanets();
   const [filters, result, setFilter] = useFilter(planets);
 
+  const [rules, setRules] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: '0',
+  });
+
   const state = {
     Planets: [planets],
+    Rules: [rules, setRules],
     Filter: [filters, result, setFilter],
   };
 
