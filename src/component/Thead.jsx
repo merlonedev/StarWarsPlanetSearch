@@ -1,11 +1,10 @@
-import React from 'react';
-import Request from '../hooks/FetchAPI';
+import React, { useContext } from 'react';
+import MyContext from '../context/myContext';
 
 const Thead = () => {
-  const [data] = Request();
+  const { data } = useContext(MyContext);
   if (data.length) {
-    const itensTrashTableHead = Object.keys(data[0]);
-    const itensTableHead = itensTrashTableHead.filter((item) => item !== 'residents');
+    const itensTableHead = Object.keys(data[0]);
     return (
       <tr>
         { itensTableHead

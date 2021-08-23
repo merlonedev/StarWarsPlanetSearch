@@ -1,14 +1,22 @@
-import React from 'react';
-import Request from '../hooks/FetchAPI';
+import React, { useContext } from 'react';
+import MyContext from '../context/myContext';
+
+const allFilter = (data, filters) => {
+  const { filterByName } = filters;
+  const planetByName = filterByName !== '' ? data.filter((item) => item.name
+    .includes(filterByName)) : data;
+  return planetByName;
+};
 
 const Tbody = () => {
-  const [data] = Request();
+  const { data, filters } = useContext(MyContext);
   if (data.length) {
-    const keysTrashOfTable = Object.keys(data[0]);
-    const itensTable = keysTrashOfTable.filter((item) => item !== 'residents');
+    const itensTable = Object.keys(data[0]);
+    console.log(filters.filterByName);
+    const show = allFilter(data, filters);
     return (
       <tbody>
-        { data.map((list) => (
+        { show.map((list) => (
           <tr key={ list.name }>
             { itensTable
               .map((item) => <td key={ item }>{list[item]}</td>)}

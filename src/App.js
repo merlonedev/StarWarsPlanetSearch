@@ -1,12 +1,14 @@
 import React from 'react';
 import Table from './component/Table';
+import Filter from './component/Filter';
+import Provider from './context/Provider';
 
 function App() {
   return (
-    <div>
-      <p>Star wars Planet</p>
+    <Provider>
+      <Filter />
       <Table />
-    </div>
+    </Provider>
   );
 }
 
