@@ -3,11 +3,18 @@ import PropTypes from 'prop-types';
 import MyContext from './MyContext';
 
 function Provider({ children }) {
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
 
   const contextValue = {
     data,
     setData,
+    filters,
+    setFilters,
   };
 
   return (
