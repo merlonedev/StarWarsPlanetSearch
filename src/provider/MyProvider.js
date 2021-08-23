@@ -4,6 +4,7 @@ import MyContext from '../context/MyContext';
 
 function MyProvider({ children }) {
   const [data, setData] = useState([]);
+  const [filterByName, setFilterByName] = useState('');
   useEffect(() => {
     const fetchPlanets = () => {
       fetch('https://swapi-trybe.herokuapp.com/api/planets/')
@@ -15,6 +16,8 @@ function MyProvider({ children }) {
 
   const contextValue = {
     data,
+    setFilterByName,
+    filterByName,
   };
 
   return (
