@@ -19,9 +19,9 @@ const Dropdown = () => {
   };
   const handleSubmit = () => {
     setFilter({ ...filters, filterByNumericValues: [...filterByNumericValues, filter] });
-    setFilterOption(filterOption.filter((item) => item !== filter.column));
-    console.log(filterOption);
+    setFilterOption(filterOption.filter((item) => filter.column !== item));
   };
+
   return (
     <div>
       <label htmlFor="column">
@@ -31,7 +31,7 @@ const Dropdown = () => {
           data-testid="column-filter"
           onChange={ handleChange }
         >
-          { selectOption.map((item) => <option key={ item }>{ item }</option>) }
+          { filterOption.map((item) => <option key={ item }>{ item }</option>) }
         </select>
       </label>
       <label htmlFor="comparison">
