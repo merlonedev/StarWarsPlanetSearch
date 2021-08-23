@@ -2,10 +2,22 @@ import React, { useContext } from 'react';
 import Context from '../context/context';
 
 function Table() {
-  const { globalState: { data, filterByName } } = useContext(Context);
+  const { globalState } = useContext(Context);
+  const { data, filterByName,
+    numericFilter: { column, comparison, value } } = globalState;
+
+  const comparisonFunction = {
+    'maior que': (a, b) => a > b,
+    'menor que': (a, b) => a < b,
+    'igual a': (a, b) => a === b,
+    '': () => true,
+  };
 
   const dataTable = data.results
-    .filter(({ name: planet }) => planet.includes(filterByName));
+    .filter(({ name: planetName }) => planetName.includes(filterByName))
+    .filter((planetInfo) => (
+      comparisonFunction[comparison](Number(planetInfo[column]), Number(value))
+    ));
 
   const makeDataTable = () => {
     const headerFields = Object.keys(data.results[0])

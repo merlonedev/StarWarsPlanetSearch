@@ -6,6 +6,10 @@ const INITIAL_STATE = {
   data: [],
   loading: true,
   filterByName: '',
+  numericFilter: {
+    column: '',
+    comparison: '',
+    value: '' },
 };
 
 function Provider(props) {

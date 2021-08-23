@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import Table from './Table';
+import NumericFilter from './NumericFilter';
 import Context from '../context/context';
 
 function Loaded() {
@@ -17,6 +18,7 @@ function Loaded() {
         id="filterByName"
         onChange={ inputHandler }
       />
+      <NumericFilter />
       <Table />
     </div>
   );
