@@ -11,34 +11,35 @@ const Provider = ({ children }) => {
   const [dataHeader, setDataHeader] = useState([]); // vem da api
   const [inputName, setInputName] = useState({ filterByName: '' });
   const [filtered, setFiltered] = useState([]); // renderiza em <Table />
-  const [filterField, setFilterField] = useState({
-    filteredBy: 'population',
-    inputValueFilter: '',
-    compare: 'maior que',
-  });
-  const [columnsFilterBy, setColumnsFilterBy] = useState(columns);
+  // const [filterField, setFilterField] = useState({ // renderiza em <InputFilters />
+  //   filteredBy: 'population',
+  //   inputValueFilter: '',
+  //   compare: 'maior que',
+  // });
+  const [columnsFilterBy, setColumnsFilterBy] = useState(columns); // colunas de string
   const [selectedFilter, setSelectedFilter] = useState([]);
 
   /* Consultei o repositório de Diogo Sant'Anna em: https://github.com/tryber/sd-012-project-starwars-planets-search/pull/21/files */
   const handleClickErase = ({ target: { id } }) => {
     const remainsFiltred = [...selectedFilter];
-    const update = remainsFiltred.filter((e) => e.filteredBy !== id);
+    const update = remainsFiltred.filter((e) => e.filteredBy !== id); // array sem o filter
     setSelectedFilter(update);
-    const { filteredBy } = remainsFiltred.find((e) => e.filteredBy === id);
+    const { filteredBy } = remainsFiltred.find((obj) => obj.filteredBy === id); // string
     setColumnsFilterBy([...columnsFilterBy, filteredBy]);
+    setFiltered(data);
   };
 
-  const handleClick = () => {
-    const arrObjFilteredBy = [...selectedFilter, filterField];
-    const arrayFiltereBy = arrObjFilteredBy.map(({ filteredBy }) => filteredBy);
-    setSelectedFilter(arrObjFilteredBy);
-    const selected = columns.filter((filteredBy) => !arrayFiltereBy.includes(filteredBy));
-    setColumnsFilterBy(selected);
-    setFilterField({
-      ...filterField,
-      filteredBy: selected[0],
-    });
-  };
+  // const handleClick = () => {
+  //   const arrObjFilteredBy = [...selectedFilter, filterField];
+  //   const arrayFiltereBy = arrObjFilteredBy.map(({ filteredBy }) => filteredBy);
+  //   setSelectedFilter(arrObjFilteredBy);
+  //   const selected = columns.filter((column) => !arrayFiltereBy.includes(column));
+  //   setColumnsFilterBy(selected);
+  //   setFilterField({
+  //     ...filterField,
+  //     filteredBy: selected[0],
+  //   });
+  // };
 
   useEffect(() => {
     const getApiItems = async () => {
@@ -72,43 +73,52 @@ const Provider = ({ children }) => {
     setFiltered(dataFilter);
   }, [data, inputName]);
 
-  const handleChange = ({ target: { name, value } }) => { // options: population
-    setFilterField({
-      ...filterField,
-      [name]: value,
-    });
+  const handleClickFilter = (obje) => { // options: population
+    // setFilterField(obje);
+    const arrObjFilteredBy = [...selectedFilter, obje];
+    setSelectedFilter(arrObjFilteredBy); // array de objetos selecionados
+    const arrStringFilteredBy = arrObjFilteredBy.map(({ filteredBy }) => filteredBy);
+    const selected = columns.filter((column) => !arrStringFilteredBy.includes(column));
+    setColumnsFilterBy(selected);
   };
 
-  /* feito com a ajude de Ryan Laiber */
-  const filterOptions = (filtredByInfo, inputValue, compareInfo) => { // chamada no clique do botão
-    if (compareInfo === 'igual a') {
-      const equal = filtered.filter((planet) => +planet[filtredByInfo] === +inputValue);
-      setFiltered(equal);
-    }
-    if (compareInfo === 'maior que') {
-      const bigger = filtered.filter((planet) => +planet[filtredByInfo] > +inputValue);
-      setFiltered(bigger);
-    }
-    if (compareInfo === 'menor que') {
-      const smaller = filtered.filter((planet) => +planet[filtredByInfo] < +inputValue);
-      setFiltered(smaller);
-    }
-  };
+  /* feito com a ajuda de David Gonzaga */
+  useEffect(() => {
+    let arrayInit = [...data];
+    /* feito com a ajude de Ryan Laiber */
+    const filterByNumericValue = ({ filteredBy: filtredByInfo,
+      inputValueFilter: inputValue, compare: compareInfo }) => { // chamada no clique do botão
+      if (compareInfo === 'igual a') {
+        const equal = arrayInit
+          .filter((planet) => +planet[filtredByInfo] === +inputValue);
+        setFiltered(equal);
+        arrayInit = equal;
+      }
+      if (compareInfo === 'maior que') {
+        const bigger = arrayInit.filter((planet) => +planet[filtredByInfo] > +inputValue);
+        setFiltered(bigger);
+        arrayInit = bigger;
+      }
+      if (compareInfo === 'menor que') {
+        const smaller = arrayInit
+          .filter((planet) => +planet[filtredByInfo] < +inputValue);
+        setFiltered(smaller);
+        arrayInit = smaller;
+      }
+    };
+    selectedFilter.forEach((item) => filterByNumericValue(item));
+  }, [data, selectedFilter]); // useEffect atualiza sempre que é adicionado/removido um objeto do array 'selectedFilter'.
 
   const context = {
     data,
     filtered,
-    setData,
     dataHeader,
     inputName,
-    handleChangeNameFilter,
-    filterOptions,
-    handleChange,
     columnsFilterBy,
-    filterField,
-    handleClick,
     selectedFilter,
-    handleClickErase,
+    handleChangeNameFilter, // campo do input name
+    handleClickFilter, // define o state
+    handleClickErase, // botão apagar um filtro pelo id
   };
 
   return (

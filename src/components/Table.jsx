@@ -5,7 +5,7 @@ import AppContext from '../context/AppContext';
 const Table = () => {
   const { filtered, dataHeader } = useContext(AppContext);
   return (
-    <table>
+    <table className="simpleBorder">
       <thead>
         <tr>{ dataHeader.map((title) => <th key={ uuidv4() }>{ title }</th>) }</tr>
       </thead>

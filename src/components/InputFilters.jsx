@@ -1,31 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import AppContext from '../context/AppContext';
 
 const InputFilters = () => {
-  const { handleChangeNameFilter,
-    handleChange,
-    filterOptions,
+  const {
+    handleChangeNameFilter,
+    handleClickFilter,
     columnsFilterBy: columns,
-    filterField,
-    handleClick,
     selectedFilter,
     handleClickErase,
   } = useContext(AppContext);
-  const { filteredBy: filteredBy_,
-    inputValueFilter: inputValueFilter_,
-    compare: compare_ } = filterField;
+
+  const [filteredBy, setFilteredBy] = useState('population');
+  const [inputValueFilter, setInputValueFilter] = useState('');
+  const [compare, setCompare] = useState('maior que');
 
   const comparison = ['maior que', 'menor que', 'igual a'];
 
   const renderSelectedFilters = () => (
     <ul>
       {selectedFilter.map((info) => (
-        <li key={ uuidv4() }>
+        <li key={ uuidv4() } data-testid="filter">
           { JSON.stringify(info) }
           <button
             type="button"
-            data-testid="filter"
             id={ info.filteredBy }
             onClick={ handleClickErase }
           >
@@ -48,9 +46,9 @@ const InputFilters = () => {
       <div>
         <select
           data-testid="column-filter"
-          onChange={ handleChange }
+          onChange={ ({ target: { value } }) => setFilteredBy(value) }
           name="filteredBy"
-          value={ filteredBy_ }
+          value={ filteredBy }
         >
           {
             columns.map((filterBy) => (
@@ -59,9 +57,10 @@ const InputFilters = () => {
         </select>
         <select
           data-testid="comparison-filter"
-          onChange={ handleChange }
           name="compare"
-          value={ compare_ }
+          value={ compare }
+          onChange={ ({ target: { value } }) => setCompare(value) }
+
         >
           {
             comparison.map((comparation) => (
@@ -73,14 +72,14 @@ const InputFilters = () => {
           data-testid="value-filter"
           placeholder="digite um valor numérico"
           name="inputValueFilter"
-          onChange={ handleChange }
+          onChange={ ({ target: { value } }) => setInputValueFilter(value) }
+
         />
         <button
           type="button"
           data-testid="button-filter"
           onClick={ () => {
-            filterOptions(filteredBy_, inputValueFilter_, compare_);
-            handleClick();
+            handleClickFilter({ filteredBy, inputValueFilter, compare }); // envia o estado local dentro de um objeto para o
           } }
         >
           Enviar
