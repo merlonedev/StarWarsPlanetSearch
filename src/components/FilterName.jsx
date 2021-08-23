@@ -9,7 +9,13 @@ function FilterName() {
   }
   return (
     <div>
-      <input type="text" name="name" id="name" onChange={ handleChange } />
+      <input
+        data-testid="name-filter"
+        type="text"
+        name="name"
+        id="name"
+        onChange={ handleChange }
+      />
     </div>
   );
 }
