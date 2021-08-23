@@ -7,7 +7,7 @@ function Table() {
   if (!data.length) return <p>Loading...</p>;
 
   const filteredPlanets = (planets) => {
-    const { filters: { filterByName: { name } } } = filters;
+    const { filterByName: { name } } = filters;
     const filterName = planets
       .filter((planet) => (planet.name).toLowerCase().includes(name.toLowerCase()));
     return filterName;

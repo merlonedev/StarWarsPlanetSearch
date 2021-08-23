@@ -8,7 +8,7 @@ function NameFilter() {
   const handleFilterName = ({ target: { value } }) => {
     setFilters({
       ...filters,
-      filters: { filterByName: { name: value } },
+      filterByName: { name: value },
     });
   };
 

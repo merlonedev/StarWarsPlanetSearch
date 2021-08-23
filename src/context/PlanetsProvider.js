@@ -5,18 +5,10 @@ import PlanetsContext from './PlanetsContext';
 function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState({
-    filters: {
-      filterByName: {
-        name: '',
-      },
-      filterByNumericValues: [
-        {
-          column: 'population',
-          comparison: 'maior que',
-          value: '100000',
-        },
-      ],
+    filterByName: {
+      name: '',
     },
+    filterByNumericValues: [],
   });
 
   useEffect(() => {
