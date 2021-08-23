@@ -8,7 +8,7 @@ const comparisons = ['maior que', 'menor que', 'igual a'];
 function NumericFilter() {
   const [localState, setLocalState] = useState({ column: '', comparison: '', value: 0 });
   const { globalState, setGlobalState } = useContext(Context);
-  const { numericFilter: { column: globalColumn} } = globalState;
+  const { numericFilter: { column: globalColumn } } = globalState;
   const { column, comparison } = localState;
 
   const inputHandler = ({ target: { id, value } }) => {
