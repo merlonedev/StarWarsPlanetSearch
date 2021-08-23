@@ -4,16 +4,11 @@ import MyContext from '../context/MyContext';
 function Select() {
   const {
     filters: { filteredByNumericValues },
-    setNumericValues } = useContext(MyContext);
+    setNumericValues, arrayOfOptions } = useContext(MyContext);
   const [value, setValue] = useState(0);
-  const [comparison, setComparison] = useState('');
-  const [column, setColumn] = useState('');
-  const arrayOfOptions = [
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water'];
+  const [comparison, setComparison] = useState('maior que');
+  const [column, setColumn] = useState('population');
+
   return (
     <div className="select-Container">
       <select

@@ -7,6 +7,12 @@ function Provider({ children }) {
   const [dataFiltered, setDataFiltered] = useState([]);
   const [filteredByNumericValues, setNumericValues] = useState([]);
   const [name, setName] = useState('');
+  const [arrayOfOptions, setArrayOfOptions] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water']);
 
   useEffect(() => {
     const fetchPlanets = async () => {
@@ -18,16 +24,40 @@ function Provider({ children }) {
   }, []);
 
   useEffect(() => {
-    const alterador = () => {
-      const [filters] = filteredByNumericValues;
-      if (!filters) return;
+    const optionInicial = [
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ];
+    if (filteredByNumericValues.length === 0) return;
+    const nomeQualquer = filteredByNumericValues.map((obj) => obj.column);
+    setArrayOfOptions(
+      optionInicial.filter((option) => !nomeQualquer.includes(option)),
+    );
+    let arraySkoll = [...data];
+
+    const alterador = (filters) => {
       const { comparison, value, column } = filters;
-      if (comparison === 'menor que') return data.filter((obj) => +obj[column] < +value);
-      if (comparison === 'maior que') return data.filter((obj) => +obj[column] > +value);
-      if (comparison === 'igual a') return data.filter((obj) => +obj[column] === +value);
+      if (comparison === 'menor que') {
+        arraySkoll = arraySkoll
+          .filter((valorFiltro) => +valorFiltro[column] < +value);
+      }
+      if (comparison === 'maior que') {
+        arraySkoll = arraySkoll
+          .filter((valorFiltro) => +valorFiltro[column] > +value);
+      }
+      if (comparison === 'igual a') {
+        arraySkoll = arraySkoll
+          .filter((valorFiltro) => +valorFiltro[column] === +value);
+      }
     };
-    setDataFiltered(alterador());
+    filteredByNumericValues.forEach((objeto) => alterador(objeto));
+    setDataFiltered(arraySkoll);
   }, [data, filteredByNumericValues]);
+
+  console.log(filteredByNumericValues);
 
   useEffect(() => {
     const lowerBuscador = name.toLowerCase();
@@ -45,6 +75,8 @@ function Provider({ children }) {
       filteredByNumericValues,
 
     },
+    arrayOfOptions,
+    setArrayOfOptions,
   };
 
   return (
