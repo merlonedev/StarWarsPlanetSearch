@@ -31,7 +31,7 @@ function Planet({ planet }) {
       <td>{films}</td>
       <td>{created}</td>
       <td>{edited}</td>
-      <td><img src={ url } alt={ `Planet ${name}` } /></td>
+      <td>{url}</td>
     </tr>
   );
 }
