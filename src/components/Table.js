@@ -2,20 +2,13 @@ import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
 
 function Table() {
-  const { data, filter } = useContext(MyContext);
-  const { filterByName: { name } } = filter;
+  const { data, filters } = useContext(MyContext);
+  const {
+    filterByName: { name },
+  } = filters;
+  // console.log(data);
   const handleFilter = data.filter((result) => result
     .name.toLowerCase().includes(name.toLowerCase()));
-
-  // TENTANDO FAZER O FILTRO DENTRO DE UM IF PARA AS DEMAIS QUESTÕES
-  // const handleFilter = (inputName) => {
-  //   const filtered = [...filter];
-  //   if (inputName) {
-  //     data.filter((result) => result
-  //       .name.toLowerCase().includes(name.toLowerCase()));
-  //   }
-  //   return filtered;
-  // };
 
   return (
     <table>

@@ -1,15 +1,21 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import MyContext from '../context/MyContext';
 
 function Inputs() {
-  const { filter, setFilter } = useContext(MyContext);
-  const { filterByName: { name } } = filter;
+  const { filters, setFilters, handleClick } = useContext(MyContext);
+  const {
+    filterByName: { name },
+  } = filters;
 
-  const handleChange = ({ target: { value } }) => {
-    setFilter({
-      ...filter,
+  const [column, setColumn] = useState('population');
+  const [comparison, setComparison] = useState('maior que');
+  const [value, setValue] = useState('');
+
+  const handleChangeName = ({ target: { value: valueName } }) => {
+    setFilters({
+      ...filters,
       filterByName: {
-        name: value,
+        name: valueName,
       },
     });
   };
@@ -19,20 +25,20 @@ function Inputs() {
       <label htmlFor="searchName">
         <input
           data-testid="name-filter"
-          name="searchName"
+          name="name"
           type="text"
           placeholder="Filtrar por nome"
           value={ name }
-          onChange={ handleChange }
+          onChange={ handleChangeName }
         />
       </label>
       <label htmlFor="filterColumn">
         <select
           data-testid="column-filter"
-          name="filterColumn"
+          name="column"
           id="filterColumn"
-          value={ name }
-          onChange={ handleChange }
+          value={ column }
+          onChange={ ({ target: { value: valueColumn } }) => setColumn(valueColumn) }
         >
           <option value="population">population</option>
           <option value="orbital_period">orbital_period</option>
@@ -44,10 +50,11 @@ function Inputs() {
       <label htmlFor="filterComparison">
         <select
           data-testid="comparison-filter"
-          name="filterComparison"
+          name="comparison"
           id="filterComparison"
-          value={ name }
-          onChange={ handleChange }
+          value={ comparison }
+          onChange={ ({ target: { value: valueComparison },
+          }) => setComparison(valueComparison) }
         >
           <option value="maior que">maior que</option>
           <option value="menor que">menor que</option>
@@ -57,17 +64,17 @@ function Inputs() {
       <label htmlFor="filterValue">
         <input
           data-testid="value-filter"
-          name="filterValue"
+          name="value"
           type="number"
           placeholder="Digite um número"
-          value={ name }
-          onChange={ handleChange }
+          value={ value }
+          onChange={ ({ target: { value: valueNumber } }) => setValue(valueNumber) }
         />
       </label>
       <button
         type="button"
         data-testid="button-filter"
-        onClick={ () => (console.log('clicado')) /* handleClick */ }
+        onClick={ () => { handleClick({ column, comparison, value }); } }
       >
         Pesquisar
       </button>
