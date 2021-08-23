@@ -18,7 +18,7 @@ const Input = () => {
         data-testid="name-filter"
         value={ text }
         onChange={ handleChange }
-        type="userName"
+        type="text"
       />
     </label>
   );

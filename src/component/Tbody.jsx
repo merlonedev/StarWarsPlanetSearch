@@ -10,22 +10,18 @@ const allFilter = (data, filters) => {
 
 const Tbody = () => {
   const { data, filters } = useContext(MyContext);
-  if (data.length) {
-    const itensTable = Object.keys(data[0]);
-    console.log(filters.filterByName);
-    const show = allFilter(data, filters);
-    return (
-      <tbody>
-        { show.map((list) => (
-          <tr key={ list.name }>
-            { itensTable
-              .map((item) => <td key={ item }>{list[item]}</td>)}
-          </tr>
-        )) }
-      </tbody>
-    );
-  }
-  return <p>Loading</p>;
+  const itensTable = Object.keys(data[0]);
+  const show = allFilter(data, filters);
+  return (
+    <tbody>
+      { show.map((list) => (
+        <tr key={ list.name }>
+          { itensTable
+            .map((item) => <td key={ item }>{list[item]}</td>)}
+        </tr>
+      )) }
+    </tbody>
+  );
 };
 
 export default Tbody;

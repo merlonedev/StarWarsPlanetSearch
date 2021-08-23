@@ -6,10 +6,12 @@ const Thead = () => {
   if (data.length) {
     const itensTableHead = Object.keys(data[0]);
     return (
-      <tr>
-        { itensTableHead
-          .map((itemTableHead, index) => <th key={ index }>{ itemTableHead }</th>) }
-      </tr>
+      <thead>
+        <tr>
+          { itensTableHead
+            .map((itemTableHead, index) => <th key={ index }>{ itemTableHead }</th>) }
+        </tr>
+      </thead>
     );
   }
   return <p> </p>;
