@@ -48,18 +48,26 @@ function NumericFilter() {
     );
   };
 
+  const createNumberInput = (id, dataTest) => (
+    <div data-testid="filter">
+      <input
+        type="number"
+        id={ id }
+        data-testid={ dataTest }
+        min="0"
+        onChange={ inputHandler }
+      />
+      {creteClearBtn(id)}
+    </div>
+  );
+
   return (
     <>
       {createSelectInput(['column', 'Coluna', column, 'column-filter', columns])}
       {createSelectInput(['comparison', 'Comparação', comparison, 'comparison-filter',
         comparisons])}
-      <input
-        type="number"
-        id="value"
-        data-testid="value-filter"
-        min="0"
-        onChange={ inputHandler }
-      />
+      {createNumberInput('value', 'value-filter')}
+
       <button type="button" data-testid="button-filter" onClick={ buttonHandler }>
         APLICAR
       </button>
