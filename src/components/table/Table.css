@@ -1,0 +1,19 @@
+.table-container {
+  border: 1px solid #303030;
+  border-radius: 10px;
+  margin: 20px;
+}
+
+.table-container-header {
+  background: #909090;
+  color: #fefefe;
+  margin: 20px;
+}
+
+.table-container-header__item {
+  background: #909090;
+  border: 1px solid #303030;
+  border-radius: 10px;
+  color: #fefefe;
+  margin: 20px;
+}
