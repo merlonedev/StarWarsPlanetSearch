@@ -8,7 +8,7 @@ function MyProvider({ children }) {
     const fetchPlanets = () => {
       fetch('https://swapi-trybe.herokuapp.com/api/planets/')
         .then((resolve) => resolve.json())
-        .then((resolve) => setData(resolve));
+        .then((resolve) => setData(resolve.results));
     };
     fetchPlanets();
   }, []);
