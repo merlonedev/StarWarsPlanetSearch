@@ -22,7 +22,7 @@ const Provider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (filterByNumericValues.length > 0) {
+    if (filterByNumericValues) {
       let filteredColumns = [...optionsColumn];
       filterByNumericValues.forEach(({ column }) => {
         filteredColumns = filteredColumns.filter((item) => item !== column);
