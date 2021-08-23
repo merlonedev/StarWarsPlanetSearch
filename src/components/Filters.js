@@ -2,21 +2,13 @@ import React, { useContext, useState } from 'react';
 import SWContext from '../context/SWContext';
 
 function FilterName() {
-  const { planetFilters, setPlanetFilters } = useContext(SWContext);
+  const { planetFilters, setPlanetFilters, columns, setColumns } = useContext(SWContext);
   const { filterByName: { name: filtered }, filterByNumericValues } = planetFilters;
   const [numberFilter, setNumberFilter] = useState({
     column: 'population',
     comparison: 'maior que',
     value: 0,
   });
-
-  const columns = [
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
-  ];
 
   const comparison = [
     'maior que',
@@ -45,49 +37,61 @@ function FilterName() {
       ...planetFilters,
       filterByNumericValues: [...filterByNumericValues, numberFilter],
     });
+
+    setColumns(columns.filter((del) => del !== numberFilter.column));
   };
+
+  // const handleRemove = () => {
+  //   console.log('toaki');
+  //   setNumberFilter();
+  // };
 
   const { value } = numberFilter;
   const renderFiltersNumbers = () => (
     <div>
-      <select
-        name="column"
-        data-testid="column-filter"
-        onChange={ handleFilters }
-      >
-        { columns.map((option) => (
-          <option key={ option } value={ option }>{ option }</option>
-        )) }
-      </select>
-      <select
-        name="comparison"
-        data-testid="comparison-filter"
-        onChange={ handleFilters }
-      >
-        { comparison.map((option) => (
-          <option
-            key={ option }
-            value={ option }
-          >
-            { option }
-          </option>
-        )) }
-      </select>
-      <input
-        name="value"
-        type="number"
-        min="0"
-        data-testid="value-filter"
-        value={ value }
-        onChange={ handleFilters }
-      />
-      <button
-        type="button"
-        data-testid="button-filter"
-        onClick={ handleClick }
-      >
-        Search
-      </button>
+      <form name="fomrSelect">
+        <select
+          name="column"
+          data-testid="column-filter"
+          onChange={ handleFilters }
+        >
+          { columns.map((option) => (
+            <option key={ option } value={ option }>{ option }</option>
+          )) }
+        </select>
+        <button type="button" data-testid="filter">x</button>
+        <select
+          name="comparison"
+          data-testid="comparison-filter"
+          onChange={ handleFilters }
+        >
+          { comparison.map((option) => (
+            <option
+              key={ option }
+              value={ option }
+            >
+              { option }
+            </option>
+          )) }
+        </select>
+        <button type="button" data-testid="filter">x</button>
+        <input
+          name="value"
+          type="number"
+          min="0"
+          data-testid="value-filter"
+          value={ value }
+          onChange={ handleFilters }
+        />
+        <button type="button" data-testid="filter">x</button>
+        <button
+          type="button"
+          data-testid="button-filter"
+          onClick={ handleClick }
+        >
+          Search
+        </button>
+      </form>
     </div>
   );
 

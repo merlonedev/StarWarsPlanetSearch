@@ -12,6 +12,14 @@ function SWProvider({ children }) {
     filterByNumericValues: [],
   });
 
+  const [columns, setColumns] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
+
   const fetching = async () => {
     const request = await getApi();
     const newPlanets = Object.values(request.results).map((item) => {
@@ -30,6 +38,8 @@ function SWProvider({ children }) {
     setPlanets,
     planetFilters,
     setPlanetFilters,
+    columns,
+    setColumns,
   };
 
   return (
