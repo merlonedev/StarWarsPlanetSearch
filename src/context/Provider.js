@@ -4,7 +4,9 @@ import MyContext from './MyContext';
 
 function Provider({ children }) {
   const [data, setData] = useState([]);
-  const [buscador, setBuscador] = useState('');
+  const [dataFiltered, setDataFiltered] = useState([]);
+  const [filteredByNumericValues, setNumericValues] = useState([]);
+  const [name, setName] = useState('');
 
   useEffect(() => {
     const fetchPlanets = async () => {
@@ -15,29 +17,45 @@ function Provider({ children }) {
     fetchPlanets();
   }, []);
 
-  const loading = <p>Loading...</p>;
-  if (data.length === 0) return loading;
-  const keys = Object.keys(data[0]).filter((key) => key !== 'residents');
-  const lowerBuscador = buscador.toLowerCase();
-  const dataFiltered = data
-    .filter((value) => value.name.toLowerCase().includes(lowerBuscador));
-  const INITIAL_STATE = {
+  useEffect(() => {
+    const alterador = () => {
+      const [filters] = filteredByNumericValues;
+      if (!filters) return;
+      const { comparison, value, column } = filters;
+      if (comparison === 'menor que') return data.filter((obj) => +obj[column] < +value);
+      if (comparison === 'maior que') return data.filter((obj) => +obj[column] > +value);
+      if (comparison === 'igual a') return data.filter((obj) => +obj[column] === +value);
+    };
+    setDataFiltered(alterador());
+  }, [data, filteredByNumericValues]);
+
+  useEffect(() => {
+    const lowerBuscador = name.toLowerCase();
+    const filtered = data
+      .filter((value) => value.name.toLowerCase().includes(lowerBuscador));
+    setDataFiltered(filtered);
+  }, [data, name]);
+
+  const context = {
     data,
-    keys,
-    buscador,
-    setBuscador,
+    setName,
     dataFiltered,
+    setNumericValues,
+    filters: { filteredByName: { name },
+      filteredByNumericValues,
+
+    },
   };
 
   return (
-    <MyContext.Provider value={ INITIAL_STATE }>
+    <MyContext.Provider value={ context }>
       {children}
     </MyContext.Provider>
   );
 }
 
 Provider.propTypes = {
-  children: PropTypes.shape.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default Provider;

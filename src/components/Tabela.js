@@ -2,8 +2,11 @@ import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
 
 function Tabela() {
-  const { dataFiltered, keys } = useContext(MyContext);
-
+  const { dataFiltered, data } = useContext(MyContext);
+  const loading = <p>Loading...</p>;
+  if (data.length === 0) return loading;
+  const keys = Object.keys(data[0]).filter((key) => key !== 'residents');
+  if (dataFiltered.length === 0) return <p>Nenhum resultado encontrado</p>;
   return (
     <table>
       <thead>
