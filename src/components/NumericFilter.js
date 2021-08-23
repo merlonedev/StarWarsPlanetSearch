@@ -19,21 +19,32 @@ function NumericFilter() {
     setGlobalState({ ...globalState, numericFilter: localState });
   };
 
+  const clearFilter = ({ target: name }) => {
+    setGlobalState({ ...globalState, numericFilter: { [name]: '' } });
+  };
+
+  const creteClearBtn = (name) => (
+    <button type="button" name={ name } onClick={ clearFilter }>X</button>
+  );
+
   const createSelectInput = (properties) => {
     const [id, text, value, dataTest, allOptions] = properties;
     const options = allOptions.filter((opt) => (opt !== globalColumn));
     return (
-      <label htmlFor={ id }>
-        {text}
-        <select
-          data-testid={ dataTest }
-          id={ id }
-          onChange={ inputHandler }
-          value={ value }
-        >
-          {options.map((opt, i) => <option key={ i } value={ opt }>{ opt }</option>)}
-        </select>
-      </label>
+      <div data-testid="filter">
+        <label htmlFor={ id }>
+          {text}
+          <select
+            data-testid={ dataTest }
+            id={ id }
+            onChange={ inputHandler }
+            value={ value }
+          >
+            {options.map((opt, i) => <option key={ i } value={ opt }>{ opt }</option>)}
+          </select>
+        </label>
+        {creteClearBtn(id)}
+      </div>
     );
   };
 

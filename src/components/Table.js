@@ -5,6 +5,7 @@ function Table() {
   const { globalState } = useContext(Context);
   const { data, filterByName,
     numericFilter: { column, comparison, value } } = globalState;
+  const check = column && comparison && value;
 
   const comparisonFunction = {
     'maior que': (a, b) => a > b,
@@ -16,7 +17,7 @@ function Table() {
   const dataTable = data.results
     .filter(({ name: planetName }) => planetName.includes(filterByName))
     .filter((planetInfo) => (
-      comparisonFunction[comparison](Number(planetInfo[column]), Number(value))
+      !check || comparisonFunction[comparison](Number(planetInfo[column]), Number(value))
     ));
 
   const makeDataTable = () => {
