@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
 
 const Filters = () => {
-  const { handleNameFilter, handleName, handleButtonSearch } = useContext(MyContext);
+  const { handleNameFilter, handleName, handleButtonSearch,
+    columnFilter } = useContext(MyContext);
   return (
     <header>
       <input type="text" data-testid="name-filter" onChange={ handleNameFilter } />
@@ -14,11 +15,7 @@ const Filters = () => {
             data-testid="column-filter"
             onChange={ handleName }
           >
-            <option value="population">population</option>
-            <option value="orbital_period">orbital_period</option>
-            <option value="diameter">diameter</option>
-            <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option>
+            {columnFilter.map((lin) => <option value={ lin } key={ lin }>{lin}</option>)}
           </select>
         </label>
         <label htmlFor="comparison">
