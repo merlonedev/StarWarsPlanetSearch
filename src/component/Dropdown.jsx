@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import MyContext from '../context/myContext';
 
 const selectOption = [
@@ -10,6 +10,7 @@ const selectOption = [
 
 const Dropdown = () => {
   const { filters, setFilter } = useContext(MyContext);
+  const [filterOption, setFilterOption] = useState(selectOption);
   const { filterByNumericValues } = filters;
   const filter = { column: 'population', comparison: 'maior que', value: '0' };
   const selectValue = ['maior que', 'menor que', 'igual a'];
@@ -18,9 +19,8 @@ const Dropdown = () => {
   };
   const handleSubmit = () => {
     setFilter({ ...filters, filterByNumericValues: [...filterByNumericValues, filter] });
-    console.log(selectOption);
-    selectOption.splice(selectOption.indexOf(filter.column), 1);
-    console.log(selectOption);
+    setFilterOption(filterOption.filter((item) => item !== filter.column));
+    console.log(filterOption);
   };
   return (
     <div>
