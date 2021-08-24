@@ -4,58 +4,36 @@ import Select from './Select';
 import Table from './Table';
 
 function Planets() {
-  const [planets, setPlanets] = useState([]);
-  const [filters, setFilters] = useState({ filters: {
-    filterByName: {
-      name: '',
-    },
-    filterByNumericValues: [],
-  },
-  });
-  const [filterNumeric, setFilterNumeric] = useState({
-    column: 'population',
-    comparison: 'maior que',
-    value: '',
-  });
-
   const firstOptions = ['population', 'orbital_period',
     'diameter', 'rotation_period', 'surface_water'];
   const secondOptions = ['maior que', 'menor que', 'igual a'];
+
+  const [planets, setPlanets] = useState([]);
+  const [filters, setFilters] = useState({ filters:
+    { filterByName: { name: '' }, filterByNumericValues: [] },
+  });
+  const [filterNumeric, setFilterNumeric] = useState(
+    { column: 'population', comparison: 'maior que', value: '' },
+  );
+  const [newFirstOptions, setNewFirstOptions] = useState(firstOptions);
 
   const { filters: { filterByName, filterByNumericValues } } = filters;
   const { column, comparison } = filterNumeric;
 
   const handleFilterName = ({ target: { value } }) => {
-    setFilters({
-      filters: {
-        filterByName: {
-          name: value,
-        },
-      },
-    });
+    setFilters({ filters: { filterByName: { name: value } } });
   };
-
   const handleSelectors = ({ target: { value, name } }) => {
     switch (name) {
-    case 'first': setFilterNumeric({
-      ...filterNumeric,
-      column: value,
-    });
+    case 'first': setFilterNumeric({ ...filterNumeric, column: value });
       break;
-    case 'second': setFilterNumeric({
-      ...filterNumeric,
-      comparison: value,
-    });
+    case 'second': setFilterNumeric({ ...filterNumeric, comparison: value });
       break;
-    case 'value': setFilterNumeric({
-      ...filterNumeric,
-      value,
-    });
+    case 'value': setFilterNumeric({ ...filterNumeric, value });
       break;
     default:
     }
   };
-
   const filterPopulation = () => {
     switch (comparison) {
     case 'maior que': setPlanets(planets.filter(
@@ -73,7 +51,6 @@ function Planets() {
     default:
     }
   };
-
   const filterOrbital = () => {
     switch (comparison) {
     case 'maior que': setPlanets(planets.filter(
@@ -91,7 +68,6 @@ function Planets() {
     default:
     }
   };
-
   const filterDiameter = () => {
     switch (comparison) {
     case 'maior que': setPlanets(planets.filter(
@@ -109,7 +85,6 @@ function Planets() {
     default:
     }
   };
-
   const filterRotation = () => {
     switch (comparison) {
     case 'maior que': setPlanets(planets.filter(
@@ -127,7 +102,6 @@ function Planets() {
     default:
     }
   };
-
   const filterSurface = () => {
     switch (comparison) {
     case 'maior que': setPlanets(planets.filter(
@@ -145,7 +119,11 @@ function Planets() {
     default:
     }
   };
-
+  const removeColumn = () => {
+    const firstIndex = firstOptions.indexOf(column);
+    newFirstOptions.splice(firstIndex, 1);
+    setNewFirstOptions(newFirstOptions);
+  };
   const filterSelectors = () => {
     setFilters({
       filters: {
@@ -166,6 +144,7 @@ function Planets() {
       break;
     default:
     }
+    removeColumn();
   };
 
   return (
@@ -187,7 +166,7 @@ function Planets() {
         <span>Filtrar por:</span>
         <Select
           htmlFor="first"
-          options={ firstOptions }
+          options={ newFirstOptions }
           testid="column-filter"
           value={ column }
           onClick={ handleSelectors }

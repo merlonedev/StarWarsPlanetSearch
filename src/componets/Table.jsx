@@ -23,8 +23,6 @@ function Table(props) {
     getPlanets();
   }, []);
 
-  console.log(planets);
-
   const max = 10;
   if (planets.length < max) {
     return (

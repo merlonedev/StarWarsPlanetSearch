@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function Select(props) {
-  const { htmlFor, options, testid, onClick, value } = props;
+  const { htmlFor, options, testid, onClick,
+    value } = props;
+
   return (
     <div>
       <label htmlFor={ htmlFor }>
