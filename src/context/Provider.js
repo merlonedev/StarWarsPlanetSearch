@@ -1,43 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import requestAPI from '../services/API';
 import context from './context';
 
-function Provider({ children }) {
-  const [planets, setPlanets] = useState([]);
-  const [isItLoading, setIsItLoading] = useState(true);
+const Provider = ({ children }) => {
+  const [data, setData] = useState([]);
   const [filters, setFilters] = useState({
-    filterByName: {
-      name: '',
-    },
+    filterByName: { name: '' },
+    filterByNumericValues: { column: '', comparison: '', value: '' },
   });
-
-  async function getPlanets() {
-    const results = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
-    // const results = await fetch('https://swapi.dev/api/planets/');
-    const data = await results.json();
-    console.log(data);
-    setPlanets(data.results);
-    setIsItLoading(false);
-  }
-
-  useEffect(() => {
-    getPlanets();
-  }, []);
-
-  const contextPlanets = {
-    planets,
-    getPlanets,
-    isItLoading,
+  const [dataToUse, setDataToUse] = useState([]);
+  const [dataToSelect, setDataToSelect] = useState([]);
+  const contextValue = {
+    data,
+    setData,
     filters,
     setFilters,
+    dataToUse,
+    setDataToUse,
+    dataToSelect,
+    setDataToSelect,
   };
 
+  useEffect(() => {
+    requestAPI().then(({ results }) => setData(results));
+  }, []);
+
   return (
-    <context.Provider value={ contextPlanets }>
+    <context.Provider value={ contextValue }>
       {children}
     </context.Provider>
   );
-}
+};
+
+// tive que pedir ajuda para meu irmao Eduardo Seije da turma 10A. Ele me explicou o que ele fez e vou subir no github para ver se passa o requisito que eu estava travado antes. Pois ambos os codigos nao passam no teste localmente.
 
 Provider.propTypes = {
   children: PropTypes.node.isRequired,
