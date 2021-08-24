@@ -4,17 +4,21 @@ import ContextApi from './ContextApi';
 
 function ApiProvider({ children }) {
   const [data, setData] = useState([]);
+  const [columns, setColumns] = useState([]);
 
   const context = {
     data,
     setData,
+    columns,
+    setColumns,
   };
 
   const fetchApi = async () => {
     const url = 'https://swapi-trybe.herokuapp.com/api/planets/';
     const { results } = await fetch(url).then((response) => response.json());
-    const Filter = Object.keys(results[0]).filter((columns) => columns !== 'residents');
-    setData(Filter);
+    const columnsFilter = Object.keys(results[0]).filter((item) => item !== 'residents');
+    setData(results);
+    setColumns(columnsFilter);
   };
 
   useEffect(() => {
