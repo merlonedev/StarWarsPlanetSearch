@@ -4,9 +4,17 @@ import appContext from './appContext';
 import planetApi from '../services/planetsApi';
 
 function Provider({ children }) {
+  const columns = ['population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water'];
+
   const [data, setData] = useState([]);
   const [inputName, setInputName] = useState({ name: '' });
-  const [filteredName, setFilteredName] = useState([]);
+  const [filteredInfo, setFilteredInfo] = useState([]);
+  const [filteredColumns, setFilteredColumns] = useState(columns);
+  const [selectedInfo, setSelectedInfo] = useState([]);
 
   useEffect(() => {
     const getPlanetApi = async () => {
@@ -16,6 +24,13 @@ function Provider({ children }) {
     getPlanetApi();
   }, []);
 
+  useEffect(() => {
+    const dataFilter = data.filter((planet) => (planet.name
+      .toLowerCase()
+      .includes(inputName.name.toLowerCase())));
+    setFilteredInfo(dataFilter);
+  }, [data, inputName]);
+
   const filterPlanetsName = ({ target: { value } }) => {
     setInputName({
       ...inputName,
@@ -23,14 +38,39 @@ function Provider({ children }) {
     });
   };
 
-  useEffect(() => {
-    const dataFilter = data.filter((planet) => (planet.name
-      .toLowerCase()
-      .includes(inputName.name.toLowerCase())));
-    setFilteredName(dataFilter);
-  }, [data, inputName]);
+  const handleClickFilter = (selectedInfoObj) => {
+    const info = [...selectedInfo, selectedInfoObj];
+    setSelectedInfo(info);
+  };
 
-  const contextValue = { data, filterPlanetsName, filteredName };
+  const filterNumberValue = (selectedColumn, selectedComparison, selectedValue) => {
+    if (selectedComparison === 'maior que') {
+      const dataFilteredByValue = filteredInfo
+        .filter((planet) => (+planet[selectedColumn] > +selectedValue));
+      setFilteredInfo(dataFilteredByValue);
+    }
+    if (selectedComparison === 'menor que') {
+      const dataFilteredByValue = filteredInfo
+        .filter((planet) => (+planet[selectedColumn] < +selectedValue));
+      setFilteredInfo(dataFilteredByValue);
+    }
+    if (selectedComparison === 'igual a') {
+      const dataFilteredByValue = filteredInfo
+        .filter((planet) => (+planet[selectedColumn] === +selectedValue));
+      setFilteredInfo(dataFilteredByValue);
+    }
+  };
+
+  /* selectedInfo.forEach((obj) => filterNumberValue(obj)); */
+
+  const contextValue = {
+    data,
+    filterPlanetsName,
+    filteredInfo,
+    filteredColumns,
+    handleClickFilter,
+    filterNumberValue,
+    setFilteredColumns };
 
   return (
     <appContext.Provider value={ contextValue }>
