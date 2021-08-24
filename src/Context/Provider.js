@@ -3,8 +3,14 @@ import PropTypes from 'prop-types';
 import ContextApi from './ContextApi';
 
 export default function Provider({ children }) {
-  const [data, setData] = useState();
-  const contextValue = { data, setData };
+  const [data, setData] = useState([]);
+  const [filter, setFilter] = useState({ filterByName: { name: '' } });
+  const contextValue = {
+    data,
+    setData,
+    filter,
+    setFilter,
+  };
 
   return (
     <ContextApi.Provider value={ contextValue }>

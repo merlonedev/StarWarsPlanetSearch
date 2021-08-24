@@ -1,7 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
+import ContextApi from '../Context/ContextApi';
 
 export default function Table() {
-  const [data, setData] = useState([]);
+  const { setData, filter } = useContext(ContextApi);
+  let { data } = useContext(ContextApi);
+
+  const { filterByName: { name } } = filter;
+  if (name !== '') {
+    data = data.filter((element) => element.name.toLowerCase()
+      .includes(name.toLowerCase()));
+  }
 
   useEffect(() => {
     async function getApi() {
@@ -10,7 +18,7 @@ export default function Table() {
       setData(results);
     }
     getApi();
-  }, []);
+  }, [setData]);
 
   return (
     <table>
