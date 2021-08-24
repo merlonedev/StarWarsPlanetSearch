@@ -19,11 +19,21 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {filteredPlanets.map((planet, index) => (
-          <tr key={ index }>
-            {tableHeader.map((key) => (
-              <td key={ `${planet.name} ${key}` }>{planet[key]}</td>
-            ))}
+        {filteredPlanets.map((planet) => (
+          <tr key={ `planet ${planet.name}` }>
+            {tableHeader.map((key) => {
+              if (key === 'name') {
+                return (
+                  <td
+                    data-testid="planet-name"
+                    key={ `${planet.name} ${key}` }
+                  >
+                    {planet[key]}
+                  </td>
+                );
+              }
+              return <td key={ `${planet.name} ${key}` }>{planet[key]}</td>;
+            })}
           </tr>
         ))}
       </tbody>

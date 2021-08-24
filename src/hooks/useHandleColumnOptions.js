@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { columns } from '../helpers/options';
+import { columns } from '../data/options';
 
 function useHandleColumnOptions() {
   const [selectedColumns, setSelectedColumns] = useState([]);
   const [optionsColumns, setOptionsColumns] = useState(columns);
 
   const filterOptions = () => {
-    const newOptions = optionsColumns
+    const newOptions = columns
       .filter((option) => !selectedColumns.includes(option));
     setOptionsColumns(newOptions);
   };

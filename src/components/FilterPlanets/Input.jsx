@@ -34,7 +34,7 @@ Input.propTypes = {
   id: PropTypes.string.isRequired,
   value: PropTypes.node.isRequired,
   onChange: PropTypes.func.isRequired,
-  placeholder: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
   text: PropTypes.string,
   className: PropTypes.string,
   name: PropTypes.string.isRequired,
@@ -45,6 +45,7 @@ Input.defaultProps = {
   text: '',
   className: '',
   type: 'text',
+  placeholder: '',
 };
 
 export default Input;

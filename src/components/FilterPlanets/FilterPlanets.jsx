@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Input from './Input';
 import Select from './Select';
-import { comparisons } from '../../helpers/options';
+import { comparisons, allColumns } from '../../data/options';
 import useFiltersPlanets from '../../hooks/useFiltersPlanets';
 import useHandleColumnOptions from '../../hooks/useHandleColumnOptions';
+import ListSelectFilters from './ListSelectFilters';
 
 function FilterPlanets() {
   const [filters, setFilters] = useFiltersPlanets();
@@ -17,6 +18,8 @@ function FilterPlanets() {
     filterByName: { name },
     filterByNumericValues,
     filterByNumericValuesInputs,
+    order: { column: columnName },
+    order,
   } = filters;
 
   const { column, comparison, value } = filterByNumericValuesInputs;
@@ -36,17 +39,20 @@ function FilterPlanets() {
       ...filters,
       filterByNumericValues: [...filterByNumericValues, filterByNumericValuesInputs],
       filterByNumericValuesInputs: {
-        column: optionsColumns[1],
+        column: optionsColumns.length > 1 ? optionsColumns[1] : '',
         comparison: 'maior que',
         value: 0,
       },
-      numericFilter: true,
     });
     setSelectedFilters([...selectedFilters, filterByNumericValuesInputs]);
   };
 
   const handleChangeName = ({ target: { name: title, value: param } }) => {
     setFilters({ ...filters, filterByName: { [title]: param } });
+  };
+
+  const handleChangeOrder = ({ target: { name: title, value: param } }) => {
+    setFilters({ ...filters, order: { ...order, [title]: param } });
   };
 
   const removeNumericFilter = ({ target: { id } }) => {
@@ -57,7 +63,7 @@ function FilterPlanets() {
         .filter((filter) => filter.column !== id),
     });
     setSelectedFilters(selectedFilters.filter((filter) => filter.column !== id));
-    setSelectedColumns([selectedColumns.filter((item) => item !== id)]);
+    setSelectedColumns(selectedColumns.filter((item) => item !== id));
   };
 
   return (
@@ -102,25 +108,43 @@ function FilterPlanets() {
           Buscar
         </button>
       </div>
-      {selectedFilters.length ? (
-        <ul>
-          {selectedFilters.map((filter) => (
-            <li
-              data-testid="filter"
-              key={ filter.column }
-            >
-              {JSON.stringify(filter)}
-              <button
-                id={ filter.column }
-                onClick={ removeNumericFilter }
-                type="button"
-              >
-                X
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : ''}
+      <div>
+        <Select
+          id="column-sort"
+          name="column"
+          options={ allColumns }
+          value={ columnName }
+          text="Coluna: "
+          onChange={ handleChangeOrder }
+        />
+        <Input
+          text="Crescente"
+          name="sort"
+          id="column-sort-input-asc"
+          value="ASC"
+          onChange={ handleChangeOrder }
+          type="radio"
+        />
+        <Input
+          text="Decrescente"
+          name="sort"
+          id="column-sort-input-desc"
+          value="DESC"
+          onChange={ handleChangeOrder }
+          type="radio"
+        />
+        <button
+          data-testid="column-sort-button"
+          type="button"
+          onClick={ () => {} }
+        >
+          Sort
+        </button>
+      </div>
+      <ListSelectFilters
+        selectedFilters={ selectedFilters }
+        removeNumericFilter={ removeNumericFilter }
+      />
     </section>
   );
 }
