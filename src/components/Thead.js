@@ -26,7 +26,7 @@ function Thead() {
           Terreno
         </td>
         <td>
-          Superfíci de Água
+          Superfície de Água
         </td>
         <td>
           População
