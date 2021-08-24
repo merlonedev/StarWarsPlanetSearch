@@ -3,7 +3,9 @@ import Thead from './Thead';
 import PlanetListContext from '../contexts/PlanetListContext';
 
 function Table() {
-  const { data, loading } = useContext(PlanetListContext);
+  const { data, loading, filters } = useContext(PlanetListContext);
+
+  // PERGUNTAR SOBRE O TESTE DAS COLUNAS
 
   if (loading) { return <h2>Carregando...</h2>; }
   return (
@@ -12,6 +14,7 @@ function Table() {
       <tbody>
         {
           data.map((planet) => {
+            const { filterByName } = filters;
             const { name } = planet;
             const rotationPeriod = planet.rotation_period;
             const orbitalPeriod = planet.orbital_period;
@@ -27,10 +30,15 @@ function Table() {
               url,
             } = planet;
             const surfaceWater = planet.surface_water;
+            if (!planet.name.includes(filterByName)) {
+              return <div key={ data.indexOf(planet) } />;
+            }
             return (
               <tr key={ data.indexOf(planet) }>
                 <td key="name">
-                  { name }
+                  {
+                    name
+                  }
                 </td>
                 <td key="rotation">
                   { rotationPeriod }

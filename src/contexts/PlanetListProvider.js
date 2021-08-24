@@ -5,11 +5,27 @@ import PlanetListContext from './PlanetListContext';
 function Provider(props) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const filterData = (list) => {
+  const [filters, setFilters] = useState({
+    filterByName: '',
+  });
+  const addData = (list) => {
     setData(list);
     setLoading(false);
   };
-  const contextValue = { data, filterData, loading, setLoading };
+  const nameFilter = (name) => {
+    const search = { filterByName:
+      name,
+    };
+    setFilters(search);
+  };
+  const contextValue = {
+    data,
+    setData,
+    loading,
+    setLoading,
+    filters,
+    nameFilter,
+  };
   const { children } = props;
 
   useEffect(() => {
@@ -19,7 +35,7 @@ function Provider(props) {
         .then((response) => response.json())
         .then((info) => {
           const { results } = info;
-          filterData(results);
+          addData(results);
         })
         .catch((error) => console.log(error));
     };
