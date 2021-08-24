@@ -2,7 +2,12 @@ import React, { useContext } from 'react';
 import Context from '../context/Context';
 
 export default function FilterName() {
-  const { name, filterNamePlanets } = useContext(Context);
+  const { name, setFilters, filters } = useContext(Context);
+
+  const filterNamePlanets = ({ target }) => {
+    const { value } = target;
+    setFilters({ ...filters, filterByName: { name: value } });
+  };
 
   return (
     <div>
@@ -13,7 +18,7 @@ export default function FilterName() {
           type="text"
           data-testid="name-filter"
           value={ name }
-          onChange={ filterNamePlanets }
+          onChange={ (e) => filterNamePlanets(e) }
         />
       </label>
     </div>

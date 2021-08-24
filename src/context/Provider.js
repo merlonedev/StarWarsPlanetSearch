@@ -12,7 +12,7 @@ export default function Provider({ children }) {
     filterByNumericValues: [],
   });
 
-  const { filterByName, filterByNumericValues, column } = filters;
+  const { filterByName } = filters;
   const { name } = filterByName;
   useEffect(() => {
     const endpointPlanets = urlApi;
@@ -25,10 +25,7 @@ export default function Provider({ children }) {
     getPlanets();
   }, []);
 
-  const filterNamePlanets = ({ target }) => {
-    const { value } = target;
-    setFilters({ ...filters, filterByName: { name: value } });
-  };
+  // ==>
   useEffect(() => {
     const planetsFiltereds = tablePlanet.filter((planet) => planet.name
       .includes(name));
@@ -60,13 +57,13 @@ export default function Provider({ children }) {
           break;
         }
       });
-      setData(comparaObj);
+      setsearchPlanet(comparaObj);
     }
-  }, [filters, filterByNumericValues, column]);
+  }, [filters]);
 
-  const context = { tablePlanet,
-    filterNamePlanets,
+  const context = {
     setFilters,
+    tablePlanet,
     filters,
     searchPlanet,
     name,
