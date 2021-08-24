@@ -3,10 +3,20 @@ import MyContext from '../Context/MyContext';
 import FetchApi from '../Service/FetchApi';
 
 const Table = () => {
-  const { planets, setPlanets } = useContext(MyContext);
+  const {
+    planets,
+    setPlanets,
+    filterText,
+  } = useContext(MyContext);
+
   useEffect(() => {
     FetchApi(setPlanets);
   }, [setPlanets]);
+
+  const { filterByName } = filterText.filters;
+  const { name } = filterByName;
+  const filtered = planets.filter((planet) => planet.name.toLowerCase().includes(name));
+  const renderList = (name) ? filtered : planets;
 
   return (
     <table>
@@ -28,7 +38,7 @@ const Table = () => {
         </tr>
       </thead>
       <tbody>
-        {planets.map((planet, index) => (
+        {renderList.map((planet, index) => (
           <tr key={ index }>
             <td>{planet.name}</td>
             <td>{planet.rotation_period}</td>
