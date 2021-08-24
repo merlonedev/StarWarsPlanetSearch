@@ -3,9 +3,9 @@ import './Planets.css';
 
 function Planets() {
   const [planets, setPlanets] = useState([]);
-  const tableHeard = ['Name', 'Created', 'Diameter', 'Edited',
-    'Films', 'Gravity', 'Orbital Period', 'Population', 'Residents',
-    'Rotation Period', 'Surface Water', 'Terrain', 'Url'];
+  const tableHeard = ['Name', 'Population', 'Created', 'Diameter', 'Edited',
+    'Films', 'Gravity', 'Orbital Period',
+    'Rotation Period', 'Surface Water', 'Terrain', 'climate'];
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -34,14 +34,13 @@ function Planets() {
           planets.map((item) => (
             <tr key={ item.name }>
               <td>{item.name}</td>
+              <td>{item.population}</td>
               <td>{item.created}</td>
               <td>{item.diameter}</td>
               <td>{item.edited}</td>
               <td>{item.films}</td>
               <td>{item.gravity}</td>
               <td>{item.orbital_period}</td>
-              <td>{item.population}</td>
-              <td>residentes</td>
               <td>{item.rotation_period}</td>
               <td>{item.surface_water}</td>
               <td>{item.terrain}</td>
