@@ -7,43 +7,34 @@ import {
   TableRow,
 } from '@material-ui/core';
 import { Context } from '../Context/Context';
-import Input from './Input';
 
 function MyTable() {
-  const { data } = useContext(Context);
-  if (!data) return <h1>Loading</h1>;
+  const { data, newData } = useContext(Context);
+  if (!newData) return <h1>Loading</h1>;
+  if (newData.length <= 0) {
+    return <h1>Este planeta não existe</h1>;
+  }
   return (
-    <>
-      <Input />
-      <Table>
-        <TableHead>
-          <TableRow>
+    <Table>
+      <TableHead>
+        <TableRow>
+          {
+            Object.keys(data[0]).map((item) => <TableCell key={ item }>{item}</TableCell>)
+          }
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {newData.map((item) => (
+          <TableRow key={ item.name }>
             {
-              Object.keys(data[0]).map((i) => <TableCell key={ i }>{i}</TableCell>)
+              Object.values(item)
+                .map((element) => <TableCell key={ element }>{element}</TableCell>)
             }
           </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((item) => (
-            <TableRow key={ item.name }>
-              <TableCell>{item.name}</TableCell>
-              <TableCell>{item.rotation_period}</TableCell>
-              <TableCell>{item.orbital_period}</TableCell>
-              <TableCell>{item.diameter}</TableCell>
-              <TableCell>{item.climate}</TableCell>
-              <TableCell>{item.gravity}</TableCell>
-              <TableCell>{item.terrain}</TableCell>
-              <TableCell>{item.surface_water}</TableCell>
-              <TableCell>{item.population}</TableCell>
-              <TableCell>{item.films}</TableCell>
-              <TableCell>{item.created}</TableCell>
-              <TableCell>{item.edited}</TableCell>
-              <TableCell>{item.url}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </>
+        ))}
+      </TableBody>
+    </Table>
+
   );
 }
 

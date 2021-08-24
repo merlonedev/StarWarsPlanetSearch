@@ -12,7 +12,7 @@ function Input() {
     id: 'outlined-basic',
     label: 'Filter planets by name',
     variant: 'outlined',
-    onChange: ({ target }) => handleChange(target),
+    onChange: (event) => handleChange(event),
   };
 
   return (
