@@ -55,7 +55,7 @@ const Table = () => {
         <select
           name="column"
           data-testid="column-filter"
-          onChange={ handlefilterByValues }
+          onChange={ handlefilterByNumericValues }
         >
           {options.map((option) => <option key={ option }>{option}</option>)}
         </select>
