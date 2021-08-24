@@ -4,14 +4,30 @@ import MyContext from './MyContext';
 
 function Provider({ children }) {
   const [data, setData] = useState([]);
-  const [filters, setFilters] = useState({
-    filterByName: {
-      name: '',
-    },
-  });
 
+  const [filters, setFilters] = useState({
+    filterByName: '',
+  });
+  // Requisitos 3 e 4 feitos com a ajuda dos colegas Cristiano e Sérgio.
+  const ArrayColumns = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+  ];
+  const [columns, setColumns] = useState(ArrayColumns);
   const [filteredArray, setFilteredArray] = useState([]);
   const [arraySelectedObj, setArraySelectedObj] = useState([]);
+
+  const handleChangeName = ({ target: { value } }) => {
+    setFilters({
+      ...filters,
+      filterByName: value,
+    });
+  };
+
+  useEffect(() => {
+    const ArrayFilterName = data.filter((result) => result
+      .name.toLowerCase().includes(filters.filterByName.toLowerCase()));
+    setFilteredArray(ArrayFilterName);
+  }, [data, filters.filterByName]);
 
   useEffect(() => {
     let newArray = [...data];
@@ -47,9 +63,21 @@ function Provider({ children }) {
   const handleClick = (obj) => {
     const ArrayObj = [...arraySelectedObj, obj];
     setArraySelectedObj(ArrayObj);
+    const mapArray = ArrayObj.map((item) => item.column); // Essa const retorna um array de string com os columns selecionados.
+    const selectedColumn = ArrayColumns.filter((item) => !mapArray.includes(item));
+    setColumns(selectedColumn);
   };
 
-  const context = { data, setData, filters, setFilters, handleClick, filteredArray };
+  const context = {
+    data,
+    setData,
+    filters,
+    setFilters,
+    handleClick,
+    filteredArray,
+    handleChangeName,
+    columns,
+  };
 
   return (
     <MyContext.Provider value={ context }>

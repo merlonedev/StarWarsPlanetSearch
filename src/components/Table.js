@@ -2,13 +2,13 @@ import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
 
 function Table() {
-  const { data, filters } = useContext(MyContext);
-  const {
-    filterByName: { name },
-  } = filters;
+  const { filteredArray/* , filters  */ } = useContext(MyContext);
+  // const {
+  //   filterByName: { name },
+  // } = filters;
   // console.log(data);
-  const handleFilter = data.filter((result) => result
-    .name.toLowerCase().includes(name.toLowerCase()));
+  // const handleFilter = filteredArray.filter((result) => result
+  //   .name.toLowerCase().includes(name.toLowerCase()));
 
   return (
     <table>
@@ -30,7 +30,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { handleFilter.map((results) => (
+        { filteredArray.map((results) => (
           <tr key={ results.name }>
             <td>{ results.name }</td>
             <td>{ results.rotation_period }</td>

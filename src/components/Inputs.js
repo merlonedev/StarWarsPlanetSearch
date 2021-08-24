@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import MyContext from '../context/MyContext';
 
 function Inputs() {
-  const { filters, setFilters, handleClick } = useContext(MyContext);
+  const { filters, handleClick, handleChangeName, columns } = useContext(MyContext);
   const {
     filterByName: { name },
   } = filters;
@@ -10,15 +10,6 @@ function Inputs() {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState('');
-
-  const handleChangeName = ({ target: { value: valueName } }) => {
-    setFilters({
-      ...filters,
-      filterByName: {
-        name: valueName,
-      },
-    });
-  };
 
   return (
     <form>
@@ -40,11 +31,7 @@ function Inputs() {
           value={ column }
           onChange={ ({ target: { value: valueColumn } }) => setColumn(valueColumn) }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {columns.map((item) => <option key={ item } value={ item }>{item}</option>)}
         </select>
       </label>
       <label htmlFor="filterComparison">
