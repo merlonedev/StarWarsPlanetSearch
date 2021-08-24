@@ -2,7 +2,7 @@ import React from 'react';
 import StarWarsProvider from './context/StarWarsProvider';
 import './App.css';
 import Table from './Components/Table';
-import SearchForm from './Components/SearchForm';
+import Filters from './Components/Filters';
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
         <header className="appHeader">
           <h1>Star Wars Planets Search</h1>
         </header>
-        <SearchForm />
+        <Filters />
         <Table />
       </div>
     </StarWarsProvider>

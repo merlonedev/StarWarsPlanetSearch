@@ -1,18 +1,20 @@
 import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
-import './SearchForm.css';
 
-function SearchForm() {
+function NumericValuesFilter() {
   const {
-    setInputName,
     filters,
     setNumValue,
     filterDataByNumValues,
     columnOptions, comparisonOptions } = useContext(StarWarsContext);
 
-  const handleChangeName = ({ target }) => {
-    setInputName(target.value);
-  };
+  // const [column, setColumn] = useState('population');
+  // const [comparison, setComparison] = useState('maior que');
+  // const [value, setValue] = useState(0);
+
+  // useEffect(() => {
+  //   if (columns.length > 0) setColumn(columns[0]);
+  // }, [columns]);
 
   // essa parte da logica foi aprendida e aplicada após leitura do codigo do colega Luciano Almeida https://github.com/tryber/sd-012-project-starwars-planets-search/pull/102/commits/546930d309009ebddc0c870d8094c356a7f14992
   const handleChangeNumValue = ({ target }) => {
@@ -30,15 +32,6 @@ function SearchForm() {
 
   return (
     <form>
-      <label htmlFor="nameFilter">
-        Filter by name:
-        <input
-          id="nameFilter"
-          type="text"
-          onChange={ (event) => handleChangeName(event) }
-          data-testid="name-filter"
-        />
-      </label>
       <label htmlFor="columnFilter">
         Filter column:
         <select
@@ -84,4 +77,4 @@ function SearchForm() {
   );
 }
 
-export default SearchForm;
+export default NumericValuesFilter;
