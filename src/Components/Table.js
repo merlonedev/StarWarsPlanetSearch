@@ -2,11 +2,7 @@ import React, { useContext } from 'react';
 import MyContext from './MyContext';
 
 function Table() {
-  const { state, loading } = useContext(MyContext);
-  console.log(state);
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
+  const { state, filtrados } = useContext(MyContext);
   return (
     <table>
       <thead>
@@ -23,7 +19,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {state.map((
+        {filtrados.map((
           { name, rotation_period: rotationPeriod, orbital_period: orbitalPeriod,
             diameter, climate, gravity, terrain, surface_water: surfaceWater,
             population, films, created, edited, url },
