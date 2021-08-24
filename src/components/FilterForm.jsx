@@ -58,30 +58,17 @@ export default function FilterForm() {
 
   function comparisonStateToContext() {
     setSelectedFilters([...selectedFilters, column]);
-    if (filters.filterByNumericValues) {
-      setFilters({
-        ...filters,
-        filterByNumericValues: [
-          ...filters.filterByNumericValues,
-          {
-            column,
-            comparison,
-            value,
-          },
-        ],
-      });
-    } else {
-      setFilters({
-        ...filters,
-        filterByNumericValues: [
-          {
-            column,
-            comparison,
-            value,
-          },
-        ],
-      });
-    }
+    setFilters({
+      ...filters,
+      filterByNumericValues: [
+        ...filters.filterByNumericValues,
+        {
+          column,
+          comparison,
+          value,
+        },
+      ],
+    });
   }
 
   function filterColumnOptionsBySelected(array) {

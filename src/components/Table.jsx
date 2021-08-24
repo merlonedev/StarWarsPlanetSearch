@@ -16,14 +16,26 @@ export default function Table() {
     fetchPlanets();
   }, []);
 
-  useEffect(() => {
-    console.log(filters);
-    if (filters.filterByNumericValues) {
-      console.log(filters.filterByNumericValues[0].column);
-    }
-  }, [filters]);
-
   const arrayOfData = Object.values(data);
+  // Source: Pair Progamming Thalles Carneiro
+  function filterData(array, filter) {
+    const { filterByNumericValues } = filter;
+    let filteredArray = [...array];
+    filteredArray = array
+      .filter((planet) => planet.name.includes(filter.filterByName));
+
+    filterByNumericValues.forEach(({ column, comparison, value }) => {
+      if (comparison === 'maior que') {
+        filteredArray = filteredArray.filter((planet) => +planet[column] > +value);
+      } if (comparison === 'menor que') {
+        filteredArray = filteredArray.filter((planet) => +planet[column] < +value);
+      } if (comparison === 'igual a') {
+        filteredArray = filteredArray.filter((planet) => planet[column] === value);
+      }
+    });
+    return filteredArray;
+  }
+
   return (
     <table className="pure-table">
       <thead>
@@ -44,52 +56,23 @@ export default function Table() {
         </tr>
       </thead>
       <tbody>
-        {arrayOfData
-          .filter((planet) => {
-            if (filters.filterByName) {
-              return planet.name.includes(filters.filterByName);
-            }
-            return planet;
-          })
-          .filter((planet) => {
-            const { filterByNumericValues: filterEntries } = filters;
-            if (filterEntries) {
-              const { column, comparison, value } = filterEntries[0];
-              console.log('V Column é: ', +planet[column], typeof +planet[column]);
-              console.log('Value é: ', +value, typeof +value);
-              if (comparison === 'maior que') {
-                console.log('Existe filterByNumericValues +');
-                return +planet[column] > +value;
-              } if (comparison === 'menor que') {
-                console.log('Existe filterByNumericValues -');
-                return +planet[column] < +value;
-              } if (comparison === 'igual a') {
-                console.log('Existe filterByNumericValues =');
-                return planet[column] === value;
-              }
-              console.log('Existe filterByNumericValues DEFAULT');
-              return true;
-            }
-            console.log('Não existe filterByNumericValues');
-            return true;
-          })
-          .map((planet) => (
-            <tr key={ planet.name }>
-              <td>{planet.name}</td>
-              <td>{planet.rotation_period}</td>
-              <td>{planet.orbital_period}</td>
-              <td>{planet.diameter}</td>
-              <td>{planet.climate}</td>
-              <td>{planet.gravity}</td>
-              <td>{planet.terrain}</td>
-              <td>{planet.surface_water}</td>
-              <td>{planet.population}</td>
-              <td>{planet.films}</td>
-              <td>{planet.created}</td>
-              <td>{planet.edited}</td>
-              <td>{planet.url}</td>
-            </tr>
-          ))}
+        {filterData(arrayOfData, filters).map((planet) => (
+          <tr key={ planet.name }>
+            <td>{planet.name}</td>
+            <td>{planet.rotation_period}</td>
+            <td>{planet.orbital_period}</td>
+            <td>{planet.diameter}</td>
+            <td>{planet.climate}</td>
+            <td>{planet.gravity}</td>
+            <td>{planet.terrain}</td>
+            <td>{planet.surface_water}</td>
+            <td>{planet.population}</td>
+            <td>{planet.films}</td>
+            <td>{planet.created}</td>
+            <td>{planet.edited}</td>
+            <td>{planet.url}</td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );
