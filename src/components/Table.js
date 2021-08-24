@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import DataContext from '../context/DataContext';
-import FilterPlanets from './FilterPlanets';
 
 function Table() {
   const { data, filter } = useContext(DataContext);
@@ -20,7 +19,6 @@ function Table() {
 
   return (
     <div>
-      <FilterPlanets />
       <table>
         <thead>
           <tr>
