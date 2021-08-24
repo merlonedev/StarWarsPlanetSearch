@@ -1,3 +1,18 @@
+th {
+  background-color: dimgray;
+  border: #61dafb;
+  border-style: groove;
+  border-width: 8px;
+  color: azure;
+}
+
+td {
+  background-color: azure;
+  border: blueviolet;
+  border-style: groove;
+  color: dimgray;
+}
+
 .App {
   text-align: center;
 }
