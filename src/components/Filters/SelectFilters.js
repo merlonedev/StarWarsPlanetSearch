@@ -1,9 +1,17 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import PlanetsContext from '../../context/PlanetsContext';
 
 function SelectFilters() {
   const { filters, setFilters } = useContext(PlanetsContext);
-  console.log('filters', filters);
+  // console.log('filters', filters);
+  const [columns, setColumns] = useState(
+    ['population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water'],
+  );
+
   const [state, setState] = useState({
     column: 'population',
     comparison: 'maior que',
@@ -17,19 +25,25 @@ function SelectFilters() {
     });
   };
 
+  const filterColumns = () => {
+    if (filters.filterByNumericValues.length) {
+      const { filterByNumericValues } = filters;
+      filterByNumericValues.forEach(({ column }) => setColumns(
+        columns.filter((item) => item !== column),
+      ));
+    }
+  };
+
   const handleClick = () => {
     const { filterByNumericValues } = filters;
     setFilters({
       ...filters,
       filterByNumericValues: [...filterByNumericValues, { ...state }],
     });
+    filterColumns();
   };
 
-  const columns = ['population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water'];
+  useEffect(filterColumns, [filters.filterByNumericValues]);
 
   return (
     <form>
