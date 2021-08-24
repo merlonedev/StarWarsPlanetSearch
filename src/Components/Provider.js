@@ -19,8 +19,9 @@ function Provider({ children }) {
     },
   );
   const [loading, setLoading] = useState(true);
-  const [filterByName, setfilterByName] = useState('');
+  const [filterByName, setFilterByName] = useState('');
   const [filtrados, setFiltrados] = useState([]);
+  const [filterByNumericValues, setFilterByNumericValues] = useState({});
 
   useEffect(() => {
     const data = async () => {
@@ -47,10 +48,12 @@ function Provider({ children }) {
     setState,
     loading,
     filterByName,
-    setfilterByName,
+    setFilterByName,
     filters,
     setFilters,
     filtrados,
+    filterByNumericValues,
+    setFilterByNumericValues,
   };
 
   return (
