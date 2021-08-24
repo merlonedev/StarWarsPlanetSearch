@@ -1,55 +1,228 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Planets.css';
+import Select from './Select';
+import Table from './Table';
 
 function Planets() {
   const [planets, setPlanets] = useState([]);
-  const tableHeard = ['Name', 'Population', 'Created', 'Diameter', 'Edited',
-    'Films', 'Gravity', 'Orbital Period',
-    'Rotation Period', 'Surface Water', 'Terrain', 'climate'];
+  const [filters, setFilters] = useState({ filters: {
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [],
+  },
+  });
+  const [filterNumeric, setFilterNumeric] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: '',
+  });
 
-  useEffect(() => {
-    const getPlanets = async () => {
-      const api = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const planetsResults = await fetch(api).then((data) => data.json());
-      setPlanets(planetsResults.results);
-    };
-    getPlanets();
-  }, []);
+  const firstOptions = ['population', 'orbital_period',
+    'diameter', 'rotation_period', 'surface_water'];
+  const secondOptions = ['maior que', 'menor que', 'igual a'];
 
-  console.log(planets);
+  const { filters: { filterByName, filterByNumericValues } } = filters;
+  const { column, comparison } = filterNumeric;
+
+  const handleFilterName = ({ target: { value } }) => {
+    setFilters({
+      filters: {
+        filterByName: {
+          name: value,
+        },
+      },
+    });
+  };
+
+  const handleSelectors = ({ target: { value, name } }) => {
+    switch (name) {
+    case 'first': setFilterNumeric({
+      ...filterNumeric,
+      column: value,
+    });
+      break;
+    case 'second': setFilterNumeric({
+      ...filterNumeric,
+      comparison: value,
+    });
+      break;
+    case 'value': setFilterNumeric({
+      ...filterNumeric,
+      value,
+    });
+      break;
+    default:
+    }
+  };
+
+  const filterPopulation = () => {
+    switch (comparison) {
+    case 'maior que': setPlanets(planets.filter(
+      (item) => +item.population > +filterNumeric.value,
+    ));
+      break;
+    case 'menor que': setPlanets(planets.filter(
+      (item) => +item.population < +filterNumeric.value,
+    ));
+      break;
+    case 'igual a': setPlanets(planets.filter(
+      (item) => +item.population === +filterNumeric.value,
+    ));
+      break;
+    default:
+    }
+  };
+
+  const filterOrbital = () => {
+    switch (comparison) {
+    case 'maior que': setPlanets(planets.filter(
+      (item) => +item.orbital_period > +filterNumeric.value,
+    ));
+      break;
+    case 'menor que': setPlanets(planets.filter(
+      (item) => +item.orbital_period < +filterNumeric.value,
+    ));
+      break;
+    case 'igual a': setPlanets(planets.filter(
+      (item) => +item.orbital_period === +filterNumeric.value,
+    ));
+      break;
+    default:
+    }
+  };
+
+  const filterDiameter = () => {
+    switch (comparison) {
+    case 'maior que': setPlanets(planets.filter(
+      (item) => +item.diameter > +filterNumeric.value,
+    ));
+      break;
+    case 'menor que': setPlanets(planets.filter(
+      (item) => +item.diameter < +filterNumeric.value,
+    ));
+      break;
+    case 'igual a': setPlanets(planets.filter(
+      (item) => +item.diameter === +filterNumeric.value,
+    ));
+      break;
+    default:
+    }
+  };
+
+  const filterRotation = () => {
+    switch (comparison) {
+    case 'maior que': setPlanets(planets.filter(
+      (item) => +item.rotation_period > +filterNumeric.value,
+    ));
+      break;
+    case 'menor que': setPlanets(planets.filter(
+      (item) => +item.rotation_period < +filterNumeric.value,
+    ));
+      break;
+    case 'igual a': setPlanets(planets.filter(
+      (item) => +item.rotation_period === +filterNumeric.value,
+    ));
+      break;
+    default:
+    }
+  };
+
+  const filterSurface = () => {
+    switch (comparison) {
+    case 'maior que': setPlanets(planets.filter(
+      (item) => +item.surface_water > +filterNumeric.value,
+    ));
+      break;
+    case 'menor que': setPlanets(planets.filter(
+      (item) => +item.surface_water < +filterNumeric.value,
+    ));
+      break;
+    case 'igual a': setPlanets(planets.filter(
+      (item) => +item.surface_water === +filterNumeric.value,
+    ));
+      break;
+    default:
+    }
+  };
+
+  const filterSelectors = () => {
+    setFilters({
+      filters: {
+        filterByName: { ...filterByName },
+        filterByNumericValues: [...filterByNumericValues, filterNumeric],
+      },
+    });
+    switch (column) {
+    case 'population': filterPopulation();
+      break;
+    case 'orbital_period': filterOrbital();
+      break;
+    case 'diameter': filterDiameter();
+      break;
+    case 'rotation_period': filterRotation();
+      break;
+    case 'surface_water': filterSurface();
+      break;
+    default:
+    }
+  };
 
   return (
-    <table className="tablePlanets">
-      <thead>
-        <tr>
-          {
-            tableHeard.map((item) => (
-              <th key={ item }>{item}</th>
-            ))
-          }
-        </tr>
-      </thead>
-      <tbody>
-        {
-          planets.map((item) => (
-            <tr key={ item.name }>
-              <td>{item.name}</td>
-              <td>{item.population}</td>
-              <td>{item.created}</td>
-              <td>{item.diameter}</td>
-              <td>{item.edited}</td>
-              <td>{item.films}</td>
-              <td>{item.gravity}</td>
-              <td>{item.orbital_period}</td>
-              <td>{item.rotation_period}</td>
-              <td>{item.surface_water}</td>
-              <td>{item.terrain}</td>
-              <td>{item.climate}</td>
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
+    <main>
+      <form>
+        <div>
+          <label htmlFor="filterName">
+            <input
+              type="text"
+              id="filterName"
+              name="filterName"
+              value={ filterByName.name }
+              onChange={ handleFilterName }
+              data-testid="name-filter"
+            />
+            <span>Source</span>
+          </label>
+        </div>
+        <span>Filtrar por:</span>
+        <Select
+          htmlFor="first"
+          options={ firstOptions }
+          testid="column-filter"
+          value={ column }
+          onClick={ handleSelectors }
+        />
+        <Select
+          htmlFor="second"
+          options={ secondOptions }
+          testid="comparison-filter"
+          value={ comparison }
+          onClick={ handleSelectors }
+        />
+        <label htmlFor="value">
+          <input
+            type="number"
+            name="value"
+            id="value"
+            value={ filterNumeric.value }
+            data-testid="value-filter"
+            onChange={ handleSelectors }
+          />
+        </label>
+        <button
+          type="button"
+          data-testid="button-filter"
+          onClick={ filterSelectors }
+        >
+          Adicionar Filtro
+        </button>
+      </form>
+      <Table
+        filterByName={ filterByName }
+        setPlanets={ setPlanets }
+        planets={ planets }
+      />
+    </main>
   );
 }
 
