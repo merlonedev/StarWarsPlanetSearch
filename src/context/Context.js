@@ -6,6 +6,14 @@ const Context = createContext();
 
 function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
+  const [filters, setFilters] = useState({ name: '' });
+  const [filterNumber, setFilterNumber] = useState(
+    {
+      column: 'population',
+      comparison: 'maior que',
+      value: '100000',
+    },
+  );
   // const [isLoand, setSloand] = useState(false);
 
   useEffect(() => {
@@ -17,9 +25,18 @@ function Provider({ children }) {
   }, []);
 
   return (
-    <Context.Provider value={ { planets } }>
+    <Context.Provider
+      value={ {
+        planets,
+        filters,
+        setFilters,
+        filterNumber,
+        setFilterNumber,
+      } }
+    >
       {children}
-    </Context.Provider>);
+    </Context.Provider>
+  );
 }
 
 Provider.propTypes = {
