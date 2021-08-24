@@ -1,23 +1,42 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import MyContext from '../context/MyContext';
 
 function FilterNumbers() {
-  const { setFilterByNumericValues } = useContext(MyContext);
+  const { filterByNumericValues, setFilterByNumericValues } = useContext(MyContext);
   const [inputs, setInputs] = useState({
-    collum: '',
-    comparison: '',
+    collum: 'population',
+    comparison: 'maior',
     value: 0,
   });
+  const [collums, setCollums] = useState([]);
+
+  useEffect(() => {
+    setCollums('population', 'orbital_period',
+      'diameter', 'rotation_period', 'surface_water');
+  }, []);
+  useEffect(() => {
+    const filters = ['population', 'orbital_period',
+      'diameter', 'rotation_period', 'surface_water'];
+    filterByNumericValues.forEach((value) => {
+      const index = filters.indexOf(value.collum);
+      filters.splice(index, 1);
+    });
+    setCollums(filters);
+  }, [filterByNumericValues]);
+
   const handleChange = ({ target }) => {
     const { value, name } = target;
-    setInputs((prevState) => ({
-      ...prevState,
+    setInputs({
+      ...inputs,
       [name]: value,
-    }));
+    });
   };
   const handleClick = (event) => {
-    event.preventDefaul();
-    setFilterByNumericValues(inputs);
+    event.preventDefault();
+    setFilterByNumericValues([
+      ...filterByNumericValues,
+      inputs,
+    ]);
   };
 
   return (
@@ -28,11 +47,8 @@ function FilterNumbers() {
         onChange={ handleChange }
         data-testid="column-filter"
       >
-        <option value="population">População</option>
-        <option value="orbital_period">Período de orbita</option>
-        <option value="diameter">Diametro</option>
-        <option value="rotation_period">Período de rotação</option>
-        <option value="surface_water">Superfície Aquática</option>
+        {collums.map((collum) => (
+          <option key={ collum } value={ collum }>{collum}</option>))}
       </select>
       <select
         name="comparison"
@@ -40,17 +56,25 @@ function FilterNumbers() {
         onChange={ handleChange }
         data-testid="comparison-filter"
       >
-        <option value="maior">maior que</option>
-        <option value="menor">menor que</option>
-        <option value="igual">igual a</option>
+        <option value="maior que">maior que</option>
+        <option value="menor que">menor que</option>
+        <option value="igual a">igual a</option>
       </select>
-      <input type="number" name="value" id="value" data-testid="value-filter" />
       <input
+        type="number"
+        name="value"
+        id="value"
+        data-testid="value-filter"
+        onChange={ handleChange }
+      />
+      <button
         type="button"
         value="filtrar"
-        data-testid="button-filter"
         onClick={ handleClick }
-      />
+        data-testid="button-filter"
+      >
+        Filtrar
+      </button>
     </form>
   );
 }
