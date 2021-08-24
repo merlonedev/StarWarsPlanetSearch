@@ -1,9 +1,14 @@
 import React from 'react';
 import './App.css';
+import StarsProvider from './context/StarsProvider';
+import Table from './components/Table';
 
 function App() {
   return (
-    <span>Hello, App VQV!</span>
+    <StarsProvider>
+      <span>Star Wars Planets</span>
+      <Table />
+    </StarsProvider>
   );
 }
 
