@@ -1,21 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Planets.css';
 import Select from './Select';
 import Table from './Table';
 
 function Planets() {
-  const firstOptions = ['population', 'orbital_period',
+  const firstOptions = ['Selecione', 'population', 'orbital_period',
     'diameter', 'rotation_period', 'surface_water'];
   const secondOptions = ['maior que', 'menor que', 'igual a'];
 
   const [planets, setPlanets] = useState([]);
+  const [filterPlanets, setFilterPlanets] = useState([]);
   const [filters, setFilters] = useState({ filters:
     { filterByName: { name: '' }, filterByNumericValues: [] },
   });
-  const [filterNumeric, setFilterNumeric] = useState(
-    { column: 'population', comparison: 'maior que', value: '' },
-  );
   const [newFirstOptions, setNewFirstOptions] = useState(firstOptions);
+  const [filterNumeric, setFilterNumeric] = useState(
+    { column: 'Selecione', comparison: 'maior que', value: '' },
+  );
+
+  useEffect(() => {
+    const getPlanets = async () => {
+      const api = 'https://swapi-trybe.herokuapp.com/api/planets/';
+      const planetsResults = await fetch(api).then((data) => data.json());
+      setPlanets([...planetsResults.results]);
+    };
+    getPlanets();
+  }, []);
 
   const { filters: { filterByName, filterByNumericValues } } = filters;
   const { column, comparison } = filterNumeric;
@@ -36,15 +46,15 @@ function Planets() {
   };
   const filterPopulation = () => {
     switch (comparison) {
-    case 'maior que': setPlanets(planets.filter(
+    case 'maior que': setFilterPlanets(planets.filter(
       (item) => +item.population > +filterNumeric.value,
     ));
       break;
-    case 'menor que': setPlanets(planets.filter(
+    case 'menor que': setFilterPlanets(planets.filter(
       (item) => +item.population < +filterNumeric.value,
     ));
       break;
-    case 'igual a': setPlanets(planets.filter(
+    case 'igual a': setFilterPlanets(planets.filter(
       (item) => +item.population === +filterNumeric.value,
     ));
       break;
@@ -53,15 +63,15 @@ function Planets() {
   };
   const filterOrbital = () => {
     switch (comparison) {
-    case 'maior que': setPlanets(planets.filter(
+    case 'maior que': setFilterPlanets(planets.filter(
       (item) => +item.orbital_period > +filterNumeric.value,
     ));
       break;
-    case 'menor que': setPlanets(planets.filter(
+    case 'menor que': setFilterPlanets(planets.filter(
       (item) => +item.orbital_period < +filterNumeric.value,
     ));
       break;
-    case 'igual a': setPlanets(planets.filter(
+    case 'igual a': setFilterPlanets(planets.filter(
       (item) => +item.orbital_period === +filterNumeric.value,
     ));
       break;
@@ -70,15 +80,15 @@ function Planets() {
   };
   const filterDiameter = () => {
     switch (comparison) {
-    case 'maior que': setPlanets(planets.filter(
+    case 'maior que': setFilterPlanets(planets.filter(
       (item) => +item.diameter > +filterNumeric.value,
     ));
       break;
-    case 'menor que': setPlanets(planets.filter(
+    case 'menor que': setFilterPlanets(planets.filter(
       (item) => +item.diameter < +filterNumeric.value,
     ));
       break;
-    case 'igual a': setPlanets(planets.filter(
+    case 'igual a': setFilterPlanets(planets.filter(
       (item) => +item.diameter === +filterNumeric.value,
     ));
       break;
@@ -87,15 +97,15 @@ function Planets() {
   };
   const filterRotation = () => {
     switch (comparison) {
-    case 'maior que': setPlanets(planets.filter(
+    case 'maior que': setFilterPlanets(planets.filter(
       (item) => +item.rotation_period > +filterNumeric.value,
     ));
       break;
-    case 'menor que': setPlanets(planets.filter(
+    case 'menor que': setFilterPlanets(planets.filter(
       (item) => +item.rotation_period < +filterNumeric.value,
     ));
       break;
-    case 'igual a': setPlanets(planets.filter(
+    case 'igual a': setFilterPlanets(planets.filter(
       (item) => +item.rotation_period === +filterNumeric.value,
     ));
       break;
@@ -104,15 +114,15 @@ function Planets() {
   };
   const filterSurface = () => {
     switch (comparison) {
-    case 'maior que': setPlanets(planets.filter(
+    case 'maior que': setFilterPlanets(planets.filter(
       (item) => +item.surface_water > +filterNumeric.value,
     ));
       break;
-    case 'menor que': setPlanets(planets.filter(
+    case 'menor que': setFilterPlanets(planets.filter(
       (item) => +item.surface_water < +filterNumeric.value,
     ));
       break;
-    case 'igual a': setPlanets(planets.filter(
+    case 'igual a': setFilterPlanets(planets.filter(
       (item) => +item.surface_water === +filterNumeric.value,
     ));
       break;
@@ -120,17 +130,28 @@ function Planets() {
     }
   };
   const removeColumn = () => {
-    const firstIndex = firstOptions.indexOf(column);
-    newFirstOptions.splice(firstIndex, 1);
-    setNewFirstOptions(newFirstOptions);
+    if (column !== 'Selecione') {
+      const firstIndex = firstOptions.indexOf(column);
+      newFirstOptions.splice(firstIndex, 1);
+      setNewFirstOptions(newFirstOptions);
+    }
   };
   const filterSelectors = () => {
-    setFilters({
-      filters: {
-        filterByName: { ...filterByName },
-        filterByNumericValues: [...filterByNumericValues, filterNumeric],
-      },
-    });
+    if (filterByNumericValues.length === 0) {
+      setFilters({
+        filters: {
+          filterByName: { ...filterByName },
+          filterByNumericValues: [filterNumeric],
+        },
+      });
+    } else {
+      setFilters({
+        filters: {
+          filterByName: { ...filterByName },
+          filterByNumericValues: [...filterByNumericValues, filterNumeric],
+        },
+      });
+    }
     switch (column) {
     case 'population': filterPopulation();
       break;
@@ -200,6 +221,7 @@ function Planets() {
         filterByName={ filterByName }
         setPlanets={ setPlanets }
         planets={ planets }
+        filterPlanets={ filterPlanets }
       />
     </main>
   );

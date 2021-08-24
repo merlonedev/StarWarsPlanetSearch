@@ -1,30 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 function Table(props) {
-  const { setPlanets, filterByName, planets } = props;
-  const [stateTable, setStateTable] = useState([]);
+  const { filterPlanets, filterByName, planets } = props;
 
   const tableHeard = ['Name', 'Created', 'Diameter', 'Edited',
     'Films', 'Gravity', 'Orbital Period', 'Population',
     'Rotation Period', 'Surface Water', 'Terrain', 'Climate', 'URL'];
 
-  const allPlanets = (data) => {
-    setStateTable(data);
-    setPlanets(data);
-  };
-
-  useEffect(() => {
-    const getPlanets = async () => {
-      const api = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const planetsResults = await fetch(api).then((data) => data.json());
-      allPlanets([...planetsResults.results]);
-    };
-    getPlanets();
-  }, []);
-
   const max = 10;
-  if (planets.length < max) {
+  if (filterPlanets.length > 0 && filterPlanets.length < max) {
     return (
       <table className="tablePlanets">
         <thead>
@@ -38,7 +23,7 @@ function Table(props) {
         </thead>
         <tbody>
           {
-            planets.filter((item) => item.name.toLowerCase()
+            filterPlanets.filter((item) => item.name.toLowerCase()
               .includes(filterByName.name.toLowerCase()))
               .map((item) => (
                 <tr key={ item.name }>
@@ -76,7 +61,7 @@ function Table(props) {
       </thead>
       <tbody>
         {
-          stateTable.filter((item) => item.name.toLowerCase()
+          planets.filter((item) => item.name.toLowerCase()
             .includes(filterByName.name.toLowerCase()))
             .map((item) => (
               <tr key={ item.name }>
@@ -103,7 +88,7 @@ function Table(props) {
 
 Table.propTypes = {
   filterByName: PropTypes.shape({ name: PropTypes.string }).isRequired,
-  setPlanets: PropTypes.func.isRequired,
+  filterPlanets: PropTypes.arrayOf(PropTypes.object).isRequired,
   planets: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 export default Table;
