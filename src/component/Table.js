@@ -7,9 +7,6 @@ export default function Table() {
     async function getApi() {
       const ENDPOINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const { results } = await fetch(ENDPOINT).then((dataResult) => dataResult.json());
-      results.forEach((element) => {
-        delete element.residents;
-      });
       setData(results);
     }
     getApi();
