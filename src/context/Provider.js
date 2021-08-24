@@ -5,6 +5,8 @@ import planetApi from '../services/planetsApi';
 
 function Provider({ children }) {
   const [data, setData] = useState([]);
+  const [inputName, setInputName] = useState({ name: '' });
+  const [filteredName, setFilteredName] = useState([]);
 
   useEffect(() => {
     const getPlanetApi = async () => {
@@ -14,7 +16,21 @@ function Provider({ children }) {
     getPlanetApi();
   }, []);
 
-  const contextValue = { data };
+  const filterPlanetsName = ({ target: { value } }) => {
+    setInputName({
+      ...inputName,
+      name: value,
+    });
+  };
+
+  useEffect(() => {
+    const dataFilter = data.filter((planet) => (planet.name
+      .toLowerCase()
+      .includes(inputName.name.toLowerCase())));
+    setFilteredName(dataFilter);
+  }, [data, inputName]);
+
+  const contextValue = { data, filterPlanetsName, filteredName };
 
   return (
     <appContext.Provider value={ contextValue }>
