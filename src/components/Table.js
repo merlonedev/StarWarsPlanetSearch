@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import StarWarsContext from '../context/StarsContext';
+import Context from '../context/Context';
 
 function Table() {
-  const { filterPlanet } = useContext(StarWarsContext);
+  const { filterPlanet } = useContext(Context);
 
   return (
     <table className="table-planet">

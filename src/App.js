@@ -1,14 +1,19 @@
 import React from 'react';
 import './App.css';
-import StarsProvider from './context/StarsProvider';
+import Provider from './context/Provider';
 import Table from './components/Table';
+import FilterNAme from './components/FilterName';
+import Selectors from './components/Selectors';
 
 function App() {
   return (
-    <StarsProvider>
-      <span>Star Wars Planets</span>
+    /* REQUESITO 01 INSERINDO PROVIDER  */
+    <Provider>
+      <span className="title">Star Wars Planets</span>
+      <FilterNAme />
+      <Selectors />
       <Table />
-    </StarsProvider>
+    </Provider>
   );
 }
 

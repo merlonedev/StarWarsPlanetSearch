@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import StarsContext from './StarsContext';
+import Context from './Context';
 
-function Planet({ children }) {
+function PlanetProvider({ children }) {
   const [data, setData] = useState([]);
   const [filterPlanet, setFilterPlanet] = useState([]);
   const [filters, setFilters] = useState(
@@ -14,7 +14,7 @@ function Planet({ children }) {
     },
   );
 
-  const { filterByName, filterByNumeric } = filters;
+  const { filterByName, filterByNumericValues } = filters;
   const { name } = filterByName;
   useEffect(() => {
     const endpointPlanets = 'https://swapi-trybe.herokuapp.com/api/planets/';
@@ -35,10 +35,10 @@ function Planet({ children }) {
   useEffect(() => {
     let planetsFiltereds = data.filter((planet) => planet.name
       .toLowerCase().includes(name));
-    if (filterByNumeric.length > 0) {
+    if (filterByNumericValues.length > 0) {
       planetsFiltereds = planetsFiltereds.filter((planet) => {
         let bool = true;
-        filterByNumeric.forEach(({ column, comparison, value }) => {
+        filterByNumericValues.forEach(({ column, comparison, value }) => {
           switch (comparison) {
           case 'maior que':
             bool = Number(planet[column]) > Number(value) && bool;
@@ -57,23 +57,22 @@ function Planet({ children }) {
       });
     }
     setFilterPlanet(planetsFiltereds);
-  }, [data, name, filters, filterByNumeric]);
+  }, [data, name, filters, filterByNumericValues]);
 
   const setNumericFilters = (newObj) => {
     setFilters({ ...filters,
-      filterByNumeric: [...filters.filterByNumeric, newObj] });
+      filterByNumericValues: [...filters.filterByNumericValues, newObj] });
   };
-
   const context = { data, filterPlanets, filters, filterPlanet, name, setNumericFilters };
   return (
-    <StarsContext.Provider value={ context }>
+    <Context.Provider value={ context }>
       { children }
-    </StarsContext.Provider>
+    </Context.Provider>
   );
 }
 
-Planet.propTypes = {
+PlanetProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default Planet;
+export default PlanetProvider;
