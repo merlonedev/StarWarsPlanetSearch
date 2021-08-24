@@ -31,6 +31,18 @@ function Thead() {
         <td>
           População
         </td>
+        <td>
+          Filmes
+        </td>
+        <td>
+          Criado
+        </td>
+        <td>
+          Editado
+        </td>
+        <td>
+          Link
+        </td>
       </tr>
     </thead>
   );

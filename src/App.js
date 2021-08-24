@@ -12,13 +12,4 @@ function App() {
   );
 }
 
-// const { func } = PropTypes;
-// App.propTypes = {
-//   setLoading: func,
-// };
-
-// App.defaultProps = {
-//   setLoading: null,
-// };
-
 export default App;

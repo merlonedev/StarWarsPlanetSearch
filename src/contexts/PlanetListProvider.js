@@ -3,24 +3,25 @@ import PropTypes from 'prop-types';
 import PlanetListContext from './PlanetListContext';
 
 function Provider(props) {
-  const [planetList, setPlanetList] = useState([]);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const filterPlanetList = (data) => {
-    setPlanetList(data);
+  const filterData = (list) => {
+    setData(list);
     setLoading(false);
   };
-  const contextValue = { planetList, filterPlanetList, loading, setLoading };
+  const contextValue = { data, filterData, loading, setLoading };
   const { children } = props;
 
   useEffect(() => {
     const getPlanets = async () => {
       const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
       await fetch(endpoint)
-        .then((data) => data.json())
+        .then((response) => response.json())
         .then((info) => {
           const { results } = info;
-          filterPlanetList(results);
-        });
+          filterData(results);
+        })
+        .catch((error) => console.log(error));
     };
 
     getPlanets();

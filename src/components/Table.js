@@ -1,10 +1,9 @@
 import React, { useContext } from 'react';
-// import PropTypes from 'prop-types';
 import Thead from './Thead';
 import PlanetListContext from '../contexts/PlanetListContext';
 
 function Table() {
-  const { planetList, loading } = useContext(PlanetListContext);
+  const { data, loading } = useContext(PlanetListContext);
 
   if (loading) { return <h2>Carregando...</h2>; }
   return (
@@ -12,14 +11,24 @@ function Table() {
       <Thead />
       <tbody>
         {
-          planetList.map((planet) => {
+          data.map((planet) => {
             const { name } = planet;
             const rotationPeriod = planet.rotation_period;
             const orbitalPeriod = planet.orbital_period;
-            const { diameter, climate, gravity, terrain, population } = planet;
+            const {
+              diameter,
+              climate,
+              gravity,
+              terrain,
+              population,
+              films,
+              created,
+              edited,
+              url,
+            } = planet;
             const surfaceWater = planet.surface_water;
             return (
-              <tr key={ planetList.indexOf(planet) }>
+              <tr key={ data.indexOf(planet) }>
                 <td key="name">
                   { name }
                 </td>
@@ -47,6 +56,24 @@ function Table() {
                 <td key="population">
                   { population }
                 </td>
+                <td key="films">
+                  { films.map((film) => (
+                    <a href={ film } key={ films.indexOf(film) }>
+                      { films.indexOf(film) }
+                    </a>
+                  ))}
+                </td>
+                <td key="created">
+                  { created.split('T')[0] }
+                </td>
+                <td key="edited">
+                  { edited.split('T')[0] }
+                </td>
+                <td key="url">
+                  <a href={ url }>
+                    Mais...
+                  </a>
+                </td>
               </tr>
             );
           })
@@ -55,14 +82,5 @@ function Table() {
     </table>
   );
 }
-
-// const { func } = PropTypes;
-// Table.propTypes = {
-//   loading: func.isRequired,
-// };
-
-// App.defaultProps = {
-//   setLoading: null,
-// };
 
 export default Table;
