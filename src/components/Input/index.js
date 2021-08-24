@@ -1,26 +1,33 @@
-import React, { useContext } from 'react';
-import starWarsContext from '../../context/StarWarsContext';
+import React from 'react';
+import { string, func } from 'prop-types';
 
-const Input = () => {
-  const {
-    filters: {
-      filterByName: { name: filterName } },
-    handleFilterName,
-  } = useContext(starWarsContext);
+const Input = ({ placeholder, type, onChange, value, testId, name }) => (
+  <label htmlFor="name-filter">
+    <input
+      id={ testId }
+      data-testid={ testId }
+      type={ type }
+      value={ value }
+      placeholder={ placeholder }
+      onChange={ onChange }
+      name={ name }
+    />
 
-  return (
-    <label htmlFor="name-filter">
-      <input
-        id="name-filter"
-        data-testid="name-filter"
-        type="text"
-        value={ filterName }
-        placeholder="Name"
-        onChange={ handleFilterName }
-      />
+  </label>
+);
 
-    </label>
-  );
+Input.propTypes = {
+  placeholder: string,
+  type: string,
+  onChange: func.isRequired,
+  value: string.isRequired,
+  testId: string.isRequired,
+  name: string.isRequired,
+};
+
+Input.defaultProps = {
+  type: 'text',
+  placeholder: '',
 };
 
 export default Input;

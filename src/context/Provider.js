@@ -5,7 +5,18 @@ import StarWarsContext from './StarWarsContext';
 const Provider = ({ children }) => {
   const [planets, setPlanets] = useState([]);
   const [copyPlanets, setCopyPlanets] = useState([]);
-  const [filterName, setFilterName] = useState('');
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [],
+  });
+  const [filterNumber, setFilterNumber] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: '',
+  });
+
   useEffect(() => {
     const getPlanets = async () => {
       try {
@@ -23,26 +34,42 @@ const Provider = ({ children }) => {
   // Eu precisava setar uma copia do planets para ele chamar o useEffect somente quando houvesse
   // mudança no filterName.
   const handleFilterName = ({ target: { value } }) => {
-    setFilterName(value);
+    setFilters({
+      ...filters,
+      filterByName: {
+        name: value,
+      } });
   };
 
   useEffect(() => {
+    const { filterByName: { name } } = filters;
     const getPlanets = [...copyPlanets];
     const filtered = getPlanets.filter((planet) => planet.name.toLowerCase()
-      .includes(filterName.toLowerCase()));
+      .includes(name.toLowerCase()));
     setPlanets(filtered);
-  }, [filterName, copyPlanets]);
+  }, [copyPlanets, filters]);
+
+  const filterByNumber = ({ target: { name, value } }) => {
+    setFilterNumber({
+      ...filterNumber,
+      [name]: value,
+    });
+  };
+
+  const handleClick = () => {
+    setFilters({
+      ...filters,
+      filterByNumericValues: [...filters.filterByNumericValues, filterNumber],
+    });
+  };
 
   const contextValue = {
     planets,
     setPlanets,
-    filters: {
-      filterByName: {
-        name: filterName,
-      },
-    },
-    setFilterName,
     handleFilterName,
+    filterByNumber,
+    handleClick,
+    filters,
   };
 
   return (
