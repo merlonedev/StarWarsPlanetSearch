@@ -11,11 +11,6 @@ const Provider = ({ children }) => {
   const [dataHeader, setDataHeader] = useState([]); // vem da api
   const [inputName, setInputName] = useState({ filterByName: '' });
   const [filtered, setFiltered] = useState([]); // renderiza em <Table />
-  // const [filterField, setFilterField] = useState({ // renderiza em <InputFilters />
-  //   filteredBy: 'population',
-  //   inputValueFilter: '',
-  //   compare: 'maior que',
-  // });
   const [columnsFilterBy, setColumnsFilterBy] = useState(columns); // colunas de string
   const [selectedFilter, setSelectedFilter] = useState([]);
 
@@ -28,18 +23,6 @@ const Provider = ({ children }) => {
     setColumnsFilterBy([...columnsFilterBy, filteredBy]);
     setFiltered(data);
   };
-
-  // const handleClick = () => {
-  //   const arrObjFilteredBy = [...selectedFilter, filterField];
-  //   const arrayFiltereBy = arrObjFilteredBy.map(({ filteredBy }) => filteredBy);
-  //   setSelectedFilter(arrObjFilteredBy);
-  //   const selected = columns.filter((column) => !arrayFiltereBy.includes(column));
-  //   setColumnsFilterBy(selected);
-  //   setFilterField({
-  //     ...filterField,
-  //     filteredBy: selected[0],
-  //   });
-  // };
 
   useEffect(() => {
     const getApiItems = async () => {
@@ -82,7 +65,7 @@ const Provider = ({ children }) => {
     setColumnsFilterBy(selected);
   };
 
-  /* useEffect feito com a ajuda de David Gonzaga */
+  /* Requisito 5: useEffect e adaptações no filtro feito com a ajuda de David Gonzaga */
   useEffect(() => {
     let arrayInit = [...data];
     /* filterByNumericValue feito com a ajuda de Ryan Laiber */
@@ -107,7 +90,7 @@ const Provider = ({ children }) => {
       }
     };
     selectedFilter.forEach((item) => filterByNumericValue(item));
-  }, [data, selectedFilter]); // useEffect atualiza sempre que é adicionado/removido um objeto do array 'selectedFilter'.
+  }, [data, selectedFilter]); // useEffect atualiza o array 'filtered' sempre que é adicionado/removido um objeto do array 'selectedFilter'.
 
   const context = {
     data,
