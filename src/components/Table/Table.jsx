@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import Context from '../../context/Context';
+import FilterByNumeric from './FilterByNumeric';
 import FilterByText from './FilterByText';
 
 export default function Table() {
@@ -9,6 +10,7 @@ export default function Table() {
   return (
     <div>
       <FilterByText />
+      <FilterByNumeric />
       <table>
         <thead>
           <tr>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Context from './Context';
 
+// com auxilios de David Gonzaga, Lucas Santos, André Hammel , Augusto mourão e Gustavo Mourão- Turma 12
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [resultFilter, setResultFilter] = useState([]);
@@ -9,6 +10,7 @@ function Provider({ children }) {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [],
   });
 
   useEffect(() => {
@@ -28,7 +30,30 @@ function Provider({ children }) {
     setResultFilter(result);
   }
 
-  const context = { data, filterText, resultFilter };
+  function fNumeric(object) {
+    const { column, comparison, value } = object;
+    setFilters({
+      ...filters,
+      filterByNumericValues: [...filters.filterByNumericValues, object],
+    });
+    setFilters();
+    const fNumericResult = data.filter((dat) => {
+      switch (comparison) {
+      case 'maior que':
+        return Number(dat[column]) > Number(value);
+      case 'menor que':
+        return Number(dat[column]) < Number(value);
+      case 'igual a':
+        return Number(dat[column]) === Number(value);
+      default:
+        return dat;
+      }
+    });
+    if (fNumericResult.length === 0) return setResultFilter([]);
+    setResultFilter(fNumericResult);
+  }
+
+  const context = { data, filterText, resultFilter, fNumeric };
   return (
     <div>
       <Context.Provider value={ context }>
