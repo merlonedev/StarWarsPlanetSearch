@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import Context from '../context/Context';
 
 export default function Table() {
-  const { data, keys } = useContext(Context);
+  const { data, keys, filters } = useContext(Context);
+  const { name } = filters.filterByName;
   return (
     <table>
       <thead>
@@ -13,13 +14,26 @@ export default function Table() {
         </tr>
       </thead>
       <tbody>
-        { data.map((planet, index) => (
-          <tr key={ index }>
-            {keys.map((column, dataindex) => (
-              <td key={ dataindex }>{ planet[column]}</td>
-            ))}
-          </tr>
-        ))}
+        { name === ''
+          ? (
+            data.map((planet, i) => (
+              <tr key={ i }>
+                {keys.map((col, j) => (
+                  <td key={ j }>{ planet[col]}</td>
+                ))}
+              </tr>
+            ))
+          )
+          : (
+            data.filter((el) => el.name.toLowerCase().includes(name.toLowerCase()))
+              .map((planet, i) => (
+                <tr key={ i }>
+                  {keys.map((col, j) => (
+                    <td key={ j }>{ planet[col]}</td>
+                  ))}
+                </tr>
+              ))
+          )}
       </tbody>
     </table>
   );

@@ -5,8 +5,9 @@ import Context from './Context';
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [keys, setKeys] = useState([]);
+  const [filters, setFilters] = useState({ filterByName: { name: '' } });
 
-  useEffect(() => {
+  useEffect(() => { // carrega tabela sem filtros
     const fetchAPI = async () => {
       const url = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const response = await fetch(url);
@@ -22,7 +23,7 @@ function Provider({ children }) {
   }, []);
 
   return (
-    <Context.Provider value={ { data, keys } }>
+    <Context.Provider value={ { data, keys, filters, setFilters } }>
       {children}
     </Context.Provider>
   );
