@@ -3,7 +3,7 @@ import Context from '../context/Context';
 import { SELECTION_OPTIONS, SELECTION_RANGE } from '../service/data';
 
 export default function FilterByNumber() {
-  const { FilterByNumericValue, newFilter } = React.useContext(Context);
+  const { FilterByNumericValue, newFilter, CleanFilter } = React.useContext(Context);
   const [column, setColumn] = React.useState('');
   const [comparison, setComparison] = React.useState('');
   const [value, setValue] = React.useState('');
@@ -46,8 +46,9 @@ export default function FilterByNumber() {
         Filtrar
       </button>
       <button
-        type="submit"
+        type="button"
         data-testid="filter"
+        onClick={ () => CleanFilter() }
       >
         X
       </button>

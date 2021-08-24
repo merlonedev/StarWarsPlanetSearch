@@ -3,6 +3,9 @@
 //! SEJA O CENTRO NERVOSO DO PROGRAMA, FAZENDO TODO CONTROLE E MUDANÇA DE ESTADOS
 //! E GERENCIAMENTO DAS FUNÇÕES.
 
+// ? Porque tem comportamento 'atrasado' do estado filters?
+// ? Porque não funciona quando tiramos o event?
+
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Context from './Context';
@@ -23,13 +26,28 @@ export default function ProviderStartWars({ children }) {
     getPlanets();
   }, []);
 
+  // const FilterByTextValue = ({ target: { value } }) => {
+  //   setFilter({ ...filters,
+  //     filterByName: { name: value.toLowerCase() } });
+  //   const result = planets.filter(({ name }) => (
+  //     name.toLowerCase().includes(value.toLowerCase())));
+  //   if (result.length === 0) return setFiltered(null);
+  //   setFiltered(result);
+  // };
+
+  function dummy() {
+    console.log('dummy', filters);
+  }
+
   const FilterByTextValue = ({ target: { value } }) => {
     setFilter({ ...filters,
       filterByName: { name: value.toLowerCase() } });
-    const result = planets.filter(({ name }) => (
-      name.toLowerCase().includes(value.toLowerCase())));
-    if (result.length === 0) return setFiltered(null);
-    setFiltered(result);
+    console.log('aqui', filters);
+    dummy();
+    // const result = planets.filter(({ name }) => (
+    //   name.toLowerCase().includes(value.toLowerCase())));
+    // if (result.length === 0) return setFiltered(null);
+    // setFiltered(result);
   };
 
   function FilterByNumericValue(obj) {
@@ -54,9 +72,15 @@ export default function ProviderStartWars({ children }) {
     setFiltered(result);
   }
 
+  function CleanFilter() {
+    const obj = { column: '', comparison: '', value: '' };
+    FilterByNumericValue(obj);
+  }
+
   const context = {
     FilterByTextValue,
     FilterByNumericValue,
+    CleanFilter,
     planets,
     filtered,
     newFilter,
