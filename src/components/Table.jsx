@@ -4,13 +4,12 @@ import ContextApi from '../context/ContextApi';
 function Table() {
   const { data } = useContext(ContextApi);
   console.log(data);
-  // const columnFilter = .filter((key) => key !== 'residents');
   return (
     <section>
       <table>
         <thead>
           <tr>
-            {/* { columnFilter.map((item) => <th key={ item }>{ item }</th>) } */}
+            { data.map((columns) => <th key={ columns }>{ columns }</th>) }
           </tr>
         </thead>
         <tbody>
