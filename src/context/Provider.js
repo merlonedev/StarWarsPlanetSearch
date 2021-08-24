@@ -7,7 +7,7 @@ function Provider({ children }) {
   const [nameSearch, setNameSearch] = useState('');
   const [numberSearch, setNumberSearch] = useState('');
   const [comparison, setComparison] = useState('');
-  const [param, setParam] = useState('');
+  const [param, setParam] = useState('population');
 
   useEffect(() => {
     const fetchAPI = async () => {

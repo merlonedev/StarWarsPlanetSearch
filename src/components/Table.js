@@ -22,10 +22,7 @@ function Table() {
   if (comparison === 'igual a') {
     planets = planets
       .filter((planet) => parseFloat(planet[param]) === parseFloat(numberSearch));
-    // console.log(typeof numberSearch);
-    // data.filter((planet) => console.log(typeof parseFloat(planet.population)));
   }
-  // nameSearch !== '' ? ala = planets : ala = planets;
   return (
     <table className="table table-striped">
       <thead>
