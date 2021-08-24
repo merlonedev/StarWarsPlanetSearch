@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import MyContext from '../context/MyContext';
-// Feito com a ajuda de colegas Djaniza, Camila e Cristiano e mentoria do Márcio Daniel.
+// Feito com a ajuda de colegas David Gonzaga, Djaniza, Camila e Cristiano e mentoria do Márcio Daniel.
 
 function CreateTable() {
   const data = useContext(MyContext);
@@ -38,11 +38,11 @@ function CreateTable() {
   },
   [data, filter]);
 
-  const handleInputCharacter = ({ target: { value } }) => {
+  const handleInputCharacter = ({ target: { value: value2 } }) => {
     setfilter({
       ...filter,
       filterByName: {
-        name: value,
+        name: value2,
       },
     });
   };
