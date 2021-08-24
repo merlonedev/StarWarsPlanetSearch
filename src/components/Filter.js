@@ -49,7 +49,7 @@ const FilterInputs = () => {
   return (
     <form>
       <label htmlFor="nameFilter">
-        Busque por planetas:
+        Filtrar planetas:
         {' '}
         <input
           id="nameFilter"
