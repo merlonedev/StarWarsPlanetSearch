@@ -1,18 +1,26 @@
 import React, { useContext } from 'react';
 import DataContext from '../context/DataContext';
+import FilterPlanets from './FilterPlanets';
 
 function Table() {
-  const data = useContext(DataContext);
+  const { data, filter } = useContext(DataContext);
 
-  const keysColumnTable = data
+  let dataPlanets = [...data];
+
+  if (filter.name) {
+    dataPlanets = dataPlanets
+      .filter((planet) => planet.name.toLowerCase().includes(filter.name));
+  }
+
+  const keysColumnTable = dataPlanets
     .map((item) => delete item.residents && Object.keys(item))[0];
 
-  const planetsTable = data
+  const planetsTable = dataPlanets
     .map((item) => delete item.residents && item);
 
   return (
     <div>
-      <h1>Tabela</h1>
+      <FilterPlanets />
       <table>
         <thead>
           <tr>
