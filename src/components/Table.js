@@ -7,8 +7,11 @@ export default function Table() {
 
   const [localData, setLocalData] = useState([]);
 
+  const menosUm = -1;
+  const lastFilter = filters.filterByNumericValues.slice(menosUm)[0];
+
   useEffect(() => {
-    const { column, comparison, value } = filters.filterByNumericValues[0];
+    const { column, comparison, value } = lastFilter;
     switch (comparison) {
     case 'maior que':
       setLocalData(data.filter((e) => e[column] > value));
@@ -23,7 +26,7 @@ export default function Table() {
       setLocalData(data);
       break;
     }
-  }, [filters, data]);
+  }, [filters, data, lastFilter]);
 
   return (
     <table>

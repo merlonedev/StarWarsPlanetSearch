@@ -1,32 +1,37 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Context from '../context/Context';
 
 export default function SearchBar() {
   const { setFilters, filters } = useContext(Context);
 
-  const filterOptions = ['population', 'orbital_period', 'diameter',
-    'rotation_period', 'surface_water'];
+  const [filterOptions, setFilterOptions] = useState(['population', 'orbital_period',
+    'diameter', 'rotation_period', 'surface_water']);
+
+  const menosUm = -1;
+
+  const newFilter = {
+    column: filterOptions[0],
+    comparison: filters.filterByNumericValues.slice(menosUm)[0].comparison,
+    value: 0,
+  };
 
   const numberFilters = {
-    filterByNumericValues: [
-      {
-        column: 'population',
-        comparison: 'maior que',
-        value: 0,
-      },
-    ],
+    filterByNumericValues: filters.filterByNumericValues,
   };
 
   const setColumn = (value) => {
-    numberFilters.filterByNumericValues[0].column = value;
+    numberFilters.filterByNumericValues.slice(menosUm)[0].column = value;
+    newFilter.column = value;
   };
 
   const setComparison = (value) => {
-    numberFilters.filterByNumericValues[0].comparison = value;
+    numberFilters.filterByNumericValues.slice(menosUm)[0].comparison = value;
+    newFilter.comparison = value;
   };
 
   const setValue = (value) => {
-    numberFilters.filterByNumericValues[0].value = parseFloat(value);
+    numberFilters.filterByNumericValues.slice(menosUm)[0].value = parseFloat(value);
+    newFilter.value = parseFloat(value);
   };
 
   const handleChangeName = (event) => {
@@ -37,6 +42,10 @@ export default function SearchBar() {
 
   const handleClick = () => {
     setFilters({ ...filters, ...numberFilters });
+    numberFilters.filterByNumericValues.push(newFilter);
+
+    setFilterOptions(filterOptions.filter((filter) => filter !== numberFilters
+      .filterByNumericValues.slice(menosUm)[0].column));
   };
 
   return (
