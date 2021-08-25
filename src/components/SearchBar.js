@@ -6,7 +6,11 @@ import Button from './Button';
 import { conditionOptions } from '../helpers/Options';
 
 function SearchBar() {
-  const [filters, setFilters] = useState({ column: '', comparison: '', value: '' });
+  const [filters, setFilters] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: '',
+  });
 
   const { nameFilter, numericFilter, categories } = useContext(PlanetListContext);
 

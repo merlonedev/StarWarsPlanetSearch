@@ -5,19 +5,49 @@ import PlanetListContext from '../contexts/PlanetListContext';
 function Table() {
   const { data, loading, filters } = useContext(PlanetListContext);
 
-  // PERGUNTAR SOBRE O TESTE DAS COLUNAS
-  // PERGUNTAR SOBRE TESTE DOS FILTROS
   const condition = (category, comparison, value) => {
+    console.log(comparison);
     switch (comparison) {
     case 'maior que':
       return (Number(category) > Number(value));
     case 'menor que':
       return (Number(category) < Number(value));
     case 'igual a':
-      return (Number(category) === value);
+      return (Number(category) === Number(value));
     default:
       return false;
     }
+  };
+
+  const checkFilters = () => {
+    const { filterByName,
+      filterByNumericValues,
+    } = filters;
+
+    if (filterByName.name !== '') {
+      const newData = data.filter((planet) => planet.name.includes(filterByName.name));
+
+      return newData;
+    }
+
+    if (filterByNumericValues[1] !== undefined) {
+      let newData = data;
+      filterByNumericValues.map((filter) => {
+        if (filterByNumericValues.indexOf(filter) === 0) {
+          return filter;
+        }
+        const { column, comparison, value } = filter;
+        const filterData = newData.filter((planet) => {
+          const category = planet[column];
+          return condition(category, comparison, value);
+        });
+        newData = filterData;
+        return newData;
+      });
+      return newData;
+    }
+
+    return data;
   };
 
   if (loading) { return <h2>Carregando...</h2>; }
@@ -26,11 +56,7 @@ function Table() {
       <Thead />
       <tbody>
         {
-          data.map((planet) => {
-            const { filterByName,
-              filterByNumericValues,
-            } = filters;
-            const { column, comparison, value } = filterByNumericValues[0];
+          checkFilters().map((planet) => {
             const { name } = planet;
             const rotationPeriod = planet.rotation_period;
             const orbitalPeriod = planet.orbital_period;
@@ -46,21 +72,6 @@ function Table() {
               url,
             } = planet;
             const surfaceWater = planet.surface_water;
-            const category = planet[column];
-            // console.log(condition(category, comparison, value));
-
-            if (filterByName.name !== '' && !(
-              planet.name.includes(filterByName.name)
-            )) {
-              return <tr key={ data.indexOf(planet) } />;
-            }
-
-            if (
-              category !== undefined
-              && !condition(category, comparison, value)
-            ) {
-              return <tr key={ data.indexOf(planet) } />;
-            }
 
             return (
               <tr key={ data.indexOf(planet) }>

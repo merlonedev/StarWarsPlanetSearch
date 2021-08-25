@@ -41,6 +41,7 @@ function Provider(props) {
     loading,
     setLoading,
     filters,
+    setFilters,
     nameFilter,
     numericFilter,
     categories,

@@ -4,45 +4,45 @@ function Thead() {
   return (
     <thead>
       <tr>
-        <td>
+        <th>
           Nome
-        </td>
-        <td>
+        </th>
+        <th>
           Período de Rotação
-        </td>
-        <td>
+        </th>
+        <th>
           Período de Translação
-        </td>
-        <td>
+        </th>
+        <th>
           Diâmetro
-        </td>
-        <td>
+        </th>
+        <th>
           Clima Predominante
-        </td>
-        <td>
+        </th>
+        <th>
           Força Gravitacional
-        </td>
-        <td>
+        </th>
+        <th>
           Terreno
-        </td>
-        <td>
+        </th>
+        <th>
           Superfície de Água
-        </td>
-        <td>
+        </th>
+        <th>
           População
-        </td>
-        <td>
+        </th>
+        <th>
           Filmes
-        </td>
-        <td>
+        </th>
+        <th>
           Criado
-        </td>
-        <td>
+        </th>
+        <th>
           Editado
-        </td>
-        <td>
+        </th>
+        <th>
           Link
-        </td>
+        </th>
       </tr>
     </thead>
   );

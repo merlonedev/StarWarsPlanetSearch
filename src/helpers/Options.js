@@ -1,5 +1,4 @@
 export const categoryOptions = [
-  'escolha',
   'population',
   'orbital_period',
   'diameter',
@@ -8,7 +7,6 @@ export const categoryOptions = [
 ];
 
 export const conditionOptions = [
-  'escolha',
   'maior que',
   'menor que',
   'igual a',

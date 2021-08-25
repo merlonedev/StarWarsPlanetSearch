@@ -7,6 +7,7 @@ function Input({ id, name, onChange, testID }) {
       { name }
       <input
         id={ id }
+        type="text"
         data-testid={ testID }
         onChange={ onChange }
       />
