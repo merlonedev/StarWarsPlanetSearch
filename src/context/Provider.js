@@ -1,24 +1,17 @@
-import React, { useState } from 'react';
-import contextapp from './contextApp';
+import React from 'react';
+import contextApp from './contextApp';
 
 function Provider({ children }) {
   const [data, setData] = UseState([]);
-  const [name, setName] = useState('');
   const contextValue = {
     data,
     setData,
-    filters: {
-      filterByName: {
-        name,
-        setName,
-      },
-    },
   };
 
   return (
-    <contextapp.Provider value={ contextValue }>
+    <contextApp.Provider value={ contextValue }>
       {children}
-    </contextapp.Provider>
+    </contextApp.Provider>
   );
 }
 

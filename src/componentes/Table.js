@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import contextApp from '../contextApp';
+import contextApp from '../context/contextApp';
 
 function Table() {
   const { data } = useContext(contextApp);
-  const tableHeaders = [
+  const headerTable = [
     'name',
     'rotation_period',
     'orbital_period',
@@ -19,28 +19,18 @@ function Table() {
     'url',
   ];
 
-  const filterPlanetsByName = () => {
-    if (planetName) {
-      return data.filter(
-        (planet) => planet.name.toUpperCase().includes(planetName.toUpperCase()),
-      );
-    }
-    return data;
-  };
-  const filtredPlanets = filterPlanetsByName();
-
   const renderTable = (planets) => (
     <div>
       <table>
         <tbody>
           <tr>
-            {tableHeaders.map((header) => (
+            {headerTable.map((header) => (
               <th key={ header }>{header}</th>
             ))}
           </tr>
           {planets.map(
             ({
-              name: planetName,
+              name,
               rotation_period: rotationPeriod,
               orbital_period: orbitalPeriod,
               diameter,
@@ -54,8 +44,8 @@ function Table() {
               edited,
               url,
             }) => (
-              <tr key={ planetName }>
-                <td>{planetName}</td>
+              <tr key={ name }>
+                <td>{name}</td>
                 <td>{rotationPeriod}</td>
                 <td>{orbitalPeriod}</td>
                 <td>{diameter}</td>
@@ -75,7 +65,7 @@ function Table() {
       </table>
     </div>
   );
-  return renderTable(filtredPlanets);
+  return renderTable(data);
 }
 
 export default Table;
