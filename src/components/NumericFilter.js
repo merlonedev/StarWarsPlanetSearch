@@ -2,22 +2,40 @@ import React, { useContext, useState } from 'react';
 import { MyContext } from '../context/MyContext';
 
 function NumericFilter() {
-  const { setSearchPlanet } = useContext(MyContext);
+  const { searchPlanet, setSearchPlanet } = useContext(MyContext);
   const [getColumn, setColumn] = useState('population');
   const [getComparison, setComparison] = useState('menor que');
   const [getInput, setInput] = useState(0);
+  const [selectOption, setSelectOption] = useState(false);
 
+  function renderOptions() {
+    let getPopulation = [''];
+    if (selectOption) {
+      getPopulation = Object.values(searchPlanet[0]
+        .filterByNumericValues).map((object) => object.column);
+    }
+
+    const columns = [
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ];
+
+    const newColumns = columns.filter((item) => item !== getPopulation[0]);
+    return newColumns.map((item) => (
+      <option key={ item } value={ item }>{ item }</option>));
+  }
   return (
     <div>
       <select
         data-testid="column-filter"
         onChange={ (e) => setColumn(e.target.value) }
       >
-        <option value="population">population</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="diameter">diameter</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="surface_water">surface_water</option>
+        {
+          renderOptions()
+        }
       </select>
 
       <select
@@ -37,9 +55,23 @@ function NumericFilter() {
 
       <button
         data-testid="button-filter"
-        onClick={ () => setSearchPlanet([
-          { column: getColumn, comparison: getComparison, value: getInput },
-        ]) }
+        onClick={ () => {
+          setSelectOption(true);
+          setSearchPlanet([
+            {
+              filterByName: {
+                name: '',
+              },
+              filterByNumericValues: [
+                {
+                  column: getColumn,
+                  comparison: getComparison,
+                  value: getInput,
+                },
+              ],
+            },
+          ]);
+        } }
         type="button"
       >
         Buscar

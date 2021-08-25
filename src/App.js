@@ -2,6 +2,7 @@ import React from 'react';
 import Table from './components/Table';
 import Filters from './components/Filters';
 import NumericFilter from './components/NumericFilter';
+import './App.css';
 import NewProvider from './context/MyContext';
 
 function App() {

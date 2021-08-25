@@ -12,7 +12,7 @@ function Table() {
   }
 
   function filterData(objectData) {
-    const { column, comparison, value } = searchPlanet[0];
+    const { column, comparison, value } = searchPlanet[0].filterByNumericValues[0];
 
     if (comparison === 'maior que') {
       return objectData
@@ -69,7 +69,7 @@ function Table() {
 
       <tbody>
 
-        { filterPlanets.map((planet) => (
+        {filterPlanets.map((planet) => (
           <tr key={ planet.name }>
             <td>{planet.name}</td>
             <td>{planet.rotation_period}</td>
