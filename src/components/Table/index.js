@@ -1,8 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
+
 import PlanetsContext from '../../context/PlanetsContext/PlanetsContext';
 
-export default function Table() {
-  const { data } = useContext(PlanetsContext);
+const Table = () => {
+  const { data, filters, filteredData, setFilteredData } = useContext(PlanetsContext);
   const [tableHeader, setTableHeader] = useState([]);
 
   useEffect(() => {
@@ -11,6 +12,34 @@ export default function Table() {
       setTableHeader(tableHeaderArr);
     }
   }, [data]);
+
+  const filterComparison = useCallback(() => {
+    const update = {
+      'maior que': (column, value) => {
+        setFilteredData(data.filter((e) => +e[column] > +value));
+      },
+      'menor que': (column, value) => {
+        setFilteredData(data.filter((e) => +e[column] < +value));
+      },
+      'igual a': (column, value) => {
+        setFilteredData(data.filter((e) => +e[column] === +value));
+      },
+    };
+    filters.filterByNumericValues
+      .forEach(({ column, value, comparison }) => update[comparison](column, value));
+  }, [data, filters.filterByNumericValues, setFilteredData]);
+
+  useEffect(() => {
+    if (data.length && filters.filterByNumericValues.length === 0) {
+      const newArr = data.filter(({ name }) => name.toLowerCase()
+        .includes(filters.filterByName.toLowerCase()));
+      setFilteredData(newArr);
+    }
+  }, [data, filters.filterByName, filters.filterByNumericValues.length, setFilteredData]);
+
+  useEffect(() => {
+    filterComparison();
+  }, [filterComparison]);
 
   return (
     <table>
@@ -23,7 +52,7 @@ export default function Table() {
       </thead>
       <tbody>
         {
-          data.length && data.map((planet) => (
+          filteredData && filteredData.map((planet) => (
             <tr key={ planet.name }>
               {
                 Object.values(planet)
@@ -35,4 +64,6 @@ export default function Table() {
       </tbody>
     </table>
   );
-}
+};
+
+export default Table;
