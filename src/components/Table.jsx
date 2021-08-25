@@ -1,8 +1,8 @@
-import React from 'react';
-import FetchAPI from '../hooks/FetchAPI';
+import React, { useContext } from 'react';
+import MyContext from '../context/MyContext';
 
 function Table() {
-  const [data] = FetchAPI();
+  const { data, filters } = useContext(MyContext);
 
   const tableHead = () => {
     if (data.length) {
@@ -17,11 +17,11 @@ function Table() {
     }
   };
 
-  const tableBody = () => {
-    if (data.length) {
+  const tableBody = (filter = data) => {
+    if (filter.length) {
       return (
         <tbody>
-          { data.map((item) => (
+          { filter.map((item) => (
             <tr key={ item.name }>
               <td>{ item.name }</td>
               <td>{ item.rotation_period }</td>
@@ -43,10 +43,19 @@ function Table() {
     }
   };
 
+  const filteredBody = () => {
+    const { filterByName: { name } } = filters;
+    if (name) {
+      const itemFiltered = data.filter((item) => item.name.includes(name));
+      return tableBody(itemFiltered);
+    }
+    return tableBody();
+  };
+
   return (
     <table>
       { tableHead() }
-      { tableBody() }
+      { filteredBody() }
     </table>
   );
 }
