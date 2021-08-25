@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import { Context } from '../context/SWProvider';
 
-const SearchInput = () => {
+function SearchInput() {
   const { filterPlanetsByName } = useContext(Context);
-
   return (
     <input
       name="name"
@@ -12,6 +11,5 @@ const SearchInput = () => {
       data-testid="name-filter"
     />
   );
-};
-
+}
 export default SearchInput;

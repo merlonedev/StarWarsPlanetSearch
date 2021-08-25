@@ -1,8 +1,8 @@
 import React from 'react';
-import Input from './Input';
+import SearchInput from './Input';
 
 const formTable = () => (
-  <Input />
+  <SearchInput />
 );
 
 export default formTable;

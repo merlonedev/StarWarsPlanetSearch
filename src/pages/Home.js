@@ -1,19 +1,17 @@
-import React, { useContext } from 'react';
-import { Context } from '../context/SWProvider';
+import React from 'react';
 import Table from '../Components/Table';
+import Select from '../Components/Select';
 import Form from '../Components/Form';
 
-const Home = () => {
-  const { data } = useContext(Context);
+const Home = () => (
+  <div>
+    <Form />
+    {' '}
+    <Select />
+    {' '}
+    <Table />
+  </div>
 
-  return (
-    <div>
-      <Form />
-      {' '}
-      <Table data={ data } />
-    </div>
-
-  );
-};
+);
 
 export default Home;

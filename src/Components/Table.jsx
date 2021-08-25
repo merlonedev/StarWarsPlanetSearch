@@ -7,10 +7,10 @@ import TableRow from '@material-ui/core/TableRow';
 import { Context } from '../context/SWProvider';
 
 function Orders() {
-  const { filteredData } = useContext(Context);
+  const { filteredData, data } = useContext(Context);
   if (!filteredData) {
     return <h1>Loading..</h1>;
-  } if (filteredData && filteredData.length === 0) {
+  } if (filteredData.length <= 0) {
     return <h1>Não encontramos nada</h1>;
   }
   return (
@@ -18,26 +18,14 @@ function Orders() {
       <TableHead>
         <TableRow>
           {
-            Object.keys(filteredData[0]).map((e) => <TableCell key={ e }>{e}</TableCell>)
+            Object.keys(data[0]).map((e) => <TableCell key={ e }>{e}</TableCell>)
           }
         </TableRow>
       </TableHead>
       <TableBody>
         {filteredData.map((e) => (
           <TableRow key={ e.name }>
-            <TableCell>{e.name}</TableCell>
-            <TableCell>{e.rotation_period}</TableCell>
-            <TableCell>{e.orbital_period}</TableCell>
-            <TableCell>{e.diameter}</TableCell>
-            <TableCell>{e.climate}</TableCell>
-            <TableCell>{e.gravity}</TableCell>
-            <TableCell>{e.terrain}</TableCell>
-            <TableCell>{e.surface_water}</TableCell>
-            <TableCell>{e.population}</TableCell>
-            <TableCell>{e.films}</TableCell>
-            <TableCell>{e.created}</TableCell>
-            <TableCell>{e.edited}</TableCell>
-            <TableCell>{e.url}</TableCell>
+            {Object.values(e).map((elm) => <TableCell key={ elm }>{elm}</TableCell>)}
           </TableRow>
         ))}
       </TableBody>
