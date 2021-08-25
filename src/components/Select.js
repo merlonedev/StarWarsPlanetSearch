@@ -10,11 +10,11 @@ function Select({ id, name, onChange, testID, options }) {
         data-testid={ testID }
         onChange={ onChange }
       >
-        { options.map((option) => (
+        { options.length > 0 ? options.map((option) => (
           <option value={ option } key={ options.indexOf(option) }>
             { option }
           </option>
-        )) }
+        )) : null }
       </select>
     </label>
   );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import PlanetListContext from './PlanetListContext';
+import { categoryOptions } from '../helpers/Options';
 
 function Provider(props) {
   const [data, setData] = useState([]);
@@ -9,10 +10,13 @@ function Provider(props) {
     filterByName: { name: '' },
     filterByNumericValues: [{ column: '', comparison: '', value: '' }],
   });
+  const [categories, setCategories] = useState(categoryOptions);
+
   const addData = (list) => {
     setData(list);
     setLoading(false);
   };
+
   const nameFilter = (name) => {
     const search = { ...filters,
       filterByName:
@@ -20,11 +24,15 @@ function Provider(props) {
     };
     setFilters(search);
   };
+
   const numericFilter = ({ column, comparison, value }) => {
     const filter = {
-      filterByNumericValues:
-      [{ column, comparison, value }],
+      ...filters,
     };
+    filter.filterByNumericValues.push({ column, comparison, value });
+    const newCategories = categoryOptions.filter((option) => option !== column);
+
+    setCategories(newCategories);
     setFilters(filter);
   };
   const contextValue = {
@@ -35,6 +43,7 @@ function Provider(props) {
     filters,
     nameFilter,
     numericFilter,
+    categories,
   };
   const { children } = props;
 

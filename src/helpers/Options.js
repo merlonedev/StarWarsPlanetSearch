@@ -5,7 +5,6 @@ export const categoryOptions = [
   'diameter',
   'rotation_period',
   'surface_water',
-
 ];
 
 export const conditionOptions = [

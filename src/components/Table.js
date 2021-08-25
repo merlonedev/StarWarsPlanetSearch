@@ -49,7 +49,9 @@ function Table() {
             const category = planet[column];
             // console.log(condition(category, comparison, value));
 
-            if (filterByName.name !== '' && !(planet.name.includes(filterByName.name))) {
+            if (filterByName.name !== '' && !(
+              planet.name.includes(filterByName.name)
+            )) {
               return <tr key={ data.indexOf(planet) } />;
             }
 

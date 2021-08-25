@@ -3,12 +3,12 @@ import PlanetListContext from '../contexts/PlanetListContext';
 import Input from './Input';
 import Select from './Select';
 import Button from './Button';
-import { categoryOptions, conditionOptions } from '../helpers/Options';
+import { conditionOptions } from '../helpers/Options';
 
 function SearchBar() {
   const [filters, setFilters] = useState({ column: '', comparison: '', value: '' });
 
-  const { nameFilter, numericFilter } = useContext(PlanetListContext);
+  const { nameFilter, numericFilter, categories } = useContext(PlanetListContext);
 
   const handleChange = (e) => {
     const { target: { value, id } } = e;
@@ -54,7 +54,7 @@ function SearchBar() {
       <Select
         testID="column-filter"
         id="category-selector"
-        options={ categoryOptions }
+        options={ categories }
         onChange={ handleChange }
       />
       <Select
