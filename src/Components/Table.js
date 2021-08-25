@@ -1,6 +1,19 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
+import MyContext from '../Context/Context';
+import PlanetMap from './PlanetMap';
 
 function Table() {
+  const { data, setData } = useContext(MyContext);
+  useEffect(() => {
+    const getPlanets = async () => {
+      const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
+      const { results } = await fetch(endpoint).then((planets) => planets.json());
+      setData(results);
+    };
+
+    getPlanets();
+  }, []);
+
   return (
     <table>
       <thead>
@@ -21,8 +34,12 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-      {/* req api com map */}
+        { data.map((CurrentPlanet) => (
+          <PlanetMap key={ CurrentPlanet.name } planet={ CurrentPlanet } />
+        )) }
       </tbody>
     </table>
   );
 }
+
+export default Table;
