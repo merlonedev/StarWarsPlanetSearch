@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import Context from '../context/Context';
 
 export default function FilterNumeric() {
-  const { filterNumeric, setFilters, vazio } = useContext(Context);
+  const { setFilters, filters, vazio } = useContext(Context);
   const [coluna, setColumn] = useState({});
   const [comparacao, setComparison] = useState({});
   const [valor, setValue] = useState({});
@@ -21,7 +21,7 @@ export default function FilterNumeric() {
 
   const createObj = () => {
     setFilters(
-      { ...filterNumeric,
+      { ...filters,
         filterByNumericValues:
         [{ column: coluna, comparison: comparacao, value: valor }] },
     );

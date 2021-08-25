@@ -5,6 +5,7 @@ import Context from './Context';
 const urlApi = 'https://swapi-trybe.herokuapp.com/api/planets/';
 export default function Provider({ children }) {
   const [tablePlanet, setData] = useState([]);
+  const [vazio, setVazio] = useState('');
   const [searchPlanet, setsearchPlanet] = useState([]);
   const [filters, setFilters] = useState({
     filterByName:
@@ -12,9 +13,9 @@ export default function Provider({ children }) {
     filterByNumericValues: [],
   });
 
-  const { filterByName } = filters;
-  const { name } = filterByName;
+  // Requisição
   useEffect(() => {
+    console.log('UseEffect Api');
     const endpointPlanets = urlApi;
     const getPlanets = async () => {
       const results = await fetch(endpointPlanets);
@@ -24,52 +25,51 @@ export default function Provider({ children }) {
     };
     getPlanets();
   }, []);
+  // Filter for name
+  const { filterByName, filterByNumericValues } = filters;
+  const { name } = filterByName;
 
-  // ==>
+  // Filer for Colum
   useEffect(() => {
-    const planetsFiltereds = tablePlanet.filter((planet) => planet.name
-      .includes(name));
-    setsearchPlanet(planetsFiltereds);
-  }, [name, filters, tablePlanet]);
-
-  useEffect(() => {
-    const number = 10;
-    let comparaObj = filters;
-    if (filters.filterByNumericValues.length > 0) {
-      filters.filterByNumericValues.forEach((filter) => {
-        switch (filter.comparison) {
-        case 'igual a':
-          comparaObj = comparaObj
-            .filter((item) => Number(item[filter.column], number)
-            === Number(filter.value, number));
-          break;
-        case 'maior que':
-          comparaObj = comparaObj
-            .filter((item) => Number(item[filter.column], number)
-              > Number(filter.value, number));
-          break;
-        case 'menor que':
-          comparaObj = comparaObj
-            .filter((item) => Number(item[filter.column], number)
-                < Number(filter.value, number));
-          break;
-        default:
-          break;
-        }
+    console.log('Effect Filter');
+    let columFiltered = tablePlanet.filter((planet) => planet.name
+      .toLowerCase().includes(name));
+    if (filterByNumericValues.length > 0) {
+      columFiltered = columFiltered.filter((planet) => {
+        let numberValue = true;
+        filterByNumericValues.forEach(({ column, comparison, value }) => {
+          switch (comparison) {
+          case 'maior que':
+            numberValue = Number(planet[column]) > Number(value) && numberValue;
+            break;
+          case 'menor que':
+            numberValue = Number(planet[column]) < Number(value) && numberValue;
+            break;
+          case 'igual a':
+            numberValue = Number(planet[column]) === Number(value) && numberValue;
+            break;
+          default:
+            numberValue = false;
+          }
+        });
+        return numberValue;
       });
-      setsearchPlanet(comparaObj);
     }
-  }, [filters]);
+    setsearchPlanet(columFiltered);
+  }, [tablePlanet, name, filters, filterByNumericValues]);
 
-  const context = {
-    setFilters,
-    tablePlanet,
-    filters,
-    searchPlanet,
-    name,
-  };
   return (
-    <Context.Provider value={ context }>
+    <Context.Provider
+      value={ {
+        name,
+        tablePlanet,
+        setFilters,
+        filters,
+        searchPlanet,
+        vazio,
+        setVazio,
+      } }
+    >
       { children }
     </Context.Provider>
   );
