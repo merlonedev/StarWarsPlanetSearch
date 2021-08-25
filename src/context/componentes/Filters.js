@@ -15,6 +15,10 @@ function Filters() {
     getPlanets();
   }, [setData]);
 
+  const handleChange = ({ target }) => {
+    setName(target.value);
+  };
+
   return (
     <from>
       <div>
@@ -22,7 +26,7 @@ function Filters() {
           data-testid="name-filter"
           type="text"
           placeholder="Nome dp planeta"
-          onChange="{ handleChange}"
+          onChange={ handleChange }
         />
       </div>
     </from>
