@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 
 function Planets({ planetInfo }) {
   const {
@@ -32,9 +32,27 @@ function Planets({ planetInfo }) {
       <td>{films}</td>
       <td>{created}</td>
       <td>{edited}</td>
-      <td>{url}/></td>
+      <td>{url}</td>
     </tr>
   );
 }
+
+Planets.propTypes = {
+  planetInfo: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    rotation_period: PropTypes.string.isRequired,
+    orbital_period: PropTypes.string.isRequired,
+    diameter: PropTypes.string.isRequired,
+    climate: PropTypes.string.isRequired,
+    gravity: PropTypes.string.isRequired,
+    terrain: PropTypes.string.isRequired,
+    surface_water: PropTypes.string.isRequired,
+    population: PropTypes.string.isRequired,
+    films: PropTypes.arrayOf(PropTypes.string).isRequired,
+    created: PropTypes.string.isRequired,
+    edited: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default Planets;

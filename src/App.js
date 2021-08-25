@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Provider from './context/Provider.js';
+import Provider from './context/Provider';
 
 import Table from './components/Table/index';
 

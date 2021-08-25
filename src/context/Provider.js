@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import AppContext from './AppContext.js';
+import PropTypes from 'prop-types';
+import AppContext from './AppContext';
 
 function Provider({ children }) {
   const [data, setData] = useState([]);
@@ -15,7 +16,7 @@ function Provider({ children }) {
 
   const contextValue = {
     data,
-  }
+  };
 
   return (
     <AppContext.Provider value={ contextValue }>
@@ -26,4 +27,8 @@ function Provider({ children }) {
   );
 }
 
-export default Provider; 
+Provider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default Provider;

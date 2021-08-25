@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Planets from '../Planets/index';
-import AppContext from '../../context/AppContext.js';
+import AppContext from '../../context/AppContext';
 
 function Table() {
   const { data } = useContext(AppContext);
