@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import AppContext from './AppContext';
 
 function Provider({ children }) {
@@ -20,5 +21,9 @@ function Provider({ children }) {
     </AppContext.Provider>
   );
 }
+
+Provider.propTypes = {
+  children: PropTypes.objectOf(PropTypes.object).isRequired,
+};
 
 export default Provider;
