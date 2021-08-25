@@ -6,6 +6,13 @@ const filterInitial = {
   filterByName: {
     name: '',
   },
+  filterByNumericValues: [
+    {
+      column: '',
+      comparison: '',
+      value: '',
+    },
+  ],
 };
 
 function Provider({ children }) {
