@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Button } from '@material-ui/core';
 import { Context } from '../Context/Context';
+import Remove from './Remove';
 
 const COMPARISON = ['maior que', 'igual a', 'menor que'];
 
@@ -9,7 +10,11 @@ function Select() {
   const [comparison, setComparison] = useState();
   const [value, setNumber] = useState();
 
-  const { handleChange, columnArray } = useContext(Context);
+  const {
+    handleChange,
+    columnArray,
+    filter: { filterByNumericValues },
+  } = useContext(Context);
 
   const handleValue = ({ target: { id, value: valor } }) => {
     switch (id) {
@@ -82,6 +87,7 @@ function Select() {
       </label>
       <input { ...numberProps } />
       <Button { ...buttonProps }>FILTRAR</Button>
+      {filterByNumericValues.map(({ column: coluna }) => <Remove key={ coluna } />)}
     </>
   );
 }

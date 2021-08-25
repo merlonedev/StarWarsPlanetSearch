@@ -73,6 +73,10 @@ export const ContextProvider = ({ children }) => {
     if (event.target) {
       const { name, value } = event.target;
       setFilter({ ...filter, filterByName: { [name]: value } });
+    } else if (filter.filterByNumericValues[0].column === '') {
+      setFilter({ ...filter,
+        filterByNumericValues: [event] });
+      setColumn(columnArray.filter((item) => item !== event.column));
     } else {
       setFilter({ ...filter,
         filterByNumericValues: [...filter.filterByNumericValues, event] });
@@ -80,9 +84,26 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
+  const removeFilter = (coluna) => {
+    const { filterByNumericValues } = filter;
+    const remove = filterByNumericValues.filter(
+      (item) => item.column !== coluna,
+    );
+    setColumn(COLUMN);
+    setFilter({ ...filter, filterByNumericValues: [remove] });
+  };
+
   return (
     <Context.Provider
-      value={ { data, setData, filter, handleChange, newData, columnArray } }
+      value={ {
+        data,
+        setData,
+        filter,
+        handleChange,
+        newData,
+        columnArray,
+        removeFilter,
+      } }
     >
       {children}
     </Context.Provider>
