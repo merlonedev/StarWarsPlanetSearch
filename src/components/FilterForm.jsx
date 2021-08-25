@@ -2,11 +2,11 @@ import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
 
 export default function FilterForm() {
-  const params = ['population',
+  const [params, setParams] = useState(['population',
     'orbital_period',
     'diameter',
     'rotation_period',
-    'surface_water'];
+    'surface_water']);
 
   const [slcFilter, setSelect] = useState({
     column: 'population', comparison: 'maior que', value: '' });
@@ -41,12 +41,17 @@ export default function FilterForm() {
     });
   };
 
+  const checkFilter = () => {
+    setParams(params.filter((p) => p !== slcFilter.column));
+  };
+
   const handleClick = () => {
+    checkFilter();
     setFilter({
       ...filters,
       filterByNumericValues: [...filterByNumericValues, { ...slcFilter }],
     });
-    console.log(filters);
+    console.log(filterByNumericValues);
   };
 
   return (

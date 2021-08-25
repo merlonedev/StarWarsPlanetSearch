@@ -8,6 +8,7 @@ export default function Table() {
   const { filterByName: { name } } = filters;
   const { filterByNumericValues } = filters;
 
+  // Créditos da lógica de filtragem para o Merlone:
   const filterPlanets = () => {
     const comps = {
       'maior que': (coluna, valor) => Number(coluna) > Number(valor),
@@ -23,6 +24,10 @@ export default function Table() {
         .forEach(({ column, comparison, value }) => setPlanets(
           data.filter((dat) => comps[comparison](dat[column], value)),
         ));
+    } else {
+      filterByNumericValues.forEach(({ column, comparison, value }) => setPlanets(
+        planets.filter((p) => comps[comparison](p[column], value)),
+      ));
     }
     if (name) {
       setPlanets(planets.filter((planet) => (planet.name).toLowerCase().includes(name)));
@@ -30,7 +35,6 @@ export default function Table() {
   };
 
   useEffect(filterPlanets, [filters]);
-
   return (
     <div className="table-responsive-sm">
       <table className="table table-sm">
