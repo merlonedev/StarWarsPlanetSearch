@@ -3,7 +3,7 @@ import Planets from '../Planets/index';
 import AppContext from '../../context/AppContext';
 
 function Table() {
-  const { data } = useContext(AppContext);
+  const { data, filterByName } = useContext(AppContext);
 
   return (
     <table>
@@ -25,7 +25,13 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { data.map((planet, index) => <Planets key={ index } planetInfo={ planet } />) }
+        { data.map((planets, index) => (
+          filterByName === '' ? <Planets key={ index } planetInfo={ planets } /> : null
+        )) }
+        { data.map((planets, index) => (
+          planets.name.toUpperCase().includes(filterByName.toUpperCase())
+            ? <Planets key={ index } planetInfo={ planets } /> : null
+        )) }
       </tbody>
     </table>
   );
