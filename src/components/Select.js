@@ -11,8 +11,8 @@ function Select({ id, name, onChange, testID, options }) {
         onChange={ onChange }
       >
         { options.map((option) => (
-          <option value={ option.value } key={ options.indexOf(option) }>
-            { option.name }
+          <option value={ option } key={ options.indexOf(option) }>
+            { option }
           </option>
         )) }
       </select>
@@ -20,13 +20,13 @@ function Select({ id, name, onChange, testID, options }) {
   );
 }
 
-const { string, func, arrayOf, objectOf } = PropTypes;
+const { string, func, arrayOf } = PropTypes;
 Select.propTypes = {
   id: string.isRequired,
   name: string,
   testID: string,
   onChange: func.isRequired,
-  options: arrayOf(objectOf(string)).isRequired,
+  options: arrayOf(string).isRequired,
 };
 
 Select.defaultProps = {

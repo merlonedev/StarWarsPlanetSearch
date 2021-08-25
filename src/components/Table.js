@@ -8,12 +8,12 @@ function Table() {
   // PERGUNTAR SOBRE O TESTE DAS COLUNAS
   const condition = (category, comparison, value) => {
     switch (comparison) {
-    case '>':
-      return (category > parseFloat(value));
-    case '<':
-      return (category < parseFloat(value));
-    case '===':
-      return (category === value);
+    case 'maior que':
+      return (Number(category) > Number(value));
+    case 'menor que':
+      return (Number(category) < Number(value));
+    case 'igual a':
+      return (Number(category) === value);
     default:
       return false;
     }
