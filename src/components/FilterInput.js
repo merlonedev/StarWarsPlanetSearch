@@ -1,15 +1,24 @@
 import React, { useContext } from 'react';
 import starwarsContext from '../context/starwarsContext';
+import NumericFilter from './NumericFilter';
 
 export default function Filters() {
-  const { filters, setFilters } = useContext(starwarsContext);
+  const { filters, setFilters, columns, setColumns } = useContext(starwarsContext);
+  const { filterByNumericValues, filterByName } = filters;
 
   const handleChange = ({ target }) => {
-    const updateFilterName = async () => {
-      await setFilters({ filterByName: { name: target.value } });
-    };
-    updateFilterName();
-    // console.log(filters);
+    setFilters({ ...filters, filterByName: { name: target.value } });
+  };
+
+  const handleClick = (column) => {
+    const filtredResult = filterByNumericValues.filter(
+      (filter) => filter.column !== column,
+    );
+    setFilters({
+      ...filters,
+      filterByNumericValues: filtredResult,
+    });
+    setColumns([...columns, column]);
   };
 
   return (
@@ -21,11 +30,30 @@ export default function Filters() {
           data-testid="name-filter"
           id="input-filter"
           name="input-filter"
-          value={ filters.filterByName.name }
+          value={ filterByName.name }
           onChange={ (e) => handleChange(e) }
         />
       </label>
-
+      <NumericFilter />
+      {filterByNumericValues.length >= 1 ? filterByNumericValues.map(
+        (filter, index) => {
+          if (filter.column) {
+            return (
+              <div key={ index } data-testid="filter">
+                <span>
+                  { `${filter.column} ${filter.comparison} ${filter.value}`}
+                </span>
+                <button
+                  type="button"
+                  onClick={ () => handleClick(filter.column) }
+                >
+                  X
+                </button>
+              </div>);
+          }
+          return '';
+        },
+      ) : 'No filters'}
     </div>
   );
 }
