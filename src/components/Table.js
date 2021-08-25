@@ -2,10 +2,45 @@ import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
 
 function Table() {
-  const { state } = useContext(MyContext);
+  const {
+    state,
+    filters,
+    filteredPlanets,
+    setFilters,
+    setFilteredPlanets,
+  } = useContext(MyContext);
+
+  function handleChange({ target }) {
+    const { value } = target;
+    const nameSearch = state.filter((search) => search.name.includes(value));
+    setFilters({ ...filters, filterByName: { value } });
+    setFilteredPlanets(nameSearch);
+  }
+
+  function inputSearch() {
+    return filteredPlanets.map((eachPlanet, index) => (
+      <tr key={ index }>
+        {Object.values(eachPlanet).map((info) => (
+          <td key={ info.name }>
+            {info}
+          </td>
+        ))}
+      </tr>
+    ));
+  }
+
   return (
 
     <div>
+      <label htmlFor="search">
+        Procurar
+        <input
+          type="text"
+          id="search"
+          data-testid="name-filter"
+          onChange={ handleChange }
+        />
+      </label>
       <table>
         <thead>
           <tr>
@@ -15,13 +50,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {state.map((eachPlanet, index) => (
-            <tr key={ index }>
-              { Object.values(eachPlanet).map((info) => (
-                <td key={ info.name }>{ info }</td>
-              ))}
-            </tr>
-          ))}
+          { inputSearch() }
         </tbody>
       </table>
     </div>
