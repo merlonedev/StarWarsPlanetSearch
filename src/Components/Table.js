@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import ContextApp from '../ContextAPI/ContextApp';
 
 function Table() {
-  const { filteredName } = useContext(ContextApp);
+  const { filteredInfo } = useContext(ContextApp);
   return (
     <table>
       <thead>
@@ -23,7 +23,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {filteredName.map((planet) => (
+        {filteredInfo.map((planet) => (
           <tr key={ planet.name }>
             <td>{ planet.name }</td>
             <td>{ planet.rotation_period }</td>
