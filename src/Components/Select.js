@@ -2,13 +2,6 @@ import React, { useContext, useState } from 'react';
 import { Button } from '@material-ui/core';
 import { Context } from '../Context/Context';
 
-const COLUMN = [
-  'population',
-  'orbital_period',
-  'diameter',
-  'rotation_period',
-  'surface_water'];
-
 const COMPARISON = ['maior que', 'igual a', 'menor que'];
 
 function Select() {
@@ -16,7 +9,7 @@ function Select() {
   const [comparison, setComparison] = useState();
   const [value, setNumber] = useState();
 
-  const { handleChange } = useContext(Context);
+  const { handleChange, columnArray } = useContext(Context);
 
   const handleValue = ({ target: { id, value: valor } }) => {
     switch (id) {
@@ -35,13 +28,9 @@ function Select() {
 
   const handleClick = () => {
     const filt = {
-      filterByNumericValues: [
-        {
-          column,
-          comparison,
-          value,
-        },
-      ],
+      column,
+      comparison,
+      value,
     };
     handleChange(filt);
   };
@@ -73,6 +62,8 @@ function Select() {
     'data-testid': 'button-filter',
     type: 'button',
     onClick: handleClick,
+    variant: 'contained',
+    color: 'primary',
   };
 
   return (
@@ -80,7 +71,7 @@ function Select() {
       <label htmlFor="column">
         Coluna
         <select { ...columnProps }>
-          {COLUMN.map((item) => <option value={ item } key={ item }>{item}</option>)}
+          {columnArray.map((item) => <option value={ item } key={ item }>{item}</option>)}
         </select>
       </label>
       <label htmlFor="comparison">

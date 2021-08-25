@@ -12,12 +12,19 @@ const INITIAL_STATE = { filterByName: { name: '' },
   ],
 };
 
+const COLUMN = ['population',
+  'orbital_period',
+  'diameter',
+  'rotation_period',
+  'surface_water'];
+
 export const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [data, setData] = useState('');
   const [filter, setFilter] = useState(INITIAL_STATE);
   const [newData, setNewData] = useState('');
+  const [columnArray, setColumn] = useState(COLUMN);
 
   const getAPI = async () => {
     const request = await FetchApi();
@@ -42,22 +49,24 @@ export const ContextProvider = ({ children }) => {
   }, [data, filter]);
 
   useEffect(() => {
-    const { column, comparison, value } = filter.filterByNumericValues[0];
-    switch (comparison) {
-    case 'maior que':
-      setNewData(data
-        .filter((e) => Number(e[column]) > value && e[column] !== 'unknown'));
-      break;
-    case 'igual a':
-      setNewData(data
-        .filter((e) => e[column] === value && e[column] !== 'unknown'));
-      break;
-    case 'menor que':
-      setNewData(data
-        .filter((e) => Number(e[column]) < value && e[column] !== 'unknown'));
-      break;
-    default: setNewData(data);
-    }
+    filter.filterByNumericValues.forEach((element) => {
+      const { column, comparison, value } = element;
+      switch (comparison) {
+      case 'maior que':
+        setNewData(data
+          .filter((item) => Number(item[column]) > value && item[column] !== 'unknown'));
+        break;
+      case 'igual a':
+        setNewData(data
+          .filter((item) => item[column] === value && item[column] !== 'unknown'));
+        break;
+      case 'menor que':
+        setNewData(data
+          .filter((item) => Number(item[column]) < value && item[column] !== 'unknown'));
+        break;
+      default: setNewData(data);
+      }
+    });
   }, [data, filter.filterByNumericValues]);
 
   const handleChange = (event) => {
@@ -65,12 +74,16 @@ export const ContextProvider = ({ children }) => {
       const { name, value } = event.target;
       setFilter({ ...filter, filterByName: { [name]: value } });
     } else {
-      setFilter({ ...filter, ...event });
+      setFilter({ ...filter,
+        filterByNumericValues: [...filter.filterByNumericValues, event] });
+      setColumn(columnArray.filter((item) => item !== event.column));
     }
   };
 
   return (
-    <Context.Provider value={ { data, setData, filter, handleChange, newData } }>
+    <Context.Provider
+      value={ { data, setData, filter, handleChange, newData, columnArray } }
+    >
       {children}
     </Context.Provider>
   );
