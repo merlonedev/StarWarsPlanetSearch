@@ -4,21 +4,26 @@ import MyContext from './MyContext';
 function Filter() {
   const { filters,
     setFilters,
+    // filtrados,
+    // setFiltrados,
     filterByName,
-    filterByNumericValues,
-    setFilterByNumericValues } = useContext(MyContext);
+    filterByNumericValue,
+    setFilterByNumericValue } = useContext(MyContext);
 
   function handleChange({ target: { value } }) {
     return setFilters({ ...filters, filterByName: { name: value } });
   }
 
   function handleFilter({ target: { name, value } }) {
-    return setFilterByNumericValues({
-      filterByNumericValues: { [name]: value } });
+    return setFilterByNumericValue({
+      ...filterByNumericValue, [name]: value });
   }
 
   function handleForm() {
-    return setFilters({ ...filters, filterByNumericValues });
+    return setFilters(
+      { ...filters,
+        filterByNumericValues: [...filters.filterByNumericValues, filterByNumericValue] },
+    );
   }
 
   return (
@@ -64,7 +69,7 @@ function Filter() {
         <input
           type="number"
           name="value"
-          value={ filterByNumericValues.value }
+          value={ filterByNumericValue.value }
           id="value-filter"
           data-testid="value-filter"
           placeholder="Número"

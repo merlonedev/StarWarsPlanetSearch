@@ -9,19 +9,17 @@ function Provider({ children }) {
       filterByName: {
         name: '',
       },
-      filterByNumericValues: [
-        {
-          column: 'population',
-          comparison: 'maior que',
-          value: '100000',
-        },
-      ],
+      filterByNumericValues: [],
     },
   );
   const [loading, setLoading] = useState(true);
   const [filterByName, setFilterByName] = useState('');
   const [filtrados, setFiltrados] = useState([]);
-  const [filterByNumericValues, setFilterByNumericValues] = useState({});
+  const [filterByNumericValue, setFilterByNumericValue] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: '',
+  });
 
   useEffect(() => {
     const data = async () => {
@@ -39,8 +37,37 @@ function Provider({ children }) {
   }, []);
 
   useEffect(() => {
-    const filtrado = state.filter(({ name }) => name.includes(filters.filterByName.name));
-    setFiltrados(filtrado);
+    const filtradoName = state.filter(
+      ({ name }) => name.includes(filters.filterByName.name),
+    );
+    let comparacao = [...filtradoName];
+    console.log('ANTES DO FILTRO', comparacao);
+    if (filters.filterByNumericValues.length > 0) {
+      const filterAll = () => {
+        const test = filters.filterByNumericValues
+          .map(({ column, value: values, comparison }) => {
+            switch (comparison) {
+            case 'maior que':
+              comparacao = comparacao
+                .filter((planet) => +planet[column] > +values);
+              return comparacao;
+            case 'igual a':
+              comparacao = comparacao
+                .filter((planet) => +planet[column] === +values);
+              return comparacao;
+            case 'menor que':
+              comparacao = comparacao
+                .filter((planet) => +planet[column] < +values);
+              return comparacao;
+            default:
+              return comparacao;
+            }
+          });
+        return test;
+      };
+      filterAll();
+    }
+    setFiltrados(comparacao);
   }, [state, filters]);
 
   const contextValue = {
@@ -52,8 +79,8 @@ function Provider({ children }) {
     filters,
     setFilters,
     filtrados,
-    filterByNumericValues,
-    setFilterByNumericValues,
+    filterByNumericValue,
+    setFilterByNumericValue,
   };
 
   return (
