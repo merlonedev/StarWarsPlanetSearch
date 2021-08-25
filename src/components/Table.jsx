@@ -1,20 +1,23 @@
 import React, { useContext } from 'react';
 import ContextApi from '../context/ContextApi';
+import FilterByName from './FilterByName';
 
 function Table() {
-  const { data, columns } = useContext(ContextApi);
+  const { columns, dataFilter } = useContext(ContextApi);
   // console.log(data);
   return (
     <section>
+      <FilterByName />
       <table>
         <thead>
           <tr>
-            { columns.map((item) => <th key={ item }>{ item }</th>) }
+            { columns.map((item) => <th key={ item }>{ item.replace('_', ' ') }</th>) }
           </tr>
         </thead>
         <tbody>
           {
-            data.map((planet, index) => (
+            dataFilter.map((planet, index) => (
+              // n consegui far o map dentro do map
               <tr key={ index }>
                 <td data-testid="planet-name">{planet.name}</td>
                 <td>{planet.rotation_period}</td>
