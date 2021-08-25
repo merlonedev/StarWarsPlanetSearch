@@ -19,6 +19,16 @@ function Table() {
     'url',
   ];
 
+  const filterPlanetsByName = () => {
+    if (planetName) {
+      return data.filter(
+        (planet) => planet.name.toUpperCase().includes(planetName.toUpperCase()),
+      );
+    }
+    return data;
+  };
+  const filtredPlanets = filterPlanetsByName();
+
   const renderTable = (planets) => (
     <div>
       <table>
@@ -30,7 +40,7 @@ function Table() {
           </tr>
           {planets.map(
             ({
-              name,
+              name: planetName,
               rotation_period: rotationPeriod,
               orbital_period: orbitalPeriod,
               diameter,
@@ -44,8 +54,8 @@ function Table() {
               edited,
               url,
             }) => (
-              <tr key={ name }>
-                <td>{name}</td>
+              <tr key={ planetName }>
+                <td>{planetName}</td>
                 <td>{rotationPeriod}</td>
                 <td>{orbitalPeriod}</td>
                 <td>{diameter}</td>
@@ -65,7 +75,7 @@ function Table() {
       </table>
     </div>
   );
-  return renderTable(data);
+  return renderTable(filtredPlanets);
 }
 
 export default Table;
