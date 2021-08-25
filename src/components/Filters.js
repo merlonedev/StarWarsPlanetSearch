@@ -24,13 +24,13 @@ const Filters = () => {
 
     switch (comparison) {
     case 'maior que':
-      planets = planets.filter((planet) => (planet[column]) > (value));
+      planets = planets.filter((planet) => Number(planet[column]) > Number(value));
       break;
     case 'menor que':
-      planets = planets.filter((planet) => (planet[column]) < (value));
+      planets = planets.filter((planet) => Number(planet[column]) < Number(value));
       break;
     case 'igual a':
-      planets = planets.filter((planet) => (planet[column]) === (value));
+      planets = planets.filter((planet) => Number(planet[column]) === Number(value));
       break;
     default:
       planets = filterPlanets;
