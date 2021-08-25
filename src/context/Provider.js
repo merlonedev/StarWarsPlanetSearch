@@ -5,7 +5,20 @@ import Context from './Context';
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [keys, setKeys] = useState([]);
-  const [filters, setFilters] = useState({ filterByName: { name: '' } });
+  const [filters, setFilters] = useState(
+    {
+      filterByName: {
+        name: '',
+      },
+      filterByNumericValues: [
+        {
+          column: '',
+          comparison: '',
+          value: 0,
+        },
+      ],
+    },
+  );
 
   useEffect(() => { // carrega tabela sem filtros
     const fetchAPI = async () => {
