@@ -6,6 +6,7 @@ function Table() {
   const { data, loading, filters } = useContext(PlanetListContext);
 
   // PERGUNTAR SOBRE O TESTE DAS COLUNAS
+  // PERGUNTAR SOBRE TESTE DOS FILTROS
   const condition = (category, comparison, value) => {
     switch (comparison) {
     case 'maior que':
@@ -48,7 +49,7 @@ function Table() {
             const category = planet[column];
             // console.log(condition(category, comparison, value));
 
-            if (planet.name.includes(filterByName)) {
+            if (filterByName.name !== '' && !(planet.name.includes(filterByName.name))) {
               return <tr key={ data.indexOf(planet) } />;
             }
 
