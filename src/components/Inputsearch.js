@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import mycontext from '../context/mycontext';
 
 function Inputsearch() {
-  const { filterSearch, nameplanet } = useContext(mycontext);
+  const { searchPlanet, nameplanet } = useContext(mycontext);
   return (
     <input
       type="text"
@@ -10,7 +10,7 @@ function Inputsearch() {
       placeholder="search"
       id="search"
       name="search"
-      onChange={ filterSearch }
+      onChange={ searchPlanet }
       value={ nameplanet }
     />
 

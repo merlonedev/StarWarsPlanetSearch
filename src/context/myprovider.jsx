@@ -7,35 +7,34 @@ function Provider({ children }) {
   const [search, setsearch] = useState({ filters: { filterByName: { name: '' } } });
   const [filter, setfilter] = useState([]);
 
+  function searchPlanet({ target: { value } }) { // searchPlanet(e) { const valor = e.target.value }
+    setsearch({
+      ...search,
+      filters: { filterByName: { name: value } },
+    });
+  }
+
   useEffect(() => {
     const getAPI = async () => {
       try {
         const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
         const { results } = await response.json(); // const objeto = await results.results;
         setdata(results);
-        setfilter(results);
       } catch (error) {
         console.log(error);
       }
     };
     getAPI();
-  }, []);
+  }, []); // transformei em componentdidmount()
 
-  function searchPlanet({ target: { value } }) { // searchPlanet(e) { const valor = e.target.value }
-    setsearch({
-      ...search,
-      filterByName: { name: value },
-    });
-  }
-
-  function filterSearch({ target: { value } }) {
-    const dataFiltered = data.filter((planet) => (
-      planet.name.toLowerCase().includes(value.toLowerCase())
+  useEffect(() => {
+    const filterResult = data.filter((planet) => (
+      planet.name.toLowerCase().includes(search.filters.filterByName.name.toLowerCase())
     ));
-    setfilter(dataFiltered);
-  }
+    setfilter(filterResult);
+  }, [data, search]); // transformei em componentdidupdate()
 
-  const context = { data, setdata, search, searchPlanet, filter, filterSearch };
+  const context = { data, setdata, search, searchPlanet, filter };
   return (
     <mycontext.Provider value={ context }>
       { children }
