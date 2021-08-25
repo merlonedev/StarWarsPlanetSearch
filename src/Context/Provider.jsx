@@ -7,28 +7,28 @@ const INITIAL_FILTER = {
     filterByName: {
       name: '',
     },
-    filterByNumericValues: [
-      {
-        column: 'population',
-        comparison: 'maior que',
-        value: '100000',
-      },
-    ],
+    filterByNumericValues: [],
   },
+};
+
+export const filterState = {
+  column: 'population',
+  comparison: 'maior que',
+  value: 0,
 };
 
 const Provider = ({ children }) => {
   const [planets, setPlanets] = useState([]);
   const [filterText, setFilterText] = useState(INITIAL_FILTER);
-  const [shouldFilter, setShouldFilter] = useState(false);
+  const [filtered, setFiltered] = useState(filterState);
 
   const context = {
     planets,
     setPlanets,
     filterText,
     setFilterText,
-    shouldFilter,
-    setShouldFilter,
+    setFiltered,
+    filtered,
   };
   return (
     <MyContext.Provider value={ context }>
