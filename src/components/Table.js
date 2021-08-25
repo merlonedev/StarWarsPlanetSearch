@@ -1,22 +1,24 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { MyContext } from './MyProvider';
-import './Table.css';
+import { MyContextInput } from './MyProvider';
 
 function Table() {
   const [planet, setPlanet] = useState([]);
-  const { setData } = useContext(MyContext);
+  const { data, filter } = MyContextInput();
+
+  useEffect(() => {
+    const { filterByName } = filter;
+    setPlanet(data.filter(({ name }) => name.includes(filterByName.name)));
+  }, [filter, data]);
 
   useEffect(() => {
     const getPlanets = async () => {
-      const endPoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const { results } = await fetch(endPoint).then((data) => data.json());
-      setPlanet(results);
+    const endPoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
+    const { results } = await fetch(endPoint).then((data) => data.json());
+    setPlanet(results);
     };
 
     getPlanets();
   }, []);
-
-  useEffect(() => { setData(planet); }, [planet, setData]);
 
   return (
     <table>
