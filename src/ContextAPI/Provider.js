@@ -42,6 +42,9 @@ function Provider({ children }) {
   const handleClickFilter = (selectedInfoObject) => {
     const info = [...selectedInfo, selectedInfoObject];
     setSelectedInfo(info);
+    const mapInfo = info.map((objectFiltered) => objectFiltered.selectedColumn);
+    const mapColumns = columns.filter((column) => !mapInfo.includes(column));
+    setFilteredColumns(mapColumns);
   };
 
   const filterNumberValue = (selectedColumn, selectedComparison, selectedValue) => {
