@@ -17,13 +17,14 @@ function Input({ id, name, onChange, testID }) {
 const { string, func } = PropTypes;
 Input.propTypes = {
   id: string.isRequired,
-  name: string.isRequired,
+  name: string,
   testID: string,
   onChange: func.isRequired,
 };
 
 Input.defaultProps = {
   testID: '',
+  name: '',
 };
 
 export default Input;

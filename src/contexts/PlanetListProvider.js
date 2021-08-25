@@ -6,17 +6,26 @@ function Provider(props) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
-    filterByName: '',
+    filterByName: { name: '' },
+    filterByNumericValues: [{ column: '', comparison: '', value: '' }],
   });
   const addData = (list) => {
     setData(list);
     setLoading(false);
   };
   const nameFilter = (name) => {
-    const search = { filterByName:
-      name,
+    const search = { ...filters,
+      filterByName:
+      { name },
     };
     setFilters(search);
+  };
+  const numericFilter = ({ column, comparison, value }) => {
+    const filter = {
+      filterByNumericValues:
+      [{ column, comparison, value }],
+    };
+    setFilters(filter);
   };
   const contextValue = {
     data,
@@ -25,6 +34,7 @@ function Provider(props) {
     setLoading,
     filters,
     nameFilter,
+    numericFilter,
   };
   const { children } = props;
 

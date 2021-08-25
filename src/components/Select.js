@@ -10,23 +10,28 @@ function Select({ id, name, onChange, testID, options }) {
         data-testid={ testID }
         onChange={ onChange }
       >
-        { options }
+        { options.map((option) => (
+          <option value={ option.value } key={ options.indexOf(option) }>
+            { option.name }
+          </option>
+        )) }
       </select>
     </label>
   );
 }
 
-const { string, func, arrayOf } = PropTypes;
+const { string, func, arrayOf, objectOf } = PropTypes;
 Select.propTypes = {
   id: string.isRequired,
-  name: string.isRequired,
+  name: string,
   testID: string,
   onChange: func.isRequired,
-  options: arrayOf(string).isRequired,
+  options: arrayOf(objectOf(string)).isRequired,
 };
 
 Select.defaultProps = {
   testID: '',
+  name: '',
 };
 
 export default Select;

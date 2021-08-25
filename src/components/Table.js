@@ -6,6 +6,18 @@ function Table() {
   const { data, loading, filters } = useContext(PlanetListContext);
 
   // PERGUNTAR SOBRE O TESTE DAS COLUNAS
+  const condition = (category, comparison, value) => {
+    switch (comparison) {
+    case '>':
+      return (category > parseFloat(value));
+    case '<':
+      return (category < parseFloat(value));
+    case '===':
+      return (category === value);
+    default:
+      return false;
+    }
+  };
 
   if (loading) { return <h2>Carregando...</h2>; }
   return (
@@ -14,7 +26,10 @@ function Table() {
       <tbody>
         {
           data.map((planet) => {
-            const { filterByName } = filters;
+            const { filterByName,
+              filterByNumericValues,
+            } = filters;
+            const { column, comparison, value } = filterByNumericValues[0];
             const { name } = planet;
             const rotationPeriod = planet.rotation_period;
             const orbitalPeriod = planet.orbital_period;
@@ -30,9 +45,20 @@ function Table() {
               url,
             } = planet;
             const surfaceWater = planet.surface_water;
-            if (!planet.name.includes(filterByName)) {
-              return <div key={ data.indexOf(planet) } />;
+            const category = planet[column];
+            // console.log(condition(category, comparison, value));
+
+            if (planet.name.includes(filterByName)) {
+              return <tr key={ data.indexOf(planet) } />;
             }
+
+            if (
+              category !== undefined
+              && !condition(category, comparison, value)
+            ) {
+              return <tr key={ data.indexOf(planet) } />;
+            }
+
             return (
               <tr key={ data.indexOf(planet) }>
                 <td key="name">
