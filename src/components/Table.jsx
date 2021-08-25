@@ -40,25 +40,37 @@ function Table() {
 
   function renderPlanetData() {
     return (
-      data.map(({ name, rotation_period: rotationPeriod, orbital_period: orbitalPeriod, diameter, climate, gravity, terrain, surface_water: surfaceWater, population, films, creater, edited, url }) => {
-        return (
-          <tr key={ name }>
-            <td>{ name }</td>
-            <td>{ rotationPeriod }</td>
-            <td>{ orbitalPeriod }</td>
-            <td>{ diameter }</td>
-            <td>{ climate }</td>
-            <td>{ gravity }</td>
-            <td>{ terrain }</td>
-            <td>{ surfaceWater }</td>
-            <td>{ population }</td>
-            <td>{ films }</td>
-            <td>{ creater }</td>
-            <td>{ edited }</td>
-            <td>{ url }</td>
-          </tr>
-        );
-      })
+      data.map(({
+        name,
+        rotation_period: rotationPeriod,
+        orbital_period: orbitalPeriod,
+        diameter,
+        climate,
+        gravity,
+        terrain,
+        surface_water: surfaceWater,
+        population,
+        films,
+        created,
+        edited,
+        url,
+      }) => (
+        <tr key={ name }>
+          <td>{ name }</td>
+          <td>{ rotationPeriod }</td>
+          <td>{ orbitalPeriod }</td>
+          <td>{ diameter }</td>
+          <td>{ climate }</td>
+          <td>{ gravity }</td>
+          <td>{ terrain }</td>
+          <td>{ surfaceWater }</td>
+          <td>{ population }</td>
+          <td>{ films }</td>
+          <td>{ created }</td>
+          <td>{ edited }</td>
+          <td>{ url }</td>
+        </tr>
+      ))
     );
   }
 
