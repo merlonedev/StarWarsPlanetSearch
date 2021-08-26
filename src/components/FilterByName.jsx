@@ -11,18 +11,18 @@ function FilterByName() {
   };
 
   useEffect(() => {
-    const planetFiltering = () => {
+    const planetByName = () => {
       const { filterByName } = filters;
       const aux = [...data];
       // console.log(allData);
       setDataFilter(aux.filter((i) => i.name.toLowerCase().includes(filterByName.name)));
     };
-    planetFiltering();
+    planetByName();
   }, [data, filters, setDataFilter]);
 
   return (
     <Input
-      textLabel="Planeta"
+      textlabel="Planeta"
       id="name-filter"
       type="text"
       value={ name }

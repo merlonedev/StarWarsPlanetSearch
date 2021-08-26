@@ -1,38 +1,28 @@
 import React from 'react';
-import { string, bool, func, number } from 'prop-types';
+import { string, func, number } from 'prop-types';
 
 export default function Input({
-  name,
   id,
-  classNameInput,
-  classNameLabel,
   onChange,
+  name,
   type,
-  step,
   value,
-  checked,
-  textLabel,
-  placeholder,
+  textlabel,
 }) {
   return (
     <label
       htmlFor={ id }
-      className={ classNameLabel }
     >
 
-      { textLabel }
+      { textlabel }
 
       <input
         data-testid={ id }
         name={ name }
         id={ id }
         type={ type }
-        step={ step }
         value={ value }
         onChange={ onChange }
-        className={ classNameInput }
-        checked={ checked }
-        placeholder={ placeholder }
       />
 
     </label>
@@ -42,25 +32,14 @@ export default function Input({
 Input.propTypes = {
   id: string.isRequired,
   name: string,
-  classNameInput: string,
-  classNameLabel: string,
   onChange: func.isRequired,
-  type: string,
-  step: string,
+  type: string.isRequired,
   value: string || number,
-  checked: bool,
-  textLabel: string,
-  placeholder: string,
+  textlabel: string,
 };
 
 Input.defaultProps = {
   name: '',
-  classNameInput: '',
-  classNameLabel: '',
-  type: 'text',
-  step: '',
   value: '',
-  checked: false,
-  textLabel: '',
-  placeholder: '',
+  textlabel: '',
 };

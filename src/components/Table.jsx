@@ -1,13 +1,15 @@
 import React, { useContext } from 'react';
 import ContextApi from '../context/ContextApi';
 import FilterByName from './FilterByName';
+import FilterByNumericValues from './FilterByNumericValues';
 
 function Table() {
   const { columns, dataFilter } = useContext(ContextApi);
-  // console.log(data);
+  console.log(dataFilter);
   return (
     <section>
       <FilterByName />
+      <FilterByNumericValues />
       <table>
         <thead>
           <tr>
