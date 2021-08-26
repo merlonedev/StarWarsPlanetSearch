@@ -3,13 +3,34 @@ import StarWarsContext from '../context/StarWarsContext';
 
 function Table() {
   const { dataHead, filters } = useContext(StarWarsContext);
-  const { filterByName: { name } } = filters;
-  let { data } = useContext(StarWarsContext);
-  if (name !== '') {
-    data = data.filter((planet) => (
-      (planet.name.toLowerCase()).includes(name.toLowerCase())
-    ));
-  }
+  const { filterByName: { name }, filterByNumericValues } = filters;
+
+  const { data } = useContext(StarWarsContext);
+  const allFilters = () => {
+    let newData = [...data];
+    if (name !== '') {
+      newData = newData.filter((planet) => (
+        (planet.name.toLowerCase()).includes(name.toLowerCase())
+      ));
+    }
+
+    if (filterByNumericValues.length) {
+      filterByNumericValues.forEach(({ column, comparison, value }) => {
+        if (comparison === 'maior que') {
+          newData = newData.filter((planet) => +planet[column] > +value);
+        } else if (comparison === 'menor que') {
+          newData = newData.filter((planet) => +planet[column] < +value);
+        } else {
+          newData = newData.filter((planet) => +planet[column] === +value);
+        }
+      });
+
+      return newData;
+    }
+
+    return newData;
+  };
+
   return (
     <div>
       <table>
@@ -17,7 +38,7 @@ function Table() {
           <tr>{ dataHead.map((title) => <th key={ title }>{ title }</th>) }</tr>
         </thead>
         <tbody>
-          { data.map((planet) => (
+          { allFilters().map((planet) => (
             <tr key={ planet.name }>
               <td>{planet.name}</td>
               <td>{planet.rotation_period}</td>

@@ -6,7 +6,17 @@ import ApiStarWars from '../service/ApiStarWars ';
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [dataHead, setDataHead] = useState([]);
-  const [filters, setFilters] = useState({ filterByName: { name: '' } });
+  const [filters, setFilters] = useState({
+    filterByName: { name: '' },
+    filterByNumericValues: [
+    ],
+  });
+  //  {
+  //  column: 'population',
+  //  comparison: 'maior que',
+  //  value: 100000,
+  // },
+
   const contextValue = {
     data,
     setData,
