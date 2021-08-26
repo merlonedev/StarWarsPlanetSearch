@@ -10,9 +10,9 @@ function Provider({ children }) {
   const [comparision, setcomparision] = useState('Maior que');
   const [nuumber, setnuumber] = useState();
 
-  const option1 = ['population', 'orbital_period',
-    'diameter', 'rotation_period', 'surface_water'];
-  const option2 = ['maior que', 'menor que', 'igual a'];
+  const [option1, setoption1] = useState(['population', 'orbital_period',
+    'diameter', 'rotation_period', 'surface_water']);
+  const [option2, setoption2] = useState(['maior que', 'menor que', 'igual a']);
 
   function searchPlanet({ target: { value } }) { // searchPlanet(e) { const valor = e.target.value }
     setsearch({
@@ -36,6 +36,20 @@ function Provider({ children }) {
     setnuumber(value);
   };
 
+  const cleanFilterNumber = () => {
+    const index1 = option1.indexOf(typeplanet);
+    const index2 = option2.indexOf(comparision);
+    const num = -1;
+    if (index1 > num) {
+      option1.splice(index1, 1);
+    }
+    if (index2 > num) {
+      option2.splice(index2, 1);
+    }
+    setoption1(option1);
+    setoption2(option2);
+  };
+
   const handleClick = () => {
     const filterPlanetsData = data.filter((info) => {
       switch (comparision) {
@@ -47,6 +61,7 @@ function Provider({ children }) {
       }
     });
     setfilter(filterPlanetsData);
+    cleanFilterNumber();
   };
 
   useEffect(() => {
