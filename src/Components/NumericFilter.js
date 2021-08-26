@@ -45,7 +45,7 @@ export default function NumericFilter() {
       />
       <button
         data-testid="button-filter"
-        type="button"
+        type="submit"
         onClick={ (e) => handleSubmit(e) }
       >
         Filtro
