@@ -1,18 +1,24 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import MyContext from '../Context/MyContext';
-import { filterState } from '../Context/Provider';
-import { columns, comparison } from '../Helper';
+import { comparison } from '../Helper';
 
 const Filter = () => {
   const {
     filterText,
     setFilterText,
-    setFiltered,
-    filtered,
+    columnState,
+    setColumn,
   } = useContext(MyContext);
 
+  const filterState = {
+    column: columnState[0],
+    comparison: 'maior que',
+    value: 0,
+  };
+  const [filtered, setFiltered] = useState(filterState);
+
   const { filters } = filterText;
-  // const {filterByNumericValues} = filters;
+  const { filterByNumericValues } = filters;
   const handleInput = ({ target }) => {
     setFilterText({
       filters: {
@@ -25,13 +31,22 @@ const Filter = () => {
       filters: {
         ...filters,
         filterByNumericValues: [
-          // ...filterByNumericValues,
+          ...filterByNumericValues,
           filtered,
         ],
       },
     });
     await setFiltered(filterState);
   };
+
+  useEffect(() => {
+    const removeColumn = () => {
+      const filteredColumn = columnState.filter((columnItem) => !filterByNumericValues
+        .some(({ column }) => columnItem === column));
+      setColumn(filteredColumn);
+    };
+    removeColumn();
+  }, [filterByNumericValues]);
 
   return (
     <div>
@@ -48,7 +63,7 @@ const Filter = () => {
           ({ target: { value } }) => setFiltered({ ...filtered, column: value })
         }
       >
-        {columns.map(
+        {columnState.map(
           (column) => <option key={ column }>{column}</option>,
         )}
       </select>

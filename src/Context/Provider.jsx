@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import MyContext from './MyContext';
+import { columns } from '../Helper';
 
 const INITIAL_FILTER = {
   filters: {
@@ -11,24 +12,18 @@ const INITIAL_FILTER = {
   },
 };
 
-export const filterState = {
-  column: 'population',
-  comparison: 'maior que',
-  value: 0,
-};
-
 const Provider = ({ children }) => {
   const [planets, setPlanets] = useState([]);
   const [filterText, setFilterText] = useState(INITIAL_FILTER);
-  const [filtered, setFiltered] = useState(filterState);
+  const [columnState, setColumn] = useState(columns);
 
   const context = {
     planets,
     setPlanets,
     filterText,
     setFilterText,
-    setFiltered,
-    filtered,
+    columnState,
+    setColumn,
   };
   return (
     <MyContext.Provider value={ context }>

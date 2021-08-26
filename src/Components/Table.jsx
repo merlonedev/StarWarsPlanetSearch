@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from 'react';
-import { columns } from '../Helper';
+import React, { useContext, useEffect, useState } from 'react';
 import MyContext from '../Context/MyContext';
 import FetchApi from '../Service/FetchApi';
 
@@ -8,6 +7,7 @@ const Table = () => {
     planets,
     setPlanets,
     filterText,
+    columnState,
   } = useContext(MyContext);
 
   useEffect(() => {
@@ -19,33 +19,37 @@ const Table = () => {
   const { name } = filterByName;
   const filteredText = planets.filter((planet) => planet
     .name.toLowerCase().includes(name));
-  const filteredColumn = columns.filter((columnItem) => filterByNumericValues
+  const filteredColumn = columnState.filter((columnItem) => filterByNumericValues
     .some(({ column }) => columnItem === column));
 
   const renderList = (name) ? filteredText : planets;
 
-  const filterNumber = () => {
-    const filter = filterByNumericValues;
-    if (filter.length > 0) {
-      const Value = Number(filter[0].value);
-      const Comparison = filter[0].comparison;
-      const results = renderList.filter((planet) => {
-        switch (Comparison) {
-        case 'maior que':
-          return Number(planet[filteredColumn]) > Value;
-        case 'menor que':
-          return Number(planet[filteredColumn]) < Value;
-        case 'igual a':
-          return Number(planet[filteredColumn]) === Value;
-        default:
-          return renderList;
-        }
-      });
-      return results;
-    }
-  };
+  const [list, setlist] = useState([]);
+  useEffect(() => {
+    const filterNumber = () => {
+      const filter = filterByNumericValues;
+      if (filter.length > 0) {
+        const Value = Number(filter[0].value);
+        const Comparison = filter[0].comparison;
+        const results = renderList.filter((planet) => {
+          switch (Comparison) {
+          case 'maior que':
+            return Number(planet[filteredColumn]) > Value;
+          case 'menor que':
+            return Number(planet[filteredColumn]) < Value;
+          case 'igual a':
+            return Number(planet[filteredColumn]) === Value;
+          default:
+            return renderList;
+          }
+        });
+        return results;
+      }
+    };
+    setlist(filterNumber());
+  }, [filterByNumericValues]);
 
-  const textOrNum = (filterNumber()) ? filterNumber() : renderList;
+  const textOrNum = (list) || renderList;
 
   return (
     <table>
