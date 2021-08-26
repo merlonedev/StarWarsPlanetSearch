@@ -3,11 +3,13 @@ import Context from '../../context/Context';
 import { SELECT_OPTIONS, SELECT_RANGES } from '../../services/dados';
 
 // ajuda fundamental de André Hammel - Turma 12
-function FilterByNumeric() {
-  const { fNumeric, anotherFilter } = React.useContext(Context);
+function FilterAgain() {
+  const { fNumeric, filters } = React.useContext(Context);
   const [column, setColumn] = React.useState('');
   const [comparison, setComparison] = React.useState('');
   const [value, setValue] = React.useState('');
+  const { column: prevColumn } = filters.filterByNumericValues[0];
+  const whithoutColumn = SELECT_OPTIONS.filter((options) => options !== prevColumn);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -22,10 +24,10 @@ function FilterByNumeric() {
   return (
     <form>
       <select
-        data-testid={ anotherFilter ? '' : 'column-filter' }
+        data-testid="column-filter"
         onChange={ (e) => setColumn(e.target.value) }
       >
-        {SELECT_OPTIONS.map((opt, index) => (
+        {whithoutColumn.map((opt, index) => (
           <option
             key={ index }
             value={ opt }
@@ -61,4 +63,4 @@ function FilterByNumeric() {
   );
 }
 
-export default FilterByNumeric;
+export default FilterAgain;

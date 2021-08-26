@@ -1,15 +1,18 @@
 import React, { useContext } from 'react';
 import Context from '../../context/Context';
+import FilterAgain from './FilterAgain';
 import FilterByNumeric from './FilterByNumeric';
 import FilterByText from './FilterByText';
 
 export default function Table() {
-  const { data, resultFilter } = useContext(Context);
+  const { data, resultFilter, anotherFilter } = useContext(Context);
   if (!data.length) return <p>loading</p>;
   const ths = Object.keys(data[0]).filter((item) => item !== 'residents');
+
   return (
     <div>
       <FilterByText />
+      {anotherFilter && <FilterAgain />}
       <FilterByNumeric />
       <table>
         <thead>

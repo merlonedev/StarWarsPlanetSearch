@@ -12,6 +12,7 @@ function Provider({ children }) {
     },
     filterByNumericValues: [],
   });
+  const [anotherFilter, setAnotherFilter] = React.useState(false);
 
   useEffect(() => {
     const fetchPlanets = async () => {
@@ -36,7 +37,7 @@ function Provider({ children }) {
       ...filters,
       filterByNumericValues: [...filters.filterByNumericValues, object],
     });
-    setFilters();
+    setAnotherFilter(true);
     const fNumericResult = data.filter((dat) => {
       switch (comparison) {
       case 'maior que':
@@ -53,7 +54,15 @@ function Provider({ children }) {
     setResultFilter(fNumericResult);
   }
 
-  const context = { data, filterText, resultFilter, fNumeric };
+  const context = {
+    data,
+    filterText,
+    resultFilter,
+    fNumeric,
+    anotherFilter,
+    filters,
+  };
+
   return (
     <div>
       <Context.Provider value={ context }>
