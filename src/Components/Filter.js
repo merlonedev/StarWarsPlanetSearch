@@ -9,6 +9,8 @@ function Filter() {
     data,
     filtersByNumber,
     setFiltersByNumber,
+    columnsCat,
+    setColumnsCat,
   } = useContext(PlanetsContext);
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior');
@@ -39,6 +41,9 @@ function Filter() {
   const saveFilters = () => {
     const newFilter = { column, comparison, value };
     setFiltersByNumber(filtersByNumber.concat(newFilter));
+  };
+
+  const resetFilters = () => {
     setColumn('population');
     setComparison('maior');
     setValue(0);
@@ -46,6 +51,8 @@ function Filter() {
 
   const filterByNumber = () => {
     saveFilters();
+
+    const newColumn = columnsCat.filter((columns) => columns !== column);
 
     const filteredPlanets = data.filter((planet) => {
       if (comparison === 'maior que') {
@@ -59,6 +66,8 @@ function Filter() {
     });
 
     setFiltered(filteredPlanets);
+    setColumnsCat(newColumn);
+    resetFilters();
   };
 
   const renderFilters = () => {
@@ -93,11 +102,11 @@ function Filter() {
           value={ column }
           onChange={ handleChange }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {columnsCat.map((columns, index) => (
+            <option key={ index } value={ columns }>
+              {columns}
+            </option>
+          ))}
         </select>
 
         <select
