@@ -9,7 +9,7 @@ function InputFilter() {
         <input
           type="text"
           data-testid="name-filter"
-          onChange={ (element) => handleFilter(element) }
+          onChange={ (event) => handleFilter(event) }
         />
         Filtre aqui
       </label>

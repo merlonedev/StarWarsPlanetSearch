@@ -9,8 +9,9 @@ function Provider({ children }) {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [],
   });
-
+  const [secondFilter, setSecondFilter] = useState(false);
   useEffect(() => {
     const getPlanets = async () => {
       const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
@@ -24,12 +25,39 @@ function Provider({ children }) {
 
   function handleFilter({ target }) {
     setFilters({ ...filters, filterByName: { name: target.value } });
-    console.log('verifica', target.value);
+    // console.log('verifica', target.value);
     const filter = data
       .filter(({ name }) => name.toLowerCase().includes(target.value.toLowerCase()));
     setPlanet(filter);
   }
-  const contextValue = { data, handleFilter, planet };
+  function filterByNumber(object) {
+    console.log('teste2', object);
+    const { column, comparison, value } = object;
+    setFilters({ ...filters,
+      filterByNumericValues:
+       [...filters.filterByNumericValues, object],
+    });
+    // Aprendi a fazer essa logica com o André Hammel
+    setSecondFilter(true);
+    const result = data.filter((dt) => {
+      switch (comparison) {
+      case 'maior que':
+        return +(dt[column]) > +(value);
+      case 'menor que':
+        return +(dt[column]) < +(value);
+      case 'igual a':
+        return +(dt[column]) === +(value);
+      default:
+        return dt;
+      }
+    });
+    if (result.length === 0) return setPlanet([]);
+    setPlanet(result);
+  }
+
+  const contextValue = {
+    data, handleFilter, planet, filterByNumber, secondFilter, filters,
+  };
   return (
     <MyContext.Provider value={ contextValue }>
       { children }

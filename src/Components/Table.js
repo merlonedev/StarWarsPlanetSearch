@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
 import InputFilter from './InputFilter';
+import NumberFilter from './NumberFilter';
+import SecondFilter from './SecondFilter';
 
 function Table() {
   const context = useContext(MyContext);
-  const { data, planet } = context;
+  const { data, planet, secondFilter } = context;
   // console.log('arrayDataTable', data);
   // console.log('testedata', data.results);
   if (data.length > 0) {
@@ -13,6 +15,8 @@ function Table() {
 
     return (
       <div>
+        <NumberFilter />
+        {secondFilter && <SecondFilter />}
         <InputFilter />
         <table>
           <thead>
