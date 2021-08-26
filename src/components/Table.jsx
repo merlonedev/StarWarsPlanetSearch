@@ -1,49 +1,47 @@
 import React, { useContext } from 'react';
 import Context from '../context/Context';
 
-function Table() {
+export default function Table() {
   const { searchPlanet } = useContext(Context);
 
   return (
     <table className="table table-bordered border-primary">
       <thead className="table table-dark table-borderless">
         <tr>
-          <th>Name:</th>
-          <th>Climate:</th>
-          <th>CreatedAt:</th>
-          <th>Diameter:</th>
-          <th>Edited:</th>
-          <th>Films:</th>
-          <th>Gravity:</th>
-          <th>Orbital Period</th>
-          <th>Population</th>
+          <th>Name</th>
           <th>Rotation Period</th>
-          <th>Surface Water:</th>
+          <th>Orbital Period</th>
+          <th>Diameter</th>
+          <th>Climate</th>
+          <th>Gravity</th>
           <th>Terrain</th>
-          <th>Url:</th>
+          <th>Surface Water</th>
+          <th>Population</th>
+          <th>Films</th>
+          <th>Created</th>
+          <th>Edited</th>
+          <th>URL</th>
         </tr>
       </thead>
       <tbody>
-        { searchPlanet.map((planet, index) => (
+        {searchPlanet.map((planet, index) => (
           <tr key={ index }>
-            <td>{ planet.name }</td>
-            <td>{ planet.climate }</td>
-            <td>{ planet.created }</td>
-            <td>{ planet.diameter }</td>
-            <td>{ planet.edited }</td>
-            <td>{ planet.films }</td>
-            <td>{ planet.gravity }</td>
-            <td>{ planet.orbital_period }</td>
-            <td>{ planet.population }</td>
-            <td>{ planet.rotation_period }</td>
-            <td>{ planet.surface_water }</td>
-            <td>{ planet.terrain }</td>
-            <td>{ planet.url }</td>
+            <td>{planet.name}</td>
+            <td>{planet.rotation_period}</td>
+            <td>{planet.orbital_period}</td>
+            <td>{planet.diameter}</td>
+            <td>{planet.climate}</td>
+            <td>{planet.gravity}</td>
+            <td>{planet.terrain}</td>
+            <td>{planet.surface_water}</td>
+            <td>{planet.population}</td>
+            <td>{planet.films}</td>
+            <td>{planet.created}</td>
+            <td>{planet.edited}</td>
+            <td>{planet.url}</td>
           </tr>
         ))}
       </tbody>
     </table>
   );
 }
-
-export default Table;

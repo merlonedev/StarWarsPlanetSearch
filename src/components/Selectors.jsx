@@ -1,112 +1,71 @@
-import React, { useContext, useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Context from '../context/Context';
 
-export default function FilterNumeric() {
-  const { setFilters, filters, vazio } = useContext(Context);
-  const [coluna, setColumn] = useState({});
-  const [comparacao, setComparison] = useState({});
-  const [valor, setValue] = useState({});
+function Selectors() {
+  const { setNumericFilters, filters } = useContext(Context);
+  const { filterByNumericValues } = filters;
+  const [customFilter, setCustomFilter] = useState(
+    { column: '',
+      comparison: '',
+      value: '',
+    },
+  );
 
-  const Column = ({ target: { value } }) => {
-    setColumn(value);
+  const handleCustomFilter = ({ target }) => {
+    const { name, value } = target;
+    setCustomFilter({ ...customFilter, [name]: value });
   };
-
-  const Comparison = ({ target: { value } }) => {
-    setComparison(value);
-  };
-
-  const Value = ({ target: { value } }) => {
-    setValue(value);
-  };
-
-  const createObj = () => {
-    setFilters(
-      { ...filters,
-        filterByNumericValues:
-        [{ column: coluna, comparison: comparacao, value: valor }] },
-    );
-  };
+  let options = ['population', 'orbital_period', 'diameter',
+    'rotation_period', 'surface_water'];
+  if (filterByNumericValues.length > 0) {
+    options = options.filter((option) => !filterByNumericValues
+      .map(({ column }) => column).includes(option));
+  }
+  const { column, comparison, value } = customFilter;
 
   return (
-    <div className="input-group-text">
-      <label htmlFor="column">
-        Filtro:
+    <div>
+      <label htmlFor="option">
         <select
+          id="option"
           data-testid="column-filter"
+          value={ column }
           name="column"
-          id="column"
-          onChange={ (e) => Column(e) }
+          onChange={ handleCustomFilter }
         >
-          <option value={ vazio }>{vazio}</option>
-          <option
-            value="population"
-          >
-            population
-          </option>
-          <option
-            value="orbital_period"
-          >
-            orbital_period
-          </option>
-          <option
-            value="diameter"
-          >
-            diameter
-          </option>
-          <option
-            value="rotation_period"
-          >
-            rotation_period
-          </option>
-          <option
-            value="surface_water"
-          >
-            surface_water
-          </option>
+          { options.map((option) => <option key={ option }>{ option }</option>) }
         </select>
       </label>
-      <label htmlFor="comparison">
-        <select
-          data-testid="comparison-filter"
-          name="comparison"
-          id="comparison"
-          onChange={ (e) => Comparison(e) }
-        >
-          <option value={ vazio }>{vazio}</option>
-          <option
-            value="maior que"
-          >
-            maior que
-          </option>
-          <option
-            value="menor que"
-          >
-            menor que
-          </option>
-          <option
-            value="igual a"
-          >
-            igual a
-          </option>
-        </select>
-      </label>
-      <label htmlFor="value">
+      <select
+        data-testid="comparison-filter"
+        onChange={ handleCustomFilter }
+        value={ comparison }
+        name="comparison"
+      >
+        <option>maior que</option>
+        <option>menor que</option>
+        <option>igual a</option>
+      </select>
+      <label htmlFor="value-filter">
+        Values:
         <input
-          id="value"
           type="number"
           data-testid="value-filter"
-          onChange={ (e) => Value(e) }
+          min="0"
+          onChange={ handleCustomFilter }
+          value={ value }
+          name="value"
         />
       </label>
       <button
-        value="button"
-        id="button"
         type="button"
         data-testid="button-filter"
-        onClick={ createObj }
+        onClick={ () => { setNumericFilters(customFilter); } }
       >
-        Filtrar
+        Filter
       </button>
     </div>
   );
 }
+
+export default Selectors;

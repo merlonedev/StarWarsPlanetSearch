@@ -5,70 +5,76 @@ import Context from './Context';
 const urlApi = 'https://swapi-trybe.herokuapp.com/api/planets/';
 export default function Provider({ children }) {
   const [tablePlanet, setData] = useState([]);
-  const [vazio, setVazio] = useState('');
-  const [searchPlanet, setsearchPlanet] = useState([]);
+  const [searchPlanet, setFilterPlanet] = useState([]);
   const [filters, setFilters] = useState({
     filterByName:
     { name: '' },
     filterByNumericValues: [],
   });
 
+  const { filterByName, filterByNumericValues } = filters;
+  const { name } = filterByName;
+
   // Requisição
   useEffect(() => {
-    console.log('UseEffect Api');
     const endpointPlanets = urlApi;
     const getPlanets = async () => {
       const results = await fetch(endpointPlanets);
       const dataPlanets = await results.json();
       setData(dataPlanets.results);
-      setsearchPlanet(dataPlanets.results);
+      setFilterPlanet(dataPlanets.results);
     };
     getPlanets();
   }, []);
-  // Filter for name
-  const { filterByName, filterByNumericValues } = filters;
-  const { name } = filterByName;
 
+  // Filter for name
+  const filterPlanets = ({ target }) => {
+    const { value } = target;
+    setFilters({ ...filters, filterByName: { name: value } });
+  };
   // Filer for Colum
+
   useEffect(() => {
-    console.log('Effect Filter');
-    let columFiltered = tablePlanet.filter((planet) => planet.name
+    console.log('entrou no effect');
+    let planetsFiltereds = tablePlanet.filter((planet) => planet.name
       .toLowerCase().includes(name));
     if (filterByNumericValues.length > 0) {
-      columFiltered = columFiltered.filter((planet) => {
-        let numberValue = true;
+      planetsFiltereds = planetsFiltereds.filter((planet) => {
+        let bool = true;
         filterByNumericValues.forEach(({ column, comparison, value }) => {
           switch (comparison) {
           case 'maior que':
-            numberValue = Number(planet[column]) > Number(value) && numberValue;
+            bool = Number(planet[column]) > Number(value) && bool;
             break;
           case 'menor que':
-            numberValue = Number(planet[column]) < Number(value) && numberValue;
+            bool = Number(planet[column]) < Number(value) && bool;
             break;
           case 'igual a':
-            numberValue = Number(planet[column]) === Number(value) && numberValue;
+            bool = Number(planet[column]) === Number(value) && bool;
             break;
           default:
-            numberValue = false;
+            bool = false;
           }
         });
-        return numberValue;
+        return bool;
       });
     }
-    setsearchPlanet(columFiltered);
+    setFilterPlanet(planetsFiltereds);
   }, [tablePlanet, name, filters, filterByNumericValues]);
+
+  const setNumericFilters = (newObj) => {
+    setFilters({ ...filters,
+      filterByNumericValues: [...filters.filterByNumericValues, newObj] });
+  };
 
   return (
     <Context.Provider
-      value={ {
-        name,
-        tablePlanet,
-        setFilters,
+      value={ { tablePlanet,
+        filterPlanets,
         filters,
         searchPlanet,
-        vazio,
-        setVazio,
-      } }
+        name,
+        setNumericFilters } }
     >
       { children }
     </Context.Provider>
