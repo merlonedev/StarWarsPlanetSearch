@@ -49,17 +49,22 @@ function Table() {
     }
   };
 
-  const filteredColumn = (teste = data) => {
+  const filteredColumn = (normalData = data) => {
     const { filterByNumericValues } = filters;
-    const { column, comparison, value } = filterByNumericValues[0];
-    if (column) {
-      const itemFiltered = teste.filter((item) => {
-        const re = operators[comparison](parseInt(item[column], 10), parseInt(value, 10));
-        return re;
-      });
-      return tableBody(itemFiltered);
+    let itemEdit = normalData;
+    if (filterByNumericValues.length) {
+      filterByNumericValues
+        .filter(({ column, comparison, value }) => {
+          itemEdit = itemEdit.filter((sec) => {
+            const re = operators[comparison](parseInt(sec[
+              column], 10), parseInt(value, 10));
+            return re;
+          });
+          return itemEdit;
+        });
+      return tableBody(itemEdit);
     }
-    return tableBody(teste);
+    return tableBody(normalData);
   };
 
   const filteredBody = () => {
