@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import contextApp from './contextApp';
 import PropTypes from 'prop-types';
+import contextApp from './contextApp';
 import searchPlanets from '../services/ApiPlanets';
 
 function Provider({ children }) {
