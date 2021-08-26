@@ -1,3 +1,4 @@
+// Projeto realizado com ajuda e revisão do Wander Diniz.
 import React from 'react';
 import './App.css';
 import Provider from './Components/Provider';

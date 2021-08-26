@@ -41,7 +41,6 @@ function Provider({ children }) {
       ({ name }) => name.includes(filters.filterByName.name),
     );
     let comparacao = [...filtradoName];
-    console.log('ANTES DO FILTRO', comparacao);
     if (filters.filterByNumericValues.length > 0) {
       const filterAll = () => {
         const test = filters.filterByNumericValues
