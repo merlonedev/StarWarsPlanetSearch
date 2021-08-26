@@ -1,17 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMyContext } from '../context/Provider';
 
+const columns = [
+  'population',
+  'orbital_period',
+  'diameter',
+  'rotation_period',
+  'surface_water',
+];
+
 export default function FiltersPlanets() {
-  const { handleNameFilter, handleFilterByNumeric } = useMyContext();
-  const [numericFilters, setNumericFilters] = useState({
-    column: 'population',
+  const {
+    handleNameFilter,
+    handleFilternumbers,
+    filters: { filterByNumericValues },
+  } = useMyContext();
+
+  const [numberfilter, setnumberfilter] = useState({
+    column: columns[0],
     comparison: 'maior que',
     value: '1000',
   });
 
+  useEffect(() => {
+    const [newFirstColumn] = columns.filter((column) => !filterByNumericValues
+      .some((numericFilter) => numericFilter.column === column))
+      .map((column) => column);
+    setnumberfilter((prevnumberfilter) => ({
+      ...prevnumberfilter,
+      column: newFirstColumn,
+    }));
+  }, [filterByNumericValues]);
+
   const handleChange = ({ target: { name, value } }) => {
-    setNumericFilters((prevNumericFilters) => ({
-      ...prevNumericFilters,
+    setnumberfilter((prevnumberfilter) => ({
+      ...prevnumberfilter,
       [name]: value,
     }));
   };
@@ -26,19 +49,17 @@ export default function FiltersPlanets() {
       <select
         data-testid="column-filter"
         name="column"
-        value={ numericFilters.column }
+        value={ numberfilter.column }
         onChange={ handleChange }
       >
-        <option value="population">population</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="diameter">diameter</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="surface_water">surface_water</option>
+        { columns.filter((column) => !filterByNumericValues
+          .some((numericFilter) => numericFilter.column === column))
+          .map((column) => <option key={ column } value={ column }>{ column }</option>) }
       </select>
       <select
         data-testid="comparison-filter"
         name="comparison"
-        value={ numericFilters.comparison }
+        value={ numberfilter.comparison }
         onChange={ handleChange }
       >
         <option value="maior que">maior que</option>
@@ -49,13 +70,13 @@ export default function FiltersPlanets() {
         type="number"
         data-testid="value-filter"
         name="value"
-        value={ numericFilters.value }
+        value={ numberfilter.value }
         onChange={ handleChange }
       />
       <button
         type="button"
         data-testid="button-filter"
-        onClick={ () => handleFilterByNumeric(numericFilters) }
+        onClick={ () => handleFilternumbers(numberfilter) }
       >
         Adicionar filtro
       </button>

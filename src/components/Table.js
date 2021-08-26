@@ -14,19 +14,32 @@ export default function Table() {
     }
   }, [filterByName, data]);
 
+  const numericFiltering = (array, column, comparison, value) => (
+    array.filter((planet) => {
+      if (comparison === 'maior que') {
+        return Number(planet[column]) > Number(value);
+      }
+      if (comparison === 'menor que') {
+        return Number(planet[column]) < Number(value);
+      }
+      return Number(planet[column]) === Number(value);
+    }));
+
   useEffect(() => {
     filterByNumericValues.forEach(({ column, comparison, value }) => (
-      value && setPlanets((prevsPlanets) => prevsPlanets.filter((planet) => {
-        if (comparison === 'maior que') {
-          return Number(planet[column]) > Number(value);
+      value && setPlanets((prevsPlanets) => {
+        if (prevsPlanets.length < 1) {
+          if (!filterByName.name) {
+            return numericFiltering(data, column, comparison, value);
+          }
+          const filternamedata = data
+            .filter(({ name }) => name.includes(filterByName.name));
+          return numericFiltering(filternamedata, column, comparison, value);
         }
-        if (comparison === 'menor que') {
-          return Number(planet[column]) < Number(value);
-        }
-        return Number(planet[column]) === Number(value);
-      }))
+        return numericFiltering(prevsPlanets, column, comparison, value);
+      })
     ));
-  }, [filterByNumericValues]);
+  }, [data, filterByName, filterByNumericValues]);
 
   return (
     <>

@@ -31,7 +31,7 @@ export default function MyProvider({ children }) {
     }));
   };
 
-  const handleFilterByNumeric = ({ column, comparison, value }) => {
+  const handleFilternumbers = ({ column, comparison, value }) => {
     setFilters((prevFilters) => {
       if (!prevFilters.filterByNumericValues[0].value) {
         return { ...prevFilters, filterByNumericValues: [{ column, comparison, value }] };
@@ -49,7 +49,7 @@ export default function MyProvider({ children }) {
     data,
     filters,
     handleNameFilter,
-    handleFilterByNumeric,
+    handleFilternumbers,
   };
 
   return (
