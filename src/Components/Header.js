@@ -1,52 +1,62 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import MyContext from '../Context';
 import Table from './Table';
+import InputFilter from './InputFilter';
 
-class Header extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [],
-      headers: [],
+const filters = { filterByName: { name: '' } };
+
+function Header() {
+  const [data, setData] = useState([]);
+  const [headers, setHeaders] = useState([]);
+  const [stateName, setStateName] = useState(filters);
+  const [filterContainer, setFilterContainer] = useState([]);
+
+  const handleChange = ({ target }) => {
+    setStateName({ ...stateName, filterByName: { name: target.value } });
+  };
+
+  useEffect(() => {
+    const fetchAPIStar = async () => {
+      const END_POINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
+      const response = await fetch(END_POINT);
+      const result = await response.json();
+      const headerFilter = Object.keys(result.results[0]);
+      setHeaders(headerFilter.filter((el) => !el.includes('residents')));
+      setData(result.results);
     };
-    this.fetchAPIStar = this.fetchAPIStar.bind(this);
-  }
+    fetchAPIStar();
+  }, []);
 
-  componentDidMount() {
-    this.fetchAPIStar();
-  }
-
-  async fetchAPIStar() {
-    const END_POINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
-    const response = await fetch(END_POINT);
-    const result = await response.json();
-    const headerFilter = Object.keys(result.results[0]);
-    return this.setState({
-      data: result.results,
-      headers: headerFilter.filter((el) => !el.includes('residents')),
-    });
-  }
-
-  render() {
-    const { data, headers } = this.state;
-    const contextValue = {
-      dataS: data,
+  useEffect(() => {
+    const filterName = () => {
+      const resultName = data.filter((planeta) => (
+        planeta.name.toLowerCase().includes(stateName.filterByName.name.toLowerCase())));
+      setFilterContainer(resultName);
     };
-    return (
-      <MyContext.Provider value={ contextValue }>
-        <table>
-          <thead>
-            <tr>
-              {
-                headers.map((el) => <th key={ el }>{el}</th>)
-              }
-            </tr>
-          </thead>
-          <Table />
-        </table>
-      </MyContext.Provider>
-    );
-  }
+    filterName();
+  }, [data, stateName]);
+
+  const contextValue = {
+    dataS: data,
+    handle: handleChange,
+    filterData: filterContainer,
+  };
+
+  return (
+    <MyContext.Provider value={ contextValue }>
+      <InputFilter />
+      <table>
+        <thead>
+          <tr>
+            {
+              headers.map((el) => <th key={ el }>{el}</th>)
+            }
+          </tr>
+        </thead>
+        <Table />
+      </table>
+    </MyContext.Provider>
+  );
 }
 
 export default Header;

@@ -7,7 +7,7 @@ class Table extends React.Component {
       <tbody>
         <MyContext.Consumer>
           {
-            (value) => value.dataS.map(({
+            (value) => value.filterData.map(({
               name,
               climate,
               rotation_period: rotation,
