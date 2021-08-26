@@ -14,7 +14,7 @@ function Header() {
       setFilteredPlanets(data);
     } else {
       setFilteredPlanets(
-        data.filter(({ name: planetName }) => planetName.includes(name)),
+        data.filter(({ name: planetName }) => planetName.toLowerCase().includes(name)),
       );
     }
   }, [data, filters, setFilteredPlanets]);
