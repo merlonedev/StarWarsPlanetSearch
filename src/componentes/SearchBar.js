@@ -21,7 +21,12 @@ function SearchBar() {
     : defaultColumn.filter((resp) => resp !== column);
 
   const handleBtnFilters = () => {
-
+    const filterState = {
+      column,
+      comparison,
+      value,
+    };
+    setFilters([...numericFilter, filterState]);
   };
 
   return (
@@ -54,7 +59,13 @@ function SearchBar() {
         onChange={ ({ target }) => setValue(Number(target.value)) }
         data-testid="value-filter"
       />
-
+      <button
+        type="button"
+        onClick={ handleBtnFilters }
+        data-testid="button-filter"
+      >
+        Filtrar
+      </button>
       { numericFilter.map((filter) => (
         <p key={ filter.column } data-testid="filter">
           <span>{filter.comparison}</span>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import SWContext from './Context';
 
-// eslint-disable-next-line react/prop-types
 function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [name, setFilterName] = useState('');
@@ -34,5 +34,12 @@ function Provider({ children }) {
     </SWContext.Provider>
   );
 }
+
+Provider.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
+};
 
 export default Provider;
