@@ -3,6 +3,7 @@ import MyContext from '../context/MyContext';
 import InputFilter from './InputFilter';
 import NumberFilter from './NumberFilter';
 import SecondFilter from './SecondFilter';
+import './Table.css';
 
 function Table() {
   const context = useContext(MyContext);
@@ -18,10 +19,11 @@ function Table() {
         <NumberFilter />
         {secondFilter && <SecondFilter />}
         <InputFilter />
-        <table>
-          <thead>
-            <tr>
-              {residents.map((teste) => (<th key={ teste }>{ teste }</th>))}
+        <table className="table">
+          <thead className="thead1">
+            <tr className="table-tr">
+              {residents
+                .map((teste) => (<th className="table-th" key={ teste }>{ teste }</th>))}
               {/*
               {console.log(residents.map((teste) => (<th key={ teste }>{ teste }</th>)))}
               */}
@@ -30,9 +32,9 @@ function Table() {
           {/* Aprendi com a ajuda do Lucas Santos */}
           <tbody>
             {planet.map((nofilter) => (
-              <tr key={ nofilter.name }>
+              <tr className="table-tr" key={ nofilter.name }>
                 {residents.map((result) => (
-                  <td key={ nofilter[result] }>
+                  <td className="table-td" key={ nofilter[result] }>
                     {nofilter[result]}
                   </td>
                 ))}
