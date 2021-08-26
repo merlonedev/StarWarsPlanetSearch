@@ -3,7 +3,7 @@ import AppContext from '../AppContext';
 import response from '../testData';
 
 function Table() {
-  const { data, setData, headers, setHeaders } = useContext(AppContext);
+  const { setData, headers, setHeaders, filteredPlanets } = useContext(AppContext);
   useEffect(() => {
     const API_URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
     // const getPlanetsData = () => fetch(API_URL)
@@ -40,7 +40,7 @@ function Table() {
 
   function renderPlanetData() {
     return (
-      data.map(({
+      filteredPlanets.map(({
         name,
         rotation_period: rotationPeriod,
         orbital_period: orbitalPeriod,
