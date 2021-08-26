@@ -7,6 +7,7 @@ function CtxProvider({ children }) {
   const [newFilter, setNewFilter] = useState([]);
   const [filters, setFilters] = useState({
     filterByName: { name: '' }, filterByNumericValues: [] });
+  const [filter2, setfilter2] = React.useState(false);
 
   const getPlanetList = async () => {
     const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
@@ -26,20 +27,20 @@ function CtxProvider({ children }) {
   }
 
   function receive(object) {
-    const { coluna, comparacao, valor } = object;
+    const { column, comparison, value } = object;
     setFilters({
       ...filters,
       filterByNumericValues: [...filters.filterByNumericValues, object],
     });
-    setFilters();
+    setfilter2(true);
     const receiveResult = data.filter((teste) => {
-      switch (comparacao) {
+      switch (comparison) {
       case 'maior que':
-        return Number(teste[coluna]) > Number(valor);
+        return Number(teste[column]) > Number(value);
       case 'menor que':
-        return Number(teste[coluna]) < Number(valor);
+        return Number(teste[column]) < Number(value);
       case 'igual a':
-        return Number(teste[coluna]) === Number(valor);
+        return Number(teste[column]) === Number(value);
       default:
         return teste;
       }
@@ -48,7 +49,7 @@ function CtxProvider({ children }) {
     setNewFilter(receiveResult);
   }
 
-  const contextValue = { data, filterText, newFilter, receive };
+  const contextValue = { data, filterText, newFilter, receive, filters, filter2 };
   return (
     <MyContext.Provider value={ contextValue }>
       { children }
