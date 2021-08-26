@@ -3,7 +3,8 @@ import ContextApi from '../context/ContextApi';
 // import Input from './Input';
 
 const compareOptions = ['maior que', 'menor que', 'igual a'];
-const columnsOptions = ['population',
+const columnsOptions = [
+  'population',
   'orbital_period',
   'diameter',
   'rotation_period',
@@ -99,32 +100,3 @@ const FilterNumericValues = () => {
 };
 
 export default FilterNumericValues;
-
-// useEffect(() => {
-//   const planetByValues = () => {
-//     let aux = [...data];
-//     // console.log(allData);
-//     filterByNumericValues.forEach(() => {
-//       switch (comparison) {
-//       case 'maior que':
-//         aux = aux.filter((item) => (
-//           Number(item[column]) > value));
-//         setDataFilter(aux);
-//         break;
-//       case 'menor que':
-//         aux = aux.filter((item) => (
-//           Number(item[column]) < value));
-//         setDataFilter(aux);
-//         break;
-//       case 'igual a':
-//         aux = aux.filter((item) => (
-//           Number(item[column]) === value));
-//         setDataFilter(aux);
-//         break;
-//       default:
-//         break;
-//       }
-//     });
-//   };
-//   planetByValues();
-// }, [data, filters, setDataFilter, column, comparison, filterByNumericValues, value]);
