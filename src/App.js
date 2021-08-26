@@ -1,12 +1,12 @@
 import React from 'react';
-import MyProvider from './components/MyProvider';
+import MyProviderr from './components/MyProvider';
 import Table from './components/Table';
 
 function App() {
   return (
-    <MyProvider>
+    <MyProviderr>
       <Table />
-    </MyProvider>
+    </MyProviderr>
   );
 }
 

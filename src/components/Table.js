@@ -5,11 +5,9 @@ function Table() {
   const [planet, setPlanet] = useState([]);
   const { filteredPlanets } = useContext(MyContext);
 
-
   useEffect(() => {
-    setPlanet(filteredPlanets)
+    setPlanet(filteredPlanets);
   }, [filteredPlanets]);
-
 
   return (
     <table>
@@ -17,7 +15,7 @@ function Table() {
         <tr>
           { planet.length > 0
             && Object.keys(planet[0])
-              .map((key) => key !== 'residents' && <th key={ key }>{ key }</th>)}
+              .map((key, index) => key !== 'residents' && <th key={ index }>{ key }</th>)}
         </tr>
         {planet.map((planets) => (
           <tr key={ planets.name }>
@@ -40,4 +38,4 @@ function Table() {
     </table>
   );
 }
-export default Table; 
+export default Table;
