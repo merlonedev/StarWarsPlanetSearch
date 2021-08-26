@@ -1,42 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import requestAPI from '../services/API';
+import requestAPI from '../services/requestAPI';
 import context from './context';
 
-const Provider = ({ children }) => {
-  const [data, setData] = useState([]);
+function Provider({ children }) {
+  const [data, setData] = useState('');
   const [filters, setFilters] = useState({
-    filterByName: { name: '' },
-    filterByNumericValues: { column: '', comparison: '', value: '' },
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [],
   });
-  const [dataToUse, setDataToUse] = useState([]);
-  const [dataToSelect, setDataToSelect] = useState([]);
-  const contextValue = {
+
+  // Agradecimento ao Thales por me avisar que filterbynumericvalues precisava ser um array
+
+  const [columns, setColumns] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
+
+  const fetchingAPI = async () => {
+    const request = await requestAPI();
+    const APIPlanets = Object.values(request.results).map((planet) => {
+      delete planet.residents;
+      return planet;
+    });
+    setData(APIPlanets);
+  };
+  useEffect(() => {
+    fetchingAPI();
+  }, []);
+
+  const valueContext = {
     data,
     setData,
     filters,
     setFilters,
-    dataToUse,
-    setDataToUse,
-    dataToSelect,
-    setDataToSelect,
+    columns,
+    setColumns,
   };
 
-  useEffect(() => {
-    requestAPI().then(({ results }) => setData(results));
-  }, []);
-
   return (
-    <context.Provider value={ contextValue }>
-      {children}
+    <context.Provider value={ valueContext }>
+      { children }
     </context.Provider>
   );
-};
-
-// tive que pedir ajuda para meu irmao Eduardo Seije da turma 10A. Ele me explicou o que ele fez e vou subir no github para ver se passa o requisito que eu estava travado antes. Pois ambos os codigos nao passam no teste localmente.
+}
 
 Provider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+  children: PropTypes.node,
+}.isRequired;
 
 export default Provider;

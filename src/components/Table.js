@@ -2,52 +2,59 @@ import React, { useContext } from 'react';
 import context from '../context/context';
 
 const Table = () => {
-  const { data, dataToUse } = useContext(context);
+  const { data, filters } = useContext(context);
+  const { filterByName: { name }, filterByNumericValues } = filters;
 
-  const renderTds = (array) => array.map((planet) => (
-    <tr key={ planet.name }>
-      <td>{planet.name}</td>
-      <td>{planet.rotation_period}</td>
-      <td>{planet.orbital_period}</td>
-      <td>{planet.diameter}</td>
-      <td>{planet.climate}</td>
-      <td>{planet.gravity}</td>
-      <td>{planet.terrain}</td>
-      <td>{planet.surface_water}</td>
-      <td>{planet.population}</td>
-      <td>{planet.films}</td>
-      <td>{planet.created}</td>
-      <td>{planet.edited}</td>
-    </tr>
-  ));
+  if (!data) return <h1>Loading</h1>;
 
-  return (
-    <div className="table-wrapper">
-      <h1>Planets</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Rotation Period</th>
-            <th>Orbital Period</th>
-            <th>Diameter</th>
-            <th>Climate</th>
-            <th>Gravity</th>
-            <th>Terrain</th>
-            <th>Surface Water</th>
-            <th>Population</th>
-            <th>Residents</th>
-            <th>Films</th>
-            <th>Created</th>
-            <th>Edited</th>
-          </tr>
-        </thead>
-        <tbody>
-          {dataToUse.length === 0 ? renderTds(data) : renderTds(dataToUse)}
-        </tbody>
-      </table>
-    </div>
+  const renderTH = () => (
+    <thead>
+      <tr>
+        {Object.keys(data[0])
+          .map((key) => <th key={ key }>{ key }</th>)}
+      </tr>
+    </thead>
   );
-};
 
+  const filterFunc = () => {
+    let filterByName = data
+      .filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()));
+    filterByNumericValues.forEach(({ column, comparison, value }) => {
+      switch (comparison) {
+      case 'maior que':
+        filterByName = filterByName.filter((planet) => +planet[column] > +value);
+        return filterByName;
+      case 'menor que':
+        filterByName = filterByName.filter((planet) => +planet[column] < +value);
+        return filterByName;
+      case 'igual a':
+        filterByName = filterByName.filter((planet) => +planet[column] === +value);
+        return filterByName;
+      default:
+        return filterByName;
+      }
+      // CODIGO FEITO COM AJUDA DA THAISA E DO THALES NO PLANTAO DAS 13H
+    });
+    return filterByName;
+  };
+
+  const renderTB = () => (
+    <tbody>
+      {filterFunc().map((result) => (
+        <tr key={ result.name }>
+          { Object.keys(data[0])
+            .map((key) => <td key={ key }>{ result[key] }</td>)}
+        </tr>
+      )) }
+    </tbody>
+  );
+
+  const renderEntireTable = () => (
+    <table>
+      { renderTH() }
+      { renderTB()}
+    </table>
+  );
+  return renderEntireTable();
+};
 export default Table;

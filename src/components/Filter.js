@@ -1,109 +1,113 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import context from '../context/context';
 
-const FilterInputs = () => {
-  const { data, filters, setFilters, setDataToUse } = useContext(context);
+function AllFilters() {
+  const { filters, setFilters, columns, setColumns } = useContext(context);
+  const { filterByName: { name: filtered }, filterByNumericValues } = filters;
+  const [filterByNumber, setFilterByNumber] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: 0,
+  });
 
-  const {
-    filterByName: { name },
-    filterByNumericValues: { column, comparison, value },
-  } = filters;
+  const comparison = [
+    'maior que',
+    'menor que',
+    'igual a',
+  ];
 
-  const handleText = ({ target }) => {
+  const handleName = ({ target: { value } }) => {
     setFilters({
       ...filters,
       filterByName: {
-        name: target.value,
+        name: value,
       },
     });
-    const filteredData = data.filter((planet) => planet.name
-      .toLowerCase().includes(target.value.toLowerCase()));
-    setDataToUse(filteredData);
   };
 
-  const handleSelect = ({ target: { name: nameSel, value: valueSel } }) => {
-    setFilters({
-      ...filters,
-      filterByNumericValues: {
-        ...filters.filterByNumericValues,
-        [nameSel]: valueSel,
-      },
+  const handleFilterNumber = ({ target: { name, value } }) => {
+    setFilterByNumber({
+      ...filterByNumber,
+      [name]: value,
     });
   };
 
   const handleClick = () => {
-    switch (comparison) {
-    case 'maior que':
-      return setDataToUse(data
-        .filter((planet) => Number(planet[column]) > Number(value)));
-    case 'menor que':
-      return setDataToUse(data
-        .filter((planet) => Number(planet[column]) < Number(value)));
-    case 'igual a':
-      return setDataToUse(data
-        .filter((planet) => Number(planet[column]) === Number(value)));
-    default: return '';
-    }
+    setFilters({
+      ...filters,
+      filterByNumericValues: [...filterByNumericValues, filterByNumber],
+    });
+
+    setColumns(columns.filter((colum) => colum !== filterByNumber.column));
   };
 
-  return (
-    <form>
-      <label htmlFor="nameFilter">
-        Filtrar planetas:
-        {' '}
-        <input
-          id="nameFilter"
-          type="text"
-          name="name"
-          value={ name }
-          data-testid="name-filter"
-          onChange={ handleText }
-          placeholder="Digite o nome do planeta"
-        />
-      </label>
-      <label htmlFor="columnSel">
+  const { value } = filterByNumber;
+
+  const renderingSelec = () => (
+    <div>
+      <form>
         <select
-          id="columnSel"
-          value={ column }
           name="column"
           data-testid="column-filter"
-          onChange={ handleSelect }
+          onChange={ handleFilterNumber }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          { columns.map((option) => (
+            <option key={ option } value={ option }>{ option }</option>
+          )) }
         </select>
-      </label>
-      <label htmlFor="comparisonSel">
         <select
-          id="comparisonSel"
-          value={ comparison }
           name="comparison"
           data-testid="comparison-filter"
-          onChange={ handleSelect }
+          onChange={ handleFilterNumber }
         >
-          <option value="maior que">maior que</option>
-          <option value="menor que">menor que</option>
-          <option value="igual a">igual a</option>
+          { comparison.map((option) => (
+            <option
+              key={ option }
+              value={ option }
+            >
+              { option }
+            </option>
+          )) }
         </select>
-      </label>
-      <label htmlFor="valueInp">
         <input
-          id="valueInp"
-          type="number"
           name="value"
-          value={ value }
+          type="number"
           data-testid="value-filter"
-          onChange={ handleSelect }
+          value={ value }
+          onChange={ handleFilterNumber }
+        />
+        <button
+          type="button"
+          data-testid="button-filter"
+          onClick={ handleClick }
+        >
+          Search
+        </button>
+      </form>
+    </div>
+  );
+
+  const renderingInputs = () => (
+    <div>
+      <label htmlFor="name-filter">
+        planets:
+        <input
+          data-testid="name-filter"
+          id="name-filter"
+          name="name-filter"
+          type="text"
+          value={ filtered }
+          onChange={ handleName }
         />
       </label>
-      <button type="button" data-testid="button-filter" onClick={ handleClick }>
-        Filtrar
-      </button>
-    </form>
+    </div>
   );
-};
+  return (
+    <div>
+      { renderingInputs() }
+      { renderingSelec() }
+    </div>
+  );
+}
 
-export default FilterInputs;
+export default AllFilters;

@@ -1,10 +1,16 @@
-export default function filterNumeric(planets, filter) {
-  const { column, comparison, value } = filter;
-  const arrayFilter = planets.filter((planet) => {
-    if (comparison === 'maior que') return Number(planet[column]) > Number(value);
-    if (comparison === 'menor que') return Number(planet[column]) < Number(value);
-    if (comparison === 'igual a') return Number(planet[column]) === Number(value);
-    return planets;
-  });
-  return arrayFilter;
-}
+const beforeHandleClick = () => {
+  switch (comparison) {
+  case 'maior que':
+    return setDataToUse(data
+      .filter((planet) => Number(planet[column]) > Number(value)));
+  case 'menor que':
+    return setDataToUse(data
+      .filter((planet) => Number(planet[column]) < Number(value)));
+  case 'igual a':
+    return setDataToUse(data
+      .filter((planet) => Number(planet[column]) === Number(value)));
+  default: return '';
+  }
+};
+
+export default beforeHandleClick;
