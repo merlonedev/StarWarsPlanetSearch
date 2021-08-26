@@ -38,23 +38,21 @@ function Filter() {
     }
   };
 
-  const saveFilters = () => {
-    const newFilter = { column, comparison, value };
-    setFiltersByNumber(filtersByNumber.concat(newFilter));
-  };
-
   const resetFilters = () => {
+    const columnValue = document.getElementById('column').value;
     setColumn('population');
     setComparison('maior');
     setValue(0);
   };
 
-  const filterByNumber = () => {
-    saveFilters();
+  const saveFilters = () => {
+    const newFilter = { column, comparison, value };
+    setFiltersByNumber(filtersByNumber.concat(newFilter));
+    resetFilters();
+  };
 
-    const newColumn = columnsCat.filter((columns) => columns !== column);
-
-    const filteredPlanets = data.filter((planet) => {
+  const changePlanets = () => {
+    const filteredPlanets = data.filter((planet)=> {
       if (comparison === 'maior que') {
         return parseFloat(planet[column]) > parseFloat(value);
       }
@@ -66,24 +64,40 @@ function Filter() {
     });
 
     setFiltered(filteredPlanets);
+  };
+
+  const filterByNumber = () => {
+    saveFilters();
+
+    const newColumn = columnsCat.filter((columns) => columns !== column);
+
+    changePlanets();
     setColumnsCat(newColumn);
-    resetFilters();
+  };
+
+  const deleteFilter = ({ target }) => {
+    const { parentNode } = target;
+    const { id } = parentNode;
+    const numberID = parseFloat(id);
+
+    const item = filtersByNumber[numberID];
+    setFiltersByNumber(filtersByNumber.filter((ai) => ai !== item ));
+    setColumnsCat(columnsCat.concat(item.column));
+    setFiltered(data);
   };
 
   const renderFilters = () => {
     if (filtersByNumber.length > 0) {
-      return (
-        <di>
-          {
-            filtersByNumber.map((filters, index) => (
-              <p key={ index }>
-                {`${filters.column} | ${filters.comparison} | ${filters.value}`}
-              </p>
-            ))
-          }
-        </di>
-      );
+      return filtersByNumber.map((filters, index) => (
+        <div key={ index } id={ index } data-testid="filter">
+          <span>
+            {`${filters.column} | ${filters.comparison} | ${filters.value}`}
+          </span>
+          <button type="button" onClick={ deleteFilter }>X</button>
+        </div>
+      ));
     }
+    return null;
   };
 
   return (
