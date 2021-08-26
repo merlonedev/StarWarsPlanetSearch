@@ -3,26 +3,73 @@ import starwarsContext from '../context/starwarsContext';
 
 export default function NumericFilter() {
   const [filtersInputs, setFiltersInput] = useState({
-    columnInput: 'population',
+    columnInput: '',
     comparisonInput: 'maior que',
     valueInput: 0,
   });
   const { filters, setFilters } = useContext(starwarsContext);
-  const { filterByNumericValues: { column, comparison, value } } = filters;
+  const { filterByNumericValues } = filters;
 
   const handleChange = ({ target }) => {
     setFiltersInput({ ...filtersInputs, [target.name]: target.value });
   };
 
+  const availableOptions = () => {
+    const options = [
+      'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+    ];
+    const opUsadas = filterByNumericValues.map(
+      (filter) => filter.column,
+    ).filter((_, index) => index < filterByNumericValues.length);
+
+    return options.filter(
+      (option) => !opUsadas.some((usedOption) => usedOption === option),
+    );
+  };
+
   const handleClick = () => {
-    setFilters({
-      ...filters,
-      filterByNumericValues: {
-        column: filtersInputs.columnInput,
-        comparison: filtersInputs.comparisonInput,
-        value: filtersInputs.valueInput,
-      },
-    });
+    if (filterByNumericValues.length === 0) {
+      setFilters({
+        ...filters,
+        filterByNumericValues: [
+          {
+            column: filtersInputs.columnInput || availableOptions()[0],
+            comparison: filtersInputs.comparisonInput,
+            value: filtersInputs.valueInput,
+          },
+        ],
+      });
+    } else {
+      setFilters({
+        ...filters,
+        filterByNumericValues: filters.filterByNumericValues.concat({
+          column: filtersInputs.columnInput || availableOptions()[0],
+          comparison: filtersInputs.comparisonInput,
+          value: filtersInputs.valueInput,
+        }),
+      });
+    }
+    // console.log(filterByNumericValues.length);
+  };
+
+  const renderOptions = () => {
+    const options = [
+      'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+    ];
+
+    if (filterByNumericValues.length === 0) {
+      return (
+        options.map(
+          (option, index) => <option key={ index } value={ option }>{option}</option>,
+        )
+      );
+    }
+
+    return (
+      availableOptions().map(
+        (option, index) => <option key={ index } value={ option }>{option}</option>,
+      )
+    );
   };
 
   return (
@@ -33,14 +80,10 @@ export default function NumericFilter() {
           data-testid="column-filter"
           id="column-filter"
           name="columnInput"
-          value={ column }
+          value={ filtersInputs.columnInput }
           onChange={ (e) => handleChange(e) }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {renderOptions()}
         </select>
       </label>
 
@@ -50,7 +93,7 @@ export default function NumericFilter() {
           data-testid="comparison-filter"
           id="comparison-filter"
           name="comparisonInput"
-          value={ comparison }
+          value={ filtersInputs.comparisonInput }
           onChange={ (e) => handleChange(e) }
         >
           <option value="maior que">maior que</option>
@@ -66,7 +109,7 @@ export default function NumericFilter() {
           data-testid="value-filter"
           id="value-filter"
           name="valueInput"
-          value={ value }
+          value={ filtersInputs.valueInput }
           onChange={ (e) => handleChange(e) }
         />
       </label>
@@ -75,7 +118,7 @@ export default function NumericFilter() {
         data-testid="button-filter"
         onClick={ () => handleClick() }
       >
-        Acionar filtro
+        Filtrar
       </button>
     </div>
   );

@@ -6,6 +6,8 @@ import starwarsContext from './starwarsContext';
 function StarwarsProvider({ children }) {
   const [data, setData] = useState([]);
   const [dataTable, setDataTable] = useState([]);
+  const [numberOfFilters, setNumberOfFilters] = useState(0);
+  const [usedOptions, setUsedOptions] = useState(false);
   const [filteredByName, setFilteredByName] = useState(false);
   const [filters, setFilters] = useState({
     filterByName: {
@@ -23,7 +25,6 @@ function StarwarsProvider({ children }) {
   useEffect(() => {
     fetchApi()
       .then((result) => setData(result));
-    // console.log(result);
   }, []);
 
   useEffect(() => {
@@ -41,21 +42,33 @@ function StarwarsProvider({ children }) {
   }, [filters.filterByName]);
 
   useEffect(() => {
-    const { column, comparison, value } = filters.filterByNumericValues;
+    const { filterByNumericValues } = filters;
     const dataToUse = filteredByName ? dataTable : data;
-
-    const filteredResult = dataToUse.filter(
-      (planet) => {
-        if (comparison === 'maior que') return planet[column] > Number(value);
-        if (comparison === 'igual a') return planet[column] === value;
-        return planet[column] < Number(value);
-      },
-    );
-    setDataTable(filteredResult);
+    filterByNumericValues.forEach((numFilter) => {
+      const { column, comparison, value } = numFilter;
+      const filteredResult = dataToUse.filter(
+        (planet) => {
+          if (comparison === 'maior que') return planet[column] > Number(value);
+          if (comparison === 'igual a') return planet[column] === value;
+          return planet[column] < Number(value);
+        },
+      );
+      setDataTable(filteredResult);
+    });
   }, [filters.filterByNumericValues]);
 
   return (
-    <starwarsContext.Provider value={ { dataTable, filters, setFilters } }>
+    <starwarsContext.Provider
+      value={ {
+        dataTable,
+        filters,
+        setFilters,
+        numberOfFilters,
+        setNumberOfFilters,
+        usedOptions,
+        setUsedOptions,
+      } }
+    >
       { children }
     </starwarsContext.Provider>
   );

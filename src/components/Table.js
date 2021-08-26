@@ -6,7 +6,7 @@ export default function Table() {
 
   return (
     <div>
-      { dataTable.length === 0 ? <span>Loading...</span>
+      { dataTable.length === 0 ? <span>Nenhum planeta encontrado</span>
         : (
           <table>
             <thead>
@@ -18,10 +18,10 @@ export default function Table() {
               </tr>
             </thead>
             <tbody>
-              { dataTable.map((planet, index) => (
-                <tr key={ index }>
+              { dataTable.map((planet, indexPlanet) => (
+                <tr key={ indexPlanet }>
                   {
-                    Object.values(planet).map((value) => (
+                    Object.values(planet).map((value, index) => (
                       <td key={ index }>{ value }</td>))
                   }
                 </tr>

@@ -3,22 +3,11 @@ import starwarsContext from '../context/starwarsContext';
 import NumericFilter from './NumericFilter';
 
 export default function Filters() {
-  const { filters, setFilters, columns, setColumns } = useContext(starwarsContext);
+  const { filters, setFilters } = useContext(starwarsContext);
   const { filterByNumericValues, filterByName } = filters;
 
   const handleChange = ({ target }) => {
     setFilters({ ...filters, filterByName: { name: target.value } });
-  };
-
-  const handleClick = (column) => {
-    const filtredResult = filterByNumericValues.filter(
-      (filter) => filter.column !== column,
-    );
-    setFilters({
-      ...filters,
-      filterByNumericValues: filtredResult,
-    });
-    setColumns([...columns, column]);
   };
 
   return (
@@ -35,25 +24,14 @@ export default function Filters() {
         />
       </label>
       <NumericFilter />
-      {filterByNumericValues.length >= 1 ? filterByNumericValues.map(
-        (filter, index) => {
-          if (filter.column) {
-            return (
-              <div key={ index } data-testid="filter">
-                <span>
-                  { `${filter.column} ${filter.comparison} ${filter.value}`}
-                </span>
-                <button
-                  type="button"
-                  onClick={ () => handleClick(filter.column) }
-                >
-                  X
-                </button>
-              </div>);
-          }
-          return '';
-        },
-      ) : 'No filters'}
+      { filterByNumericValues.length > 0 && filterByNumericValues.map(
+        (filter, index) => (
+          <span key={ index }>
+            {
+              `${filter.column} ${filter.comparison} ${filter.value}`
+            }
+          </span>),
+      )}
     </div>
   );
 }
