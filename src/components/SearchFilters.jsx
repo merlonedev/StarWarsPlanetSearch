@@ -10,6 +10,15 @@ const filterValue = {
 function SearchFilters() {
   const { filters, setFilters } = useContext(StarWarsContext);
   const [state, setState] = useState(filterValue);
+  const selectHead = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ];
+
+  const { filterByNumericValues } = filters;
 
   const handleChange = ({ target: { value } }) => {
     setFilters({ ...filters, filterByName: { name: value } });
@@ -20,11 +29,25 @@ function SearchFilters() {
   };
 
   const handleChangeNumbers = () => {
-    const { filterByNumericValues } = filters;
     setFilters(
       { ...filters,
         filterByNumericValues: [...filterByNumericValues, state] },
     );
+  };
+
+  const filterHead = () => {
+    const newSelectHead = [...selectHead];
+    if (filterByNumericValues.length) {
+      filterByNumericValues.forEach(({ column }) => {
+        const exclude = newSelectHead.indexOf(column);
+        const indexNul = -1;
+        if (exclude > indexNul) {
+          newSelectHead.splice(exclude, 1);
+        }
+      });
+    }
+    console.log(newSelectHead);
+    return newSelectHead;
   };
 
   return (
@@ -39,14 +62,12 @@ function SearchFilters() {
         <div>
           <select
             data-testid="column-filter"
-            name="column"
             onChange={ handleChangeStateLocal }
+            name="column"
           >
-            <option value="population">population</option>
-            <option value="orbital_period">orbital_period</option>
-            <option value="diameter">diameter</option>
-            <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option>
+            {filterHead().map((content) => (
+              <option key={ content } value={ content }>{ content }</option>
+            ))}
           </select>
           <select
             data-testid="comparison-filter"
