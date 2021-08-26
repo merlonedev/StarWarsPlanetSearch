@@ -2,19 +2,23 @@ import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function Filter() {
-  const { handleSearch, handleSelect, filterTable } = useContext(StarWarsContext);
+  const {
+    handleSearch,
+    handleSelect,
+    filterTable,
+    options } = useContext(StarWarsContext);
 
   return (
     <div>
       <input type="text" data-testid="name-filter" onChange={ handleSearch } />
       <div>
-        <select name="column" data-testid="column-filter" onChange={ handleSelect }>
-          <option>Selecionar</option>
-          <option>population</option>
-          <option>orbital_period</option>
-          <option>diameter</option>
-          <option>rotation_period</option>
-          <option>surface_water</option>
+        <select
+          id="filter-selected"
+          name="column"
+          data-testid="column-filter"
+          onChange={ handleSelect }
+        >
+          { options.map((o) => <option key={ o }>{ o }</option>)}
         </select>
         <select
           name="comparison"

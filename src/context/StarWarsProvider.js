@@ -6,9 +6,17 @@ function StarWarsProvider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [filters, setFilters] = useState({
     FilteredByName: '',
-    filterByNumericValues: [
-    ],
+    filterByNumericValues: {
+      column: 'population',
+    },
   });
+  const [options, setOptions] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -41,6 +49,7 @@ function StarWarsProvider({ children }) {
   const filterTable = () => {
     const { comparison, column, value } = filters.filterByNumericValues;
     const valueConv = Number(value);
+    setOptions(options.filter((option) => option !== column));
 
     if (comparison === 'maior que') {
       return setPlanets(planets.filter((planet) => planet[column] > valueConv));
@@ -55,6 +64,7 @@ function StarWarsProvider({ children }) {
 
   const contextValue = {
     data: planets,
+    options,
     handleSearch,
     handleSelect,
     filterTable,
