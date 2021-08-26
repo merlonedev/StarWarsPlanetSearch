@@ -60,7 +60,7 @@ const FilterNumericValues = () => {
       <select
         textlabel="column"
         name="column"
-        id="column-filter"
+        data-testid="column-filter"
         value={ column }
         onChange={ (e) => handleChange(e) }
       >
@@ -71,7 +71,7 @@ const FilterNumericValues = () => {
       <select
         textlabel="comparison"
         name="comparison"
-        id="comparison-filter"
+        data-testid="comparison-filter"
         value={ comparison }
         onChange={ (e) => handleChange(e) }
       >
@@ -82,7 +82,7 @@ const FilterNumericValues = () => {
       <input
         textlabel="value"
         name="value"
-        id="value-filter"
+        data-testid="value-filter"
         type="number"
         value={ value }
         onChange={ (e) => handleChange(e) }

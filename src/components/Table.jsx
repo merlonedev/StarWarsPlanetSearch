@@ -5,7 +5,7 @@ import FilterByNumericValues from './FilterByNumericValues';
 
 function Table() {
   const { columns, dataFilter } = useContext(ContextApi);
-  console.log(dataFilter);
+  // console.log(dataFilter);
   return (
     <section>
       <FilterByName />
