@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Context from './Context';
+import ApiPlanet from '../services/ApiPlanet';
 
-const urlApi = 'https://swapi-trybe.herokuapp.com/api/planets/';
 export default function Provider({ children }) {
   const [tablePlanet, setData] = useState([]);
   const [searchPlanet, setFilterPlanet] = useState([]);
@@ -17,12 +17,9 @@ export default function Provider({ children }) {
 
   // Requisição
   useEffect(() => {
-    const endpointPlanets = urlApi;
     const getPlanets = async () => {
-      const results = await fetch(endpointPlanets);
-      const dataPlanets = await results.json();
-      setData(dataPlanets.results);
-      setFilterPlanet(dataPlanets.results);
+      const result = await ApiPlanet();
+      setData(result);
     };
     getPlanets();
   }, []);
