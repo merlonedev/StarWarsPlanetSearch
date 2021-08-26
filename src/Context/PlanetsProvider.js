@@ -6,10 +6,10 @@ function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
   const [name, setName] = useState('');
   const [filtered, setFiltered] = useState([]);
+  const [filtersByNumber, setFiltersByNumber] = useState([]);
   const [filter, setFilter] = useState({
-    filterByName: {
-      name,
-    },
+    filterByName: { name },
+    filterByNumericValues: filtersByNumber,
   });
 
   useEffect(() => {
@@ -27,11 +27,13 @@ function PlanetsProvider({ children }) {
     data,
     name,
     filtered,
+    filtersByNumber,
     filter,
     setData,
     setName,
     setFiltered,
     setFilter,
+    setFiltersByNumber,
   };
 
   return (
