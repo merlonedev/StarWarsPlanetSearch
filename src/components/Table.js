@@ -15,6 +15,10 @@ function Table() {
     }
   }, [name, data]);
 
+  useEffect(() => {
+
+  });
+
   return (
     <table>
       <thead>

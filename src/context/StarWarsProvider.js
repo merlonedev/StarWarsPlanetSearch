@@ -6,6 +6,8 @@ function StarWarsProvider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [filters, setFilters] = useState({
     FilteredByName: '',
+    filterByNumericValues: [
+    ],
   });
 
   useEffect(() => {
@@ -21,13 +23,41 @@ function StarWarsProvider({ children }) {
   const handleSearch = ({ target }) => {
     const { value } = target;
     setFilters({
+      ...filters,
       name: value,
     });
+  };
+
+  const handleSelect = ({ target }) => {
+    const { value, name } = target;
+    setFilters({
+      filterByNumericValues: {
+        ...filters.filterByNumericValues,
+        [name]: value,
+      },
+    });
+  };
+
+  const filterTable = () => {
+    const { comparison, column, value } = filters.filterByNumericValues;
+    const valueConv = Number(value);
+
+    if (comparison === 'maior que') {
+      return setPlanets(planets.filter((planet) => planet[column] > valueConv));
+    }
+    if (comparison === 'menor que') {
+      return setPlanets(planets.filter((planet) => planet[column] < valueConv));
+    }
+    if (comparison === 'igual a') {
+      return setPlanets(planets.filter((planet) => planet[column] === value));
+    }
   };
 
   const contextValue = {
     data: planets,
     handleSearch,
+    handleSelect,
+    filterTable,
     filters,
   };
 
