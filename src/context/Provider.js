@@ -1,28 +1,38 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SWContext from './Context';
 
-function SWProvider({ children }) {
+// eslint-disable-next-line react/prop-types
+function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
+  const [name, setFilterName] = useState('');
+  const [numericFilter, setFilters] = useState([]);
 
   useEffect(() => {
-    const requestPlanets = async () => {
-      const api = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const response = await fetch(api);
-      const data = await response.json();
-      setPlanets(delete data.residents);
+    const getPlanets = async () => {
+      const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
+      const { results } = await fetch(endpoint).then((data) => data.json());
+      setPlanets(results.filter((resp) => delete resp.residents));
     };
-    requestPlanets();
+    getPlanets();
   }, []);
 
+  const contextValue = {
+    planets,
+    filters: {
+      filterName: {
+        name,
+      },
+      numericFilter,
+    },
+    setFilterName,
+    setFilters,
+  };
+
   return (
-    <SWContext.Provider value={ SWContext }>
+    <SWContext.Provider value={ contextValue }>
       {children}
     </SWContext.Provider>
   );
 }
-SWProvider.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
 
-export default SWProvider;
+export default Provider;
