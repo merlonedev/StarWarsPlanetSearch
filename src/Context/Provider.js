@@ -5,6 +5,8 @@ import AppContext from './appContext';
 function Provider({ children }) {
   const [info, setInfo] = useState([]);
   const [name, setName] = useState('');
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+
   const contextValue = {
     info,
     setInfo,
@@ -13,6 +15,8 @@ function Provider({ children }) {
         name,
         setName,
       },
+      filterByNumericValues,
+      setFilterByNumericValues,
     },
   };
 

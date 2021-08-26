@@ -2,7 +2,11 @@ import React, { useContext } from 'react';
 import AppContext from '../Context/appContext';
 
 function Table() {
-  const { info, filters: { filterByName: { name } } } = useContext(AppContext);
+  const {
+    info,
+    filters: { filterByName: { name },
+      filterByNumericValues,
+    } } = useContext(AppContext);
   const tableHeading = [
     'name',
     'rotation_period',
@@ -28,7 +32,34 @@ function Table() {
     return info;
   };
 
-  const filteredPlanets = filterByName();
+  let filteredPlanets = filterByName();
+
+  const filterPlanetsByValues = () => {
+    if (filterByNumericValues) {
+      filterByNumericValues.forEach(({ comparison, column, value }) => {
+        switch (comparison) {
+        case 'maior que':
+          filteredPlanets = filteredPlanets.filter(
+            (planet) => (parseInt(planet[column], 10) > value),
+          );
+          break;
+        case 'menor que':
+          filteredPlanets = filteredPlanets.filter(
+            (planet) => (parseInt(planet[column], 10) < value),
+          );
+          break;
+        case 'igual a':
+          filteredPlanets = filteredPlanets.filter(
+            (planet) => parseInt(planet[column], 10) === parseInt(value, 10),
+          );
+          break;
+        default:
+          break;
+        }
+      });
+    }
+  };
+  filterPlanetsByValues();
 
   const renderTable = (planets) => (
     <div>
@@ -56,7 +87,7 @@ function Table() {
               url,
             }) => (
               <tr key={ planetName }>
-                <td>{planetName}</td>
+                <td data-testid="planet-name">{planetName}</td>
                 <td>{rotationPeriod}</td>
                 <td>{orbitalPeriod}</td>
                 <td>{diameter}</td>
