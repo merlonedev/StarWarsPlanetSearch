@@ -1,12 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 const Filters = () => {
-  const { filters, setFilters, filterPlanets, setFilterPlanets,
-  } = useContext(StarWarsContext);
+  const { filters, setFilters } = useContext(StarWarsContext);
+  const { filterByNumericValues } = filters;
+  const [selectValues, setSelectValues] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: '',
+  });
+  const comparisons = ['maior que', 'menor que', 'igual a'];
 
   const handleChangeName = ({ target: { value } }) => {
-    setFilters({
+    setFilters({ ...filters,
       filterByName: {
         name: value,
       },
@@ -14,29 +20,27 @@ const Filters = () => {
   };
 
   const handleChange = ({ target: { value, name } }) => {
-    setFilters({ ...filters,
-      filterByNumericValues: { ...filters.filterByNumericValues, [name]: value } });
+    setSelectValues({ ...selectValues, [name]: value });
   };
 
   const handleClick = () => {
-    const { filterByNumericValues: { column, comparison, value } } = filters;
-    let planets = filterPlanets;
+    setFilters({
+      ...filters,
+      filterByNumericValues: [...filterByNumericValues, selectValues],
+    });
+  };
 
-    switch (comparison) {
-    case 'maior que':
-      planets = planets.filter((planet) => Number(planet[column]) > Number(value));
-      break;
-    case 'menor que':
-      planets = planets.filter((planet) => Number(planet[column]) < Number(value));
-      break;
-    case 'igual a':
-      planets = planets.filter((planet) => Number(planet[column]) === Number(value));
-      break;
-    default:
-      planets = filterPlanets;
+  const columnOptions = () => {
+    let columns = ['population',
+      'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+
+    if (filterByNumericValues) {
+      filterByNumericValues.forEach(({ column }) => {
+        columns = columns.filter((option) => option !== column);
+      });
     }
 
-    setFilterPlanets(planets);
+    return columns;
   };
 
   return (
@@ -55,20 +59,28 @@ const Filters = () => {
         data-testid="column-filter"
         onChange={ handleChange }
       >
-        <option value="population">population</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="diameter">diameter</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="surface_water">surface_water</option>
+        { columnOptions().map((column, index) => (
+          <option
+            key={ index }
+            value={ column }
+          >
+            { column }
+          </option>
+        )) }
       </select>
       <select
         name="comparison"
         data-testid="comparison-filter"
         onChange={ handleChange }
       >
-        <option value="maior que">maior que</option>
-        <option value="menor que">menor que</option>
-        <option value="igual a">igual a</option>
+        { comparisons.map((comparison) => (
+          <option
+            key={ comparison }
+            value={ comparison }
+          >
+            { comparison }
+          </option>
+        )) }
       </select>
       <input
         name="value"

@@ -5,16 +5,11 @@ import StarWarsContext from './StarWarsContext';
 const StarWarsProvider = ({ children }) => {
   const URL_API = 'https://swapi-trybe.herokuapp.com/api/planets/';
   const [data, setData] = useState([]);
-  const [filterPlanets, setFilterPlanets] = useState([]);
   const [filters, setFilters] = useState({
     filterByName: {
       name: '',
     },
-    filterByNumericValues: {
-      column: 'population',
-      comparison: 'maior que',
-      value: 0,
-    },
+    filterByNumericValues: [],
   });
 
   useEffect(() => {
@@ -26,19 +21,10 @@ const StarWarsProvider = ({ children }) => {
     fetchPlanets();
   }, []);
 
-  useEffect(() => {
-    const { filterByName: { name } } = filters;
-    const planets = data
-      .filter((planet) => planet.name.includes(name));
-    setFilterPlanets(planets);
-  }, [data, filters]);
-
   const contextValue = {
     data,
     filters,
     setFilters,
-    filterPlanets,
-    setFilterPlanets,
   };
 
   return (
