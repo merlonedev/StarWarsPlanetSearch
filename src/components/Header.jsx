@@ -10,7 +10,7 @@ function Header() {
   } = useContext(AppContext);
   useEffect(() => {
     const { filterByName: { name } } = filters;
-    if (name === '') {
+    if (!name) {
       setFilteredPlanets(data);
     } else {
       setFilteredPlanets(

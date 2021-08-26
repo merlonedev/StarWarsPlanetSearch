@@ -5,7 +5,7 @@ import AppContext from './AppContext';
 function Provider({ children }) {
   const INITIAL_FILTERS = {
     filterByName: {
-      name: '',
+      name: undefined,
     },
   };
   const [data, setData] = useState([]);
