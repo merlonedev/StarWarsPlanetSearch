@@ -6,6 +6,13 @@ function Provider({ children }) {
   const [data, setdata] = useState([]);
   const [search, setsearch] = useState({ filters: { filterByName: { name: '' } } });
   const [filter, setfilter] = useState([]);
+  const [typeplanet, settypeplanet] = useState('population');
+  const [comparision, setcomparision] = useState('Maior que');
+  const [nuumber, setnuumber] = useState();
+
+  const option1 = ['population', 'orbital_period',
+    'diameter', 'rotation_period', 'surface_water'];
+  const option2 = ['maior que', 'menor que', 'igual a'];
 
   function searchPlanet({ target: { value } }) { // searchPlanet(e) { const valor = e.target.value }
     setsearch({
@@ -13,6 +20,34 @@ function Provider({ children }) {
       filters: { filterByName: { name: value } },
     });
   }
+
+  const savePlanet = (e) => {
+    const { value } = e.target;
+    settypeplanet(value);
+  };
+
+  const saveComparision = (e) => {
+    const { value } = e.target;
+    setcomparision(value);
+  };
+
+  const saveNuumber = (e) => {
+    const { value } = e.target;
+    setnuumber(value);
+  };
+
+  const handleClick = () => {
+    const filterPlanetsData = data.filter((info) => {
+      switch (comparision) {
+      case 'maior que': return (info[typeplanet] > parseFloat(nuumber));
+      case 'menor que': return (info[typeplanet] < parseFloat(nuumber));
+      case 'igual a': return (info[typeplanet] === nuumber);
+      default:
+        return ('Error');
+      }
+    });
+    setfilter(filterPlanetsData);
+  };
 
   useEffect(() => {
     const getAPI = async () => {
@@ -34,7 +69,18 @@ function Provider({ children }) {
     setfilter(filterResult);
   }, [data, search]); // transformei em componentdidupdate()
 
-  const context = { data, setdata, search, searchPlanet, filter };
+  const context = { data,
+    setdata,
+    search,
+    searchPlanet,
+    filter,
+    option1,
+    option2,
+    savePlanet,
+    saveComparision,
+    saveNuumber,
+    handleClick,
+  };
   return (
     <mycontext.Provider value={ context }>
       { children }
