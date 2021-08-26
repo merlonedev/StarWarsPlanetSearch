@@ -1,19 +1,20 @@
 import React from 'react';
 import MyContext from '../Context';
 
-function InputFilter() {
+function InputValue() {
   return (
     <div>
-      <label htmlFor="filter-name">
-        Filter by name
+      <label htmlFor="filter-value">
+        Filter by value
         <MyContext.Consumer>
           {
             ({ handle }) => (
               <input
-                name="filter-name"
-                id="filter-name"
+                type="number"
+                name="filter-value"
+                id="filter-value"
                 onChange={ handle }
-                data-testid="name-filter"
+                data-testid="value-filter"
               />
             )
           }
@@ -24,4 +25,4 @@ function InputFilter() {
   );
 }
 
-export default InputFilter;
+export default InputValue;

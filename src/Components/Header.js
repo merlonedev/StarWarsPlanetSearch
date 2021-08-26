@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import MyContext from '../Context';
 import Table from './Table';
-import InputFilter from './InputFilter';
+import InputFilterName from './InputFilterName';
+import SelectColumn from './SelectColumn';
+import SelectComparison from './SelectComparison';
+import InputValue from './InputValue';
+import FilterButton from './FilterButton';
 
 const filters = { filterByName: { name: '' } };
 
@@ -44,7 +48,11 @@ function Header() {
 
   return (
     <MyContext.Provider value={ contextValue }>
-      <InputFilter />
+      <InputFilterName />
+      <SelectColumn />
+      <SelectComparison />
+      <InputValue />
+      <FilterButton />
       <table>
         <thead>
           <tr>
