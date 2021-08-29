@@ -1,11 +1,7 @@
-import React, { useContext } from 'react';
-import StarContext from '../context/StarContext';
+import React from 'react';
 import TableBody from './TableBody';
 
 function Table() {
-  const { data } = useContext(StarContext);
-  console.log(data);
-
   return (
     <div>
       <table>

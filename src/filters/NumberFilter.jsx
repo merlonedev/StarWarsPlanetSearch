@@ -1,8 +1,26 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import StarContext from '../context/StarContext';
 
 function NumberFilter() {
-  const { setFilterByNumericValues, filterByNumericValues } = useContext(StarContext);
+  const {
+    setFilterByName,
+    filterByNumericValues,
+    setFilterByNumericValues } = useContext(StarContext);
+  const [comparison, setComparison] = useState('maior que');
+  const [column, setColumn] = useState('population');
+  const [value, setValue] = useState('');
+  const [filterUsed, setFilterUsed] = useState([]);
+  const options = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+
+  const handleClick = () => {
+    console.log(column);
+    setFilterUsed([...filterUsed, column]);
+    setFilterByName('');
+    setFilterByNumericValues([...filterByNumericValues, { column, comparison, value }]);
+  };
+  console.log(filterUsed);
+  const newOptions = options.filter((opti) => (!filterUsed.includes(opti)));
 
   return (
     <form>
@@ -12,16 +30,13 @@ function NumberFilter() {
           className="filters"
           data-testid="column-filter"
           id="column-filter"
+          value={ column }
           name="column"
-          onChange={
-            ({ target: { value } }) => setFilterByNumericValues({ column: value })
-          }
+          onChange={ ({ target: { value: newColumn } }) => setColumn(newColumn) }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {newOptions.map((opt) => (
+            <option key={ opt } value={ opt }>{opt}</option>
+          ))}
         </select>
       </label>
       <label htmlFor="comparison-filter" className="filters">
@@ -29,11 +44,10 @@ function NumberFilter() {
           className="filters"
           data-testid="comparison-filter"
           id="comparison-filter"
-          name="comparison-filter"
+          value={ comparison }
+          name="comparison"
           onChange={
-            ({ target: { value } }) => setFilterByNumericValues({
-              ...filterByNumericValues, comparison: value,
-            })
+            ({ target: { value: newComparison } }) => setComparison(newComparison)
           }
         >
           <option value="maior que">maior que</option>
@@ -45,18 +59,15 @@ function NumberFilter() {
         <input
           data-testid="value-filter"
           id="value-filter"
-          name="value-filter"
-          onChange={
-            ({ target: { value } }) => setFilterByNumericValues({
-              ...filterByNumericValues, value,
-            })
-          }
+          value={ value }
+          name="value"
+          onChange={ ({ target: { value: newValue } }) => setValue(newValue) }
         />
       </label>
       <button
-        type="submit"
+        type="button"
         data-testid="button-filter"
-        onClick={ () => {} }
+        onClick={ handleClick }
       >
         <span className="material-icons-outlined">
           filter_alt
