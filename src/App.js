@@ -1,12 +1,12 @@
 import React from 'react';
 import Table from './components/Table';
-import { Provider } from './context/Context';
+import GlobalContext from './Context/GlobalContext';
 
 function App() {
   return (
-    <Provider>
+    <GlobalContext>
       <Table />
-    </Provider>
+    </GlobalContext>
   );
 }
 

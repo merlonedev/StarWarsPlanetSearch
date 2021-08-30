@@ -1,114 +1,230 @@
-import React, { useContext } from 'react';
-import { Context } from '../context/Context';
+import React from 'react';
+import Context from '../Context/Context';
+import Filter from './Filter';
+import Select from './Select';
 
-export default function Table() {
-  const { planets, setPlanets } = useContext(Context);
-  const { filters, setFilters } = useContext(Context);
-  const { filterNumber, setFilterNumber } = useContext(Context);
+function Table() {
+  const resultsApi = React.useContext(Context);
+  const [filters, setFilters] = React.useState({
+    filters: {
+      filterByName: {
+        name: '',
+      },
+      filterByNumericValues: [],
+      order: {
+        column: '',
+        sort: '',
+      },
+    },
+  });
+  const [isLoaded, setIsLoaded] = React.useState(true);
+  const [sort, setSort] = React.useState({ order: {
+    column: 'name',
+    sort: 'ASC',
+  } });
 
-  const handleChange = ({ target }) => {
-    const { name, value } = target;
+  const [filterNumericValues, setFilterNumericValues] = React.useState({
+    column: 'maior que',
+    comparison: '',
+    value: 0,
+  });
 
-    setFilterNumber({
-      ...filterNumber,
-      [name]: value,
+  const [allPlanets, setAllPlanets] = React.useState([]);
+
+  React.useEffect(() => {
+    if (resultsApi.data) {
+      setAllPlanets(resultsApi.data.results
+        .filter((value) => value.name.toLowerCase().includes(filters.filters.filterByName.name)));
+    }
+  }, [resultsApi.data, filters]);
+
+  if (!resultsApi.data) {
+    return (
+      <p>carregando</p>
+    );
+  }
+
+  const filterTR = Object.keys(resultsApi.data.results[0])
+    .filter((value) => value !== 'residents');
+
+  function handlerClick({ target }) {
+    const { value } = target;
+    setFilters({
+      filters: {
+        filterByName: {
+          name: value,
+        },
+        filterByNumericValues: [
+          ...filters.filters.filterByNumericValues,
+        ],
+        ...filters.filters.order,
+      },
     });
-  };
+  }
+  const filterPlanets = Filter(filters, allPlanets);
+  filterPlanets.sort((A, B) => {
+    // Rodlfo Rezende e Redorigo Ruan me ajudaram.
+    if (sort.order.sort === 'ASC' && /^[0-9]/.test(A[sort.order.column])) {
+      // Esse if verifica se tem algum caracter com numeros e faz o sort dele.
+      return +A[sort.order.column] - +B[sort.order.column];
+    }
+    if (sort.order.sort === 'ASC') {
+      // esse faz o sort com palavras
+      return A[sort.order.column].charCodeAt(0) - B[sort.order.column].charCodeAt(0);
+    }
+    if (sort.order.sort === 'DESC' && /^[0-9]/.test(A[sort.order.column])) {
+      return +B[sort.order.column] - +A[sort.order.column];
+    }
+    return 0;
+  });
 
-  const AddFilter = () => {
-    const { colunm, comparison, value } = filterNumber;
-    const retorno = planets.filter((item) => {
-      switch (comparison) {
-      case 'maior que':
-        return parseInt(item[colunm], 10) > parseInt(value, 10);
-      case 'menor que':
-        return parseInt(item[colunm], 10) < parseInt(value, 10);
-      case 'igual a':
-        return parseInt(item[colunm], 10) === parseInt(value, 10);
-      default:
-        return 0;
-      }
-    });
-    setPlanets(retorno);
-    console.log(retorno);
-  };
+  const filterColumn = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ].filter((value) => {
+    const { filterByNumericValues } = filters.filters;
+    return !filterByNumericValues.some(({ column }) => column === value);
+  });
 
+  function setStateFilters() {
+    const { column, comparison, value } = filterNumericValues;
+    setFilters({ filters: { ...filters.filters,
+      filterByNumericValues:
+      [...filters.filters.filterByNumericValues, { column, comparison, value }],
+      order: {
+        ...filters.filters.order,
+        sort: sort.order.sort,
+        column: sort.order.column,
+      },
+    } });
+  }
+
+  function removeParams(indexComparison) {
+    setFilters({ filters: {
+      ...filters.filters,
+      filterByNumericValues: [
+        ...filters.filters.filterByNumericValues
+          .filter((value, index) => index !== indexComparison)],
+    } });
+  }
+  const params = { setSort,
+    filterTR,
+    sort,
+    isLoaded,
+    setIsLoaded };
+
+    console.log(filterPlanets);
   return (
     <div>
-      <div>
+      <label htmlFor="filter">
         <input
-          type="text"
-          onChange={ (e) => setFilters({ name: e.target.value }) }
           data-testid="name-filter"
+          name="filter"
+          type="text"
+          onChange={ (value) => handlerClick(value) }
         />
-      </div>
-      <select name="column" onChange={ handleChange } data-testid="column-filter">
-        <option value="rotation_period">population</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="diameter">diameter</option>
-        <option value="surface_water">surface_water</option>
-        <option value="population">rotation_period</option>
-      </select>
-      <select
-        name="comparison"
-        data-testid="comparison-filter"
-        onChange={ handleChange }
+      </label>
+      <label htmlFor="value">
+        <input
+          name="value"
+          data-testid="value-filter"
+          value={ filters.filters.filterByNumericValues.value }
+          type="number"
+          onChange={ ({ target }) => {
+            setFilterNumericValues({
+
+              ...filterNumericValues,
+              value: target.value,
+            });
+          } }
+        />
+      </label>
+      <label htmlFor="column">
+        <select
+          name="column"
+          data-testid="column-filter"
+          onChange={ ({ target }) => {
+            setFilterNumericValues({
+
+              ...filterNumericValues,
+              column: target.value,
+            });
+          } }
+
+        >
+          {filterColumn
+            .map((item, index) => (<option key={ index } value={ item }>{item}</option>))}
+        </select>
+      </label>
+      <label htmlFor="comparison">
+        <select
+          name="comparison"
+          data-testid="comparison-filter"
+          onChange={ ({ target }) => {
+            setFilterNumericValues({
+
+              ...filterNumericValues,
+              comparison: target.value,
+            });
+          } }
+        >
+          <option>Selecione</option>
+          <option value="maior que">maior que</option>
+          <option value="menor que">menor que</option>
+          <option value="igual a">igual a</option>
+        </select>
+      </label>
+      <button
+        data-testid="button-filter"
+        onClick={ setStateFilters }
+        type="button"
       >
-        <option value="maior que">maior que</option>
-        <option value="menor que">menor que</option>
-        <option value="igual a">igua a</option>
-      </select>
-      <input
-        name="value"
-        type="number"
-        onChange={ handleChange }
-        data-testid="value-filter"
-      />
-      <button onClick={ AddFilter } type="button">
-        add Filtro
+        Filtrar
       </button>
+      { Select(params) }
+      <div>
+        {filters.filters.filterByNumericValues.map((item, index) => (
+          <div data-testid="filter" key={ index }>
+            <span>{ `${item.comparison} ${item.value} ${item.column}` }</span>
+            <button
+              type="button"
+              onClick={ () => removeParams(index) }
+            >
+              x
+            </button>
+          </div>))}
+      </div>
       <table>
         <thead>
           <tr>
-            <th>name</th>
-            <th>surface_water</th>
-            <th>rotation_period</th>
-            <th>orbital_period</th>
-            <th>diameter</th>
-            <th>climate</th>
-            <th>gravity</th>
-            <th>terrain</th>
-            <th>films</th>
-            <th>created</th>
-            <th>edited</th>
-            <th>population</th>
-            <th>url</th>
+            {filterTR.map((item, index) => (<th key={ index }>{item}</th>))}
           </tr>
         </thead>
-        {planets
-          .filter(({ name }) => name.toLowerCase().includes(filters.name.toLowerCase()))
-          .map((planet) => (
-            <tbody key="planet.name">
-              <tr>
-                <td>{planet.name}</td>
-                <td>{planet.surface_water}</td>
-                <td>{planet.rotation_period}</td>
-                <td>{planet.orbital_period}</td>
-                <td>{planet.diameter}</td>
-                <td>{planet.climate}</td>
-                <td>{planet.gravity}</td>
-                <td>{planet.surface_water}</td>
-                <td>{planet.terrain}</td>
-                <td>{planet.films}</td>
-                <td>{planet.created}</td>
-                <td>{planet.edited}</td>
-                <td>{planet.population}</td>
-                <td>{planet.url}</td>
-              </tr>
-              {console.log(filters)}
-            </tbody>
+        <tbody>
+          {filterPlanets.map((item, index) => (
+            <tr key={ index }>
+              <td data-testid="planet-name">{item.name}</td>
+              <td>{item.rotation_period}</td>
+              <td>{item.orbital_period}</td>
+              <td>{item.diameter}</td>
+              <td>{item.climate}</td>
+              <td>{item.gravity}</td>
+              <td>{item.terrain}</td>
+              <td>{item.surface_water}</td>
+              <td>{item.population}</td>
+              <td>{item.films}</td>
+              <td>{item.created}</td>
+              <td>{item.edited}</td>
+              <td>{item.url}</td>
+            </tr>
           ))}
+        </tbody>
       </table>
     </div>
   );
 }
+
+export default Table;
