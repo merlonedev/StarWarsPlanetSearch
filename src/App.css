@@ -81,3 +81,11 @@ td {
   align-content: space-around;
   display: flex;
 }
+
+ul {
+  list-style: none;
+}
+
+li {
+  color: #ffea00;
+}

@@ -6,6 +6,7 @@ function Provider({ children }) {
   const [data, setData] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  const [filterUsed, setFilterUsed] = useState([]);
 
   const newData = useRef(data);
 
@@ -60,6 +61,7 @@ function Provider({ children }) {
   }, [filterByNumericValues]);
 
   useEffect(() => { filterByNumber(); }, [filterByNumber]);
+
   const starValue = {
     data,
     setData,
@@ -69,6 +71,8 @@ function Provider({ children }) {
     setFilterByName,
     setFilterByNumericValues,
     filterByNumber,
+    filterUsed,
+    setFilterUsed,
   };
 
   return (

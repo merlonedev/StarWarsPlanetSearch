@@ -5,21 +5,21 @@ function NumberFilter() {
   const {
     setFilterByName,
     filterByNumericValues,
-    setFilterByNumericValues } = useContext(StarContext);
+    setFilterByNumericValues,
+    filterUsed,
+    setFilterUsed } = useContext(StarContext);
+
   const [comparison, setComparison] = useState('maior que');
   const [column, setColumn] = useState('population');
   const [value, setValue] = useState('');
-  const [filterUsed, setFilterUsed] = useState([]);
   const options = [
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
 
   const handleClick = () => {
-    console.log(column);
     setFilterUsed([...filterUsed, column]);
     setFilterByName('');
     setFilterByNumericValues([...filterByNumericValues, { column, comparison, value }]);
   };
-  console.log(filterUsed);
   const newOptions = options.filter((opti) => (!filterUsed.includes(opti)));
 
   return (
