@@ -1,12 +1,11 @@
 import React, { useContext } from 'react';
-// import getPlanetsAPIInfo from '../services/planetsAPI';
 import AppContext from '../context/AppContext';
 
 function Table() {
-  const { planetsInfos, isFetching } = useContext(AppContext);
+  const { planetsInfos, isFetching, filteredPlanets } = useContext(AppContext);
+  const { filterByName: { name } } = filteredPlanets;
 
   const renderHeader = () => {
-    console.log(planetsInfos);
     if (planetsInfos.length) {
       delete planetsInfos[0].residents;
       const tableTitles = Object.keys(planetsInfos[0]);
@@ -16,21 +15,23 @@ function Table() {
     }
   };
 
-  const renderBody = () => {
+  const renderBody = (inputValue) => {
     if (planetsInfos.length) {
-      return planetsInfos.map((planetInfo, index) => {
-        delete planetInfo.residents;
-        const planetInfoValue = Object.values(planetInfo);
-        return (
-          <tr key={ index }>
-            {
-              planetInfoValue.map((info, index2) => (
-                <td key={ index2 }>{ info }</td>
-              ))
-            }
-          </tr>
-        );
-      });
+      return planetsInfos
+        .filter((planetInfo) => planetInfo.name.toLowerCase().includes(inputValue))
+        .map((planetInfo, index) => {
+          delete planetInfo.residents;
+          const planetInfoValue = Object.values(planetInfo);
+          return (
+            <tr key={ index }>
+              {
+                planetInfoValue.map((info, index2) => (
+                  <td key={ index2 }>{ info }</td>
+                ))
+              }
+            </tr>
+          );
+        });
     }
   };
 
@@ -47,7 +48,7 @@ function Table() {
       </thead>
       <tbody>
         {
-          renderBody()
+          renderBody(name)
         }
       </tbody>
     </table>

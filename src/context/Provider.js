@@ -6,6 +6,7 @@ import getPlanetsAPIInfo from '../services/planetsAPI';
 function Provider({ children }) {
   const [planetsInfos, setPlanetsInfos] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
+  const [filteredPlanets, setfilteredPlanetes] = useState({ filterByName: { name: '' } });
 
   const getPlanetsInfo = async () => {
     const data = await getPlanetsAPIInfo();
@@ -17,9 +18,19 @@ function Provider({ children }) {
     getPlanetsInfo();
   }, []);
 
+  const filterPlanetByName = (input) => {
+    setfilteredPlanetes({
+      filterByName: {
+        name: input,
+      },
+    });
+  };
+
   const context = {
     planetsInfos,
     isFetching,
+    filteredPlanets,
+    filterPlanetByName,
   };
 
   return (
