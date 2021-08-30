@@ -2,17 +2,14 @@ import React, { useContext } from 'react';
 import MyContext from '../../context';
 
 const FilterName = () => {
-  const { nameFilter, setNameFilter } = useContext(MyContext);
-  const { filters: { filterByName: { name } } } = nameFilter;
+  const { filters, setFilter } = useContext(MyContext);
+  const { filterByName: { name } } = filters;
 
   const handleInput = ({ target: { value } }) => {
-    setNameFilter({
-      ...nameFilter,
-      filters: {
-        ...nameFilter.filters,
-        filterByName: {
-          name: value,
-        },
+    setFilter({
+      ...filters,
+      filterByName: {
+        name: value,
       },
     });
   };

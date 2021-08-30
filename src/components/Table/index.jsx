@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import MyContext from '../../context';
 
 const Table = () => {
-  const { data, nameFilter } = useContext(MyContext);
-  const nameState = nameFilter.filters.filterByName.name;
+  const { data, filters } = useContext(MyContext);
+  const nameState = filters.filterByName.name;
   const [planets, setPlanets] = useState([]);
+  const { filterByNumericValues } = filters;
 
   useEffect(() => {
     if (!nameState) {
@@ -13,9 +14,37 @@ const Table = () => {
       setPlanets(data
         .filter(({ name }) => name.toLowerCase().includes(nameState.toLowerCase())));
     }
-  }, [nameState, data]);
 
-  if (data.length === 0) return <div>Loading...</div>;
+    filterByNumericValues.map(({ column, comparison, value }) => {
+      let filterData = [...data];
+
+      switch (comparison) {
+      case 'maior que':
+        filterData = setPlanets(filterData.filter(
+          (planet) => Number(planet[column]) > Number(value),
+        ));
+        break;
+
+      case 'menor que':
+        filterData = setPlanets(filterData.filter(
+          (planet) => Number(planet[column]) < Number(value),
+        ));
+        break;
+
+      case 'igual a':
+        filterData = setPlanets(filterData.filter(
+          (planet) => Number(planet[column]) === Number(value),
+        ));
+        break;
+
+      default:
+        return setPlanets(filterData);
+      }
+      return filterData;
+    });
+  }, [nameState, data, filterByNumericValues]);
+
+  if (!data.length) return <div>Loading...</div>;
 
   return (
     <table>

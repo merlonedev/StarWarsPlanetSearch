@@ -4,12 +4,11 @@ import MyContext from '..';
 
 const Provider = ({ children }) => {
   const [api, setApi] = useState([]);
-  const [nameFilter, setNameFilter] = useState({
-    filters: {
-      filterByName: {
-        name: '',
-      },
+  const [filters, setFilter] = useState({
+    filterByName: {
+      name: '',
     },
+    filterByNumericValues: [],
   });
 
   useEffect(() => {
@@ -21,10 +20,23 @@ const Provider = ({ children }) => {
     getApi();
   }, []);
 
+  const handleFilter = ({ target: { name, value } }) => {
+    setFilter({
+      ...filters,
+      filters: {
+        ...filters,
+        filterByNumericValues:
+        [filters.filters.filterByNumericValues, { [name]: value }],
+      },
+    });
+  };
+
   const contextValue = {
     data: api,
-    nameFilter,
-    setNameFilter,
+    filters,
+    setFilter,
+    handleFilter,
+
   };
 
   return (
