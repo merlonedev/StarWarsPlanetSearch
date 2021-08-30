@@ -7,7 +7,11 @@ import SelectComparison from './SelectComparison';
 import InputValue from './InputValue';
 import FilterButton from './FilterButton';
 
-const filters = { filterByName: { name: '' } };
+const filters = { filterByName: { name: '' },
+  filterByNumericValues: [{
+    column: 'population',
+    comparison: 'maior que',
+    value: 0 }] };
 
 function Header() {
   const [data, setData] = useState([]);
@@ -15,8 +19,30 @@ function Header() {
   const [stateName, setStateName] = useState(filters);
   const [filterContainer, setFilterContainer] = useState([]);
 
+  const columnFil = stateName.filterByNumericValues[0].column;
+  const comparisonFil = stateName.filterByNumericValues[0].comparison;
+  const valueFil = stateName.filterByNumericValues[0].value;
+
   const handleChange = ({ target }) => {
     setStateName({ ...stateName, filterByName: { name: target.value } });
+  };
+
+  const handleColumn = ({ target }) => {
+    setStateName({ ...stateName,
+      filterByNumericValues: [{ ...stateName.filterByNumericValues[0],
+        column: target.value }] });
+  };
+
+  const handleComparison = ({ target }) => {
+    setStateName({ ...stateName,
+      filterByNumericValues: [{ ...stateName.filterByNumericValues[0],
+        comparison: target.value }] });
+  };
+
+  const handleValue = ({ target }) => {
+    setStateName({ ...stateName,
+      filterByNumericValues: [{ ...stateName.filterByNumericValues[0],
+        value: target.value }] });
   };
 
   useEffect(() => {
@@ -40,10 +66,31 @@ function Header() {
     filterName();
   }, [data, stateName]);
 
+  const buttonClick = () => {
+    let result = [];
+    if (comparisonFil === 'maior que') {
+      result = filterContainer.filter((planeta) => (
+        Number(planeta[columnFil]) > Number(valueFil)
+      ));
+    } else if (comparisonFil === 'menor que') {
+      result = filterContainer.filter((planeta) => (
+        Number(planeta[columnFil]) < Number(valueFil)
+      ));
+    } else {
+      result = filterContainer.filter((planeta) => (
+        Number(planeta[columnFil]) === Number(valueFil)
+      ));
+    }
+    setFilterContainer(result);
+  };
+
   const contextValue = {
-    dataS: data,
-    handle: handleChange,
-    filterData: filterContainer,
+    handleChange,
+    filterContainer,
+    handleColumn,
+    handleComparison,
+    handleValue,
+    buttonClick,
   };
 
   return (

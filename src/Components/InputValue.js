@@ -8,12 +8,12 @@ function InputValue() {
         Filter by value
         <MyContext.Consumer>
           {
-            ({ handle }) => (
+            ({ handleValue }) => (
               <input
                 type="number"
                 name="filter-value"
                 id="filter-value"
-                onChange={ handle }
+                onChange={ handleValue }
                 data-testid="value-filter"
               />
             )

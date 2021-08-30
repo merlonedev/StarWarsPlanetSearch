@@ -6,12 +6,12 @@ function FilterButton() {
     <div>
       <MyContext.Consumer>
         {
-          ({ handle }) => (
+          ({ buttonClick }) => (
             <button
               type="button"
               name="filter-name"
               id="filter-name"
-              onChange={ handle }
+              onClick={ buttonClick }
               data-testid="button-filter"
             >
               Filtrar

@@ -7,12 +7,12 @@ class Table extends React.Component {
       <tbody>
         <MyContext.Consumer>
           {
-            (value) => value.filterData.map(({
+            (value) => value.filterContainer.map(({
               name,
-              climate,
               rotation_period: rotation,
               orbital_period: orbital,
               diameter,
+              climate,
               gravity,
               terrain,
               surface_water: surface,
@@ -24,11 +24,11 @@ class Table extends React.Component {
             }) => (
               <tr key={ name }>
                 <td>{ name }</td>
-                <td>{ climate }</td>
-                <td>{ orbital }</td>
                 <td>{ rotation }</td>
-                <td>{ gravity }</td>
+                <td>{ orbital }</td>
                 <td>{ diameter }</td>
+                <td>{ climate }</td>
+                <td>{ gravity }</td>
                 <td>{ terrain }</td>
                 <td>{ surface }</td>
                 <td>{ population }</td>

@@ -8,9 +8,9 @@ function SelectColumn() {
         Filter by column
         <MyContext.Consumer>
           {
-            ({ handle }) => (
+            ({ handleColumn }) => (
               <select
-                onChange={ handle }
+                onChange={ handleColumn }
                 name="filter-column"
                 id="filter-column"
                 data-testid="column-filter"

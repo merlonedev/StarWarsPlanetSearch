@@ -8,10 +8,10 @@ function SelectComparison() {
         Filter by comparison
         <MyContext.Consumer>
           {
-            ({ handle }) => (
+            ({ handleComparison }) => (
               <select
                 data-testid="comparison-filter"
-                onChange={ handle }
+                onChange={ handleComparison }
                 name="filter-comparison"
                 id="filter-comparison"
               >
