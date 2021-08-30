@@ -18,10 +18,12 @@ function Table() {
     },
   });
   const [isLoaded, setIsLoaded] = React.useState(true);
-  const [sort, setSort] = React.useState({ order: {
-    column: 'name',
-    sort: 'ASC',
-  } });
+  const [sort, setSort] = React.useState({
+    order: {
+      column: 'name',
+      sort: 'ASC',
+    },
+  });
 
   const [filterNumericValues, setFilterNumericValues] = React.useState({
     column: 'maior que',
@@ -33,21 +35,21 @@ function Table() {
 
   React.useEffect(() => {
     if (resultsApi.data) {
-      setAllPlanets(resultsApi.data.results
-        .filter((value) => value.name
-        .toLowerCase()
-        .includes(filters.filters.filterByName.name)));
+      setAllPlanets(
+        resultsApi.data.results
+          .filter((value) => value.name.toLowerCase()
+            .includes(filters.filters.filterByName.name)),
+      );
     }
   }, [resultsApi.data, filters]);
 
   if (!resultsApi.data) {
-    return (
-      <p>carregando</p>
-    );
+    return <p>carregando</p>;
   }
 
-  const filterTR = Object.keys(resultsApi.data.results[0])
-    .filter((value) => value !== 'residents');
+  const filterTR = Object.keys(resultsApi.data.results[0]).filter(
+    (value) => value !== 'residents',
+  );
 
   function handlerClick({ target }) {
     const { value } = target;
@@ -56,9 +58,7 @@ function Table() {
         filterByName: {
           name: value,
         },
-        filterByNumericValues: [
-          ...filters.filters.filterByNumericValues,
-        ],
+        filterByNumericValues: [...filters.filters.filterByNumericValues],
         ...filters.filters.order,
       },
     });
@@ -72,7 +72,9 @@ function Table() {
     }
     if (sort.order.sort === 'ASC') {
       // esse faz o sort com palavras
-      return A[sort.order.column].charCodeAt(0) - B[sort.order.column].charCodeAt(0);
+      return (
+        A[sort.order.column].charCodeAt(0) - B[sort.order.column].charCodeAt(0)
+      );
     }
     if (sort.order.sort === 'DESC' && /^[0-9]/.test(A[sort.order.column])) {
       return +B[sort.order.column] - +A[sort.order.column];
@@ -93,31 +95,36 @@ function Table() {
 
   function setStateFilters() {
     const { column, comparison, value } = filterNumericValues;
-    setFilters({ filters: { ...filters.filters,
-      filterByNumericValues:
-      [...filters.filters.filterByNumericValues, { column, comparison, value }],
-      order: {
-        ...filters.filters.order,
-        sort: sort.order.sort,
-        column: sort.order.column,
+    setFilters({
+      filters: {
+        ...filters.filters,
+        filterByNumericValues: [
+          ...filters.filters.filterByNumericValues,
+          { column, comparison, value },
+        ],
+        order: {
+          ...filters.filters.order,
+          sort: sort.order.sort,
+          column: sort.order.column,
+        },
       },
-    } });
+    });
   }
 
   function removeParams(indexComparison) {
-    setFilters({ filters: {
-      ...filters.filters,
-      filterByNumericValues: [
-        ...filters.filters.filterByNumericValues
-          .filter((value, index) => index !== indexComparison)],
-    } });
+    setFilters({
+      filters: {
+        ...filters.filters,
+        filterByNumericValues: [
+          ...filters.filters.filterByNumericValues.filter(
+            (value, index) => index !== indexComparison,
+          ),
+        ],
+      },
+    });
   }
-  const params = { setSort,
-    filterTR,
-    sort,
-    isLoaded,
-    setIsLoaded };
-    
+  const params = { setSort, filterTR, sort, isLoaded, setIsLoaded };
+
   return (
     <div>
       <label htmlFor="filter">
@@ -136,7 +143,6 @@ function Table() {
           type="number"
           onChange={ ({ target }) => {
             setFilterNumericValues({
-
               ...filterNumericValues,
               value: target.value,
             });
@@ -149,15 +155,16 @@ function Table() {
           data-testid="column-filter"
           onChange={ ({ target }) => {
             setFilterNumericValues({
-
               ...filterNumericValues,
               column: target.value,
             });
           } }
-
         >
-          {filterColumn
-            .map((item, index) => (<option key={ index } value={ item }>{item}</option>))}
+          {filterColumn.map((item, index) => (
+            <option key={ index } value={ item }>
+              {item}
+            </option>
+          ))}
         </select>
       </label>
       <label htmlFor="comparison">
@@ -166,7 +173,6 @@ function Table() {
           data-testid="comparison-filter"
           onChange={ ({ target }) => {
             setFilterNumericValues({
-
               ...filterNumericValues,
               comparison: target.value,
             });
@@ -185,23 +191,23 @@ function Table() {
       >
         Filtrar
       </button>
-      { Select(params) }
+      {Select(params)}
       <div>
         {filters.filters.filterByNumericValues.map((item, index) => (
           <div data-testid="filter" key={ index }>
-            <span>{ `${item.comparison} ${item.value} ${item.column}` }</span>
-            <button
-              type="button"
-              onClick={ () => removeParams(index) }
-            >
+            <span>{`${item.comparison} ${item.value} ${item.column}`}</span>
+            <button type="button" onClick={ () => removeParams(index) }>
               x
             </button>
-          </div>))}
+          </div>
+        ))}
       </div>
       <table>
         <thead>
           <tr>
-            {filterTR.map((item, index) => (<th key={ index }>{item}</th>))}
+            {filterTR.map((item, index) => (
+              <th key={ index }>{item}</th>
+            ))}
           </tr>
         </thead>
         <tbody>
