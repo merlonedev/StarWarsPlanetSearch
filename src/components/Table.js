@@ -34,7 +34,9 @@ function Table() {
   React.useEffect(() => {
     if (resultsApi.data) {
       setAllPlanets(resultsApi.data.results
-        .filter((value) => value.name.toLowerCase().includes(filters.filters.filterByName.name)));
+        .filter((value) => value.name
+        .toLowerCase()
+        .includes(filters.filters.filterByName.name)));
     }
   }, [resultsApi.data, filters]);
 
@@ -115,8 +117,7 @@ function Table() {
     sort,
     isLoaded,
     setIsLoaded };
-
-    console.log(filterPlanets);
+    
   return (
     <div>
       <label htmlFor="filter">
