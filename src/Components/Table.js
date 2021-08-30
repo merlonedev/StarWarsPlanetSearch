@@ -12,39 +12,41 @@ function Table() {
     return dataKeys.map((columnName) => <th key={ columnName }>{ columnName }</th>);
   };
 
-  // aprendi a fazer esse filtro aqui https://scotch.io/tutorials/quick-and-simple-search-filter-using-vanilla-javascript
-  const mapPlanetData = (input = '') => {
+  const filterAndMapDataByName = (input = '') => {
     const filteredData = data
       .filter((item) => item.name.toLowerCase().includes(input.toLowerCase()));
-    return filteredData.map((item) => (
-      <tr key={ item.name }>
-        <td>{ item.name }</td>
-        <td>{ item.rotation_period }</td>
-        <td>{ item.orbital_period }</td>
-        <td>{ item.diameter }</td>
-        <td>{ item.climate }</td>
-        <td>{ item.gravity }</td>
-        <td>{ item.terrain }</td>
-        <td>{ item.surface_water }</td>
-        <td>{ item.population }</td>
-        <td>{ item.films }</td>
-        <td>{ item.created }</td>
-        <td>{ item.edited }</td>
-        <td>{ item.url }</td>
-      </tr>));
+    // setFilteredByName(filteredData);
+    return (
+      filteredData.map((item) => (
+        <tr key={ item.name }>
+          <td>{ item.name }</td>
+          <td>{ item.rotation_period }</td>
+          <td>{ item.orbital_period }</td>
+          <td>{ item.diameter }</td>
+          <td>{ item.climate }</td>
+          <td>{ item.gravity }</td>
+          <td>{ item.terrain }</td>
+          <td>{ item.surface_water }</td>
+          <td>{ item.population }</td>
+          <td>{ item.films }</td>
+          <td>{ item.created }</td>
+          <td>{ item.edited }</td>
+          <td>{ item.url }</td>
+        </tr>))
+    );
   };
 
   const renderNameFilter = () => {
-    const { filterByName } = filters;
-    if (data.length > 0) {
-      if (filterByName.name !== '') {
-        return mapPlanetData(filterByName.name);
-      }
-      return mapPlanetData('');
+    const { filterByName: { name } } = filters;
+    if (name) {
+      return filterAndMapDataByName(name);
     }
-    return <tr><td>LOADING TABLE...</td></tr>;
+    return filterAndMapDataByName();
   };
 
+  if (data.length === 0) {
+    return <div className="loading-div">LOADING...</div>;
+  }
   return (
     <table className="planet-table">
       <thead>

@@ -1,33 +1,30 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function NumericValuesFilter() {
   const {
-    filters,
     setNumValue,
-    filterDataByNumValues,
+    filters,
     columnOptions, comparisonOptions } = useContext(StarWarsContext);
 
-  // const [column, setColumn] = useState('population');
-  // const [comparison, setComparison] = useState('maior que');
-  // const [value, setValue] = useState(0);
+  const [column, setColumn] = useState('population');
+  const [comparison, setComparison] = useState('maior que');
+  const [value, setValue] = useState(0);
 
-  // useEffect(() => {
-  //   if (columns.length > 0) setColumn(columns[0]);
-  // }, [columns]);
-
-  // essa parte da logica foi aprendida e aplicada após leitura do codigo do colega Luciano Almeida https://github.com/tryber/sd-012-project-starwars-planets-search/pull/102/commits/546930d309009ebddc0c870d8094c356a7f14992
-  const handleChangeNumValue = ({ target }) => {
+  const changeFilterByNumericValues = () => {
     const { filterByNumericValues } = filters;
-    const newInput = target.name === 'value' ? +target.value : target.value;
-    setNumValue({
-      ...filterByNumericValues[0],
-      [target.name]: newInput,
-    });
+    setNumValue([
+      ...filterByNumericValues,
+      {
+        column,
+        comparison,
+        value,
+      },
+    ]);
   };
 
   const handleClick = () => {
-    filterDataByNumValues();
+    changeFilterByNumericValues();
   };
 
   return (
@@ -39,7 +36,7 @@ function NumericValuesFilter() {
           name="column"
           data-testid="column-filter"
           type="text"
-          onChange={ (event) => handleChangeNumValue(event) }
+          onChange={ ({ target }) => setColumn(target.value) }
         >
           {columnOptions.map((item) => <option key={ item }>{item}</option>)}
         </select>
@@ -51,7 +48,7 @@ function NumericValuesFilter() {
           name="comparison"
           data-testid="comparison-filter"
           type="text"
-          onChange={ (event) => handleChangeNumValue(event) }
+          onChange={ ({ target }) => setComparison(target.value) }
         >
           {comparisonOptions.map((item) => <option key={ item }>{item}</option>)}
         </select>
@@ -63,7 +60,7 @@ function NumericValuesFilter() {
           name="value"
           type="number"
           data-testid="value-filter"
-          onChange={ (event) => handleChangeNumValue(event) }
+          onChange={ ({ target }) => setValue(+target.value) }
         />
       </label>
       <button

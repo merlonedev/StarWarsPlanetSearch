@@ -19,3 +19,7 @@ select {
 button {
   padding: 3px;
 }
+
+.loading-div {
+  text-align: center;
+}
