@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
+import Form from './Form';
+import FiltersByCategories from './Filters';
 
 function Table() {
   const {
     state,
     filters,
-    filteredPlanets,
     setFilters,
     setFilteredPlanets,
   } = useContext(MyContext);
@@ -17,17 +18,17 @@ function Table() {
     setFilteredPlanets(nameSearch);
   }
 
-  function inputSearch() {
-    return filteredPlanets.map((eachPlanet, index) => (
-      <tr key={ index }>
-        {Object.values(eachPlanet).map((info) => (
-          <td key={ info.name }>
-            {info}
-          </td>
-        ))}
-      </tr>
-    ));
-  }
+  // function inputSearch() {
+  //   return filteredPlanets.map((eachPlanet, index) => (
+  //     <tr key={ index }>
+  //       {Object.values(eachPlanet).map((info) => (
+  //         <td key={ info.name }>
+  //           {info}
+  //         </td>
+  //       ))}
+  //     </tr>
+  //   ));
+  // }
 
   return (
 
@@ -41,6 +42,7 @@ function Table() {
           onChange={ handleChange }
         />
       </label>
+      <Form />
       <table>
         <thead>
           <tr>
@@ -50,7 +52,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          { inputSearch() }
+          <FiltersByCategories />
         </tbody>
       </table>
     </div>

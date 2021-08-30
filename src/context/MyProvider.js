@@ -6,6 +6,7 @@ function Provider({ children }) {
   const [state, setState] = useState([]);
   const [filters, setFilters] = useState({
     filterByName: { name: '' },
+    filterByNumericValues: [],
   });
   const [filteredPlanets, setFilteredPlanets] = useState([]);
 
