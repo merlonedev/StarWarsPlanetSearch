@@ -3,22 +3,23 @@ import MyContext from '../../context';
 
 const NumericFilter = () => {
   const { filters, setFilter } = useContext(MyContext);
+  const { filterByNumericValues } = filters;
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState('');
-
-  const columns = [
+  const [columns, setColumns] = useState([
     'population',
     'orbital_period',
     'diameter',
     'rotation_period',
     'surface_water',
-  ];
+  ]);
 
   const handleSubmit = () => {
     setFilter({
       ...filters,
       filterByNumericValues: [
+        ...filterByNumericValues,
         {
           column,
           comparison,
@@ -26,6 +27,9 @@ const NumericFilter = () => {
         },
       ],
     });
+    setColumns(
+      () => columns.filter((item) => item !== column),
+    );
   };
 
   return (
