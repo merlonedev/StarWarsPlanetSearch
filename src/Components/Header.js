@@ -7,6 +7,9 @@ import SelectComparison from './SelectComparison';
 import InputValue from './InputValue';
 import FilterButton from './FilterButton';
 
+const columnOptions = ['population', 'orbital_period',
+  'diameter', 'rotation_period', 'surface_water'];
+
 const filters = { filterByName: { name: '' },
   filterByNumericValues: [{
     column: 'population',
@@ -18,10 +21,13 @@ function Header() {
   const [headers, setHeaders] = useState([]);
   const [stateName, setStateName] = useState(filters);
   const [filterContainer, setFilterContainer] = useState([]);
+  const [choices, setChoices] = useState([]);
 
   const columnFil = stateName.filterByNumericValues[0].column;
   const comparisonFil = stateName.filterByNumericValues[0].comparison;
   const valueFil = stateName.filterByNumericValues[0].value;
+  const columnOptionsFil = columnOptions
+    .filter((el) => !choices.some((le) => le.includes(el)));
 
   const handleChange = ({ target }) => {
     setStateName({ ...stateName, filterByName: { name: target.value } });
@@ -82,6 +88,7 @@ function Header() {
       ));
     }
     setFilterContainer(result);
+    setChoices([...choices, columnFil]);
   };
 
   const contextValue = {
@@ -91,6 +98,7 @@ function Header() {
     handleComparison,
     handleValue,
     buttonClick,
+    columnOptionsFil,
   };
 
   return (
