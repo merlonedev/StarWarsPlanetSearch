@@ -1,25 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
 
 function PlanetApi() {
-  const { setData, filters } = useContext(MyContext);
-  const { filterByName: { name } } = filters;
-  let { data } = useContext(MyContext);
-  if (name !== '') {
-    data = data.filter((planet) => (
-      (planet.name.toLowerCase()).includes(name.toLowerCase())
-    ));
-  }
+  const { filterPlanet } = useContext(MyContext);
+  // const { filterByName: { name } } = filters;
+  // const { data } = useContext(MyContext);
 
-  useEffect(() => {
-    const getPlanet = async () => {
-      const endPoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const { results } = await fetch(endPoint).then((response) => response.json());
-      results.forEach((result) => { delete result.residents; });
-      setData(results);
-    };
-    getPlanet();
-  }, [setData]);
   const header = [
     'name',
     'rotation_period',
@@ -49,7 +35,7 @@ function PlanetApi() {
           </tr>
         </thead>
         <tbody>
-          {data.map((planet, i) => (
+          {filterPlanet.map((planet, i) => (
             <tr key={ i }>
               {Object.values(planet).map((value, key) => (
                 <td key={ key }>{value}</td>
