@@ -1,48 +1,34 @@
 import React, { useContext } from 'react';
-import { PlanetContext } from '../Context/Provider';
+import { PlanetContext } from '../Context/PlanetProvider';
 
-function PlanetTable() {
-  const { planets } = useContext(PlanetContext);
+const PlanetTable = () => {
+  const { planets, filters: { filterByName: { name } } } = useContext(PlanetContext);
+  const topName = planets[0] || [];
   return (
     <table>
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Rotation Period</th>
-          <th>Orbital Period</th>
-          <th>Diameter</th>
-          <th>Climate</th>
-          <th>Gravity</th>
-          <th>Terrain</th>
-          <th>Surface Water</th>
-          <th>Population</th>
-          <th>Films</th>
-          <th>Created</th>
-          <th>Edited</th>
-          <th>URL</th>
+          {
+            Object.keys(topName)
+              .map((tName) => <th key={ tName }>{tName}</th>)
+          }
         </tr>
       </thead>
       <tbody>
-        { planets.map((planet) => (
-          <tr key={ planet.name }>
-            <td>{planet.name}</td>
-            <td>{planet.rotation_period}</td>
-            <td>{planet.orbital_period}</td>
-            <td>{planet.diameter}</td>
-            <td>{planet.climate}</td>
-            <td>{planet.gravity}</td>
-            <td>{planet.terrain}</td>
-            <td>{planet.surface_water}</td>
-            <td>{planet.population}</td>
-            <td>{planet.films}</td>
-            <td>{planet.created}</td>
-            <td>{planet.edited}</td>
-            <td>{planet.url}</td>
-          </tr>
-        ))}
+        {
+          planets.filter((planet) => (name ? (planet.name).includes(name) : true))
+            .map((planet) => (
+              <tr key={ planet.name }>
+                {
+                  Object.values(planet)
+                    .map((info) => <td key={ info }>{info}</td>)
+                }
+              </tr>
+            ))
+        }
       </tbody>
     </table>
   );
-}
+};
 
 export default PlanetTable;
