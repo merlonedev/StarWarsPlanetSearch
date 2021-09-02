@@ -1,10 +1,16 @@
-import React, { useState, useContext } from 'react';
-
+import React, { useState, useEffect, useContext } from 'react';
+import planetsByFilters from '../utils/planetsByFilters';
 import MyContext from '../context/MyContext';
 
 function Form() {
-  const [form, setForm] = useState({ column: '', comparison: '', value: 0 });
-  const { filters, setFilters } = useContext(MyContext);
+  const [form, setForm] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: 0 });
+  const { planets,
+    filters,
+    setFilters,
+    setFilteredPlanets } = useContext(MyContext);
 
   function handleFilter({ target: { name, value } }) {
     setForm({ ...form, [name]: value });
@@ -16,6 +22,10 @@ function Form() {
       filterByNumericValues: [...filters.filterByNumericValues, form],
     });
   }
+
+  useEffect(() => {
+    setFilteredPlanets(planetsByFilters({ planets, filters }));
+  }, [filters.filterByNumericValues]);
 
   return (
     <div>
@@ -58,6 +68,13 @@ function Form() {
           type="button"
         >
           Filtrar
+        </button>
+        <button
+          onClick={ () => { console.log('Removendo filtro...'); } }
+          data-testid="filter"
+          type="button"
+        >
+          X
         </button>
       </form>
     </div>

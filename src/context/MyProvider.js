@@ -3,11 +3,11 @@ import propTypes from 'prop-types';
 import MyContext from './MyContext';
 
 function Provider({ children }) {
-  const [state, setState] = useState([]);
   const [filters, setFilters] = useState({
     filterByName: { name: '' },
     filterByNumericValues: [],
   });
+  const [planets, setPlanets] = useState([]);
   const [filteredPlanets, setFilteredPlanets] = useState([]);
 
   async function fetchPlanets() {
@@ -16,21 +16,22 @@ function Provider({ children }) {
     const responseJSON = await results.json();
     const stateNoKeyResidents = responseJSON.results
       .filter((planet) => delete planet.residents);
-    setState(stateNoKeyResidents);
+    setPlanets(stateNoKeyResidents);
     setFilteredPlanets(stateNoKeyResidents);
   }
 
   useEffect(() => {
     fetchPlanets();
+    console.log('Fetching...');
   }, []);
 
   const contextValues = {
-    state,
-    setState,
     filters,
     setFilters,
     filteredPlanets,
     setFilteredPlanets,
+    planets,
+    setPlanets,
   };
 
   return (
