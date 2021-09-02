@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
-import Context from '../Context/Context';
+import StarWarsContext from '../Context/StarWarsContext';
 
 export default function FilterByValues() {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [values, setValues] = useState(0);
-  const { filters, setFilters } = useContext(Context);
+  const { filters, setFilters } = useContext(StarWarsContext);
 
   const sendFilterByValue = (event) => {
     event.preventDefault();

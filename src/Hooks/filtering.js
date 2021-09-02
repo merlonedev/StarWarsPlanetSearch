@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from 'react';
-import Context from '../Context/Context';
+import StarWarsContext from '../Context/StarWarsContext';
 
 const useFiltering = () => {
-  const { data, filters } = useContext(Context);
+  const { data, filters } = useContext(StarWarsContext);
   const [filtered, setFiltered] = useState(data);
 
   const filterByName = () => {

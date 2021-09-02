@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import Context from '../Context/Context';
+import StarWarsContext from '../Context/StarWarsContext';
 
 export default function FilterByName() {
-  const { filters, setFilters } = useContext(Context);
+  const { filters, setFilters } = useContext(StarWarsContext);
   const sendFilterByName = ({ target }) => {
     setFilters({
       ...filters,
