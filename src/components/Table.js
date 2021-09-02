@@ -1,54 +1,77 @@
 import React, { useContext } from 'react';
 import Context from '../Context/Context';
+import useFetchApiPlanets from '../Hooks/apiPlanets';
+import './table.css';
+import useFiltering from '../Hooks/filtering';
 
-function Table() {
-  const { planets } = useContext(Context);
+export default function Table() {
+  const { data, setData } = useContext(Context);
+  const { results } = useFetchApiPlanets();
+  let tableHeads = [];
+
+  if (results !== undefined) {
+    results.map((planet) => delete planet.residents);
+    setData(results);
+  }
+  if (data.length > 0) {
+    tableHeads = Object.keys(data[0]);
+  }
+  const filtered = useFiltering();
 
   return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Rotation period</th>
-            <th>Orbital period</th>
-            <th>Diameter</th>
-            <th>Climate</th>
-            <th>Gravity</th>
-            <th>Terrain</th>
-            <th>Surface water</th>
-            <th>Population</th>
-            <th>Films</th>
-            <th>Created</th>
-            <th>Edited</th>
-            <th>url</th>
-          </tr>
-        </thead>
-        <tbody>
-          { planets.map((results) => (
-            <tr key={ results.name }>
-              <td>{ results.name }</td>
-              <td>{ results.rotation_period }</td>
-              <td>{ results.orbital_period }</td>
-              <td>{ results.diameter }</td>
-              <td>{ results.climate }</td>
-              <td>{ results.gravity }</td>
-              <td>{ results.terrain }</td>
-              <td>{ results.surface_water }</td>
-              <td>{ results.population }</td>
-              <td>{ results.films }</td>
-              <td>{ results.created }</td>
-              <td>{ results.edited }</td>
-              <td>{ results.url }</td>
+
+    ((Object.keys(data).length === 0)) ? <h1>Loading...</h1>
+      : (
+        <table className="table">
+          <thead>
+            <tr>
+              {tableHeads.map((el, key) => (
+                <th key={ key }>
+                  {el}
+                </th>))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {filtered.map((planet) => (
+              <tr key={ planet.name }>
+                <td>{ planet.name }</td>
+                <td>{ planet.rotation_period }</td>
+                <td>
+                  { planet.orbital_period }
+                </td>
+                <td>
+                  { planet.diameter }
+                </td>
+                <td>
+                  { planet.climate }
+                </td>
+                <td>
+                  { planet.gravity }
+                </td>
+                <td>
+                  { planet.terrain }
+                </td>
+                <td>
+                  { planet.surface_water }
+                </td>
+                <td>
+                  { planet.population }
+                </td>
+                <td>
+                  <a href={ planet.films }>{planet.films}</a>
+                </td>
+                <td>
+                  { planet.created }
+                </td>
+                <td>
+                  { planet.edited }
+                </td>
+                <td>
+                  <a href={ planet.url }>{ planet.url }</a>
+                </td>
+              </tr>))}
+          </tbody>
+        </table>
+      )
   );
 }
-
-export default Table;
-
-// As linhas da tabela foram copiadas da branch da colega Marcela Siva
-// https://github.com/tryber/sd-012-project-starwars-planets-search/blob/marcela-silva-starwars-planets-search
