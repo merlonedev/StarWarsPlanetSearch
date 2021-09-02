@@ -205,9 +205,19 @@ function Table() {
       <table>
         <thead>
           <tr>
-            {filterTR.map((item, index) => (
-              <th key={ index }>{item}</th>
-            ))}
+            <th>Nome</th>
+            <th>Período de Rotação</th>
+            <th>Período de Órbita</th>
+            <th>Clima</th>
+            <th>Gravidade</th>
+            <th>Terreno</th>
+            <th>Água na Superfície</th>
+            <th>População</th>
+            <th>Diâmetro</th>
+            <th>Filmes</th>
+            <th>Criado</th>
+            <th>Editado</th>
+            <th>Url</th>
           </tr>
         </thead>
         <tbody>
