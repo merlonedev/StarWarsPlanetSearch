@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
 import FilterByName from './components/FilterByName';
-import Provider from './Context/Provider';
 import Table from './components/Table';
 import FilterByValues from './components/FilterByValue';
+import Provider from './Context/Provider';
 
 function App() {
   return (
@@ -13,9 +13,7 @@ function App() {
         <FilterByValues />
         <Table />
       </Provider>
-
     </div>
-
   );
 }
 

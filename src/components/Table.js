@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import Context from '../Context/Context';
+import StarWarsContext from '../Context/StarWarsContext';
 import useFetchApiPlanets from '../Hooks/apiPlanets';
-import './table.css';
 import useFiltering from '../Hooks/filtering';
+import './table.css';
 
 export default function Table() {
-  const { data, setData } = useContext(Context);
+  const { data, setData } = useContext(StarWarsContext);
   const { results } = useFetchApiPlanets();
   let tableHeads = [];
 

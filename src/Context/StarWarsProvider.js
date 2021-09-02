@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
-import Context from './Context';
+import StarWarsContext from './StarWarsContext';
 
-function Provider({ children }) {
+function StarWarsProvider({ children }) {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState({
     filterByName: {
@@ -18,7 +18,7 @@ function Provider({ children }) {
   });
 
   return (
-    <Context.Provider
+    <StarWarsContext.Provider
       value={ {
         data,
         setData,
@@ -26,12 +26,12 @@ function Provider({ children }) {
         setFilters } }
     >
       { children }
-    </Context.Provider>
+    </StarWarsContext.Provider>
   );
 }
 
-Provider.propTypes = {
+StarWarsProvider.propTypes = {
   children: PropTypes.object,
 }.isRequired;
 
-export default Provider;
+export default StarWarsProvider;
