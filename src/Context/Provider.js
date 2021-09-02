@@ -34,4 +34,4 @@ Provider.propTypes = {
   children: PropTypes.object,
 }.isRequired;
 
-export default StarWarsProvider;
+export default Provider;
