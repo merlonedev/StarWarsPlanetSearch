@@ -1,19 +1,14 @@
 import React from 'react';
-import './App.css';
-import FilterByName from './components/FilterByName';
-import Table from './components/Table';
-import FilterByValues from './components/FilterByValue';
-import StarWarsProvider from './Context/StarWarsProvider';
+import Table from './Components/Table';
+import PlanetsProvider from './Context/Provider';
+import Form from './Components/Form';
 
 function App() {
   return (
-    <div>
-      <StarWarsProvider>
-        <FilterByName />
-        <FilterByValues />
-        <Table />
-      </StarWarsProvider>
-    </div>
+    <PlanetsProvider>
+      <Form />
+      <Table />
+    </PlanetsProvider>
   );
 }
 
