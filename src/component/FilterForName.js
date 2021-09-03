@@ -2,10 +2,13 @@ import React, { useContext } from 'react';
 import ContextApi from '../Context/ContextApi';
 
 export default function FilterForName() {
-  const { setFilter } = useContext(ContextApi);
+  const { setFilter, filter } = useContext(ContextApi);
 
   const handleChange = ({ target }) => {
-    setFilter({ filterByName: { name: target.value } });
+    setFilter({
+      ...filter,
+      filterByName: { name: target.value },
+    });
   };
 
   return (

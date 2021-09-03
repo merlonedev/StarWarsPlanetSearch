@@ -3,9 +3,29 @@ import ContextApi from '../Context/ContextApi';
 
 export default function Table() {
   const { setData, filter } = useContext(ContextApi);
+  const { filterByName: { name }, filterByNumericValues } = filter;
   let { data } = useContext(ContextApi);
 
-  const { filterByName: { name } } = filter;
+  const {
+    column,
+    comparison,
+    value,
+  } = filterByNumericValues[filterByNumericValues.length - 1];
+
+  if (filterByNumericValues.length > 1) {
+    data = data.filter((element) => {
+      if (comparison === 'menor que') {
+        return element[column] < parseInt(value, 10);
+      }
+
+      if (comparison === 'igual a') {
+        return element[column] === value;
+      }
+
+      return element[column] > parseInt(value, 10);
+    });
+  }
+
   if (name !== '') {
     data = data.filter((element) => element.name.toLowerCase()
       .includes(name.toLowerCase()));
