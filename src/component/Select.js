@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import ContextApi from '../Context/ContextApi';
 
 function Select() {
-  const { options, setFilter, filter } = useContext(ContextApi);
+  const { options, setFilter, filter, setOptions } = useContext(ContextApi);
   const [dropValue, setDropValue] = useState({
     column: 'population',
     comparison: 'maior que',
@@ -22,6 +22,15 @@ function Select() {
       ],
     };
     setFilter(newFilter);
+
+    const newArray = options.COLUMN_OPTIONS.filter(
+      (option) => option !== dropValue.column,
+    );
+    const newOptions = {
+      ...options,
+      COLUMN_OPTIONS: newArray,
+    };
+    setOptions(newOptions);
   };
 
   return (

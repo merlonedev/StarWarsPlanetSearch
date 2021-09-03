@@ -16,6 +16,13 @@ export default function Provider({ children }) {
   });
 
   const [options, setOptions] = useState({
+    ORIGINAL_COLUMN_OPTIONS: [
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ],
     COLUMN_OPTIONS: [
       'population',
       'orbital_period',
