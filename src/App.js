@@ -4,6 +4,7 @@ import Provider from './Context/Provider';
 import Table from './component/Table';
 import FilterForName from './component/FilterForName';
 import Select from './component/Select';
+import ShowFilter from './component/ShowFilter';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Provider>
         <FilterForName />
         <Select />
+        <ShowFilter />
         <Table />
       </Provider>
     </div>

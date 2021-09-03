@@ -3,16 +3,11 @@ import PropTypes from 'prop-types';
 import ContextApi from './ContextApi';
 
 export default function Provider({ children }) {
+  const [originalData, setOriginalData] = useState([]);
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState({
     filterByName: { name: '' },
-    filterByNumericValues: [
-      {
-        column: '',
-        comparison: '',
-        value: 0,
-      },
-    ],
+    filterByNumericValues: [],
   });
 
   const [options, setOptions] = useState({
@@ -40,6 +35,8 @@ export default function Provider({ children }) {
     setFilter,
     options,
     setOptions,
+    originalData,
+    setOriginalData,
   };
 
   return (

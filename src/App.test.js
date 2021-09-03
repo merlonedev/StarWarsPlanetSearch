@@ -308,7 +308,7 @@ describe('5 - Apague o filtro de valores numéricos e desfaça as filtragens dos
     expect(await screen.findAllByRole(ROW_ROLE_SELECTOR)).toHaveLength(8);
 
     await removeFilter();
-
+    console.log((await screen.findAllByRole(ROW_ROLE_SELECTOR)).length)
     expect(await screen.findAllByRole(ROW_ROLE_SELECTOR)).toHaveLength(11);
   });
 

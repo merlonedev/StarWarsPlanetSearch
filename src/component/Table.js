@@ -1,45 +1,50 @@
 import React, { useEffect, useContext } from 'react';
 import ContextApi from '../Context/ContextApi';
 
-export default function Table() {
-  const { setData, filter } = useContext(ContextApi);
-  const { filterByName: { name }, filterByNumericValues } = filter;
-  let { data } = useContext(ContextApi);
-
-  const {
-    column,
-    comparison,
-    value,
-  } = filterByNumericValues[filterByNumericValues.length - 1];
-
-  if (filterByNumericValues.length > 1) {
-    data = data.filter((element) => {
-      if (comparison === 'menor que') {
-        return element[column] < parseInt(value, 10);
+const addFilter = (filterByNumericValues, setData, originalData) => {
+  filterByNumericValues.forEach((filtro) => {
+    console.log(filtro.comparison);
+    const newData = originalData.filter((element) => {
+      if (filtro.comparison === 'menor que') {
+        return element[filtro.column] < parseInt(filtro.value, 10);
       }
-
-      if (comparison === 'igual a') {
-        return element[column] === value;
+      if (filtro.comparison === 'igual a') {
+        return element[filtro.column] === filtro.value;
       }
-
-      return element[column] > parseInt(value, 10);
+      if (filtro.comparison === 'maior que') {
+        return element[filtro.column] > parseInt(filtro.value, 10);
+      }
+      return element;
     });
-  }
+    setData(newData);
+  });
+};
 
-  if (name !== '') {
-    data = data.filter((element) => element.name.toLowerCase()
+export default function Table() {
+  const { setOriginalData, filter, data, originalData, setData } = useContext(ContextApi);
+  const { filterByName: { name }, filterByNumericValues } = filter;
+
+  useEffect(() => {
+    if (filterByNumericValues.length >= 1) {
+      addFilter(filterByNumericValues, setData, originalData);
+    }
+  }, [filterByNumericValues, originalData, setData]);
+
+  useEffect(() => {
+    const dataNew = originalData.filter((element) => element.name.toLowerCase()
       .includes(name.toLowerCase()));
-  }
+    setData(dataNew);
+  }, [name, originalData, setData]);
 
   useEffect(() => {
     async function getApi() {
       const ENDPOINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const { results } = await fetch(ENDPOINT).then((dataResult) => dataResult.json());
+      setOriginalData(results);
       setData(results);
     }
     getApi();
-  }, [setData]);
-
+  }, [setOriginalData, setData]);
   return (
     <table>
       <thead>
