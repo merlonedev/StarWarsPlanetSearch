@@ -20,9 +20,53 @@ const addFilter = (filterByNumericValues, setData, originalData) => {
   });
 };
 
+const compare = (a, b, order) => {
+  const numberCompare = -1;
+  if (order === 'ASC') {
+    if (a > b) {
+      return 1;
+    }
+    if (a < b) {
+      return numberCompare;
+    }
+  }
+  if (order === 'DESC') {
+    if (a < b) {
+      return 1;
+    }
+    if (a > b) {
+      return numberCompare;
+    }
+  }
+  return 0;
+};
+
+const filterOrder = (order, setData, originalData) => {
+  let newData = [];
+  if (order.column === 'Name') {
+    if (order.sort === 'ASC') {
+      newData = originalData.sort((a, b) => compare(a.name, b.name, 'ASC'));
+    } else if (order.sort === 'DESC') {
+      newData = originalData.sort((a, b) => compare(a.name, b.name, 'DESC'));
+    }
+  }
+  if (order.sort === 'ASC') {
+    newData = originalData
+      .sort((a, b) => parseInt(a[order.column], 10) - parseInt(b[order.column], 10));
+  } else if (order.sort === 'DESC') {
+    newData = originalData
+      .sort((a, b) => parseInt(b[order.column], 10) - parseInt(a[order.column], 10));
+  }
+  setData(newData);
+};
+
 export default function Table() {
   const { setOriginalData, filter, data, originalData, setData } = useContext(ContextApi);
-  const { filterByName: { name }, filterByNumericValues } = filter;
+  const { filterByName: { name }, filterByNumericValues, order } = filter;
+  // console.log(originalData)
+  useEffect(() => {
+    filterOrder(order, setData, originalData);
+  }, [order, originalData, setData]);
 
   useEffect(() => {
     if (filterByNumericValues.length >= 1) {
@@ -67,7 +111,7 @@ export default function Table() {
       <tbody>
         {data.map((planet) => (
           <tr key={ planet.name }>
-            <td>{planet.name}</td>
+            <td data-testid="planet-name">{planet.name}</td>
             <td>{planet.rotation_period}</td>
             <td>{planet.orbital_period}</td>
             <td>{planet.diameter}</td>

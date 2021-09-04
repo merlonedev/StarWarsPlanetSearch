@@ -8,6 +8,7 @@ export default function Provider({ children }) {
   const [filter, setFilter] = useState({
     filterByName: { name: '' },
     filterByNumericValues: [],
+    order: { column: 'Name', sort: 'ASC' },
   });
 
   const [options, setOptions] = useState({
