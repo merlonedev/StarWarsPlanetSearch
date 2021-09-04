@@ -8,6 +8,7 @@ const PlanetProvider = ({ children }) => {
   const [planets, setPlanets] = useState([]);
   const [name, setName] = useState('');
   const [numericFilter, setNumericFilter] = useState([]);
+  const [usedFilter, setUsedFilter] = useState([]);
 
   useEffect(() => {
     requisitionPlanets().then((response) => {
@@ -30,6 +31,8 @@ const PlanetProvider = ({ children }) => {
     ...filters,
     setName,
     setNumericFilter,
+    usedFilter,
+    setUsedFilter,
   };
 
   return (

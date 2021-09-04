@@ -11,12 +11,17 @@ const dropdownColumns = ['population',
 const comparisons = ['maior que', 'menor que', 'igual a'];
 
 const PlanetsFilter = () => {
-  const { filters, setName, setNumericFilter } = useContext(PlanetContext);
+  const {
+    filters,
+    setName,
+    setNumericFilter,
+    usedFilter,
+    setUsedFilter,
+  } = useContext(PlanetContext);
   const { filterByNumericValues } = filters;
   const [dropdown, setDropdown] = useState(dropdownColumns[0]);
   const [comparison, setComparison] = useState(comparisons[0]);
   const [value, setValue] = useState('');
-  const [usedFilter, setUsedFilter] = useState([]);
 
   return (
     <div>
