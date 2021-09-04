@@ -53,7 +53,6 @@ function Table() {
                 return (
                   <td
                     key={ dataIndex }
-                    data-testid="planet-name"
                     className="films"
                   >
                     { planet[dataColumn].join(' ')}
