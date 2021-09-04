@@ -7,6 +7,7 @@ export const PlanetContext = createContext();
 const PlanetProvider = ({ children }) => {
   const [planets, setPlanets] = useState([]);
   const [name, setName] = useState('');
+  const [numericFilter, setNumericFilter] = useState([]);
 
   useEffect(() => {
     requisitionPlanets().then((response) => {
@@ -15,18 +16,20 @@ const PlanetProvider = ({ children }) => {
     });
   }, []);
 
-  const filtersName = {
+  const filters = {
     filters: {
       filterByName: {
         name,
       },
+      filterByNumericValues: numericFilter,
     },
   };
 
   const context = {
     planets,
-    ...filtersName,
+    ...filters,
     setName,
+    setNumericFilter,
   };
 
   return (
