@@ -49,6 +49,16 @@ function Table() {
                     { planet[dataColumn]}
                   </td>);
               }
+              if (dataColumn === 'films') {
+                return (
+                  <td
+                    key={ dataIndex }
+                    data-testid="planet-name"
+                    className="films"
+                  >
+                    { planet[dataColumn].join(' ')}
+                  </td>);
+              }
               return <td key={ dataIndex }>{ planet[dataColumn]}</td>;
             })}
           </tr>

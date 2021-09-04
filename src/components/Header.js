@@ -34,6 +34,7 @@ function Header() {
 
   return (
     <header>
+      <h1>Starwars Planets Search</h1>
       <input
         type="text"
         placeholder="Digite um planeta"
@@ -77,36 +78,45 @@ function Header() {
           Ordenar
         </button>
       </div>
-      <select
-        data-testid="column-filter"
-        value={ column }
-        onChange={ ({ target: { value } }) => setColumn(value) }
-      >
-        {availableColumns.map((option) => (
-          <option value={ option } key={ option }>{option}</option>
-        ))}
-      </select>
-      <select
-        data-testid="comparison-filter"
-        value={ comparison }
-        onChange={ ({ target: { value } }) => setComparison(value) }
-      >
-        {comparisonOptions.map((option) => (
-          <option value={ option } key={ option }>{option}</option>
-        ))}
-      </select>
-      <input
-        type="number"
-        min="0"
-        data-testid="value-filter"
-        value={ number }
-        onChange={ ({ target: { value } }) => setNumber(value) }
-      />
-      <button type="button" data-testid="button-filter" onClick={ handleFilter }>
-        Filtrar
-      </button>
+      <div>
+        <select
+          data-testid="column-filter"
+          value={ column }
+          onChange={ ({ target: { value } }) => setColumn(value) }
+        >
+          {availableColumns.map((option) => (
+            <option value={ option } key={ option }>{option}</option>
+          ))}
+        </select>
+        <select
+          data-testid="comparison-filter"
+          value={ comparison }
+          onChange={ ({ target: { value } }) => setComparison(value) }
+        >
+          {comparisonOptions.map((option) => (
+            <option value={ option } key={ option }>{option}</option>
+          ))}
+        </select>
+        <input
+          type="number"
+          min="0"
+          data-testid="value-filter"
+          value={ number }
+          onChange={ ({ target: { value } }) => setNumber(value) }
+        />
+        <button type="button" data-testid="button-filter" onClick={ handleFilter }>
+          Filtrar
+        </button>
+      </div>
       {filterByNumericValues.map((filter, index) => (
         <div data-testid="filter" key={ index }>
+          <p>
+            Remove
+            <strong>
+              {` ${filter.column} `}
+            </strong>
+            filter
+          </p>
           <button type="button" onClick={ () => rmvFilter(filter) }>
             X
           </button>

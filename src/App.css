@@ -1,41 +1,95 @@
-.App {
+body {
+  background: url('https://i.pinimg.com/originals/d7/a6/11/d7a61190a836bdcfc62bf97af4f4c74b.png');
+  color: whitesmoke;
+}
+
+table > tbody > tr {
+  background-color: rgba(0, 0, 255, 0.8);
+  hyphens: none;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+table > thead > tr {
+  background-color: blue;
+  font-size: 20px;
+  hyphens: none;
+  text-align: center;
 }
 
-@media ( prefers-reduced-motion : no-preference ) {
-
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+td {
+  font-size: 16px;
 }
 
-.App-header {
-  align-items: center;
-  background-color: #282c34;
-  color: white;
+th {
+  color: black;
+  padding: 0 15px;
+}
+
+table {
+  border-spacing: 2px;
+}
+
+header {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  color: black;
   display: flex;
   flex-direction: column;
-  font-size: calc(10px + 2vmin);
-  justify-content: center;
-  min-height: 100vh;
+  gap: 8px;
+  margin: 5px auto;
+  padding: 30px;
+  text-align: center;
+  width: fit-content;
 }
 
-.App-link {
-  color: #61dafb;
+header > h1 {
+  margin: 0;
 }
 
-@keyframes App-logo-spin {
+header > div {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  width: 100%;
+}
 
-  from {
-    transform: rotate(0deg);
-  }
+select {
+  background-color: white;
+  border: none;
+  border-radius: 4px;
+  color: black;
+  min-width: 120px;
+  padding: 10px;
+}
 
-  to {
-    transform: rotate(360deg);
-  }
+input {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid blue;
+  padding: 10px;
+}
+
+option {
+  background-color: black;
+  color: white;
+  outline: none;
+}
+
+option:hover {
+  background-color: white;
+  outline: none;
+}
+
+button {
+  background-color: blue;
+  border: 1px solid black;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 10px 20px;
+}
+
+button:hover {
+  background-color: rgba(0, 0, 255, 0.3);
 }
