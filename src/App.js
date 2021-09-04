@@ -1,10 +1,15 @@
 import React from 'react';
-import Routes from './components/Routes';
+import { Route, Switch, BrowserRouter } from 'react-router-dom';
+import MainPage from './Page/MainPage';
 import './App.css';
 
 function App() {
   return (
-    <Routes />
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={ MainPage } />
+      </Switch>
+    </BrowserRouter>
   );
 }
 
