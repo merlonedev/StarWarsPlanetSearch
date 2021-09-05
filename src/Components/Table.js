@@ -6,8 +6,20 @@ import { FiltersContext, PayloadContext } from '../context';
 function Table() {
   const { data } = useContext(PayloadContext);
   const { filters } = useContext(FiltersContext);
-  const { filterByName } = filters;
+  const { filterByName, filterByNumericValues, isFilterActive } = filters;
   const nameRegExp = new RegExp(filterByName.name, 'gi');
+
+  const setNumericValuesFilter = (planet) => {
+    switch (filterByNumericValues.comparison) {
+      case 'maior que':
+        return planet[filterByNumericValues.column] > filterByNumericValues.value;
+      case 'menor que':
+        return planet[filterByNumericValues.column] < filterByNumericValues.value;
+      case 'igual a':
+        return planet[filterByNumericValues.column] === filterByNumericValues.value;
+      default: return planet;
+    }
+  }
 
   return (
     <div>
@@ -32,6 +44,7 @@ function Table() {
         <tbody>
           {data
             .filter((planet) => (planet.name.match(nameRegExp)))
+            .filter((planet) => isFilterActive ? setNumericValuesFilter(planet) : planet)
             .map((planet) => (
               <tr key={ planet.name }>
                 <td>{planet.name}</td>

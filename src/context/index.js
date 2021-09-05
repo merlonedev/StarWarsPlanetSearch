@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-const filtersInitialContext = {
+const filtersDefaultContext = {
   filters: {
     filterByName: {
       name: '',
@@ -17,4 +17,4 @@ const filtersInitialContext = {
 
 export const PayloadContext = createContext([]);
 
-export const FiltersContext = createContext(filtersInitialContext);
+export const FiltersContext = createContext(filtersDefaultContext);
