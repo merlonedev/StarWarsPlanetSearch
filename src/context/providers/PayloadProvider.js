@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
-import { PayloadContext } from '../context';
+import { PayloadContext } from '..';
 
 const URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
 

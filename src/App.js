@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 import Table from './Components/Table';
-import PayloadProvider from './Components/PayloadProvider';
-import FiltersProvider from './Components/FiltersProvider';
+import PayloadProvider from './context/providers/PayloadProvider';
+import FiltersProvider from './context/providers/FiltersProvider';
 import Filters from './Components/Filters';
 
 function App() {
