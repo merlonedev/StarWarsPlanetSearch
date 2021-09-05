@@ -9,6 +9,7 @@ function DataProvider({ children }) {
       filterByName: {
         name: '',
       },
+      filterByNumericValues: [],
     },
   });
 

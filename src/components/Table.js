@@ -3,12 +3,33 @@ import DataContext from '../context/DataContext';
 
 function Table() {
   const { data, filter } = useContext(DataContext);
+  const { filters: { filterByName, filterByNumericValues } } = filter;
 
   let dataPlanets = [...data];
 
-  if (filter.name) {
+  if (filterByName.name) {
     dataPlanets = dataPlanets
-      .filter((planet) => planet.name.toLowerCase().includes(filter.name));
+      .filter((planet) => planet.name.toLowerCase().includes(filterByName.name));
+  }
+
+  if (filterByNumericValues.length !== 0) {
+    filterByNumericValues.forEach(({ column, comparison, values }) => {
+      switch (comparison) {
+      case 'maior que':
+        dataPlanets = dataPlanets
+          .filter((planet) => parseInt(planet[column], 10) > parseInt(values, 10));
+        break;
+      case 'menor que':
+        dataPlanets = dataPlanets
+          .filter((planet) => parseInt(planet[column], 10) < parseInt(values, 10));
+        break;
+      case 'igual a':
+        dataPlanets = dataPlanets.filter((planet) => planet[column] === values);
+        break;
+      default:
+        break;
+      }
+    });
   }
 
   const keysColumnTable = dataPlanets
