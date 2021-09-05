@@ -1,16 +1,15 @@
 import React from 'react';
+import AppProvider from './context/AppProvider';
 import Table from './Components/Table';
-import PlanetsProvider from './Context/Provider';
 import Form from './Components/Form';
-import RemoveFilters from './Components/RemoveFilters';
+import './App.css';
 
 function App() {
   return (
-    <PlanetsProvider>
+    <AppProvider>
       <Form />
       <Table />
-      <RemoveFilters />
-    </PlanetsProvider>
+    </AppProvider>
   );
 }
 

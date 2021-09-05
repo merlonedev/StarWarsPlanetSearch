@@ -1,85 +1,62 @@
-import React, { useContext, useEffect } from 'react';
-import PlanetsAPI from '../helpers/PlanetsAPI';
-import SWPlanetsContext from '../Context/Context';
-import { filteredNumericValues, sortColumns } from './Filters';
-import RemoveFilters from './RemoveFilters';
-import Loading from '../images/loading-buffering.gif';
+import React, { useContext, useEffect, useState } from 'react';
+import AppContext from '../context/AppContext';
 
 function Table() {
-  const { planets } = PlanetsAPI();
-  const {
-    loading,
-    initialFilters,
-    filteredInfo,
-    setFilteredInfo,
-  } = useContext(SWPlanetsContext);
+  const { sortData, headings, APIResult, nameFilter } = useContext(AppContext);
+
+  const [toRender, setToRender] = useState([]);
 
   useEffect(() => {
-    if (planets) {
-      sortColumns(initialFilters, planets);
-      const getFilteredInfo = planets.filter((item) => {
-        const { name, ...items } = item;
-        const filterName = name.toLowerCase()
-          .includes(initialFilters.filterByName.name.toLowerCase());
-        const getComparisonValue = filteredNumericValues(initialFilters, items);
-        return filterName && getComparisonValue;
-      });
-      setFilteredInfo(getFilteredInfo);
-    }
-  }, [initialFilters, planets, setFilteredInfo]);
+    const filteredData = APIResult.filter(({ name }) => (
+      name.toLowerCase().includes(nameFilter))).map((planet) => planet);
 
-  if (loading) {
-    return (
-      <img
-        src={ Loading }
-        alt="carregando"
-      />
-    );
-  }
+    const APISorted = sortData(APIResult);
+
+    const data = nameFilter ? filteredData : APISorted;
+
+    setToRender(data);
+  }, [nameFilter, APIResult, sortData]);
+
+  const renderHeadings = () => (
+    headings.map((heading, index) => (<th key={ index }>{ heading }</th>))
+  );
 
   return (
-    <div>
-      <RemoveFilters />
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Rotation Period</th>
-            <th>Orbital Period</th>
-            <th>Diameter</th>
-            <th>Climate</th>
-            <th>Gravity</th>
-            <th>Terrain</th>
-            <th>Surface Water</th>
-            <th>Population</th>
-            <th>Films</th>
-            <th>Created</th>
-            <th>Edited</th>
-            <th>URL</th>
+    <table>
+      <thead>
+        <tr>
+          { renderHeadings() }
+        </tr>
+      </thead>
+
+      <tbody>
+        { toRender.map((planets, index) => (
+          <tr key={ index }>
+            <td
+              data-testid="planet-name"
+            >
+              { planets.name }
+            </td>
+            <td>{ planets.rotation_period }</td>
+            <td>{ planets.orbital_period }</td>
+            <td>{ planets.diameter }</td>
+            <td>{ planets.climate }</td>
+            <td>{ planets.gravity }</td>
+            <td>{ planets.terrain }</td>
+            <td>{ planets.surface_water }</td>
+            <td>{ planets.population }</td>
+            <td>{ planets.films }</td>
+            <td>{ planets.createt }</td>
+            <td>{ planets.edited }</td>
+            <td>{ planets.url }</td>
           </tr>
-        </thead>
-        <tbody>
-          { filteredInfo.map((p, index) => (
-            <tr key={ index }>
-              <td data-testid="planet-name">{ p.name }</td>
-              <td>{ p.rotation_period }</td>
-              <td>{ p.orbital_period }</td>
-              <td>{ p.diameter }</td>
-              <td>{ p.climate }</td>
-              <td>{ p.gravity }</td>
-              <td>{ p.terrain }</td>
-              <td>{ p.surface_water }</td>
-              <td>{ p.population }</td>
-              <td>{ p.films }</td>
-              <td>{ p.created }</td>
-              <td>{ p.edited }</td>
-              <td>{ p.url }</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+        )) }
+      </tbody>
+    </table>
   );
 }
 
 export default Table;
+
+// consultei a branch do colega João Pistorio
+// https://github.com/tryber/sd-010-b-project-starwars-planets-search/tree/joaopistorio-project-starwars

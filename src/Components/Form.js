@@ -1,8 +1,5 @@
-// Importaçào do React e dos Hooks
 import React, { useContext, useState } from 'react';
-// Importação do Context
 import AppContext from '../context/AppContext';
-// Importação do componente Sort
 import SortTable from './Sort';
 
 function Form() {
@@ -158,5 +155,4 @@ function Form() {
   );
 }
 
-// Exportação padrão
 export default Form;
