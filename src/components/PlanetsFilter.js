@@ -17,11 +17,15 @@ const PlanetsFilter = () => {
     setNumericFilter,
     usedFilter,
     setUsedFilter,
+    dropdownOrders,
+    setOrder,
   } = useContext(PlanetContext);
   const { filterByNumericValues } = filters;
   const [dropdown, setDropdown] = useState(dropdownColumns[0]);
   const [comparison, setComparison] = useState(comparisons[0]);
   const [value, setValue] = useState('');
+  const [dropdownOrder, setDropdownOrder] = useState('name');
+  const [sort, setSort] = useState('ASC');
 
   return (
     <div>
@@ -61,6 +65,51 @@ const PlanetsFilter = () => {
           setUsedFilter([...usedFilter]);
           setDropdown(dropdownColumns
             .filter((column) => !usedFilter.includes(column))[0]);
+        } }
+      >
+        Filtrar
+      </button>
+      <select
+        value={ dropdownOrder }
+        data-testid="column-sort"
+        onChange={
+          ({
+            target: { value: valueDropodownOrder },
+          }) => setDropdownOrder(valueDropodownOrder)
+        }
+      >
+        {Object.keys(dropdownOrders).map((dropdownOpt) => (
+          <option value={ dropdownOpt } key={ dropdownOpt }>{dropdownOpt}</option>))}
+      </select>
+      <label htmlFor="asc">
+        <input
+        // https://www.w3schools.com/jsref/prop_checkbox_defaultchecked.asp
+          defaultChecked
+          name="order"
+          value="ASC"
+          data-testid="column-sort-input-asc"
+          type="radio"
+          id="asc"
+          onChange={ ({ target: { value: vASC } }) => setSort(vASC) }
+        />
+        Ascendente
+      </label>
+      <label htmlFor="desc">
+        <input
+          name="order"
+          value="DESC"
+          data-testid="column-sort-input-desc"
+          type="radio"
+          id="desc"
+          onChange={ ({ target: { value: vDESC } }) => setSort(vDESC) }
+        />
+        Descendente
+      </label>
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ () => {
+          setOrder({ column: dropdownOrder, sort });
         } }
       >
         Filtrar

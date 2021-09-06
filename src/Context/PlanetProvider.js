@@ -9,6 +9,10 @@ const PlanetProvider = ({ children }) => {
   const [name, setName] = useState('');
   const [numericFilter, setNumericFilter] = useState([]);
   const [usedFilter, setUsedFilter] = useState([]);
+  const [order, setOrder] = useState({
+    column: 'name',
+    sort: 'ASC',
+  });
 
   useEffect(() => {
     requisitionPlanets().then((response) => {
@@ -17,12 +21,15 @@ const PlanetProvider = ({ children }) => {
     });
   }, []);
 
+  const dropdownOrders = planets[0] || [];
+
   const filters = {
     filters: {
       filterByName: {
         name,
       },
       filterByNumericValues: numericFilter,
+      order,
     },
   };
 
@@ -33,6 +40,8 @@ const PlanetProvider = ({ children }) => {
     setNumericFilter,
     usedFilter,
     setUsedFilter,
+    setOrder,
+    dropdownOrders,
   };
 
   return (
