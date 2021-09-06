@@ -2,12 +2,9 @@ import React, { useContext } from 'react';
 
 import { FiltersContext } from '../context';
 
-const columnOptions = ['', 'population', 'orbital_period',
-  'diameter', 'rotation_period', 'surface_water'];
-
-function FilterByColumn(/* props */) {
+function FilterByColumn() {
   const { filters } = useContext(FiltersContext);
-  const { filterByNumericValues } = filters;
+  const { column, setColumn, availableColumns } = filters;
 
   return (
     <form>
@@ -15,13 +12,12 @@ function FilterByColumn(/* props */) {
           Pick your favorite flavor: */}
       <select
         data-testid="column-filter"
-        value={ filterByNumericValues.column }
-        onChange={ ({ target }) => filterByNumericValues
-          .setNumericValuesFilter({ ...filterByNumericValues, column: target.value }) }
+        value={ column }
+        onChange={ ({ target }) => setColumn(target.value) }
       >
-        {columnOptions.map((column) => (
-          <option key={ column } value={ column }>
-            {column}
+        {availableColumns.map((columnOption) => (
+          <option key={ columnOption } value={ columnOption }>
+            {columnOption}
           </option>
         ))}
       </select>

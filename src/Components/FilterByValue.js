@@ -4,18 +4,19 @@ import { FiltersContext } from '../context';
 
 function FilterByNumericValues() {
   const { filters } = useContext(FiltersContext);
-  const { filterByNumericValues } = filters;
+  const { setValue, tempValue, setTempValue } = filters;
+
   return (
     <form>
-      <label htmlFor="amount">
-        Amount:
+      <label htmlFor="value">
+        Value:
         <input
           data-testid="name-filter"
-          id="amount"
+          id="value"
           type="number"
-          value={ filterByNumericValues.value }
-          onChange={ ({ target }) => filterByNumericValues
-            .setNumericValuesFilter({ ...filterByNumericValues, value: target.value }) }
+          value={ tempValue }
+          onChange={ ({ target }) => setTempValue(target.value) }
+          onBlur={ ({ target }) => setValue(target.value) }
         />
       </label>
     </form>

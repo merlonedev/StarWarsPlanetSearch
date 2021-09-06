@@ -6,7 +6,7 @@ const comparisonOptions = ['', 'maior que', 'menor que', 'igual a'];
 
 function FilterByComparison() {
   const { filters } = useContext(FiltersContext);
-  const { filterByNumericValues } = filters;
+  const { comparison, setComparison } = filters;
 
   return (
     <form>
@@ -14,16 +14,12 @@ function FilterByComparison() {
           Pick your favorite flavor: */}
       <select
         data-testid="comparison-filter"
-        value={ filterByNumericValues.comparison }
-        onChange={ ({ target }) => filterByNumericValues
-          .setNumericValuesFilter({
-            ...filterByNumericValues,
-            comparison: target.value,
-          }) }
+        value={ comparison }
+        onChange={ ({ target }) => setComparison(target.value) }
       >
-        {comparisonOptions.map((comparison) => (
-          <option key={ comparison } value={ comparison }>
-            {comparison}
+        {comparisonOptions.map((comparisonOption) => (
+          <option key={ comparisonOption } value={ comparisonOption }>
+            {comparisonOption}
           </option>
         ))}
       </select>

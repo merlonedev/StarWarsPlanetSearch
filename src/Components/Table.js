@@ -1,25 +1,24 @@
 import React, { useContext } from 'react';
 
 import { FiltersContext, PayloadContext } from '../context';
-// import PropTypes from 'prop-types';
 
 function Table() {
   const { data } = useContext(PayloadContext);
   const { filters } = useContext(FiltersContext);
-  const { filterByName, filterByNumericValues, isFilterActive } = filters;
+  const { filterByName, filterByNumericValues } = filters;
   const nameRegExp = new RegExp(filterByName.name, 'gi');
 
-  const setNumericValuesFilter = (planet) => {
-    switch (filterByNumericValues.comparison) {
-      case 'maior que':
-        return planet[filterByNumericValues.column] > filterByNumericValues.value;
-      case 'menor que':
-        return planet[filterByNumericValues.column] < filterByNumericValues.value;
-      case 'igual a':
-        return planet[filterByNumericValues.column] === filterByNumericValues.value;
-      default: return planet;
+  const setNumericValuesFilter = (planet, filter) => {
+    switch (filter.comparison) {
+    case 'maior que':
+      return planet[filter.column] > filter.value;
+    case 'menor que':
+      return planet[filter.column] < filter.value;
+    case 'igual a':
+      return planet[filter.column] === filter.value;
+    default: return planet;
     }
-  }
+  };
 
   return (
     <div>
@@ -44,7 +43,10 @@ function Table() {
         <tbody>
           {data
             .filter((planet) => (planet.name.match(nameRegExp)))
-            .filter((planet) => isFilterActive ? setNumericValuesFilter(planet) : planet)
+            .filter((planet) => (filterByNumericValues.length > 0
+              ? filterByNumericValues
+                .every((filter) => setNumericValuesFilter(planet, filter))
+              : planet))
             .map((planet) => (
               <tr key={ planet.name }>
                 <td>{planet.name}</td>
@@ -67,9 +69,5 @@ function Table() {
     </div>
   );
 }
-
-/* Table.propTypes = {
-
-} */
 
 export default Table;

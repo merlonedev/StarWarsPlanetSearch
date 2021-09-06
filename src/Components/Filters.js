@@ -1,25 +1,25 @@
-import React from 'react';
-import FilterByNumericValues from './FilterByNumericValues';
+import React, { useContext } from 'react';
+import { FiltersContext } from '../context';
+import FilterByValue from './FilterByValue';
 import FilterByColumn from './FilterByColumn';
 import FilterByName from './FilterByName';
 import FilterByComparison from './FilterByComparison';
-import FiltersButton from './FiltersButton';
-// import PropTypes from 'prop-types';
+import Filter from './Filter';
 
-function Filters(/* props */) {
+function Filters() {
+  const { filters } = useContext(FiltersContext);
+  const { filterByNumericValues } = filters;
+
   return (
     <div>
       <FilterByColumn />
       <FilterByComparison />
-      <FilterByNumericValues />
+      <FilterByValue />
       <FilterByName />
-      <FiltersButton />
+      {filterByNumericValues.length > 0 && filterByNumericValues
+        .map((filter, index) => <Filter filter={ filter } key={ index } />)}
     </div>
   );
 }
-
-// Filters.propTypes = {
-
-// };
 
 export default Filters;
