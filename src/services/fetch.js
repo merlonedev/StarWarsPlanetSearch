@@ -3,8 +3,8 @@ const URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
 async function fetchPlanets() {
   try {
     const response = await fetch(URL);
-    const { result } = await response.json();
-    const filter = result.map((item) => {
+    const { results } = await response.json();
+    const filter = results.map((item) => {
       delete item.residents;
       return item;
     });
