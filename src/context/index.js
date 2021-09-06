@@ -13,7 +13,7 @@ const filtersDefaultContext = {
       setFilterByNumericValues: () => {},
     },
   },
-}; 
+};
 
 export const PayloadContext = createContext([]);
 
