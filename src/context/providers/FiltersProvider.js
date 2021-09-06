@@ -1,52 +1,54 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
 import { FiltersContext } from '..';
 
-const columnOptions = ['', 'population', 'orbital_period',
+const initialColumnOptions = ['population', 'orbital_period',
   'diameter', 'rotation_period', 'surface_water'];
+const initialComparisonOptions = ['maior que', 'menor que', 'igual a'];
 
 function FiltersProvider({ children }) {
   const [filterByName, setNameFilter] = useState({ name: '' });
-  const [column, setColumn] = useState('');
-  const [availableColumns, setAvailableColumns] = useState(columnOptions);
-  const [comparison, setComparison] = useState('');
+
+  const [columnOptions, setColumnOptions] = useState(initialColumnOptions);
+  const [removedColumns, setRemovedColumns] = useState([]);
+  const [column, setColumn] = useState(columnOptions[0]);
+
+  const [comparisonOptions] = useState(initialComparisonOptions);
+  const [comparison, setComparison] = useState(comparisonOptions[0]);
+
   const [value, setValue] = useState(0);
-  const [tempValue, setTempValue] = useState(0);
   const [filterByNumericValues, setNumericValuesFilter] = useState([]);
 
-  const resetInputs = () => {
-    setColumn(''); setComparison(''); setValue(0);
-    setTempValue(0);
+  const handleColumnOptions = (action, columnToBeReAdded) => {
+    if (action === 'add') {
+      const copy = columnOptions;
+      const columnRemoved = copy.splice(columnOptions.indexOf(column), 1);
+      setRemovedColumns([...removedColumns, ...columnRemoved]);
+      setColumnOptions([...copy]);
+    }
+    if (action === 'remove' && columnToBeReAdded) {
+      const copy = removedColumns;
+      const columnReAdded = copy.splice(removedColumns.indexOf(columnToBeReAdded), 1);
+      setColumnOptions([...columnReAdded, ...columnOptions]);
+    }
   };
 
-  useEffect(() => {
-    const allInputsFilled = () => column && comparison && value;
+  const resetInputs = () => {
+    setColumn(columnOptions[0]); setComparison(comparisonOptions[0]); setValue(0);
+  };
 
-    const addFilter = () => {
-      const repeatedFilter = filterByNumericValues
-        .find((filter) => filter.column === column);
-      return repeatedFilter
-        ? setNumericValuesFilter([...filterByNumericValues
-          .filter((filter) => filter.column !== column), { column, comparison, value }])
-        : setNumericValuesFilter([...filterByNumericValues,
-          { column, comparison, value }]);
-    };
+  const allInputsFilled = () => column && comparison && value >= 0;
 
-    if (allInputsFilled()) {
-      addFilter();
-      resetInputs();
+  const repeatedFilter = () => filterByNumericValues
+    .find((filter) => filter.column === column);
+
+  const addFilter = () => {
+    if (allInputsFilled() && !repeatedFilter()) {
+      setNumericValuesFilter([...filterByNumericValues,
+        { column, comparison, value }]);
     }
-  }, [column, comparison, filterByNumericValues, value]);
-
-  useEffect(() => {
-    setAvailableColumns(columnOptions
-      .filter((columnOption) => !filterByNumericValues
-        .some((filter) => {
-          console.log(filter.column === columnOption || column === columnOption);
-          return filter.column === columnOption || column === columnOption;
-        })));
-  }, [column, filterByNumericValues]);
+  };
 
   const removeFilter = (filterToBeRemoved) => {
     setNumericValuesFilter(filterByNumericValues
@@ -60,16 +62,19 @@ function FiltersProvider({ children }) {
       },
       column,
       setColumn,
+      columnOptions,
+      // setColumnOptions,
+      handleColumnOptions,
       comparison,
       setComparison,
+      comparisonOptions,
+      // setComparisonOptions,
       value,
       setValue,
       filterByNumericValues,
+      addFilter,
       removeFilter,
-      availableColumns,
-      setAvailableColumns,
-      tempValue,
-      setTempValue,
+      resetInputs,
     },
   };
 

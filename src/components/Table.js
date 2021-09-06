@@ -1,24 +1,13 @@
 import React, { useContext } from 'react';
 
 import { FiltersContext, PayloadContext } from '../context';
+import setNumericValuesFilter from '../helpers';
 
 function Table() {
   const { data } = useContext(PayloadContext);
   const { filters } = useContext(FiltersContext);
   const { filterByName, filterByNumericValues } = filters;
   const nameRegExp = new RegExp(filterByName.name, 'gi');
-
-  const setNumericValuesFilter = (planet, filter) => {
-    switch (filter.comparison) {
-    case 'maior que':
-      return planet[filter.column] > filter.value;
-    case 'menor que':
-      return planet[filter.column] < filter.value;
-    case 'igual a':
-      return planet[filter.column] === filter.value;
-    default: return planet;
-    }
-  };
 
   return (
     <div>

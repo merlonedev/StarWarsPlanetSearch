@@ -5,6 +5,7 @@ import FilterByColumn from './FilterByColumn';
 import FilterByName from './FilterByName';
 import FilterByComparison from './FilterByComparison';
 import Filter from './Filter';
+import AddFilterButton from './AddFilterButton';
 
 function Filters() {
   const { filters } = useContext(FiltersContext);
@@ -16,6 +17,7 @@ function Filters() {
       <FilterByComparison />
       <FilterByValue />
       <FilterByName />
+      <AddFilterButton />
       {filterByNumericValues.length > 0 && filterByNumericValues
         .map((filter, index) => <Filter filter={ filter } key={ index } />)}
     </div>

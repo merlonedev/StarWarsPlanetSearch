@@ -4,7 +4,7 @@ import { FiltersContext } from '../context';
 
 function FilterByNumericValues() {
   const { filters } = useContext(FiltersContext);
-  const { setValue, tempValue, setTempValue } = filters;
+  const { value, setValue } = filters;
 
   return (
     <form>
@@ -14,9 +14,10 @@ function FilterByNumericValues() {
           data-testid="value-filter"
           id="value"
           type="number"
-          value={ tempValue }
-          onChange={ ({ target }) => setTempValue(target.value) }
-          onBlur={ ({ target }) => setValue(target.value) }
+          value={ value }
+          onChange={ ({ target }) => {
+            setValue(target.value);
+          } }
         />
       </label>
     </form>

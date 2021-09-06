@@ -6,6 +6,12 @@ function Filter(props) {
   const { filter } = props;
   const { column, comparison, value } = filter;
   const { filters } = useContext(FiltersContext);
+  const { removeFilter, handleColumnOptions, resetInputs } = filters;
+  const handleClick = () => {
+    removeFilter(filter);
+    handleColumnOptions('remove', column);
+    resetInputs();
+  };
   return (
     <div data-testid="filter">
       <div>
@@ -19,7 +25,7 @@ function Filter(props) {
       </div>
       <button
         type="button"
-        onClick={ () => filters.removeFilter(filter) }
+        onClick={ handleClick }
       >
         X
       </button>
