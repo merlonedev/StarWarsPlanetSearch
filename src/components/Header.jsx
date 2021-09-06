@@ -98,6 +98,17 @@ function Header() {
       >
         Filtrar
       </button>
+      <div data-testid="filter">
+        <button
+          type="button"
+          onClick={ () => {
+            setNumericFilters([]);
+            setFilteredPlanets(data);
+          } }
+        >
+          x
+        </button>
+      </div>
     </header>
   );
 }
