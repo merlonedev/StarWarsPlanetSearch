@@ -6,6 +6,7 @@ import FilterByName from './FilterByName';
 import FilterByComparison from './FilterByComparison';
 import Filter from './Filter';
 import AddFilterButton from './AddFilterButton';
+import ColumnSort from './ColumnSort';
 
 function Filters() {
   const { filters } = useContext(FiltersContext);
@@ -18,6 +19,7 @@ function Filters() {
       <FilterByValue />
       <FilterByName />
       <AddFilterButton />
+      <ColumnSort />
       {filterByNumericValues.length > 0 && filterByNumericValues
         .map((filter, index) => <Filter filter={ filter } key={ index } />)}
     </div>

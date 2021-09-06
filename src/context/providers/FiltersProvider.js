@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FiltersContext } from '..';
 
-const initialColumnOptions = ['population', 'orbital_period',
+export const initialColumnOptions = ['population', 'orbital_period',
   'diameter', 'rotation_period', 'surface_water'];
 const initialComparisonOptions = ['maior que', 'menor que', 'igual a'];
 
@@ -20,23 +20,8 @@ function FiltersProvider({ children }) {
   const [value, setValue] = useState(0);
   const [filterByNumericValues, setNumericValuesFilter] = useState([]);
 
-  // useEffect(() => {
-  //   setColumnOptions(initialColumnOptions);
-  // }, []);
-
-  // const handleColumnOptions = (action, columnToBeReAdded) => {
-  //   if (action === 'add') {
-  //     const copy = columnOptions;
-  //     const columnRemoved = copy.splice(columnOptions.indexOf(column), 1);
-  //     setRemovedColumns([...removedColumns, ...columnRemoved]);
-  //     setColumnOptions([...copy]);
-  //   }
-  //   if (action === 'remove' && columnToBeReAdded) {
-  //     const copy = removedColumns;
-  //     const columnReAdded = copy.splice(removedColumns.indexOf(columnToBeReAdded), 1);
-  //     setColumnOptions([...columnReAdded, ...columnOptions]);
-  //   }
-  // };
+  const [columnSort, setColumnSort] = useState(initialColumnOptions[0]);
+  const [ascOrDesc, setAscOrDesc] = useState('');
 
   const handleColumnOptions = (action, columnToBeReAdded) => { // Refatorar! Cheio de bugs!
     if (action === 'add') {
@@ -85,6 +70,11 @@ function FiltersProvider({ children }) {
       columnOptions,
       // setColumnOptions,
       handleColumnOptions,
+      // order: { column: 'Name', sort: 'ASC'} },
+      columnSort,
+      setColumnSort,
+      ascOrDesc,
+      setAscOrDesc,
       comparison,
       setComparison,
       comparisonOptions,

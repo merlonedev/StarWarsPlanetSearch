@@ -6,8 +6,17 @@ import setNumericValuesFilter from '../helpers';
 function Table() {
   const { data } = useContext(PayloadContext);
   const { filters } = useContext(FiltersContext);
-  const { filterByName, filterByNumericValues } = filters;
+  const { filterByName, filterByNumericValues, columnSort, ascOrDesc } = filters;
   const nameRegExp = new RegExp(filterByName.name, 'gi');
+
+  const sortByColumn = (a, b) => {
+    if (ascOrDesc === 'ASC') {
+      return parseInt(a[columnSort], 10) - parseInt(b[columnSort], 10);
+    }
+    if (ascOrDesc === 'DESC') {
+      return parseInt(b[columnSort], 10) - parseInt(a[columnSort], 10);
+    }
+  };
 
   return (
     <div>
@@ -36,9 +45,11 @@ function Table() {
               ? filterByNumericValues
                 .every((filter) => setNumericValuesFilter(planet, filter))
               : planet))
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .sort((a, b) => (ascOrDesc && sortByColumn(a, b))) // Refatorar!
             .map((planet) => (
               <tr key={ planet.name }>
-                <td>{planet.name}</td>
+                <td data-testid="planet-name">{planet.name}</td>
                 <td>{planet.climate}</td>
                 <td>{planet.terrain}</td>
                 <td>{planet.created}</td>
