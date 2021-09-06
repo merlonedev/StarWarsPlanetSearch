@@ -1,8 +1,7 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import PlanetsContext from '../Contexts/PlanetContext';
+import React, { useEffect, useState } from 'react';
+import PlanetsContext from './PlanetContext';
 
-function GetPlanetFetchAPI({ children }) {
+function PlanetAPI({ children }) {
   const [data, setData] = useState([]);
   const [name, setName] = useState('');
   const [filtered, setFiltered] = useState([]);
@@ -15,9 +14,9 @@ function GetPlanetFetchAPI({ children }) {
   useEffect(() => {
     const getElements = async () => {
       const url = 'https://swapi-trybe.herokuapp.com/api/planets/';
-      const results = await fetch(url);
-      const dataHolder = await results.json(); // segurando as informações recebidas
-      setData(dataHolder.results); // aqui envia as informações para o novo estado.
+      const { results } = await fetch(url).then((result) => result.json()); // refatorado
+      setData(results);
+      setFiltered(results);
     };
 
     getElements();
@@ -36,10 +35,10 @@ function GetPlanetFetchAPI({ children }) {
 
   return (
     <div>
-      <PlanetsContext value={ context }>
+      <PlanetsContext.Provider value={ context }>
         { children }
-      </PlanetsContext>
+      </PlanetsContext.Provider>
     </div>
   );
 }
-export default GetPlanetFetchAPI;
+export default PlanetAPI;

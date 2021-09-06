@@ -1,21 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import GetPlanetFetchAPI from '../services/planetsAPI';
+import React, { useContext } from 'react';
+import PlanetsContext from '../Contexts/PlanetContext';
 
 function Table() {
-  const [planets, setPlanets] = useState([]);
-  const [data] = GetPlanetFetchAPI();
-
-  useEffect(() => {
-    setPlanets(data);
-  }, [data]);
+  const { filtered } = useContext(PlanetsContext);
 
   const planetsData = () => {
-    if (planets.length > 0) {
+    if (filtered.length > 0) {
       return (
         <thead>
           <tr>
             {
-              planets.map((planet) => Object.keys(planet))[0]
+              filtered.map((planet) => Object.keys(planet))[0]
                 .filter((keys) => keys !== 'residents')
                 .map((key, index) => <th key={ index }>{key}</th>)
             }
@@ -27,11 +22,11 @@ function Table() {
   };
 
   const list = () => {
-    if (planets.length > 0) {
+    if (filtered.length > 0) {
       return (
         <tbody>
           {
-            planets.map((planet, index) => (
+            filtered.map((planet, index) => (
               <tr key={ index }>
                 <td>{planet.name}</td>
                 <td>{planet.rotation_period}</td>
