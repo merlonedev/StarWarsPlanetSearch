@@ -53,6 +53,7 @@ function Table() {
   }, [numericFilters, data, setFilteredPlanets]);
 
   useEffect(() => {
+    if (filters.filterByName.name) return;
     const copyData = [...data];
     const MENOS_UM = -1;
     function compare(a, b) {

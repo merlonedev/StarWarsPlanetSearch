@@ -7,6 +7,7 @@ function Provider({ children }) {
     filterByName: {
       name: undefined,
     },
+    filterByNumericValues: [],
     order: {
       name: 'name',
       sort: 'ASC',

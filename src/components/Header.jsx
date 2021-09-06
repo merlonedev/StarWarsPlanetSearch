@@ -25,13 +25,13 @@ function Header() {
   useEffect(() => {
     const copyData = [...data];
     const { filterByName: { name } } = filters;
-    if (!name) {
+    setFilteredPlanets([]);
+    if (!name || name === '') {
       setFilteredPlanets(copyData);
     } else {
-      setFilteredPlanets(
-        copyData
-          .filter(({ name: planetName }) => planetName.toLowerCase().includes(name)),
-      );
+      const filtered = copyData
+        .filter(({ name: planetName }) => planetName.toLowerCase().includes(name));
+      setFilteredPlanets(filtered);
     }
   }, [filters, data, setFilteredPlanets, numericFilters]);
 
@@ -64,6 +64,7 @@ function Header() {
           placeholder="Insira o nome do planeta que deseja buscar"
           onChange={ ({ target: { value } }) => setFilters(
             {
+              ...filters,
               filterByName: { name: value.toLowerCase() },
             },
           ) }
