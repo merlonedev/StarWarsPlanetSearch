@@ -3,23 +3,23 @@ import PropTypes from 'prop-types';
 import MyContext from './Context';
 
 function Provider({ children }) {
-  const [state, setState] = useState({
-    filters: {
-      filterByName: {
-        name: '',
-      },
-    },
+  const [filters, setFilters] = useState({
+    name: '',
   });
 
   const [data, setData] = useState([]);
 
-  const context = {
-    state,
-    setState,
-    data,
-    setData,
+  const onChangeHandler = ({ target: { name, value } }) => {
+    setFilters({ ...filters, [name]: value });
   };
 
+  const context = {
+    filters,
+    setFilters,
+    data,
+    setData,
+    onChangeHandler,
+  };
   return (
     <MyContext.Provider value={ context }>
       { children }
