@@ -34,12 +34,13 @@ function Table() {
   }, [setData, setHeaders]);
 
   useEffect(() => {
+    const copyData = [...data];
     let lastFilterSelected = [];
     if (numericFilters.length) {
       lastFilterSelected = numericFilters[numericFilters.length - 1];
     }
     const { column, comparison, value } = lastFilterSelected;
-    setFilteredPlanets(filteredPlanets.filter((planet) => {
+    setFilteredPlanets(copyData.filter((planet) => {
       if (comparison === 'maior que') {
         return Number(planet[column]) > value;
       } if (comparison === 'igual a') {
@@ -47,9 +48,9 @@ function Table() {
       } if (comparison === 'menor que') {
         return Number(planet[column]) < value;
       }
-      return filteredPlanets;
+      return copyData;
     }));
-  }, [numericFilters]);
+  }, [numericFilters, data, setFilteredPlanets]);
 
   useEffect(() => {
     const copyData = [...data];

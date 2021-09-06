@@ -23,25 +23,31 @@ function Header() {
     'surface_water']);
   const [sortOptions, setSortOptions] = useState({ name: 'name', sort: 'ASC' });
   useEffect(() => {
+    const copyData = [...data];
     const { filterByName: { name } } = filters;
     if (!name) {
-      setFilteredPlanets(data);
+      setFilteredPlanets(copyData);
     } else {
       setFilteredPlanets(
-        data.filter(({ name: planetName }) => planetName.toLowerCase().includes(name)),
+        copyData
+          .filter(({ name: planetName }) => planetName.toLowerCase().includes(name)),
       );
     }
   }, [filters, data, setFilteredPlanets, numericFilters]);
 
   useEffect(() => {
-    const noRepeatFilters = columnFilters.filter(
+    const copyOptions = ['population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water'];
+    const noRepeatFilters = copyOptions.filter(
       (column) => numericFilters.some((filter) => column !== filter.column),
     );
     if (noRepeatFilters.length) {
       setColumnFilters(noRepeatFilters);
     }
-    console.log(noRepeatFilters);
-  }, [columnFilters, numericFilters]);
+  }, [numericFilters]);
 
   function changeSort({ target: { value } }) {
     setSortOptions(
