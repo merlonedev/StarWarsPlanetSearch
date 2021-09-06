@@ -4,8 +4,10 @@ import response from '../testData';
 
 function Table() {
   const {
+    data,
     setData,
     headers,
+    filters,
     setHeaders,
     filteredPlanets,
     setFilteredPlanets,
@@ -49,6 +51,29 @@ function Table() {
     }));
   }, [numericFilters]);
 
+  useEffect(() => {
+    const copyData = [...data];
+    const MENOS_UM = -1;
+    function compare(a, b) {
+      if (a.name < b.name) {
+        return MENOS_UM;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    }
+    if (filters.order.name === 'name') {
+      const sorteredPlanets = copyData.sort(compare);
+      setFilteredPlanets([...sorteredPlanets]);
+    } else if (filters.order.name === 'orbital_period') {
+      const sorteredPlanets = copyData.sort(
+        (a, b) => Number(b.orbital_period) - Number(a.orbital_period),
+      );
+      setFilteredPlanets([...sorteredPlanets]);
+    }
+  }, [filters, data, setFilteredPlanets]);
+
   function renderTableHeaders() {
     return (
       <tr>
@@ -81,7 +106,7 @@ function Table() {
         url,
       }) => (
         <tr key={ name }>
-          <td>{ name }</td>
+          <td data-testid="planet-name">{ name }</td>
           <td>{ rotationPeriod }</td>
           <td>{ orbitalPeriod }</td>
           <td>{ diameter }</td>

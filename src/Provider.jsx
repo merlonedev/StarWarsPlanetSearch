@@ -7,6 +7,10 @@ function Provider({ children }) {
     filterByName: {
       name: undefined,
     },
+    order: {
+      name: 'name',
+      sort: 'ASC',
+    },
   };
   const [data, setData] = useState([]);
   const [headers, setHeaders] = useState([]);

@@ -3,6 +3,7 @@ import AppContext from '../AppContext';
 
 function Header() {
   const {
+    headers,
     filters,
     setFilters,
     data,
@@ -20,6 +21,7 @@ function Header() {
     'diameter',
     'rotation_period',
     'surface_water']);
+  const [sortOptions, setSortOptions] = useState({ name: 'name', sort: 'ASC' });
   useEffect(() => {
     const { filterByName: { name } } = filters;
     if (!name) {
@@ -39,7 +41,13 @@ function Header() {
       setColumnFilters(noRepeatFilters);
     }
     console.log(noRepeatFilters);
-  }, [numericFilters]);
+  }, [columnFilters, numericFilters]);
+
+  function changeSort({ target: { value } }) {
+    setSortOptions(
+      { ...sortOptions, sort: value },
+    );
+  }
 
   return (
     <header>
@@ -109,6 +117,43 @@ function Header() {
           x
         </button>
       </div>
+      <select
+        data-testid="column-sort"
+        onChange={ ({ target: { value } }) => setSortOptions(
+          { ...sortOptions, name: value },
+        ) }
+      >
+        {
+          headers.map((header) => <option key={ header }>{ header }</option>)
+        }
+      </select>
+      <label htmlFor="column-sort-input-asc">
+        Ascendente
+        <input
+          type="radio"
+          name="column-sort"
+          data-testid="column-sort-input-asc"
+          value="ASC"
+          onChange={ changeSort }
+        />
+      </label>
+      <label htmlFor="column-sort-input-desc">
+        Descendente
+        <input
+          type="radio"
+          name="column-sort"
+          data-testid="column-sort-input-desc"
+          value="DESC"
+          onChange={ changeSort }
+        />
+      </label>
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ () => setFilters({ ...filters, order: sortOptions }) }
+      >
+        Ordenar
+      </button>
     </header>
   );
 }
