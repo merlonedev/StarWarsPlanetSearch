@@ -15,6 +15,11 @@ function Header() {
     comparison: 'maior que',
     value: 0,
   });
+  const [columnFilters, setColumnFilters] = useState(['population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water']);
   useEffect(() => {
     const { filterByName: { name } } = filters;
     if (!name) {
@@ -26,11 +31,16 @@ function Header() {
     }
   }, [filters, data, setFilteredPlanets, numericFilters]);
 
-  const columns = ['population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water'];
+  useEffect(() => {
+    const noRepeatFilters = columnFilters.filter(
+      (column) => numericFilters.some((filter) => column !== filter.column),
+    );
+    if (noRepeatFilters.length) {
+      setColumnFilters(noRepeatFilters);
+    }
+    console.log(noRepeatFilters);
+  }, [numericFilters]);
+
   return (
     <header>
       <label htmlFor="name-filter">
@@ -54,7 +64,7 @@ function Header() {
           value={ state.column }
         >
           {
-            columns.map((column) => <option key={ column }>{ column }</option>)
+            columnFilters.map((column) => <option key={ column }>{ column }</option>)
           }
         </select>
       </label>
