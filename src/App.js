@@ -1,11 +1,14 @@
 import React from 'react';
 import './App.css';
 
-//commit inicial
+// commit inicial
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <div>
+      <span>Hello, App!</span>
+      <getPlanet />
+    </div>
   );
 }
 
