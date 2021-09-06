@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { PlanetContext } from '../Context/PlanetProvider';
+
 const PlanetTable = () => {
   const {
     planets,
@@ -11,6 +12,7 @@ const PlanetTable = () => {
   } = useContext(PlanetContext);
   const { filterByName: { name }, filterByNumericValues, order } = filters;
   const { column: dropdownOrder, sort } = order;
+
   const filtersCombine = (firstValue, secondValue, comparingValue) => {
     if (
       typeof (firstValue) === 'number' || typeof (secondValue) === 'number'
@@ -28,6 +30,7 @@ const PlanetTable = () => {
     ) return firstValue === secondValue;
     return true;
   };
+
   return (
     <>
       <table>
@@ -106,4 +109,5 @@ const PlanetTable = () => {
     </>
   );
 };
+
 export default PlanetTable;
