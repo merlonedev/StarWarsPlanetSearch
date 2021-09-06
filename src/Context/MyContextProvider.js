@@ -4,13 +4,25 @@ import MyContext from './Context';
 
 function Provider({ children }) {
   const [filters, setFilters] = useState({
-    name: '',
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [],
+    filtered: false,
   });
 
   const [data, setData] = useState([]);
 
   const onChangeHandler = ({ target: { name, value } }) => {
-    setFilters({ ...filters, [name]: value });
+    setFilters({ ...filters, filterByName: { [name]: value } });
+  };
+
+  const handleClickFilter = (filter) => {
+    setFilters({
+      ...filters,
+      filterByNumericValues: [{ ...filter }, ...filters.filterByNumericValues],
+      filtered: true,
+    });
   };
 
   const context = {
@@ -19,6 +31,7 @@ function Provider({ children }) {
     data,
     setData,
     onChangeHandler,
+    handleClickFilter,
   };
   return (
     <MyContext.Provider value={ context }>
