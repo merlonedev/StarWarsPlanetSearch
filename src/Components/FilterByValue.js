@@ -11,7 +11,7 @@ function FilterByNumericValues() {
       <label htmlFor="value">
         Value:
         <input
-          data-testid="name-filter"
+          data-testid="value-filter"
           id="value"
           type="number"
           value={ tempValue }
