@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import PlanetsContext from './PlanetContext';
 
 function PlanetAPI({ children }) {
@@ -42,3 +43,7 @@ function PlanetAPI({ children }) {
   );
 }
 export default PlanetAPI;
+
+PlanetAPI.propTypes = {
+  children: PropTypes.node.isRequired,
+};
