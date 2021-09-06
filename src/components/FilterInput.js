@@ -17,7 +17,7 @@ function FilterPlanets() {
     'rotation_period',
     'surface_water'];
 
-  const filterColumn = filterByNumericValues.length > 0
+  const filterColumn = filterByNumericValues && filterByNumericValues.length > 0
     ? optionsValues
       .filter((item) => filterByNumericValues.every(({ column }) => item !== column))
     : optionsValues;

@@ -12,7 +12,7 @@ function Table() {
       .filter((planet) => planet.name.toLowerCase().includes(filterByName.name));
   }
 
-  if (filterByNumericValues.length !== 0) {
+  if (filterByNumericValues && filterByNumericValues.length !== 0) {
     filterByNumericValues.forEach(({ column, comparison, values }) => {
       switch (comparison) {
       case 'maior que':
