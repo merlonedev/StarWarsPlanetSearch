@@ -1,7 +1,16 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
+import PlanetsContext from '../Contexts/PlanetContext';
 
-function GetPlanetFetchAPI() {
+function GetPlanetFetchAPI({ children }) {
   const [data, setData] = useState([]);
+  const [name, setName] = useState('');
+  const [filtered, setFiltered] = useState([]);
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name,
+    },
+  });
 
   useEffect(() => {
     const getElements = async () => {
@@ -14,7 +23,23 @@ function GetPlanetFetchAPI() {
     getElements();
   }, []);
 
-  return [data];
-}
+  const context = {
+    name,
+    data,
+    filters,
+    filtered,
+    setData,
+    setName,
+    setFilters,
+    setFiltered,
+  };
 
+  return (
+    <div>
+      <PlanetsContext value={ context }>
+        { children }
+      </PlanetsContext>
+    </div>
+  );
+}
 export default GetPlanetFetchAPI;
