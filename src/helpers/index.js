@@ -1,11 +1,11 @@
 const setNumericValuesFilter = (planet, filter) => {
   switch (filter.comparison) {
   case 'maior que':
-    return planet[filter.column] > filter.value;
+    return parseInt(planet[filter.column], 10) > parseInt(filter.value, 10);
   case 'menor que':
-    return planet[filter.column] < filter.value;
+    return parseInt(planet[filter.column], 10) < parseInt(filter.value, 10);
   case 'igual a':
-    return planet[filter.column] === filter.value;
+    return parseInt(planet[filter.column], 10) === parseInt(filter.value, 10);
   default: return planet;
   }
 };
