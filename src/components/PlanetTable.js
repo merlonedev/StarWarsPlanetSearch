@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { PlanetContext } from '../Context/PlanetProvider';
-
 const PlanetTable = () => {
   const {
     planets,
@@ -8,10 +7,10 @@ const PlanetTable = () => {
     usedFilter,
     setUsedFilter,
     setNumericFilter,
+    dropdownOrders,
   } = useContext(PlanetContext);
-  const { filterByName: { name }, filterByNumericValues } = filters;
-  const topName = planets[0] || [];
-
+  const { filterByName: { name }, filterByNumericValues, order } = filters;
+  const { column: dropdownOrder, sort } = order;
   const filtersCombine = (firstValue, secondValue, comparingValue) => {
     if (
       typeof (firstValue) === 'number' || typeof (secondValue) === 'number'
@@ -29,15 +28,14 @@ const PlanetTable = () => {
     ) return firstValue === secondValue;
     return true;
   };
-
   return (
     <>
       <table>
         <thead>
           <tr>
             {
-              Object.keys(topName)
-                .map((tName) => <th key={ tName }>{tName}</th>)
+              Object.keys(dropdownOrders)
+                .map((topName) => <th key={ topName }>{topName}</th>)
             }
           </tr>
         </thead>
@@ -48,11 +46,33 @@ const PlanetTable = () => {
                 .filter((planet) => (
                   filtersCombine(planet[dropdown], value, comparison))), planets)
               .filter((planet) => (planet.name).includes(name))
+              .sort((firstElement, secondElement) => {
+                let first = firstElement[dropdownOrder];
+                let second = secondElement[dropdownOrder];
+                if (!Number.isNaN(Number(first))) {
+                  first = Number(first);
+                  second = Number(second);
+                }
+                if (first > second) {
+                  return sort === 'ASC' ? 1 : +'-1';
+                }
+                if (first < second) {
+                  return sort === 'ASC' ? +'-1' : 1;
+                }
+                return 0;
+              })
               .map((planet, index) => (
                 <tr key={ index }>
                   {
-                    Object.values(planet)
-                      .map((info) => <td key={ info }>{info}</td>)
+                    Object.entries(planet)
+                      .map(([key, info]) => (
+                        <td
+                          data-testid={ key === 'name' ? 'planet-name' : null }
+                          key={ info }
+                        >
+                          {info}
+                        </td>
+                      ))
                   }
                 </tr>
               ))
@@ -78,7 +98,7 @@ const PlanetTable = () => {
                 setUsedFilter(usedFilter.filter((filterUsed) => filterUsed !== dropdown));
               } }
             >
-              x
+              X
             </button>
           </div>
         )) }
@@ -86,5 +106,4 @@ const PlanetTable = () => {
     </>
   );
 };
-
 export default PlanetTable;
