@@ -20,16 +20,36 @@ function FiltersProvider({ children }) {
   const [value, setValue] = useState(0);
   const [filterByNumericValues, setNumericValuesFilter] = useState([]);
 
-  const handleColumnOptions = (action, columnToBeReAdded) => {
+  // useEffect(() => {
+  //   setColumnOptions(initialColumnOptions);
+  // }, []);
+
+  // const handleColumnOptions = (action, columnToBeReAdded) => {
+  //   if (action === 'add') {
+  //     const copy = columnOptions;
+  //     const columnRemoved = copy.splice(columnOptions.indexOf(column), 1);
+  //     setRemovedColumns([...removedColumns, ...columnRemoved]);
+  //     setColumnOptions([...copy]);
+  //   }
+  //   if (action === 'remove' && columnToBeReAdded) {
+  //     const copy = removedColumns;
+  //     const columnReAdded = copy.splice(removedColumns.indexOf(columnToBeReAdded), 1);
+  //     setColumnOptions([...columnReAdded, ...columnOptions]);
+  //   }
+  // };
+
+  const handleColumnOptions = (action, columnToBeReAdded) => { // Refatorar! Cheio de bugs!
     if (action === 'add') {
-      const copy = columnOptions;
-      const columnRemoved = copy.splice(columnOptions.indexOf(column), 1);
-      setRemovedColumns([...removedColumns, ...columnRemoved]);
-      setColumnOptions([...copy]);
+      const removedColumn = columnOptions.find((columnOption) => columnOption === column);
+      const updatedColumns = columnOptions
+        .filter((columnOption) => [...removedColumns, removedColumn]
+          .some((columnToBeRemoved) => columnToBeRemoved !== columnOption));
+      setRemovedColumns([...removedColumns, removedColumn]);
+      setColumnOptions(updatedColumns);
     }
     if (action === 'remove' && columnToBeReAdded) {
-      const copy = removedColumns;
-      const columnReAdded = copy.splice(removedColumns.indexOf(columnToBeReAdded), 1);
+      const columnReAdded = removedColumns
+        .slice(removedColumns.indexOf(columnToBeReAdded), 1);
       setColumnOptions([...columnReAdded, ...columnOptions]);
     }
   };
