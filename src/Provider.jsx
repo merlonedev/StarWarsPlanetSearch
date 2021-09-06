@@ -13,6 +13,7 @@ function Provider({ children }) {
   const [requisitionError, setRequisitionError] = useState(); //  Ainda não usei isto pois primeiro vou finalizar os requisitos e depois tratar o erro.
   const [filters, setFilters] = useState(INITIAL_FILTERS);
   const [filteredPlanets, setFilteredPlanets] = useState([]);
+  const [numericFilters, setNumericFilters] = useState([]);
 
   const ContextValue = {
     data,
@@ -25,6 +26,8 @@ function Provider({ children }) {
     setFilters,
     filteredPlanets,
     setFilteredPlanets,
+    numericFilters,
+    setNumericFilters,
   };
 
   return (
@@ -35,7 +38,7 @@ function Provider({ children }) {
 }
 
 Provider.propTypes = {
-  children: PropTypes.objectOf(PropTypes.object).isRequired,
+  children: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default Provider;

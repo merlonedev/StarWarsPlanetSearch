@@ -3,7 +3,14 @@ import AppContext from '../AppContext';
 import response from '../testData';
 
 function Table() {
-  const { setData, headers, setHeaders, filteredPlanets } = useContext(AppContext);
+  const {
+    setData,
+    headers,
+    setHeaders,
+    filteredPlanets,
+    setFilteredPlanets,
+    numericFilters,
+  } = useContext(AppContext);
   useEffect(() => {
     const API_URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
     // const getPlanetsData = () => fetch(API_URL)
@@ -23,6 +30,24 @@ function Table() {
     };
     getPlanetsData();
   }, [setData, setHeaders]);
+
+  useEffect(() => {
+    let lastFilterSelected = [];
+    if (numericFilters.length) {
+      lastFilterSelected = numericFilters[numericFilters.length - 1];
+    }
+    const { column, comparison, value } = lastFilterSelected;
+    setFilteredPlanets(filteredPlanets.filter((planet) => {
+      if (comparison === 'maior que') {
+        return Number(planet[column]) > value;
+      } if (comparison === 'igual a') {
+        return Number(planet[column]) === Number(value);
+      } if (comparison === 'menor que') {
+        return Number(planet[column]) < value;
+      }
+      return filteredPlanets;
+    }));
+  }, [numericFilters]);
 
   function renderTableHeaders() {
     return (

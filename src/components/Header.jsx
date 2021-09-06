@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AppContext from '../AppContext';
 
 function Header() {
@@ -7,7 +7,14 @@ function Header() {
     setFilters,
     data,
     setFilteredPlanets,
+    numericFilters,
+    setNumericFilters,
   } = useContext(AppContext);
+  const [state, setState] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: 0,
+  });
   useEffect(() => {
     const { filterByName: { name } } = filters;
     if (!name) {
@@ -17,7 +24,13 @@ function Header() {
         data.filter(({ name: planetName }) => planetName.toLowerCase().includes(name)),
       );
     }
-  }, [data, filters, setFilteredPlanets]);
+  }, [filters, data, setFilteredPlanets, numericFilters]);
+
+  const columns = ['population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water'];
   return (
     <header>
       <label htmlFor="name-filter">
@@ -27,11 +40,54 @@ function Header() {
           placeholder="Insira o nome do planeta que deseja buscar"
           onChange={ ({ target: { value } }) => setFilters(
             {
-              filterByName: { name: value },
+              filterByName: { name: value.toLowerCase() },
             },
           ) }
         />
       </label>
+      <br />
+      <label htmlFor="column-filter">
+        Coluna:
+        <select
+          data-testid="column-filter"
+          onChange={ ({ target: { value } }) => setState({ ...state, column: value }) }
+          value={ state.column }
+        >
+          {
+            columns.map((column) => <option key={ column }>{ column }</option>)
+          }
+        </select>
+      </label>
+      <label htmlFor="comparison-filter">
+        Faixa de valor:
+        <select
+          data-testid="comparison-filter"
+          onChange={
+            ({ target: { value } }) => setState({ ...state, comparison: value })
+          }
+          value={ state.comparison }
+        >
+          <option>maior que</option>
+          <option>igual a</option>
+          <option>menor que</option>
+        </select>
+      </label>
+      <label htmlFor="value-filter">
+        Valor:
+        <input
+          type="number"
+          data-testid="value-filter"
+          onChange={ ({ target: { value } }) => setState({ ...state, value }) }
+          value={ state.value }
+        />
+      </label>
+      <button
+        type="button"
+        data-testid="button-filter"
+        onClick={ () => setNumericFilters([...numericFilters, state]) }
+      >
+        Filtrar
+      </button>
     </header>
   );
 }
