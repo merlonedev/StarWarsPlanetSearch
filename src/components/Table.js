@@ -4,7 +4,6 @@ import DataContext from '../context/DataContext';
 function Table() {
   const { data, filters } = useContext(DataContext);
   const { filterByName, filterByNumericValues } = filters;
-  console.log(filterByNumericValues);
 
   let dataPlanets = [...data];
 
@@ -52,7 +51,9 @@ function Table() {
           { planetsTable.map((planet) => (
             <tr key={ planet.name }>
               { keysColumnTable
-                .map((column) => <td key={ column }>{ planet[column] }</td>) }
+                .map((column) => (column === 'name' ? (
+                  <td data-testid="planet-name" key={ column }>{ planet[column] }</td>
+                ) : <td key={ column }>{ planet[column] }</td>)) }
             </tr>
           )) }
         </tbody>

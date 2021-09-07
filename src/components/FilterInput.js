@@ -10,7 +10,6 @@ function FilterPlanets() {
     comparison: 'maior que',
     values: 0,
   });
-  // console.log(filterByNumericValues);
 
   const optionsValues = ['population',
     'orbital_period',
@@ -35,12 +34,9 @@ function FilterPlanets() {
       .filter(({ column }) => column !== currentColumn);
     setFilters({
       ...filters,
-      filterByNumericValues: [removeFilterByNumeric],
+      filterByNumericValues: removeFilterByNumeric,
     });
-    // console.log(removeFilterByNumeric);
   };
-
-  // console.log(filterByNumericValues);
 
   return (
     <div>

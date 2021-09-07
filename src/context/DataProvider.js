@@ -9,6 +9,7 @@ function DataProvider({ children }) {
       name: '',
     },
     filterByNumericValues: [],
+    order: {},
   });
 
   useEffect(() => {
@@ -16,12 +17,15 @@ function DataProvider({ children }) {
       const endpoint = 'https://swapi.dev/api/planets/';
       const { results } = await fetch(endpoint)
         .then((response) => response.json());
-      setData(results);
+
+      // localeCompare() referencia da documentação de array.sort() do mozilla
+      const sortedPlanets = [...results].sort((a, b) => a.name.localeCompare(b.name));
+      setData(sortedPlanets);
     };
     getDataApi();
   }, []);
 
-  const contextValue = { data, filters, setFilters };
+  const contextValue = { data, filters, setFilters, setData };
 
   return (
     <DataContext.Provider value={ contextValue }>
