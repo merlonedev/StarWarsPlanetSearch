@@ -40,7 +40,6 @@ export function comparisonCase(comparison) {
 
 export function myCaseSwitch(myCase, planets, value) {
   let myPlanets = [];
-  console.log(myCase);
   switch (myCase) {
   case '11':
     myPlanets = planets.filter((element) => element.population > parseInt(value, 10));
@@ -71,7 +70,7 @@ export function myCaseSwitch(myCase, planets, value) {
     break;
   default:
   }
-  console.log(myPlanets);
+  console.log('myPlanets:', myPlanets);
   return myPlanets;
 }
 
@@ -83,33 +82,37 @@ export function filterByNumber(number, planets, setPlanets) {
   const { column, comparison, value } = number;
   const myCase = columnCase(column).concat(comparisonCase(comparison));
   let myPlanets = myCaseSwitch(myCase, planets, value);
+  console.log('myCase:', myCase);
 
-  if (myPlanets === []) {
-    switch (myCase) {
-    case '41':
-      myPlanets = planets.filter(
-        (planet) => planet.rotation_period > parseInt(value, 10),
-      );
-      break;
-    case '42':
-      myPlanets = planets.filter(
-        (planet) => planet.rotation_period < parseInt(value, 10),
-      );
-      break;
-    case '43':
-      myPlanets = planets.filter((planet) => planet.rotation_period === value);
-      break;
-    case '51':
-      myPlanets = planets.filter((planet) => planet.surface_water > parseInt(value, 10));
-      break;
-    case '52':
-      myPlanets = planets.filter((planet) => planet.surface_water < parseInt(value, 10));
-      break;
-    case '53':
-      myPlanets = planets.filter((planet) => planet.surface_water === value);
-      break;
-    default:
-    }
+  console.log('value:', value);
+  switch (myCase) {
+  case '41':
+    myPlanets = planets.filter(
+      (planet) => planet.rotation_period > parseInt(value, 10),
+    );
+    break;
+  case '42':
+    myPlanets = planets.filter(
+      (planet) => planet.rotation_period < parseInt(value, 10),
+    );
+    break;
+  case '43':
+    myPlanets = planets.filter((planet) => planet.rotation_period === value);
+    break;
+  case '51':
+    myPlanets = planets.filter((planet) => planet.surface_water > parseInt(value, 10));
+    break;
+  case '52':
+    myPlanets = planets.filter((planet) => {
+      console.log(`${planet.name} have ${planet.surface_water} and value = ${value}`);
+      return planet.surface_water < parseInt(value, 10);
+    });
+    break;
+  case '53':
+    myPlanets = planets.filter((planet) => planet.surface_water === value);
+    break;
+  default:
   }
-  setPlanets(myPlanets);
+  console.log('myPlanets length:', myPlanets.length);
+  if (myPlanets !== []) setPlanets(myPlanets);
 }

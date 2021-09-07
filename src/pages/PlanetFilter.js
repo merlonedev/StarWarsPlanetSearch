@@ -47,6 +47,11 @@ function getSelectComparisonOptions() {
   ];
 }
 
+function manageComparisonOptions({ comparison }) {
+  const myOptions = getSelectComparisonOptions().slice();
+  return myOptions;
+}
+
 function getInput({
   handleChange = null,
   name = '',
@@ -96,6 +101,10 @@ export default function PlanetFilter() {
     comparison: '',
     value: '',
   });
+  const [selection, setSelection] = useState({
+    column: '',
+    comparison: '',
+  });
   const fillPlanets = async () => {
     const myPlanets = await API.getPlanetsFirstPage();
     setPlanets(myPlanets);
@@ -114,15 +123,18 @@ export default function PlanetFilter() {
     if (filterName) {
       filterByName(filterName, planets, setPlanets);
     }
-    if (!filterName && allPlanets.length > 0) {
+    if (!filterName && allPlanets.length > 0
+      && (!filterNumber.column || !filterNumber.comparison || !filterNumber.value)) {
       setPlanets(allPlanets);
+      console.log('Todos os Planetas');
     }
-  }, [filterName, planets, allPlanets, setPlanets]);
+  });// , [filterName, planets, allPlanets, setPlanets]);
   useEffect(() => {
     if (filterNumber.column !== ''
       && filterNumber.comparison !== ''
       && filterNumber.value !== '') {
-      filterByNumber(filterNumber, allPlanets, setPlanets);
+      filterByNumber(filterNumber, planets, setPlanets);
+      console.log('Planets:', planets);
     }
     if ((!filterNumber.column || !filterNumber.comparison || !filterNumber.value)
       && (allPlanets.length > 0)) {
@@ -140,9 +152,15 @@ export default function PlanetFilter() {
       setfilterNumber((prevState) => (
         { ...prevState, column: value }
       ));
+      setSelection((prevState) => (
+        { ...prevState, column: value }
+      ));
       break;
     case 'comparison':
       setfilterNumber((prevState) => (
+        { ...prevState, comparison: value }
+      ));
+      setSelection((prevState) => (
         { ...prevState, comparison: value }
       ));
       break;
@@ -173,7 +191,7 @@ export default function PlanetFilter() {
             text: 'Comparison:',
             testId: 'comparison-filter',
             name: 'comparison',
-            optionList: getSelectComparisonOptions(),
+            optionList: manageComparisonOptions(selection), // getSelectComparisonOptions(),
           })}
           { getInput(getInputArray({ handleChange, filterName, filterNumber })[1]) }
           <button
