@@ -31,24 +31,27 @@ function getInputArray(guide) {
 
 function getSelectColumnOptions() {
   return [
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
+    { value: 'population', disabled: false },
+    { value: 'orbital_period', disabled: false },
+    { value: 'diameter', disabled: false },
+    { value: 'rotation_period', disabled: false },
+    { value: 'surface_water', disabled: false },
   ];
 }
 
 function getSelectComparisonOptions() {
   return [
-    'maior que',
-    'menor que',
-    'igual a',
+    { value: 'maior que', disabled: false },
+    { value: 'menor que', disabled: false },
+    { value: 'igual a', disabled: false },
   ];
 }
 
 function manageComparisonOptions({ comparison }) {
+  const error = -1;
   const myOptions = getSelectComparisonOptions().slice();
+  const optionIndex = myOptions.findIndex((option) => option.value === comparison);
+  if (optionIndex !== error) myOptions[optionIndex].disabled = true;
   return myOptions;
 }
 

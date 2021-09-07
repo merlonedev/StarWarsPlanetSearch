@@ -20,9 +20,10 @@ export default function Select({
         { optionList.map((myOption, index) => (
           <option
             key={ index }
-            value={ myOption }
+            value={ myOption.value }
+            disabled={ myOption.disabled }
           >
-            { myOption }
+            { myOption.value }
           </option>
         ))}
       </select>
@@ -42,5 +43,9 @@ Select.propTypes = {
   handleChange: PropTypes.func,
   name: PropTypes.string.isRequired,
   text: PropTypes.string,
-  optionList: PropTypes.arrayOf(PropTypes.string),
+  optionList: PropTypes.shape({
+    value: PropTypes.string,
+    disabled: PropTypes.bool,
+    map: PropTypes.func,
+  }),
 };
