@@ -16,7 +16,6 @@ export default function Select({
         onChange={ handleChange }
         name={ name }
       >
-        <option value="">All</option>
         { optionList.map((myOption, index) => (
           <option
             key={ index }

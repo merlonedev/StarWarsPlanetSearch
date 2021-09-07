@@ -48,11 +48,21 @@ function getSelectComparisonOptions() {
 }
 
 function manageComparisonOptions({ comparison }) {
-  const error = -1;
   const myOptions = getSelectComparisonOptions().slice();
-  const optionIndex = myOptions.findIndex((option) => option.value === comparison);
-  if (optionIndex !== error) myOptions[optionIndex].disabled = true;
-  return myOptions;
+  // const error = -1;
+  // const optionIndex = myOptions.findIndex((option) => option.value === comparison);
+  // if (optionIndex !== error) myOptions[optionIndex].disabled = true;
+
+  return myOptions.filter((option) => option.value !== comparison);
+}
+
+function manageColumnOptions({ column }) {
+  const myOptions = getSelectColumnOptions().slice();
+  // const error = -1;
+  // const optionIndex = myOptions.findIndex((option) => option.value === comparison);
+  // if (optionIndex !== error) myOptions[optionIndex].disabled = true;
+
+  return myOptions.filter((option) => option.value !== column);
 }
 
 function getInput({
@@ -187,7 +197,7 @@ export default function PlanetFilter() {
             text: 'Column:',
             testId: 'column-filter',
             name: 'column',
-            optionList: getSelectColumnOptions(),
+            optionList: manageColumnOptions(selection),
           })}
           { getSelect({
             handleChange,
