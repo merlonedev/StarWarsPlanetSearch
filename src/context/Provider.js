@@ -12,6 +12,11 @@ export const PlanetProvider = (props) => {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [],
+    order: {
+      column: 'Name',
+      sort: 'ASC',
+    },
   });
 
   const { children } = props;
