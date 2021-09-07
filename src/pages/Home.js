@@ -4,16 +4,14 @@ import myContext from '../context/myContext';
 export default function Home() {
   const { planets } = useContext(myContext);
   const filterNumberOptions = [
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
   ];
+  const [usedArrayOfNumber, setUsedArrayOfNumber] = useState([]);
+  const [newArrayofFilter, setNewArrayOfFilter] = useState(filterNumberOptions);
   const [filterWithNumber, setfilterWithNumber] = useState({
     columnSetup: 'population',
     comparisonSetup: 'maior que',
-    valueSetup: '1',
+    valueSetup: '0',
   });
 
   const [filters, setFilters] = useState({
@@ -51,41 +49,56 @@ export default function Home() {
     filterPlanet();
   },
   [filters.filterByName.name]);
+  //   [filters.filterByName.name]);
+
+  useEffect(() => {
+    const newArrayColumn = () => {
+      const arrayToSet = filterNumberOptions
+        .filter((used) => !usedArrayOfNumber.includes(used));
+      setNewArrayOfFilter(arrayToSet);
+    };
+    newArrayColumn();
+  },
+  [shouldFilterNumber, usedArrayOfNumber]);
+  //  [shouldFilterNumber, usedArrayOfNumber]);
+
+  function comparisonSwitch(obj) {
+    const { column, value, comparison } = filters.filterByNumericValues;
+    switch (comparison) {
+    case 'maior que':
+      if (parseFloat(obj[column]) > parseFloat(value)) {
+        return true;
+      }
+      return false;
+    case 'menor que':
+      if (parseFloat(obj[column]) < parseFloat(value)) {
+        return true;
+      }
+      return false;
+    case 'igual a':
+      if (parseFloat(obj[column]) === parseFloat(value)) {
+        return true;
+      }
+      return false;
+    default:
+      break;
+    }
+  }
 
   useEffect(() => {
     const filterPlanetWithNumber = () => {
       if ((planets || filterPlanets) && shouldFilterNumber) {
         const usedArray = !filterPlanets ? planets : filterPlanets;
-        const { column, value, comparison } = filters.filterByNumericValues;
-        const filterNumberInArray = (obj) => {
-          switch (comparison) {
-          case 'maior que':
-            if (parseFloat(obj[column]) > parseFloat(value)) {
-              return true;
-            }
-            return false;
-          case 'menor que':
-            if (parseFloat(obj[column]) < parseFloat(value)) {
-              return true;
-            }
-            return false;
-          case 'igual a':
-            if (parseFloat(obj[column]) === parseFloat(value)) {
-              return true;
-            }
-            return false;
-          default:
-            break;
-          }
-        };
-        const filteredwithNumber = usedArray.filter(filterNumberInArray);
+        const filteredwithNumber = usedArray.filter(comparisonSwitch);
         setFilterWithNameAndNumber(filteredwithNumber);
+        setUsedArrayOfNumber([...usedArrayOfNumber, filterWithNumber.columnSetup]);
         setshouldFilterNumber(false);
       }
     };
     filterPlanetWithNumber();
   },
-  [shouldFilterNumber]);
+  [shouldFilterNumber, usedArrayOfNumber]);
+  //  [shouldFilterNumber, usedArrayOfNumber]);
 
   function renderPlanets() {
     const usedArray = !FilterWithNameAndNumber ? planets : FilterWithNameAndNumber;
@@ -151,7 +164,7 @@ export default function Home() {
           data-testid="column-filter"
           onChange={ getNumberSetup }
         >
-          {Object.values(filterNumberOptions).map((number, i) => (
+          {Object.values(newArrayofFilter).map((number, i) => (
             <option key={ i }>{number}</option>
           ))}
         </select>
@@ -173,6 +186,7 @@ export default function Home() {
         <input
           type="number"
           name="valueSetup"
+          placeholder="1"
           id="valueSetup"
           data-testid="value-filter"
           onChange={ getNumberSetup }
