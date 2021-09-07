@@ -1,10 +1,14 @@
 import React from 'react';
-import './App.css';
 import Home from './pages/Home';
+import StarWarsProvider from './context/StarWarsProvider';
+import './App.css';
 
 function App() {
   return (
-    <Home />
+    <StarWarsProvider>
+      <Home />
+    </StarWarsProvider>
+
   );
 }
 
