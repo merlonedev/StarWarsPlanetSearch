@@ -2,8 +2,9 @@ import React, { useContext } from 'react';
 import DataContext from '../context/DataContext';
 
 function Table() {
-  const { data, filter } = useContext(DataContext);
-  const { filters: { filterByName, filterByNumericValues } } = filter;
+  const { data, filters } = useContext(DataContext);
+  const { filterByName, filterByNumericValues } = filters;
+  console.log(filterByNumericValues);
 
   let dataPlanets = [...data];
 

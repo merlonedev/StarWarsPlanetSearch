@@ -4,13 +4,11 @@ import DataContext from './DataContext';
 
 function DataProvider({ children }) {
   const [data, setData] = useState([]);
-  const [filter, setFilter] = useState({
-    filters: {
-      filterByName: {
-        name: '',
-      },
-      filterByNumericValues: [],
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
     },
+    filterByNumericValues: [],
   });
 
   useEffect(() => {
@@ -23,7 +21,7 @@ function DataProvider({ children }) {
     getDataApi();
   }, []);
 
-  const contextValue = { data, filter, setFilter };
+  const contextValue = { data, filters, setFilters };
 
   return (
     <DataContext.Provider value={ contextValue }>

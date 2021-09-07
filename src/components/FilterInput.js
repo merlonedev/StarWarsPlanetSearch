@@ -2,14 +2,15 @@ import React, { useContext, useState } from 'react';
 import DataContext from '../context/DataContext';
 
 function FilterPlanets() {
-  const { filter, setFilter } = useContext(DataContext);
-  const { filters: { filterByName, filterByNumericValues } } = filter;
+  const { filters, setFilters } = useContext(DataContext);
+  const { filterByName, filterByNumericValues } = filters;
 
   const [filterNumeric, setFilterNumeric] = useState({
     column: 'population',
     comparison: 'maior que',
     values: 0,
   });
+  // console.log(filterByNumericValues);
 
   const optionsValues = ['population',
     'orbital_period',
@@ -23,11 +24,23 @@ function FilterPlanets() {
     : optionsValues;
 
   const handleClick = () => {
-    setFilter({
-      ...filter,
-      filterByNumericValues: filterByNumericValues.push(filterNumeric),
+    setFilters({
+      ...filters,
+      filterByNumericValues: [filterNumeric, ...filterByNumericValues],
     });
   };
+
+  const removeFilters = (currentColumn) => {
+    const removeFilterByNumeric = filterByNumericValues
+      .filter(({ column }) => column !== currentColumn);
+    setFilters({
+      ...filters,
+      filterByNumericValues: [removeFilterByNumeric],
+    });
+    // console.log(removeFilterByNumeric);
+  };
+
+  // console.log(filterByNumericValues);
 
   return (
     <div>
@@ -38,8 +51,8 @@ function FilterPlanets() {
             type="text"
             name="search-input"
             value={ filterByName.name }
-            onChange={ ({ target }) => setFilter({
-              ...filter, filters: { filterByName: { name: target.value } } }) }
+            onChange={ ({ target }) => setFilters({
+              ...filters, filterByName: { name: target.value } }) }
             placeholder="search"
           />
         </label>
@@ -53,7 +66,7 @@ function FilterPlanets() {
               ...filterNumeric, column: target.value }) }
           >
             { filterColumn.map((option, index) => (
-              <option key={ index }>{ option }</option>)) }
+              <option key={ index } value={ option }>{ option }</option>)) }
           </select>
         </label>
         <label htmlFor="filter-comparison">
@@ -85,6 +98,18 @@ function FilterPlanets() {
         >
           Filtrar
         </button>
+        { filterByNumericValues.map(({ column, comparison, values }) => (
+          <li data-testid="filter" key={ column }>
+            { `Filtros: ${column} ${comparison} ${values}` }
+            <button
+              type="button"
+              onClick={ () => removeFilters(column) }
+            >
+              X
+
+            </button>
+          </li>
+        )) }
       </form>
 
     </div>
