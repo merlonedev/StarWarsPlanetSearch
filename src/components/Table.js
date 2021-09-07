@@ -2,8 +2,9 @@ import React, { useContext } from 'react';
 import Context from '../context/Context';
 
 export default function Table() {
-  const context = useContext(Context);
-  const { data } = context;
+  const { data, filterPlanets } = useContext(Context);
+  const filteredData = filterPlanets(data);
+
   let table = [];
 
   if (data.length > 0) {
@@ -21,7 +22,7 @@ export default function Table() {
         </tr>
       </thead>
       <tbody>
-        {data.map((planets) => (
+        {filteredData.map((planets) => (
           <tr key={ planets.name }>
             {table.map((header) => <td key={ header }>{planets[header]}</td>)}
           </tr>

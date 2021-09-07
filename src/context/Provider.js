@@ -5,6 +5,15 @@ import Context from './Context';
 
 export default function Provider({ children }) {
   const [data, setData] = useState([]);
+  const [names, setNames] = useState('');
+
+  const state = {
+    filters: {
+      filterByName: {
+        name: names,
+      },
+    },
+  };
 
   useEffect(() => {
     const fetchPlanet = async () => {
@@ -14,9 +23,21 @@ export default function Provider({ children }) {
     fetchPlanet();
   }, []);
 
+  const filterPlanets = (dataPlanet) => {
+    const { filters: { filterByName } } = state;
+
+    if (filterByName.name !== '') {
+      return dataPlanet.filter(({ name }) => name.includes(filterByName.name));
+    }
+    return dataPlanet;
+  };
+
   const contextValue = {
     data,
     setData,
+    filterPlanets,
+    setNames,
+    state,
   };
 
   return (
