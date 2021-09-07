@@ -28,18 +28,18 @@ function Table() {
     }
   }, [filters]);
 
-  const filterNumericData = (info) => {
+  const filterNumericData = (dataArray) => {
     const { column, comparison, value } = numericFilter;
     if (comparison === 'maior que') {
-      const filtered = info.filter((planet) => planet[column] > value);
+      const filtered = dataArray.filter((planet) => planet[column] > value);
       return filtered;
     }
     if (comparison === 'menor que') {
-      const filtered = info.filter((planet) => planet[column] < value);
+      const filtered = dataArray.filter((planet) => planet[column] < value);
       return filtered;
     }
     if (comparison === 'igual a') {
-      const filtered = info.filter((planet) => +(planet[column]) === value);
+      const filtered = dataArray.filter((planet) => +(planet[column]) === value);
       return filtered;
     }
   };
@@ -61,10 +61,10 @@ function Table() {
       <td>{ item.url }</td>
     </tr>));
 
-  const renderData = () => {
+  const renderTableBody = () => {
     if (numericFilter) {
-      const allFilters = filterNumericData(filterByName());
-      return mapData(allFilters);
+      const allFiltersApplied = filterNumericData(filterByName());
+      return mapData(allFiltersApplied);
     }
     return mapData(filterByName());
   };
@@ -78,7 +78,7 @@ function Table() {
         <tr>{ renderTableHeader() }</tr>
       </thead>
       <tbody>
-        { renderData() }
+        { renderTableBody() }
       </tbody>
     </table>
   );
