@@ -1,6 +1,7 @@
 import React from 'react';
 import NumericValuesFilter from './NumericValuesFilter';
 import NameFilter from './NameFilter';
+import UsedFiltersDisplay from './UsedFiltersDisplay';
 import './Filters.css';
 
 function Filters() {
@@ -8,6 +9,7 @@ function Filters() {
     <div>
       <NameFilter />
       <NumericValuesFilter />
+      <UsedFiltersDisplay />
     </div>
   );
 }
