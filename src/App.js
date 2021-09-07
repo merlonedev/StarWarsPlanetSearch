@@ -1,13 +1,16 @@
 import React from 'react';
 import './App.css';
+import GetPlanet from './components/GetPlanet';
+import { PlanetProvider } from './context/Provider';
 
 // commit inicial
 
 function App() {
   return (
     <div>
-      <span>Hello, App!</span>
-      <getPlanet />
+      <PlanetProvider>
+        <GetPlanet />
+      </PlanetProvider>
     </div>
   );
 }
