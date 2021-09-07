@@ -24,7 +24,7 @@ function planetRow(planet) {
 export default function PlanetsTable() {
   const { planets } = useContext(PlanetsContext);
   if (planets.length === 0) return <p>Waiting for Planets</p>;
-  console.log('Table:', planets);
+  // console.log('Table:', planets);
   return (
     <form name="planets-form">
       <table>

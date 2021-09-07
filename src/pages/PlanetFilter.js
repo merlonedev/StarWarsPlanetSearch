@@ -50,7 +50,7 @@ function getSelectComparisonOptions() {
 function manageComparisonOptions({ comparison }) {
   const myOptions = getSelectComparisonOptions().slice();
   // const error = -1;
-  // const optionIndex = myOptions.findIndex((option) => option.value === comparison);
+  // const optionIndex = myOptions.findIndex((option) => option.value === column);
   // if (optionIndex !== error) myOptions[optionIndex].disabled = true;
 
   return myOptions.filter((option) => option.value !== comparison);
@@ -139,7 +139,6 @@ export default function PlanetFilter() {
     if (!filterName && allPlanets.length > 0
       && (!filterNumber.column || !filterNumber.comparison || !filterNumber.value)) {
       setPlanets(allPlanets);
-      console.log('Todos os Planetas');
     }
   });// , [filterName, planets, allPlanets, setPlanets]);
   useEffect(() => {
@@ -147,7 +146,6 @@ export default function PlanetFilter() {
       && filterNumber.comparison !== ''
       && filterNumber.value !== '') {
       filterByNumber(filterNumber, planets, setPlanets);
-      console.log('Planets:', planets);
     }
     if ((!filterNumber.column || !filterNumber.comparison || !filterNumber.value)
       && (allPlanets.length > 0)) {
