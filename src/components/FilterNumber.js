@@ -1,3 +1,6 @@
+// https://pt.stackoverflow.com/questions/456689/filtro-de-tabela-pelo-nome-em-react
+// https://pt.stackoverflow.com/questions/184340/criar-um-filtro-com-m%C3%BAltiplas-categorias-utilizando-um-select
+
 import React, { useState } from 'react';
 import { useProvider } from '../context/Provider';
 
@@ -22,6 +25,20 @@ function FilterByNumber() {
     setLocalFilters({
       ...localFilters,
       column: value,
+    });
+  }
+
+  function handleCompareFilter({ target: { value } }) {
+    setLocalFilters({
+      ...localFilters,
+      comparison: value,
+    });
+  }
+
+  function handleValueFilter({ target: { value } }) {
+    setLocalFilters({
+      ...localFilters,
+      value,
     });
   }
 
@@ -56,6 +73,21 @@ function FilterByNumber() {
           <option key={ index }>{filColumn}</option>
         ))}
       </select>
+
+      <select
+        onChange={ (event) => handleCompareFilter(event) }
+        data-testid="comparison-filter"
+      >
+        <option>maior que</option>
+        <option>menor que</option>
+        <option>igual a</option>
+      </select>
+
+      <input
+        onChange={ (event) => handleValueFilter(event) }
+        type="number"
+        data-testid="value-filter"
+      />
 
       <button
         type="button"
