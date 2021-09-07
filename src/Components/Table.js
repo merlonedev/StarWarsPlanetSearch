@@ -62,7 +62,6 @@ function Table() {
     </tr>));
 
   const renderData = () => {
-    const { filterByName: { name } } = filters;
     if (numericFilter) {
       const allFilters = filterNumericData(filterByName());
       return mapData(allFilters);
@@ -71,7 +70,7 @@ function Table() {
   };
 
   if (data.length === 0) {
-    return <div className="loading-div">LOADING...</div>;
+    return <div className="loading-div"><h3>LOADING...</h3></div>;
   }
   return (
     <table className="planet-table">
