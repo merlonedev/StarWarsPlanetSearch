@@ -3,6 +3,7 @@ import MyContext from '../Context/Context';
 import PlanetMap from './PlanetMap';
 import SelectCol from './SelectCol';
 import SelectComp from './SelectComp';
+import RemoveFilter from './RemoveFilter';
 
 const filterByNumber = (filtered, filteredData, filterByNumericValues) => {
   const filteredByNumberResults = !filtered ? filteredData
@@ -100,6 +101,7 @@ function Table() {
       </button>
       <SelectCol options={ selectOptions } onChange={ (e) => handleChange(e) } />
       <SelectComp onChange={ (e) => handleChange(e) } />
+      <RemoveFilter />
       <table>
         <thead>
           <tr>
