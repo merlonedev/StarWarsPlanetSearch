@@ -1,14 +1,21 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
+
+const initialColumnOptions = ['population',
+  'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+const initialComparisonOptions = ['maior que',
+  'menor que', 'igual a'];
 
 function NumericValuesFilter() {
   const {
     setNumValue,
-    filters,
-    columnOptions, comparisonOptions } = useContext(StarWarsContext);
+    filters } = useContext(StarWarsContext);
 
-  const [column, setColumn] = useState('population');
-  const [comparison, setComparison] = useState('maior que');
+  const [availableOptions, setAvailableOptions] = useState(true);
+  const [columnOptions, setColumnOptions] = useState(initialColumnOptions);
+  const [comparisonOptions, setComparisonOptions] = useState(initialComparisonOptions);
+  const [column, setColumn] = useState(columnOptions[0]);
+  const [comparison, setComparison] = useState(comparisonOptions[0]);
   const [value, setValue] = useState(0);
 
   const changeFilterByNumericValues = () => {
@@ -23,10 +30,35 @@ function NumericValuesFilter() {
     ]);
   };
 
-  const handleClick = () => {
-    changeFilterByNumericValues();
+  useEffect(() => {
+    setComparison(comparisonOptions[0]);
+    setColumn(columnOptions[0]);
+    setValue(0);
+  }, [columnOptions, comparisonOptions]);
+
+  const handleOptions = () => {
+    if (comparisonOptions.length > 0) {
+      const newComparisonOptions = comparisonOptions
+        .filter((item) => item !== comparison);
+      setComparisonOptions(newComparisonOptions);
+      const newColumnOptions = columnOptions.filter((element) => element !== column);
+      setColumnOptions(newColumnOptions);
+    } else {
+      setAvailableOptions(false);
+    }
   };
 
+  const handleClick = () => {
+    changeFilterByNumericValues();
+    handleOptions();
+  };
+
+  if (!availableOptions) {
+    return (
+      <div className="no-options-left">
+        SORRY, NO MORE FILTER OPTIONS AVAILABLE!
+      </div>);
+  }
   return (
     <form>
       <label htmlFor="columnFilter">
