@@ -4,6 +4,7 @@ import PlanetMap from './PlanetMap';
 import SelectCol from './SelectCol';
 import SelectComp from './SelectComp';
 import RemoveFilter from './RemoveFilter';
+import Sort from './Sort';
 
 const filterByNumber = (filtered, filteredData, filterByNumericValues) => {
   const filteredByNumberResults = !filtered ? filteredData
@@ -30,11 +31,18 @@ function Table() {
     setData,
     filters: {
       filterByName: { name: filteredName },
+      order: { column: sortColumn, sort },
+      order,
       filterByNumericValues,
       filtered,
     },
+    filters,
+    setFilters,
     onChangeHandler,
     handleClickFilter } = useContext(MyContext);
+
+  const SortColumns = (data.length > 0)
+    ? Object.keys(data[0]).filter((key) => key !== 'residents') : [];
 
   const [filter, setFilter] = useState({
     column: 'population',
@@ -54,7 +62,9 @@ function Table() {
     const getPlanets = async () => {
       const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const { results } = await fetch(endpoint).then((planets) => planets.json());
-      setData(results);
+      const planetsSorted = [...results]
+        .sort(({ name: a }, { name: b }) => a.localeCompare(b));
+      setData(planetsSorted);
     };
 
     getPlanets();
@@ -69,6 +79,35 @@ function Table() {
       handleClickFilter(filter);
       setSelectOptions(selectOptions.filter((option) => option.name !== filter.column));
     }
+  };
+
+  const handleInputSort = ({ target: { name, value } }) => {
+    setFilters({
+      ...filters,
+      order: { ...order, [name]: value },
+    });
+  };
+
+  const handleClickSort = () => {
+    const sortedData = [...data];
+    if (sort === 'ASCEND') {
+      if (sortColumn === 'films') {
+        sortedData.sort(({ films: { length: a } }, { films: { length: b } }) => a - b);
+      } else {
+        sortedData
+          .sort(({ [sortColumn]: a }, { [sortColumn]: b }) => a.localeCompare(b))
+          .sort((a, b) => (a[sortColumn] - b[sortColumn]));
+      }
+    } else if (sort === 'DESCEND') {
+      if (sortColumn === 'films') {
+        sortedData.sort(({ films: { length: a } }, { films: { length: b } }) => b - a);
+      } else {
+        sortedData
+          .sort(({ [sortColumn]: a }, { [sortColumn]: b }) => b.localeCompare(a))
+          .sort((a, b) => b[sortColumn] - a[sortColumn]);
+      }
+    }
+    setData(sortedData);
   };
 
   const filteredData = data.filter((d) => d.name.includes(filteredName));
@@ -102,6 +141,13 @@ function Table() {
       <SelectCol options={ selectOptions } onChange={ (e) => handleChange(e) } />
       <SelectComp onChange={ (e) => handleChange(e) } />
       <RemoveFilter />
+      <Sort
+        SortColumns={ SortColumns }
+        sortColumn={ sortColumn }
+        handleInputSort={ handleInputSort }
+        handleClickSort={ handleClickSort }
+        sort={ sort }
+      />
       <table>
         <thead>
           <tr>
