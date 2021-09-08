@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import ButtonClear from '../components/ButtonClear';
 import Buttons from '../components/Buttons';
+import SortSelect from '../components/SortSelect';
 import MyContext from '../context/context';
+import { initialsort } from '../Services/SortService';
 import Table from './Table';
 
 const newstate = (array, text) => {
@@ -20,6 +22,7 @@ export default function MainPage() {
       try {
         const fetchApi = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
         const thedata = await fetchApi.json();
+        initialsort(thedata.results);
         setData(thedata.results);
         setDataoriginal(thedata.results);
       } catch (error) {
@@ -52,6 +55,10 @@ export default function MainPage() {
           setfilter={ (e) => setFilter(e) }
           setfilterused={ (e) => setFilterused(e) }
           DataOriginal={ DataOriginal }
+        />
+        <SortSelect
+          setdata={ (e) => setData(e) }
+          data={ Data }
         />
         <Table />
       </div>

@@ -5,7 +5,11 @@ export default function Lines(props) {
   const { Result } = props;
   return (
     <tr>
-      <td>{Result.name}</td>
+      <td
+        data-testid="planet-name"
+      >
+        {Result.name}
+      </td>
       <td>{Result.climate}</td>
       <td>{Result.created}</td>
       <td>{Result.diameter}</td>
