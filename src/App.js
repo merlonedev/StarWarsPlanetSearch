@@ -1,16 +1,15 @@
 import React from 'react';
+import Provider from './provider/Provider';
 import Table from './components/Table';
 import './App.css';
-import Provider from './provider/Provider';
-import SearchBar from './components/SearchBar';
+import Filters from './components/Filters';
 
 function App() {
   return (
     <Provider>
-      <SearchBar />
+      <Filters />
       <Table />
     </Provider>
   );
 }
-
 export default App;
