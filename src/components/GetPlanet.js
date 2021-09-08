@@ -1,6 +1,9 @@
+// Correção do acesso à API com o apoio do colega Eric Kreis
 // Resolução com o apoio do colega Nikolas Silva
+// Resolução do requisito 5 com apoio dos colegas Alice Gonçalves e Nikolas Silva
 // https://www.youtube.com/watch?v=k0cZA0NYTyQ
 // https://www.youtube.com/watch?v=5Tq4-UgPTDs
+// Pesquisa nos projetos Trybe Wallet e Recipes App
 
 import React, { useEffect, useState } from 'react';
 import Table from './Table';
@@ -10,6 +13,7 @@ import FilterByNumber from './FilterNumber';
 function GetPlanet() {
   const [data, setData] = useState([]);
   const { filters, setFilters } = useProvider();
+  const { filterByNumericValues } = filters;
 
   useEffect(() => {
     fetch('https://swapi-trybe.herokuapp.com/api/planets/')
@@ -19,7 +23,6 @@ function GetPlanet() {
 
   function filterData(rows) {
     const { filterByName: { name } } = filters;
-    const { filterByNumericValues } = filters;
     const minusOne = -1;
 
     if (filterByNumericValues.length > 0) {
@@ -48,6 +51,15 @@ function GetPlanet() {
     ));
   }
 
+  const deleteFilter = () => {
+    const checkFilters = filterByNumericValues;
+    checkFilters.shift();
+    setFilters({
+      ...filters,
+      filterByNumericValues: checkFilters,
+    });
+  };
+
   return (
     <div>
       <label htmlFor="name-filter">
@@ -64,6 +76,21 @@ function GetPlanet() {
         />
       </label>
       <FilterByNumber />
+      { filterByNumericValues.length > 0
+      && (
+        filterByNumericValues.map((value, index) => (
+          <div data-testid="filter" key={ index }>
+            <span>{ `${value.column} ` }</span>
+            <span>{ `${value.comparison} ` }</span>
+            <span>{ `${value.value} ` }</span>
+            <button
+              onClick={ deleteFilter }
+              type="button"
+            >
+              X
+            </button>
+          </div>))
+      )}
       <Table dataTable={ filterData(data) } />
     </div>
   );
