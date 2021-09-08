@@ -6,14 +6,11 @@ const InputFilterPlanets = () => {
   const {
     filters,
     setFilters,
-    planets,
-    setFilteredPlanets,
   } = useContext(MyContext);
 
   function handleChange({ target }) {
     const { value } = target;
-    setFilters({ ...filters, filterByName: { value } });
-    setFilteredPlanets(planets.filter((planet) => planet.name.includes(value)));
+    setFilters({ ...filters, filterByName: { name: value } });
   }
 
   return (
