@@ -1,3 +1,7 @@
+import mockedData from '../testData';
+
+const PLANET_ENDPOINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
+
 async function getNext(ENDPOINT) {
   const result = [];
   let response = await fetch(ENDPOINT).then((data) => data.json());
@@ -10,8 +14,7 @@ async function getNext(ENDPOINT) {
 }
 
 export async function getAllPlanets() {
-  const ENDPOINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
-  const response = await getNext(ENDPOINT);
+  const response = await getNext(PLANET_ENDPOINT);
   console.log(response);
   return response;
 }
@@ -24,8 +27,11 @@ export async function getPlanet(id) {
 }
 
 export async function getPlanetsFirstPage() {
-  const ENDPOINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
-
-  const response = await fetch(ENDPOINT).then((data) => data.json());
+  const response = await fetch(PLANET_ENDPOINT).then((data) => data.json());
   return response.results;
+}
+
+export async function getMock() {
+  fetch(PLANET_ENDPOINT).then((data) => data.json());
+  return mockedData.results;
 }

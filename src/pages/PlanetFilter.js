@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef, useCallback } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 import * as API from '../service/StarWarsAPI';
 import Input from './components/Input';
@@ -118,40 +118,55 @@ export default function PlanetFilter() {
     column: '',
     comparison: '',
   });
-  const fillPlanets = async () => {
-    const myPlanets = await API.getPlanetsFirstPage();
+  const constelation = useRef(planets);
+  const universe = useRef(allPlanets);
+  const newFilterNumber = useRef(filterNumber);
+  const newFilterName = useRef(filterName);
+
+  const fillPlanets = useCallback(async () => {
+    // const myPlanets = await API.getPlanetsFirstPage();
+    const myPlanets = await API.getMock();
     setPlanets(myPlanets);
     // myPlanets = await API.getAllPlanets();
     setAllPlanets(myPlanets);
-  };
+  }, [setPlanets, setAllPlanets]);
   useEffect(() => {
-    if (planets.length <= 0
-      && (!filterNumber.column
-      && !filterNumber.comparison
-      && !filterNumber.value)) {
+    if (universe.current.length <= 0) {
+      // && (!newFilterNumber.current.column
+      // && !newFilterNumber.current.comparison
+      // && !newFilterNumber.current.value)) {
       fillPlanets();
+      console.log('useEffect 0\n', constelation.current, '\n', universe.current);
     }
-  });
+  }, [universe, fillPlanets]);
   useEffect(() => {
+    console.log('useEffect 1');
     if (filterName) {
-      filterByName(filterName, planets, setPlanets);
+      filterByName(filterName, allPlanets, setPlanets);
     }
-    if (!filterName && allPlanets.length > 0
-      && (!filterNumber.column || !filterNumber.comparison || !filterNumber.value)) {
+    if (!newFilterName.current && universe.current.length > 0
+      && (!newFilterNumber.current.column
+          || !newFilterNumber.current.comparison
+          || !newFilterNumber.current.value)) {
       setPlanets(allPlanets);
     }
-  });// , [filterName, planets, allPlanets, setPlanets]);
+  }, [filterName, setPlanets]);// , [filterName, planets, allPlanets, setPlanets]);
   useEffect(() => {
+    console.log('useEffect 2');
     if (filterNumber.column !== ''
       && filterNumber.comparison !== ''
       && filterNumber.value !== '') {
-      filterByNumber(filterNumber, planets, setPlanets);
+      filterByNumber(filterNumber, allPlanets, setPlanets);
+      console.log('useEffect 2.1');
     }
-    if ((!filterNumber.column || !filterNumber.comparison || !filterNumber.value)
+    if ((!filterNumber.column
+      || !filterNumber.comparison
+      || !filterNumber.value)
       && (allPlanets.length > 0)) {
       setPlanets(allPlanets);
+      console.log('useEffect 2.2');
     }
-  }, [filterNumber, allPlanets, setPlanets]);
+  }, [setPlanets, filterNumber]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
