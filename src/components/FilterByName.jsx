@@ -24,7 +24,7 @@ function FilterByName() {
     <Input
       textlabel="Planeta"
       id="name-filter"
-      type="text"
+      type="search"
       value={ name }
       onChange={ handleChange }
     />

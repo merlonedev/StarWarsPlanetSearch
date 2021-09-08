@@ -6,6 +6,7 @@ import FilterByNumericValues from './FilterByNumericValues';
 function Table() {
   const { columns, dataFilter } = useContext(ContextApi);
   // console.log(dataFilter);
+
   return (
     <section>
       <FilterByName />
@@ -19,7 +20,6 @@ function Table() {
         <tbody>
           {
             dataFilter.map((planet, index) => (
-              // n consegui far o map dentro do map
               <tr key={ index }>
                 <td data-testid="planet-name">{planet.name}</td>
                 <td>{planet.rotation_period}</td>

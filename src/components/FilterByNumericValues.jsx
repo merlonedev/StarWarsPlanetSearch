@@ -24,6 +24,15 @@ const FilterNumericValues = () => {
     setFilterByValue({ ...filterByValue, [name]: value });
   };
 
+  const onClickReset = () => {
+    setFilters({
+      filterByName: {
+        name: '',
+      },
+      filterByNumericValues: [],
+    });
+  };
+
   const onClick = () => {
     setFilters({
       ...filters,
@@ -57,7 +66,7 @@ const FilterNumericValues = () => {
   const { value, comparison, column } = filterByValue;
 
   return (
-    <>
+    <div>
       <select
         textlabel="column"
         name="column"
@@ -84,10 +93,18 @@ const FilterNumericValues = () => {
         textlabel="value"
         name="value"
         data-testid="value-filter"
-        type="number"
+        type="search"
         value={ value }
         onChange={ (e) => handleChange(e) }
       />
+      <div data-testid="filter">
+        <button
+          type="button"
+          onClick={ onClickReset }
+        >
+          X
+        </button>
+      </div>
       <button
         data-testid="button-filter"
         type="button"
@@ -95,7 +112,7 @@ const FilterNumericValues = () => {
       >
         Filtrar
       </button>
-    </>
+    </div>
   );
 };
 
