@@ -121,7 +121,7 @@ export default function PlanetFilter() {
   const constelation = useRef(planets);
   const universe = useRef(allPlanets);
   const newFilterNumber = useRef(filterNumber);
-  const newFilterName = useRef(filterName);
+  // const newFilterName = useRef(filterName);
 
   const fillPlanets = useCallback(async () => {
     // const myPlanets = await API.getPlanetsFirstPage();
@@ -144,7 +144,7 @@ export default function PlanetFilter() {
     if (filterName) {
       filterByName(filterName, allPlanets, setPlanets);
     }
-    if (!newFilterName.current && universe.current.length > 0
+    if (!filterName && allPlanets.length > 0
       && (!newFilterNumber.current.column
           || !newFilterNumber.current.comparison
           || !newFilterNumber.current.value)) {
