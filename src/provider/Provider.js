@@ -10,8 +10,9 @@ class Provider extends Component {
         filterByName: {
           name: '',
         },
+        filterByNumericValues: [],
       },
-      filteredPlanets: [],
+      filteredPlanets: undefined,
       planets: '',
       wasFiltered: false,
     };
@@ -19,38 +20,106 @@ class Provider extends Component {
     this.filterByName = this.filterByName.bind(this);
     this.submitFilters = this.submitFilters.bind(this);
     this.toggleWasFiltered = this.toggleWasFiltered.bind(this);
+    this.filterByValue = this.filterByValue.bind(this);
+    this.clearFilters = this.clearFilters.bind(this);
   }
 
   async getPlanets() {
-    const rawApiData = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
-    const apiData = await rawApiData.json();
-    this.setState({ planets: apiData.results });
+    const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
+    const data = await response.json();
+    this.setState({ planets: data.results, filteredPlanets: data.results });
   }
 
   submitFilters() {
-    let filteredPlanets;
-    const { filters: { filterByName }, planets } = this.state;
-    if (filterByName.name !== '') {
-      filteredPlanets = planets
-        .filter((planet) => planet.name
-          .toLowerCase().includes(filterByName.name
-            .toLowerCase()));
+    let { filteredPlanets } = this.state;
+    const { filters: { filterByName, filterByNumericValues }, planets } = this.state;
+    filteredPlanets = planets
+      .filter((planet) => planet.name
+        .toLowerCase().includes(filterByName.name
+          .toLowerCase()));
+    if (filterByNumericValues.length > 0) {
+      filterByNumericValues.forEach((filter) => {
+        const { value, column } = filter;
+        if (filteredPlanets) {
+          switch (filter.comparison) {
+          case '>':
+            filteredPlanets = filteredPlanets
+              .filter((fplanet) => Number(fplanet[column]) > Number(value));
+            break;
+          case '<':
+            filteredPlanets = filteredPlanets
+              .filter((fplanet) => Number(fplanet[column]) < Number(value)
+              || fplanet[column] === 'unknown');
+            break;
+          case '===':
+            filteredPlanets = filteredPlanets
+              .filter((fplanet) => Number(fplanet[column]) === Number(value));
+            break;
+          default:
+            filteredPlanets = planets;
+            break;
+          }
+        } else {
+          switch (filter.comparison) {
+          case '>':
+            filteredPlanets = planets
+              .filter((planet) => Number(planet[column]) > Number(value));
+            break;
+          case '<':
+            filteredPlanets = planets
+              .filter((planet) => Number(planet[column]) < Number(value)
+              || planet[column] === 'unknown');
+            break;
+          default:
+            filteredPlanets = planets;
+            break;
+          }
+        }
+      });
     }
     this.setState({ filteredPlanets }, () => this.toggleWasFiltered());
   }
 
-  filterByName(event) {
-    if (event !== '' && event !== undefined) {
-      this.setState({ filters: { filterByName: { name: event.target.value } } },
+  clearFilters(column) {
+    const { filters, filters: { filterByNumericValues } } = this.state;
+    const filterToClear = filterByNumericValues
+      .filter((filter) => filter.column === column).shift();
+    const index = filterByNumericValues.indexOf(filterToClear);
+    filterByNumericValues.splice(index, 1);
+    this.setState({
+      filters: { ...filters, filterByNumericValues },
+    }, this.submitFilters());
+  }
+
+  filterByName(e) {
+    const { filters } = this.state;
+    if (e !== '' && e !== undefined) {
+      this.setState({ filters: { ...filters, filterByName: { name: e.target.value } } },
         () => this.submitFilters());
     } else {
-      this.setState({ filters: { filterByName: { name: '' } } });
+      this.setState({ filters: { ...filters, filterByName: { name: '' } } });
     }
   }
 
+  filterByValue(values) {
+    const { filters, filters: { filterByNumericValues } } = this.state;
+    const repeatCondition = filterByNumericValues
+      .some((filter) => filter.column === values.column);
+    if (repeatCondition) {
+      const repeated = filterByNumericValues
+        .filter((filter) => filter.column === values.column).shift();
+      repeated.comparison = values.comparison;
+      repeated.value = values.value;
+    } else {
+      filterByNumericValues.push(values);
+    }
+    this.setState({
+      filters: { ...filters, filterByNumericValues } }, () => this.submitFilters());
+  }
+
   toggleWasFiltered() {
-    const { filters: { filterByName } } = this.state;
-    if (filterByName.name === '') {
+    const { filters: { filterByName, filterByNumericValues } } = this.state;
+    if (filterByName.name === '' && filterByNumericValues.length === 0) {
       this.setState({ wasFiltered: false });
     } else {
       this.setState({ wasFiltered: true });
@@ -67,6 +136,8 @@ class Provider extends Component {
           filterByName: this.filterByName,
           submitFilters: this.submitFilters,
           toggleWasFiltered: this.toggleWasFiltered,
+          filterByValue: this.filterByValue,
+          clearFilters: this.clearFilters,
         } }
       >
         { children }

@@ -1,18 +1,20 @@
 import React, { useContext } from 'react';
-
+import SearchInput from './SearchInput';
 import Context from '../context/Context';
 
-function SearchBar() {
+function FilterForm() {
   const {
     filters,
     wasFiltered,
     filterByName,
+    clearFilters,
     submitFilters } = useContext(Context);
+  const filtersUI = Object.values(filters.filterByNumericValues);
   return (
     <>
       <form
-        onSubmit={ (event) => {
-          event.preventDefault();
+        onSubmit={ (e) => {
+          e.preventDefault();
           return submitFilters();
         } }
       >
@@ -27,11 +29,21 @@ function SearchBar() {
           />
         </label>
       </form>
+      <SearchInput />
       <div>
-        {wasFiltered ? <p>{ JSON.stringify(filters) }</p> : ''}
+        { wasFiltered && filtersUI.map((filter, index) => (
+          <div data-testid="filter" key={ index }>
+            <p>
+              { JSON.stringify(filter) }
+              <button type="button" onClick={ () => clearFilters(filter.column) }>
+                X
+              </button>
+            </p>
+          </div>
+        ))}
       </div>
     </>
   );
 }
 
-export default SearchBar;
+export default FilterForm;

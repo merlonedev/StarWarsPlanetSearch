@@ -1,16 +1,10 @@
 import React, { useContext, useEffect } from 'react';
-import PropTypes from 'prop-types';
+
 import Context from '../context/Context';
 import Card from './Card';
 
 function Table() {
   const { filteredPlanets, planets, getPlanets } = useContext(Context);
-  let filterCondition;
-  if (filteredPlanets) {
-    filterCondition = filteredPlanets.length > 0;
-  } else {
-    filterCondition = false;
-  }
   useEffect(() => { getPlanets(); }, [getPlanets]);
   return (
     <table>
@@ -59,7 +53,7 @@ function Table() {
       </thead>
       <tbody>
         {
-          planets ? (filterCondition ? filteredPlanets : planets)
+          planets ? filteredPlanets
             .map((planet, index) => <Card key={ index } planet={ planet } />)
             : <tr><td> ...loading </td></tr>
         }
@@ -69,7 +63,7 @@ function Table() {
 }
 
 Table.propTypes = {
-  props: PropTypes.any,
-}.isRequired;
+
+};
 
 export default Table;
