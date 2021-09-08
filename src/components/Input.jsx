@@ -45,7 +45,6 @@ function Input() {
   function handlerClick() {
     selectFilters();
     let changeOp = changeOption;
-    // removeColumn
     const remove = numberValue.column;
     changeOp = changeOp.filter((column) => column !== remove);
 
@@ -102,25 +101,23 @@ function Input() {
         <button
           data-testid="button-filter"
           type="button"
-          onClick={ () => handlerClick }
+          onClick={ handlerClick }
         >
           Buscar
         </button>
       </label>
-      <div>
-        { filterButton
+      { filterButton
           && colRemove.map((col) => (
             <div key={ col } data-testid="filter">
               {col}
               <button
                 type="button"
-                onClick={ () => clearFilter }
+                onClick={ clearFilter }
                 name={ col }
               >
                 X
               </button>
             </div>)) }
-      </div>
     </header>
   );
 }
