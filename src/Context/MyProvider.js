@@ -6,15 +6,24 @@ const INITIAL_STATE = {
   filterByName: {
     name: '',
   },
+  filterByNumericValues: [
+    { column: '',
+      comparison: '',
+      value: '',
+    },
+  ],
 };
 
 function MyProvider({ children }) {
   const [planetsData, setPlanetsData] = useState([]);
   const [filters, setFilters] = useState(INITIAL_STATE);
   const [planetsFiltered, setPlanetsFiltered] = useState([]);
+  const [filterOptions, setFilterOptions] = useState({ column: 'population',
+    comparison: 'maior que',
+    value: '' });
 
-  const { filterByName: { name } } = filters;
-
+  const { filterByName: { name }, filterByNumericValues } = filters;
+  console.log(filters);
   useEffect(() => {
     async function requiredData() {
       const END_POINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
@@ -35,11 +44,27 @@ function MyProvider({ children }) {
     );
   }, [name, planetsData]);
 
+  useEffect(() => {
+    filterByNumericValues.forEach(({ column, comparison, value }) => (
+      value && setPlanetsFiltered((prevsPlanets) => prevsPlanets.filter((planet) => {
+        if (comparison === 'maior que') {
+          return Number(planet[column]) > Number(value);
+        }
+        if (comparison === 'menor que') {
+          return Number(planet[column]) < Number(value);
+        }
+        return Number(planet[column]) === Number(value);
+      }))
+    ));
+  }, [filterByNumericValues]);
+
   const contextValue = {
     planetsData,
     planetsFiltered,
     filters,
     setFilters,
+    setFilterOptions,
+    filterOptions,
   };
 
   return (
