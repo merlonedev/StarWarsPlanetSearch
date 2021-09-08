@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Context from '.';
+import { initialFilterState } from '../utils';
 
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [dataError, setDataError] = useState(false);
-  const [planetName, setPlanetName] = useState('');
 
-  const filterState = {
-    filters: {
-      filterByName: {
-        name: planetName,
-      },
-    },
-  };
+  const [filters, setFilters] = useState(initialFilterState);
 
   useEffect(() => {
     const END_POINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
@@ -36,22 +30,42 @@ function Provider({ children }) {
     fetchPlanetsApi();
   }, []);
 
-  const filterPlanet = (planetsData) => {
-    const { filters: { filterByName } } = filterState;
+  const handleFilterByName = ({ target: { value } }) => {
+    setFilters((prevState) => ({
+      ...prevState,
+      filterByName: { name: value },
+    }));
+  };
 
-    if (filterByName.name !== '') {
-      return planetsData.filter(({ name }) => name.includes(filterByName.name));
-    }
+  const handleFilterByNumericValues = ({ column, comparison, value }) => {
+    setFilters((prevFilters) => {
+      const { filterByNumericValues } = prevFilters;
 
-    return planetsData;
+      if (!filterByNumericValues[0].value) {
+        return {
+          ...prevFilters,
+          filterByNumericValues: [{ column, comparison, value }],
+        };
+      }
+
+      return {
+        ...prevFilters,
+        filterByNumericValues: [
+          ...filterByNumericValues,
+          { column, comparison, value },
+        ],
+      };
+    });
   };
 
   const context = {
     data,
+    setData,
     dataError,
-    filterState,
-    setPlanetName,
-    filterPlanet,
+    filters,
+    setFilters,
+    handleFilterByName,
+    handleFilterByNumericValues,
   };
 
   return (
