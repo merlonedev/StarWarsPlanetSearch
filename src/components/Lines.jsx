@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function Lines(props) {
   const { Result } = props;
@@ -21,3 +22,24 @@ export default function Lines(props) {
     </tr>
   );
 }
+
+Lines.propTypes = {
+  Result: PropTypes.shape({
+    name: PropTypes.string,
+    climate: PropTypes.string,
+    created: PropTypes.string,
+    diameter: PropTypes.string,
+    edited: PropTypes.string,
+    films: PropTypes.string,
+    gravity: PropTypes.string,
+    orbital_period: PropTypes.string,
+    population: PropTypes.string,
+    residents: PropTypes.string,
+    rotation_period: PropTypes.string,
+    riod: PropTypes.string,
+    surface_water: PropTypes.string,
+    terrain: PropTypes.string,
+    url: PropTypes.string,
+
+  }).isRequired,
+};
