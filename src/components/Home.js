@@ -10,8 +10,7 @@ function Home() {
   const { planets, filters, setFilteredPlanets } = useContext(MyContext);
   useEffect(() => {
     setFilteredPlanets(planetsByFilters({ planets, filters }));
-    console.log(filters);
-  }, [filters]);
+  }, [filters, planets, setFilteredPlanets]);
 
   return (
     <>
