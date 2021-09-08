@@ -1,14 +1,12 @@
 import React from 'react';
 import './App.css';
-import Filter from './Components/Filter';
-import Table from './Components/Table';
 import PlanetAPI from './Contexts/planetsAPI';
+import MainPage from './pages/MainPage';
 
 function App() {
   return (
     <PlanetAPI>
-      <Filter />
-      <Table />
+      <MainPage />
     </PlanetAPI>
   );
 }

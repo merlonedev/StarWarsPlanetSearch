@@ -1,58 +1,88 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PlanetsContext from '../Contexts/PlanetContext';
 
 function Table() {
-  const { filtered } = useContext(PlanetsContext);
+  const {
+    setPlanetList,
+    setFilteredPlanets,
+    filteredPlanets,
+  } = useContext(PlanetsContext);
 
-  const planetsData = () => {
-    if (filtered.length > 0) {
-      return (
-        <thead>
-          <tr>
-            {
-              filtered.map((planet) => Object.keys(planet))[0]
-                .filter((keys) => keys !== 'residents')
-                .map((key, index) => <th key={ index }>{key}</th>)
-            }
-          </tr>
-        </thead>
+  useEffect(() => {
+    const getPlanets = async () => {
+      const URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
+      const planetsJSON = await fetch(URL);
+      const data = planetsJSON.json();
+      return data;
+    };
+    getPlanets().then((planets) => {
+      setPlanetList(planets.results
+        .sort((a, b) => a.name.localeCompare(b.name, 'es', { sensitivity: 'base' })));
+      setFilteredPlanets(planets.results
+        .sort((a, b) => a.name.localeCompare(b.name, 'es', { sensitivity: 'base' })));
+    });
+  }, [setFilteredPlanets, setPlanetList]);
 
-      );
-    }
-  };
-
-  const list = () => {
-    if (filtered.length > 0) {
-      return (
-        <tbody>
-          {
-            filtered.map((planet, index) => (
-              <tr key={ index }>
-                <td>{planet.name}</td>
-                <td>{planet.rotation_period}</td>
-                <td>{planet.orbital_period}</td>
-                <td>{planet.diameter}</td>
-                <td>{planet.climate}</td>
-                <td>{planet.gravity}</td>
-                <td>{planet.terrain}</td>
-                <td>{planet.surface_water}</td>
-                <td>{planet.population}</td>
-                <td>{planet.films}</td>
-                <td>{planet.created}</td>
-                <td>{planet.edited}</td>
-                <td>{planet.url}</td>
-              </tr>
-            ))
-          }
-        </tbody>
-      );
-    }
-  };
+  function renderTable(planets) {
+    return (
+      planets.map(({
+        name,
+        diameter,
+        rotation_period: rotationPeriod,
+        orbital_period: orbitalPeriod,
+        gravity,
+        population,
+        climate,
+        terrain,
+        surface_water: surfaceWater,
+        films,
+        url,
+        created,
+        edited,
+      }, index) => (
+        <tr
+          key={ index }
+        >
+          <td data-testid="planet-name">{name}</td>
+          <td>{diameter}</td>
+          <td>{rotationPeriod}</td>
+          <td>{orbitalPeriod}</td>
+          <td>{gravity}</td>
+          <td>{population}</td>
+          <td>{climate}</td>
+          <td>{terrain}</td>
+          <td>{surfaceWater}</td>
+          <td>{films}</td>
+          <td>{url}</td>
+          <td>{created}</td>
+          <td>{edited}</td>
+        </tr>
+      ))
+    );
+  }
 
   return (
-    <table>
-      {planetsData()}
-      {list()}
+    <table className="planets-table">
+      <thead>
+        <tr>
+          <th>name</th>
+          <th>diameter</th>
+          <th>rotation_period</th>
+          <th>orbital_period</th>
+          <th>gravity</th>
+          <th>population</th>
+          <th>climate</th>
+          <th>terrain</th>
+          <th>surface_water</th>
+          <th>films</th>
+          <th>url</th>
+          <th>created</th>
+          <th>edited</th>
+        </tr>
+      </thead>
+      <tbody>
+        {filteredPlanets ? renderTable(filteredPlanets) : null}
+      </tbody>
     </table>
   );
 }
