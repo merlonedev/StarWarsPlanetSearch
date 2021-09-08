@@ -5,12 +5,12 @@ function Filter() {
   const {
     name,
     setName,
+    setColumnsAvailable,
     setFiltered,
     data,
     filtersByNumeric,
     setFiltersByNumeric,
     columnsAvailable,
-    setColumnsAvailable,
   } = useContext(PlanetsContext);
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior');
@@ -36,21 +36,19 @@ function Filter() {
       setValue(target.value);
     }
   };
-  const saveFilters = () => {
-    const newFilter = { column, comparison, value };
-    setFiltersByNumeric(filtersByNumeric.concat(newFilter));
-  };
 
   const resetFilters = () => {
-    setColumn('population');
+    const columnValue = document.getElementById('column').value;
+    setColumn(columnValue);
     setComparison('maior');
     setValue(0);
   };
-
-  const filterByNumeric = () => {
-    saveFilters();
-
-    const newColumnArray = columnsAvailable.filter((columns) => columns !== column);
+  const saveFilters = () => {
+    const newFilter = { column, comparison, value };
+    setFiltersByNumeric(filtersByNumeric.concat(newFilter));
+    resetFilters();
+  };
+  const updatePlanets = () => {
     const filteredPlanets = data.filter((planet) => {
       if (comparison === 'maior que') {
         return parseFloat(planet[column]) > parseFloat(value);
@@ -63,24 +61,39 @@ function Filter() {
     });
 
     setFiltered(filteredPlanets);
+  };
+
+  const filterByNumeric = () => {
+    saveFilters();
+
+    const newColumnArray = columnsAvailable.filter((columns) => columns !== column);
+    updatePlanets();
     setColumnsAvailable(newColumnArray);
-    resetFilters();
+  };
+
+  const deleteFilter = ({ target }) => {
+    const { parentNode } = target;
+    const { id } = parentNode;
+    const numberID = parseFloat(id);
+
+    const item = filtersByNumeric[numberID];
+    setFiltersByNumeric(filtersByNumeric.filter((ai) => ai !== item));
+    setColumnsAvailable(columnsAvailable.concat(item.column));
+    setFiltered(data);
   };
 
   const renderFilters = () => {
     if (filtersByNumeric.length > 0) {
-      return (
-        <div>
-          {
-            filtersByNumeric.map((filters, index) => (
-              <p key={ index }>
-                {`${filters.column} | ${filters.comparison} | ${filters.value}`}
-              </p>
-            ))
-          }
+      return filtersByNumeric.map((filters, index) => (
+        <div key={ index } id={ index } data-testid="filter">
+          <span>
+            {`${filters.column} | ${filters.comparison} | ${filters.value}`}
+          </span>
+          <button type="button" onClick={ deleteFilter }>X</button>
         </div>
-      );
+      ));
     }
+    return null;
   };
 
   return (
