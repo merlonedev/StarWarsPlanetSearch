@@ -8,9 +8,7 @@ function Table() {
       <thead>
         <TableHeader />
       </thead>
-      <tbody>
-        <TableBody />
-      </tbody>
+      <TableBody />
     </table>
   );
 }
