@@ -3,7 +3,7 @@ import Context from '../context/Context';
 import Loading from './Loading';
 
 function Table() {
-  const { data, loading, keys, filteredPlanet } = useContext(Context);
+  const { loading, keys, filteredPlanet } = useContext(Context);
 
   if (loading) return <Loading />;
 

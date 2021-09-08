@@ -4,11 +4,17 @@ import Context from './Context';
 
 function Provider({ children }) {
   const [data, setData] = useState([]);
-  const [keys, setKeys] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filteredPlanet, setFilteredPlanet] = useState([]);
+  const [keys, setKeys] = useState([]);
   const [filters, setFilter] = useState({
     filterByName: { name: '' },
+  });
+  const [filteredPlanet, setFilteredPlanet] = useState([]);
+  const [numberFilter, setNumberFilter] = useState([]);
+  const [numberValue, setNumberValue] = useState({
+    column: 'diameter',
+    comparison: 'maior que',
+    value: 10000,
   });
 
   useEffect(() => {
@@ -36,6 +42,34 @@ function Provider({ children }) {
   function handlerChange({ target: { value } }) {
     setFilter({ ...filters, filterByName: { name: value } });
   }
+  function currentValue({ target: { value, name } }) {
+    setNumberValue({ ...numberValue, [name]: value });
+  }
+
+  function selectFilters() {
+    const { column, comparison, value } = numberValue;
+    let filtrar = filteredPlanet;
+
+    switch (comparison) {
+    case 'maior que':
+      filtrar = filtrar.filter((planet) => Number(planet[column]) > Number(value));
+      // console.log(filtrar, 'maior');
+      break;
+    case 'menor que':
+      filtrar = filtrar.filter((planet) => Number(planet[column]) < Number(value));
+      // console.log(filtrar, 'menor');
+      break;
+    case 'igual a':
+      filtrar = filtrar.filter((planet) => Number(planet[column]) === Number(value));
+      // console.log(filtrar, 'igual');
+      break;
+    default:
+      filtrar = filteredPlanet;
+    }
+    // console.log(filtrar);
+    setFilteredPlanet(filtrar);
+    setNumberFilter([...numberFilter, numberValue]);
+  }
 
   const contextValue = {
     data,
@@ -49,6 +83,12 @@ function Provider({ children }) {
     filteredPlanet,
     setFilteredPlanet,
     handlerChange,
+    selectFilters,
+    currentValue,
+    numberValue,
+    setNumberValue,
+    numberFilter,
+    setNumberFilter,
   };
 
   return (
@@ -61,5 +101,8 @@ function Provider({ children }) {
 export default Provider;
 
 Provider.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };
