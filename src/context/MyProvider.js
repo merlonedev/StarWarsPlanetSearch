@@ -7,6 +7,7 @@ function Provider({ children }) {
     filterByName: { name: '' },
     filterByNumericValues: [],
   });
+
   const [planets, setPlanets] = useState([]);
   const [filteredPlanets, setFilteredPlanets] = useState([]);
 
@@ -22,7 +23,6 @@ function Provider({ children }) {
 
   useEffect(() => {
     fetchPlanets();
-    console.log('Fetching...');
   }, []);
 
   const contextValues = {

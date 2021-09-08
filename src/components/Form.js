@@ -82,7 +82,7 @@ function Form({ column, comparison, availableColumns, onFilter }) {
 Form.propTypes = {
   column: PropTypes.string.isRequired,
   comparison: PropTypes.string.isRequired,
-  availableColumns: PropTypes.func.isRequired,
+  availableColumns: PropTypes.string.isRequired,
   onFilter: PropTypes.func.isRequired,
 };
 
