@@ -1,75 +1,53 @@
-import React, { useContext, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import Context from '../context/Context';
-import Card from './Card';
 
 function Table() {
-  const { filteredPlanets, planets, getPlanets } = useContext(Context);
-  let filterCondition;
-  if (filteredPlanets) {
-    filterCondition = filteredPlanets.length > 0;
-  } else {
-    filterCondition = false;
-  }
-  useEffect(() => { getPlanets(); }, [getPlanets]);
+  const { data, isFetching } = useContext(Context);
+
   return (
-    <table>
+    <table className="table">
       <thead>
-        <tr>
-          <th>
-            Name
-          </th>
-          <th>
-            Population
-          </th>
-          <th>
-            Climate
-          </th>
-          <th>
-            Terrain
-          </th>
-          <th>
-            Orbital Period
-          </th>
-          <th>
-            Diameter
-          </th>
-          <th>
-            Gravity
-          </th>
-          <th>
-            Rotation Period
-          </th>
-          <th>
-            Surface Water
-          </th>
-          <th>
-            Films
-          </th>
-          <th>
-            Created in
-          </th>
-          <th>
-            Edited in
-          </th>
-          <th>
-            Link
-          </th>
+        <tr role="row">
+          <th scope="col">Name</th>
+          <th scope="col">Rotation period</th>
+          <th scope="col">Orbital period</th>
+          <th scope="col">Diameter</th>
+          <th scope="col">Climate</th>
+          <th scope="col">Gravity</th>
+          <th scope="col">Terrain</th>
+          <th scope="col">Surface water</th>
+          <th scope="col">Population</th>
+          <th scope="col">Residents</th>
+          <th scope="col">Films</th>
+          <th scope="col">Created</th>
+          <th scope="col">Edited</th>
         </tr>
       </thead>
-      <tbody>
-        {
-          planets ? (filterCondition ? filteredPlanets : planets)
-            .map((planet, index) => <Card key={ index } planet={ planet } />)
-            : <tr><td> ...loading </td></tr>
-        }
-      </tbody>
+      {isFetching
+        ? <h1>loading</h1>
+        : (
+          <tbody>
+            { data.dataFiltered.map((planet) => (
+              <tr role="row" key={ planet.created }>
+                <td>{planet.name}</td>
+                <td>{planet.rotation_period}</td>
+                <td>{planet.orbital_period}</td>
+                <td>{planet.diameter}</td>
+                <td>{planet.climate}</td>
+                <td>{planet.gravity}</td>
+                <td>{planet.terrain}</td>
+                <td>{planet.surface_water}</td>
+                <td>{planet.population}</td>
+                <td>{planet.residents}</td>
+                <td>{planet.films}</td>
+                <td>{planet.created}</td>
+                <td>{planet.edited}</td>
+              </tr>
+            ))}
+          </tbody>
+        )}
     </table>
   );
 }
-
-Table.propTypes = {
-  props: PropTypes.any,
-}.isRequired;
 
 export default Table;

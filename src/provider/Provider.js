@@ -1,82 +1,76 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Context from '../context/Context';
+import fetchAPI from '../services/StarWarsAPI';
 
-class Provider extends Component {
-  constructor() {
-    super();
-    this.state = {
-      filters: {
-        filterByName: {
-          name: '',
-        },
-      },
-      filteredPlanets: [],
-      planets: '',
-      wasFiltered: false,
-    };
-    this.getPlanets = this.getPlanets.bind(this);
-    this.filterByName = this.filterByName.bind(this);
-    this.submitFilters = this.submitFilters.bind(this);
-    this.toggleWasFiltered = this.toggleWasFiltered.bind(this);
+function PlanetsProvider({ children }) {
+  const initialFilteres = {
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [],
+  };
+  const [data, setData] = useState();
+  const [isFetching, setIsFetching] = useState(true);
+  const [filters, setFilters] = useState(initialFilteres);
+
+  async function fetchData() {
+    const { results } = await fetchAPI();
+    setData({ dataFromAPI: results, dataFiltered: results });
+    setIsFetching(false);
   }
 
-  async getPlanets() {
-    const rawApiData = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
-    const apiData = await rawApiData.json();
-    this.setState({ planets: apiData.results });
-  }
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  submitFilters() {
-    let filteredPlanets;
-    const { filters: { filterByName }, planets } = this.state;
-    if (filterByName.name !== '') {
-      filteredPlanets = planets
-        .filter((planet) => planet.name
-          .toLowerCase().includes(filterByName.name
-            .toLowerCase()));
-    }
-    this.setState({ filteredPlanets }, () => this.toggleWasFiltered());
-  }
+  useEffect(() => {
+    setData((d) => {
+      if (d !== undefined) {
+        const dataFiltered = d.dataFromAPI
+          .filter((element) => element.name.toLowerCase()
+            .includes(filters.filterByName.name.toLowerCase()));
+        return { ...d, dataFiltered };
+      }
+    });
+  }, [filters.filterByName.name]);
 
-  filterByName(event) {
-    if (event !== '' && event !== undefined) {
-      this.setState({ filters: { filterByName: { name: event.target.value } } },
-        () => this.submitFilters());
-    } else {
-      this.setState({ filters: { filterByName: { name: '' } } });
-    }
-  }
+  useEffect(() => {
+    setData((d) => {
+      let dataFiltered = [];
+      if (d !== undefined) {
+        filters.filterByNumericValues.map((filtro) => {
+          const { column, comparison, value } = filtro;
+          dataFiltered = d.dataFiltered.filter((element) => {
+            if (comparison === 'maior que') {
+              return Number(element[column]) > value;
+            }
+            if (comparison === 'menor que') {
+              return Number(element[column]) < value;
+            }
+            return Number(element[column]) === Number(value);
+          });
 
-  toggleWasFiltered() {
-    const { filters: { filterByName } } = this.state;
-    if (filterByName.name === '') {
-      this.setState({ wasFiltered: false });
-    } else {
-      this.setState({ wasFiltered: true });
-    }
-  }
+          return true;
+        });
+      }
+      return { ...d, dataFiltered };
+    });
+  }, [filters.filterByNumericValues]);
 
-  render() {
-    const { children } = this.props;
-    return (
-      <Context.Provider
-        value={ {
-          ...this.state,
-          getPlanets: this.getPlanets,
-          filterByName: this.filterByName,
-          submitFilters: this.submitFilters,
-          toggleWasFiltered: this.toggleWasFiltered,
-        } }
-      >
-        { children }
-      </Context.Provider>
-    );
-  }
+  return (
+    <Context.Provider
+      value={
+        { data, isFetching, setData, setIsFetching, filters, setFilters }
+      }
+    >
+      {children}
+    </Context.Provider>
+  );
 }
 
-Provider.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.object, PropTypes.symbol]).isRequired,
+PlanetsProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
-export default Provider;
+export default PlanetsProvider;
