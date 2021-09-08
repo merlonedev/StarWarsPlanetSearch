@@ -1,10 +1,17 @@
 import React from 'react';
-import './App.css';
+import Table from './components/Table';
+import Filter from './components/Filter';
+import NumberFilters from './components/NumberFilters';
+import Provider from './context/Provider';
 
-function App() {
-  return (
-    <span>Hello, App!</span>
-  );
-}
+const App = () => (
+  <section>
+    <Provider>
+      <Filter />
+      <NumberFilters />
+      <Table />
+    </Provider>
+  </section>
+);
 
 export default App;
