@@ -46,6 +46,20 @@ function FilterValue() {
     }
   }, [filters]);
 
+  const selectOption = () => {
+    const newColuns = coluns;
+    if (filterByNumericValues.length) {
+      filterByNumericValues.forEach(({ column }) => {
+        const deleteOption = newColuns.indexOf(column);
+        const index = -1;
+        if (deleteOption > index) {
+          newColuns.splice(deleteOption, 1);
+        }
+      });
+    }
+    return newColuns;
+  };
+
   return (
     <form>
       <select
@@ -54,7 +68,7 @@ function FilterValue() {
         onChange={ handlerChange }
       >
         {
-          coluns.map((coluna) => (
+          selectOption().map((coluna) => (
             <option key={ coluna }>{ coluna }</option>
           ))
         }
