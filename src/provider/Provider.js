@@ -3,8 +3,22 @@ import PropTypes from 'prop-types';
 import Context from '../context/Context';
 import fetchAPI from '../services/StarWarsAPI';
 
-function PlanetsProvider({ children }) {
+function Provider({ children }) {
   const initialFilteres = {
+    columnValues: [
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ],
+    columnValuesInitial: [
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ],
     filterByName: {
       name: '',
     },
@@ -39,6 +53,9 @@ function PlanetsProvider({ children }) {
     setData((d) => {
       let dataFiltered = [];
       if (d !== undefined) {
+        if (filters.filterByNumericValues.length === 0) {
+          return { ...d, dataFiltered: d.dataFromAPI };
+        }
         filters.filterByNumericValues.map((filtro) => {
           const { column, comparison, value } = filtro;
           dataFiltered = d.dataFiltered.filter((element) => {
@@ -69,8 +86,8 @@ function PlanetsProvider({ children }) {
   );
 }
 
-PlanetsProvider.propTypes = {
+Provider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default PlanetsProvider;
+export default Provider;
