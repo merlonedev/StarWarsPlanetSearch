@@ -15,6 +15,10 @@ const Provider = ({ children }) => {
   const [input, setInput] = useState('');
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
   const [columnsOptions, setColumnsOptions] = useState(optionsColumn);
+  const [order, setOrder] = useState({
+    column: 'name',
+    sort: 'ASC',
+  });
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -45,6 +49,8 @@ const Provider = ({ children }) => {
         name: input,
       },
       filterByNumericValues,
+      order,
+      setOrder,
     },
     setInput,
     setFilterByNumericValues,
