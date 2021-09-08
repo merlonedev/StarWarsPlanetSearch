@@ -23,28 +23,43 @@ function GetPlanet() {
 
   function filterData(rows) {
     const { filterByName: { name } } = filters;
+    const results = [];
     const minusOne = -1;
 
     if (filterByNumericValues.length > 0) {
-      const { column, comparison, value } = filterByNumericValues[0];
-      switch (comparison) {
-      case 'maior que':
-        return rows.filter((row) => (
-          row.name.toLowerCase().indexOf(name.toLowerCase() > minusOne)
+      filterByNumericValues.forEach((filter) => {
+        const { column, comparison, value } = filter;
+
+        switch (comparison) {
+        case 'maior que':
+          results.push(rows.filter((row) => (
+            row.name.toLowerCase().indexOf(name.toLowerCase()) > minusOne
           && parseInt(row[column], 0) > parseInt(value, 0)
-        ));
-      case 'menor que':
-        return rows.filter((row) => (
-          row.name.toLowerCase().indexOf(name.toLowerCase() > minusOne)
+          )));
+          break;
+        case 'menor que':
+          results.push(rows.filter((row) => (
+            row.name.toLowerCase().indexOf(name.toLowerCase()) > minusOne
           && parseInt(row[column], 0) < parseInt(value, 0)
-        ));
-      case 'igual a':
-        return rows.filter((row) => (
-          row.name.toLowerCase().indexOf(name.toLowerCase() > minusOne)
+          )));
+          break;
+        case 'igual a':
+          results.push(rows.filter((row) => (
+            row.name.toLowerCase().indexOf(name.toLowerCase()) > minusOne
           && parseInt(row[column], 0) === parseInt(value, 0)
+          )));
+          break;
+        default:
+        }
+      });
+
+      if (results[0] && results[1]) {
+        const finalFilter = results[0].filter((planet) => (
+          results[1].includes(planet)
         ));
-      default:
+        return finalFilter;
       }
+      return results[0];
     }
     return rows.filter((row) => (
       row.name.toLowerCase().indexOf(name.toLowerCase()) > minusOne
@@ -69,6 +84,7 @@ function GetPlanet() {
           id="name-filter"
           data-testid="name-filter"
           onChange={ (e) => setFilters({
+            ...filters,
             filterByName: {
               name: e.target.value,
             },
