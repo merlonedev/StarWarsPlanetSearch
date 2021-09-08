@@ -4,22 +4,22 @@ import Context from '../context/Context';
 function Input() {
   const {
     data,
-    setData,
-    keys,
-    setKeys,
-    loading,
-    setLoading,
+    // setData,
+    // keys,
+    // setKeys,
+    // loading,
+    // setLoading,
     filters,
-    setFilter,
-    filteredPlanet,
+    // setFilter,
+    // filteredPlanet,
     setFilteredPlanet,
     handlerChange,
     selectFilters,
     currentValue,
     numberValue,
     setNumberValue,
-    numberFilter,
-    setNumberFilter,
+    // numberFilter,
+    // setNumberFilter,
   } = useContext(Context);
   const [changeOption, setChangeOption] = useState([
     'population',
@@ -30,7 +30,7 @@ function Input() {
   ]);
   const [filterButton, setFilterButton] = useState(false);
   const [colRemove, setColRemove] = useState([]);
-  const [compariSON, setComparison] = useState([
+  const [compariSON] = useState([
     'maior que',
     'menor que',
     'igual a',
