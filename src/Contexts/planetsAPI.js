@@ -5,6 +5,9 @@ import PlanetsContext from './PlanetContext';
 function PlanetAPI({ children }) {
   const [data, setData] = useState([]);
   const [name, setName] = useState('');
+  const [columnsAvailable, setColumnsAvailable] = useState(
+    ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'],
+  );
   const [filtered, setFiltered] = useState([]);
   const [filtersByNumeric, setFiltersByNumeric] = useState([]);
   const [filters, setFilters] = useState({
@@ -29,11 +32,13 @@ function PlanetAPI({ children }) {
     filters,
     filtered,
     filtersByNumeric,
+    columnsAvailable,
     setData,
     setName,
     setFilters,
     setFiltered,
     setFiltersByNumeric,
+    setColumnsAvailable,
   };
 
   return (
