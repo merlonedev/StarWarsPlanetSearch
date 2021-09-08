@@ -4,7 +4,13 @@ import Context from '../context/Context';
 import Card from './Card';
 
 function Table() {
-  const { planets, getPlanets } = useContext(Context);
+  const { filteredPlanets, planets, getPlanets } = useContext(Context);
+  let filterCondition;
+  if (filteredPlanets) {
+    filterCondition = filteredPlanets.length > 0;
+  } else {
+    filterCondition = false;
+  }
   useEffect(() => { getPlanets(); }, [getPlanets]);
   return (
     <table>
@@ -52,9 +58,11 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { planets ? planets.results
-          .map((planet, index) => <Card key={ index } planet={ planet } />)
-          : <tr><th> ...loading</th></tr>}
+        {
+          planets ? (filterCondition ? filteredPlanets : planets)
+            .map((planet, index) => <Card key={ index } planet={ planet } />)
+            : <tr><td> ...loading </td></tr>
+        }
       </tbody>
     </table>
   );
