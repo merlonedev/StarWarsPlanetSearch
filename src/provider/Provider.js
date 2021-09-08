@@ -4,11 +4,11 @@ import Context from '../context/Context';
 import fetchAPI from '../services/StarWarsAPI';
 
 function PlanetsProvider({ children }) {
-
   const initialFilteres = {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [],
   };
   const [data, setData] = useState();
   const [isFetching, setIsFetching] = useState(true);
@@ -34,6 +34,29 @@ function PlanetsProvider({ children }) {
       }
     });
   }, [filters.filterByName.name]);
+
+  useEffect(() => {
+    setData((d) => {
+      let dataFiltered = [];
+      if (d !== undefined) {
+        filters.filterByNumericValues.map((filtro) => {
+          const { column, comparison, value } = filtro;
+          dataFiltered = d.dataFiltered.filter((element) => {
+            if (comparison === 'maior que') {
+              return Number(element[column]) > value;
+            }
+            if (comparison === 'menor que') {
+              return Number(element[column]) < value;
+            }
+            return Number(element[column]) === Number(value);
+          });
+
+          return true;
+        });
+      }
+      return { ...d, dataFiltered };
+    });
+  }, [filters.filterByNumericValues]);
 
   return (
     <Context.Provider
