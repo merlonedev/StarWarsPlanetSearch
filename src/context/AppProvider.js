@@ -3,10 +3,18 @@ import PropTypes from 'prop-types';
 import fetchAPI from '../services/fetchAPI';
 import AppContext from './AppContext';
 
+const STATE_FILTER = {
+  filterByName: {
+    name: '',
+  },
+  filterByNumericValues: [],
+};
+
 export default function AppProvider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [searchInput, setSearchInput] = useState('');
+  const [filter, setFilter] = useState(STATE_FILTER);
 
   const fetchPlanets = async () => {
     const filteredResults = await fetchAPI();
@@ -26,6 +34,8 @@ export default function AppProvider({ children }) {
     setLoading,
     searchInput,
     setSearchInput,
+    filter,
+    setFilter,
   };
 
   return (
