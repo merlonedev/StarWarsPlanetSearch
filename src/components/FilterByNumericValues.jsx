@@ -30,7 +30,12 @@ const FilterNumericValues = () => {
         name: '',
       },
       filterByNumericValues: [],
+      order: {
+        column: 'name',
+        sort: 'ASC',
+      },
     });
+    setDataFilter(data);
   };
 
   const onClick = () => {

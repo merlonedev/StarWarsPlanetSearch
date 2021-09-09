@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import ContextApi from '../context/ContextApi';
 import FilterByName from './FilterByName';
 import FilterByNumericValues from './FilterByNumericValues';
+import SortingColumns from './SortingColumns';
 
 function Table() {
   const { columns, dataFilter } = useContext(ContextApi);
@@ -11,6 +12,7 @@ function Table() {
     <section>
       <FilterByName />
       <FilterByNumericValues />
+      <SortingColumns />
       <table>
         <thead>
           <tr>

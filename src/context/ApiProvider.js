@@ -11,6 +11,10 @@ function ApiProvider({ children }) {
       name: '',
     },
     filterByNumericValues: [],
+    order: {
+      column: 'name',
+      sort: 'ASC',
+    },
   });
 
   const context = {
@@ -28,8 +32,10 @@ function ApiProvider({ children }) {
     const url = 'https://swapi-trybe.herokuapp.com/api/planets/';
     const { results } = await fetch(url).then((response) => response.json());
     const columnsFilter = Object.keys(results[0]).filter((item) => item !== 'residents');
-    setData(results);
-    setDataFilter(results);
+    const sortedResults = results.sort((a, b) => (a.name.localeCompare(b.name)));
+    // console.log(results);
+    setData(sortedResults);
+    setDataFilter(sortedResults);
     setColumns(columnsFilter);
   };
 

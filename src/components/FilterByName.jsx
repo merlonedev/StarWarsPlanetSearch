@@ -1,24 +1,25 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ContextApi from '../context/ContextApi';
 import Input from './Input';
 
 function FilterByName() {
   const { data, filters, setFilters, setDataFilter } = useContext(ContextApi);
-  const { filterByName: { name } } = filters;
+  // const { filterByName: { name } } = filters;
+  const [name, setName] = useState('');
 
   const handleChange = ({ target: { value } }) => {
-    setFilters({ ...filters, filterByName: { name: value } });
+    setName(value);
   };
 
   useEffect(() => {
-    const planetByName = () => {
-      const { filterByName } = filters;
+    const check = name !== filters.filterByName.name;
+    if (check) {
+      setFilters({ ...filters, filterByName: { name } });
       const aux = [...data];
-      // console.log(allData);
-      setDataFilter(aux.filter((i) => i.name.toLowerCase().includes(filterByName.name)));
-    };
-    planetByName();
-  }, [data, filters, setDataFilter]);
+      const newAux = aux.filter((i) => i.name.toLowerCase().includes(name));
+      setDataFilter(newAux);
+    }
+  }, [data, name, setFilters, filters, setDataFilter]);
 
   return (
     <Input
