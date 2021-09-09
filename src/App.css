@@ -29,6 +29,11 @@
   color: #61dafb;
 }
 
+.filters {
+  display: flex;
+  flex-direction: column;
+}
+
 @keyframes App-logo-spin {
 
   from {

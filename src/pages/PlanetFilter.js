@@ -1,117 +1,25 @@
 import React, { useState, useEffect, useContext, useRef, useCallback } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 import * as API from '../service/StarWarsAPI';
-import Input from './components/Input';
-import Select from './components/Select';
 import { filterByNumber, filterByName } from './Filter';
+import { getInput, getInputArray,
+  getSelect, manageColumnOptions, manageComparisonOptions } from './FilterData';
 import OrderBy, { sortPlanets } from './OrderBy';
-
-function getInputArray(guide) {
-  const { value } = guide.filterNumber;
-  return [
-    {
-      handleChange: guide.handleChange,
-      name: 'filterName',
-      text: 'Nome:',
-      type: 'text',
-      testId: 'name-filter',
-      value: guide.filterName,
-      placeholder: 'Planet Name',
-    },
-    {
-      handleChange: guide.handleChange,
-      name: 'value',
-      text: 'Valor:',
-      type: 'number',
-      testId: 'value-filter',
-      value,
-      placeholder: 'Ex: 5000',
-    },
-  ];
-}
-
-function getSelectColumnOptions() {
-  return [
-    { value: 'population', disabled: false },
-    { value: 'orbital_period', disabled: false },
-    { value: 'diameter', disabled: false },
-    { value: 'rotation_period', disabled: false },
-    { value: 'surface_water', disabled: false },
-  ];
-}
-
-function getSelectComparisonOptions() {
-  return [
-    { value: 'maior que', disabled: false },
-    { value: 'menor que', disabled: false },
-    { value: 'igual a', disabled: false },
-  ];
-}
-
-function manageComparisonOptions({ comparison }) {
-  const myOptions = getSelectComparisonOptions().slice();
-  return myOptions.filter((option) => option.value !== comparison);
-}
-
-function manageColumnOptions({ column }) {
-  const myOptions = getSelectColumnOptions().slice();
-  return myOptions.filter((option) => option.value !== column);
-}
-
-function getInput({
-  handleChange = null,
-  name = '',
-  text = '',
-  type = 'text',
-  testId = 'none',
-  value = null,
-  placeholder = '',
-}) {
-  return (
-    <Input
-      testId={ testId }
-      text={ text }
-      name={ name }
-      type={ type }
-      placeholder={ placeholder }
-      value={ value }
-      handleChange={ handleChange }
-    />
-  );
-}
-
-function getSelect({
-  handleChange = null,
-  name = 'select-input',
-  text = 'Select:',
-  testId = 'none',
-  optionList = null,
-}) {
-  return (
-    <Select
-      handleChange={ handleChange }
-      name={ name }
-      text={ text }
-      testId={ testId }
-      optionList={ optionList }
-    />
-  );
-}
 
 export default function PlanetFilter() {
   const { planets, setPlanets } = useContext(PlanetsContext);
   const [filterName, setFilterName] = useState('');
   const [allPlanets, setAllPlanets] = useState([]);
+  const [filterList, setFilterList] = useState([]);
   const [filterNumber, setfilterNumber] = useState({
-    column: '',
-    comparison: '',
+    column: 'population',
+    comparison: 'maior que',
     value: '',
   });
   const [selection, setSelection] = useState({
     column: '',
     comparison: '',
   });
-  const constelation = useRef(planets);
   const universe = useRef(allPlanets);
   const newFilterNumber = useRef(filterNumber);
   // const newFilterName = useRef(filterName);
@@ -126,10 +34,8 @@ export default function PlanetFilter() {
   }, [setPlanets, setAllPlanets]);
   useEffect(() => {
     if (universe.current.length <= 0) {
-      fillPlanets();// .then(
-      //   () => ,
-      // );
-      console.log('useEffect 0\n', constelation.current, '\n', universe.current);
+      fillPlanets();
+      console.log('useEffect 0\n');
     }
   }, [universe, fillPlanets]);
   useEffect(() => {
@@ -146,20 +52,26 @@ export default function PlanetFilter() {
   }, [filterName, setPlanets]);
   useEffect(() => {
     console.log('useEffect 2');
-    if (filterNumber.column !== ''
-      && filterNumber.comparison !== ''
-      && filterNumber.value !== '') {
-      filterByNumber(filterNumber, allPlanets, setPlanets);
-      console.log('useEffect 2.1');
+    if (
+      // (filterNumber.column !== ''
+      // && filterNumber.comparison !== ''
+      // && filterNumber.value !== '')
+      filterList) {
+      filterList.forEach((filter) => {
+        filterByNumber(filter, planets, setPlanets);
+      });
+      // filterByNumber(filterNumber, planets, setPlanets);
+      console.log('useEffect 2.1', filterList);
     }
-    if ((!filterNumber.column
-      || !filterNumber.comparison
-      || !filterNumber.value)
+    if (filterList.length <= 0
+      // (!filterNumber.column
+      // || !filterNumber.comparison
+      // || !filterNumber.value)
       && (allPlanets.length > 0)) {
       setPlanets(allPlanets);
       console.log('useEffect 2.2');
     }
-  }, [setPlanets, filterNumber]);
+  }, [setPlanets, filterList]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -192,6 +104,21 @@ export default function PlanetFilter() {
     }
   };
 
+  const handleClick = (event) => {
+    const { value } = event.target;
+    const myFilters = filterList.slice();
+    myFilters.splice(value, 1);
+    setFilterList(myFilters);
+    console.log('Retirou filtro: ', value);
+  };
+
+  const addNewFilter = () => {
+    const myFilters = filterList.slice();
+    myFilters.push(filterNumber);
+    setFilterList(myFilters);
+    console.log(myFilters);
+  };
+
   return (
     <section>
       <header>
@@ -216,11 +143,37 @@ export default function PlanetFilter() {
           <button
             data-testid="button-filter"
             type="button"
+            onClick={ addNewFilter }
           >
             Filter
           </button>
         </section>
         <OrderBy />
+        <section className="filters">
+          <p>Filters:</p>
+          { filterList.map((filter, index) => {
+            console.log(filter);
+            return (
+              <label
+                data-testid="filter"
+                key={ index }
+                htmlFor={ `${index}-button-filter` }
+              >
+                { `Column: ${filter.column},
+                comparison: ${filter.comparison},
+                Value: ${filter.value} ` }
+                <button
+                  type="button"
+                  name={ `${index}-button-filter` }
+                  value={ index }
+                  onClick={ handleClick }
+                >
+                  X
+                </button>
+              </label>
+            );
+          })}
+        </section>
       </header>
     </section>
   );
