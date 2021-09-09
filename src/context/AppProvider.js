@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { fetchAPI, fetchNoResidents } from '../services/fetchAPI';
+import fetchAPI from '../services/fetchAPI';
 import AppContext from './AppContext';
 
 export default function AppProvider({ children }) {
   const [planets, setPlanets] = useState([]);
 
-  useEffect(() => {
-    const fetchPlanets = async () => {
-      const planetsData = await fetchAPI();
-      fetchNoResidents(planetsData);
-      setPLanets(planetsData);
-    };
+  const fetchPlanets = async () => {
+    const filteredResults = await fetchAPI();
+    filteredResults.forEach((planet) => delete planet.residents);
+    setPlanets(filteredResults);
+  };
 
+  useEffect(() => {
     fetchPlanets();
   }, []);
 
