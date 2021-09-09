@@ -1,47 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import fetchPlanets from '../services/fetch';
 import Context from './Context';
 
 export default function Provider({ children }) {
   const [data, setData] = useState([]);
-  const [names, setNames] = useState('');
+  const [dataError, setDataError] = useState(false);
 
-  const state = {
-    filters: {
-      filterByName: {
-        name: names,
-      },
-    },
+  const initialFilterState = {
+    filterByName: { name: '' },
+    filterByNumericValues: [{ column: '', comparison: '', value: '' }],
   };
+
+  const [filters, setFilters] = useState(initialFilterState);
 
   useEffect(() => {
-    const fetchPlanet = async () => {
-      const planets = await fetchPlanets();
-      setData(planets);
+    const URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
+
+    const fetchPlanets = async () => {
+      try {
+        const response = await fetch(URL);
+        const { results } = await response.json();
+
+        results.forEach((planet) => { delete planet.residents; });
+        setData(results);
+      } catch (error) {
+        setDataError(true);
+      }
     };
-    fetchPlanet();
+    fetchPlanets();
   }, []);
 
-  const filterPlanets = (dataPlanet) => {
-    const { filters: { filterByName } } = state;
-
-    if (filterByName.name !== '') {
-      return dataPlanet.filter(({ name }) => name.includes(filterByName.name));
-    }
-    return dataPlanet;
+  const handleFilterByName = ({ target: { value } }) => {
+    setFilters((prevState) => ({
+      ...prevState,
+      filterByName: { name: value },
+    }));
   };
 
-  const contextValue = {
+  const context = {
     data,
+    dataError,
     setData,
-    filterPlanets,
-    setNames,
-    state,
+    filters,
+    setFilters,
+    handleFilterByName,
   };
 
   return (
-    <Context.Provider value={ contextValue }>
+    <Context.Provider value={ context }>
       { children }
     </Context.Provider>
   );
