@@ -19,7 +19,7 @@ export default function FilterNumeric() {
   const [category, setCategory] = useState('');
   const [comparison, setComparison] = useState('');
   const [value, setValue] = useState('');
-  const { filter, setFilter } = useContext(AppContext);
+  const { filter, setFilter, planets, setPlanets } = useContext(AppContext);
   const { filterByNumericValues } = filter;
   const filterLength = filter.filterByNumericValues.length;
 
@@ -37,22 +37,36 @@ export default function FilterNumeric() {
     setFilter(newFilter);
   };
 
-  // let categoriesFilter = [];
-  // categoriesFilter = categoriesOptions.map((catgry) => {
-  //   if (filteredGlobalCategories.includes(catgry)) return categoriesFilter.push(catgry);
-  //   return categoriesOptions;
-  // });
-
   const categoriesFilter = categoriesOptions.reduce((acc, cur) => {
     if (filteredGlobalCategories.includes(cur)) return acc;
     return acc.concat(cur);
   }, []);
 
+  const filterPlanets = () => {
+    const planetsData = planets.filter((planet) => {
+      if (comparison === 'maior que') return Number(planet[category]) > Number(value);
+      if (comparison === 'menor que') return Number(planet[category]) < Number(value);
+      return Number(planet[category]) === Number(value);
+    });
+
+    setPlanets(planetsData);
+  };
+
   useEffect(() => {
+    console.log(comparison);
+    console.log(category);
     console.log(filter);
+    console.log(planets);
     console.log(categoriesFilter);
     console.log(filteredGlobalCategories);
-  }, [filter, categoriesFilter, filteredGlobalCategories]);
+  }, [filter,
+    categoriesFilter,
+    filteredGlobalCategories,
+    category,
+    comparison,
+    value,
+    filterByNumericValues,
+    planets]);
 
   return (
     <div>
@@ -80,7 +94,7 @@ export default function FilterNumeric() {
       <button
         data-testid="button-filter"
         type="button"
-        onClick={ () => addNewFilter() }
+        onClick={ () => { addNewFilter(); filterPlanets(); } }
       >
         Add Filtro
       </button>
