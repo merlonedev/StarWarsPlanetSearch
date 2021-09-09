@@ -9,6 +9,7 @@ export default function Input({
   testId,
   value,
   placeholder,
+  id,
 }) {
   return (
     <label htmlFor={ name }>
@@ -16,7 +17,7 @@ export default function Input({
       <input
         type={ type }
         name={ name }
-        id={ name }
+        id={ id }
         value={ value }
         onChange={ handleChange }
         data-testid={ testId }
@@ -28,6 +29,7 @@ export default function Input({
 
 Input.defaultProps = {
   text: '',
+  id: '',
   type: 'text',
   testId: 'none',
   placeholder: '',
@@ -37,6 +39,7 @@ Input.defaultProps = {
 
 Input.propTypes = {
   testId: PropTypes.string,
+  id: PropTypes.string,
   handleChange: PropTypes.func,
   name: PropTypes.string.isRequired,
   text: PropTypes.string,

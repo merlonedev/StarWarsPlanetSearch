@@ -4,7 +4,7 @@ import PlanetsContext from '../context/PlanetsContext';
 function planetRow(planet) {
   return (
     <tr key={ planet.name }>
-      <td>{ planet.name }</td>
+      <td data-testid="planet-name">{ planet.name }</td>
       <td>{ planet.rotation_period }</td>
       <td>{ planet.orbital_period }</td>
       <td>{ planet.diameter }</td>
@@ -30,19 +30,19 @@ export default function PlanetsTable() {
       <table>
         <thead>
           <tr>
-            <th>Nome</th>
-            <th>Período de Rotation</th>
-            <th>Período Orbital</th>
-            <th>Diametro</th>
-            <th>Clima</th>
-            <th>Força Gravitacional</th>
-            <th>Terreno</th>
-            <th>Superfície Aquática</th>
-            <th>População</th>
-            <th>Filmes</th>
-            <th>Criado</th>
-            <th>Editado</th>
-            <th>URL</th>
+            <th>name</th>
+            <th>rotation_period</th>
+            <th>orbital_period</th>
+            <th>diameter</th>
+            <th>climate</th>
+            <th>gravity</th>
+            <th>terrain</th>
+            <th>surface_water</th>
+            <th>population</th>
+            <th>films</th>
+            <th>created</th>
+            <th>edited</th>
+            <th>url</th>
           </tr>
         </thead>
         <tbody>

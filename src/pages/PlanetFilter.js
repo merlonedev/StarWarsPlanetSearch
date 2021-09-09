@@ -4,6 +4,7 @@ import * as API from '../service/StarWarsAPI';
 import Input from './components/Input';
 import Select from './components/Select';
 import { filterByNumber, filterByName } from './Filter';
+import OrderBy, { sortPlanets } from './OrderBy';
 
 function getInputArray(guide) {
   const { value } = guide.filterNumber;
@@ -49,19 +50,11 @@ function getSelectComparisonOptions() {
 
 function manageComparisonOptions({ comparison }) {
   const myOptions = getSelectComparisonOptions().slice();
-  // const error = -1;
-  // const optionIndex = myOptions.findIndex((option) => option.value === column);
-  // if (optionIndex !== error) myOptions[optionIndex].disabled = true;
-
   return myOptions.filter((option) => option.value !== comparison);
 }
 
 function manageColumnOptions({ column }) {
   const myOptions = getSelectColumnOptions().slice();
-  // const error = -1;
-  // const optionIndex = myOptions.findIndex((option) => option.value === comparison);
-  // if (optionIndex !== error) myOptions[optionIndex].disabled = true;
-
   return myOptions.filter((option) => option.value !== column);
 }
 
@@ -129,13 +122,13 @@ export default function PlanetFilter() {
     setPlanets(myPlanets);
     // myPlanets = await API.getAllPlanets();
     setAllPlanets(myPlanets);
+    sortPlanets({ column: 'name', order: 'ASC' }, myPlanets, setPlanets);
   }, [setPlanets, setAllPlanets]);
   useEffect(() => {
     if (universe.current.length <= 0) {
-      // && (!newFilterNumber.current.column
-      // && !newFilterNumber.current.comparison
-      // && !newFilterNumber.current.value)) {
-      fillPlanets();
+      fillPlanets();// .then(
+      //   () => ,
+      // );
       console.log('useEffect 0\n', constelation.current, '\n', universe.current);
     }
   }, [universe, fillPlanets]);
@@ -150,7 +143,7 @@ export default function PlanetFilter() {
           || !newFilterNumber.current.value)) {
       setPlanets(allPlanets);
     }
-  }, [filterName, setPlanets]);// , [filterName, planets, allPlanets, setPlanets]);
+  }, [filterName, setPlanets]);
   useEffect(() => {
     console.log('useEffect 2');
     if (filterNumber.column !== ''
@@ -227,6 +220,7 @@ export default function PlanetFilter() {
             Filter
           </button>
         </section>
+        <OrderBy />
       </header>
     </section>
   );
