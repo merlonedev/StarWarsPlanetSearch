@@ -8,6 +8,8 @@ function FilterByColumnAndNumber() {
     setFilters,
   } = useContext(Context);
 
+  const [columnsList, setColumnsList] = useState(tableColumns);
+
   const [numericFilters, setNumericFilters] = useState({
     column: 'population',
     comparison: 'maior que',
@@ -41,14 +43,16 @@ function FilterByColumnAndNumber() {
   };
 
   useEffect(() => {
-    const [newColumn] = tableColumns.filter((tableColumn) => (
-      !filterByNumericValues.some((filter) => filter.column === tableColumn)
-    )).map((nextColumn) => nextColumn);
+    const newColumns = tableColumns.filter((column) => !filterByNumericValues
+      .some((numericFilter) => numericFilter.column === column))
+      .map((netxColumns) => netxColumns);
 
     setNumericFilters((prevFilters) => ({
       ...prevFilters,
-      column: newColumn,
+      column: newColumns[0],
     }));
+
+    setColumnsList(newColumns);
   }, [filterByNumericValues]);
 
   return (
@@ -60,16 +64,14 @@ function FilterByColumnAndNumber() {
           onChange={ (e) => handleChange(e) }
           data-testid="column-filter"
         >
-          {tableColumns.filter((column) => !filterByNumericValues
-            .some((numericFilter) => numericFilter.column === column))
-            .map((columnName) => (
-              <option
-                key={ columnName }
-                value={ columnName }
-              >
-                { columnName }
-              </option>
-            ))}
+          {columnsList.map((columnName) => (
+            <option
+              key={ columnName }
+              value={ columnName }
+            >
+              { columnName }
+            </option>
+          ))}
         </select>
 
         <select
