@@ -37,27 +37,6 @@ function Provider({ children }) {
     }));
   };
 
-  const handleFilterByNumericValues = ({ column, comparison, value }) => {
-    setFilters((prevFilters) => {
-      const { filterByNumericValues } = prevFilters;
-
-      if (!filterByNumericValues[0].value) {
-        return {
-          ...prevFilters,
-          filterByNumericValues: [{ column, comparison, value }],
-        };
-      }
-
-      return {
-        ...prevFilters,
-        filterByNumericValues: [
-          ...filterByNumericValues,
-          { column, comparison, value },
-        ],
-      };
-    });
-  };
-
   const context = {
     data,
     setData,
@@ -65,7 +44,6 @@ function Provider({ children }) {
     filters,
     setFilters,
     handleFilterByName,
-    handleFilterByNumericValues,
   };
 
   return (

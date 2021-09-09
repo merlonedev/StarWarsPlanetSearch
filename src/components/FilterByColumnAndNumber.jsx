@@ -1,24 +1,55 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { tableColumns, comparisonColumns } from '../utils';
 import Context from '../context';
 
 function FilterByColumnAndNumber() {
   const {
-    handleFilterByNumericValues,
+    filters: { filterByNumericValues },
+    setFilters,
   } = useContext(Context);
 
-  const [numberFilters, setNumberFilters] = useState({
+  const [numericFilters, setNumericFilters] = useState({
     column: 'population',
     comparison: 'maior que',
     value: '10000',
   });
 
   const handleChange = ({ target }) => {
-    setNumberFilters((prevState) => ({
+    setNumericFilters((prevState) => ({
       ...prevState,
       [target.name]: target.value,
     }));
   };
+
+  const handleFilterByNumericValues = ({ column, comparison, value }) => {
+    setFilters((prevFilters) => {
+      if (!filterByNumericValues[0].value) {
+        return {
+          ...prevFilters,
+          filterByNumericValues: [{ column, comparison, value }],
+        };
+      }
+
+      return {
+        ...prevFilters,
+        filterByNumericValues: [
+          ...filterByNumericValues,
+          { column, comparison, value },
+        ],
+      };
+    });
+  };
+
+  useEffect(() => {
+    const [newColumn] = tableColumns.filter((tableColumn) => (
+      !filterByNumericValues.some((filter) => filter.column === tableColumn)
+    )).map((nextColumn) => nextColumn);
+
+    setNumericFilters((prevFilters) => ({
+      ...prevFilters,
+      column: newColumn,
+    }));
+  }, [filterByNumericValues]);
 
   return (
     <div>
@@ -29,14 +60,16 @@ function FilterByColumnAndNumber() {
           onChange={ (e) => handleChange(e) }
           data-testid="column-filter"
         >
-          {tableColumns.map((columnName) => (
-            <option
-              key={ columnName }
-              value={ columnName }
-            >
-              { columnName }
-            </option>
-          ))}
+          {tableColumns.filter((column) => !filterByNumericValues
+            .some((numericFilter) => numericFilter.column === column))
+            .map((columnName) => (
+              <option
+                key={ columnName }
+                value={ columnName }
+              >
+                { columnName }
+              </option>
+            ))}
         </select>
 
         <select
@@ -59,7 +92,7 @@ function FilterByColumnAndNumber() {
 
         <button
           type="button"
-          onClick={ () => handleFilterByNumericValues(numberFilters) }
+          onClick={ () => handleFilterByNumericValues(numericFilters) }
           data-testid="button-filter"
         >
           Filter
