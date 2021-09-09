@@ -2,10 +2,20 @@ import React, { useContext, useEffect, useState } from 'react';
 import Context from '../context/Context';
 
 export default function Table() {
-  const { data, dataError, filters: {
+  const { data, dataError, filterNumericValues, filters: {
     filterByName, filterByNumericValues } } = useContext(Context);
 
   const [planets, setPlanets] = useState([]);
+
+  useEffect(() => {
+    let newPlanets = data;
+
+    filterByNumericValues.forEach(({ column, comparison, value }) => {
+      if (value) newPlanets = filterNumericValues(newPlanets, column, comparison, value);
+    });
+
+    setPlanets(newPlanets);
+  }, [data, filterByName, filterByNumericValues, filterNumericValues]);
 
   useEffect(() => {
     if (!filterByName.name) {
@@ -14,45 +24,6 @@ export default function Table() {
       setPlanets(data.filter(({ name }) => name.includes(filterByName.name)));
     }
   }, [data, filterByName]);
-
-  const filterNumericValues = (planetsData, column, comparison, value) => {
-    let filteredPlanets;
-
-    if (comparison === 'maior que') {
-      filteredPlanets = planetsData.filter((planet) => (
-        Number(planet[column]) > Number(value)
-      ));
-    }
-
-    if (comparison === 'menor que') {
-      filteredPlanets = planetsData.filter((planet) => (
-        Number(planet[column]) < Number(value)
-      ));
-    }
-    if (comparison === 'igual a') {
-      filteredPlanets = planetsData.filter((planet) => (
-        Number(planet[column]) === Number(value)
-      ));
-    }
-    return filteredPlanets;
-  };
-
-  useEffect(() => {
-    filterByNumericValues.forEach(({ column, comparison, value }) => (
-      value && setPlanets((prevPlanets) => {
-        if (prevPlanets.length < 1) {
-          if (!filterByName.name) {
-            return filterNumericValues(data, column, comparison, value);
-          }
-          const filteredByName = data.filter(({ name }) => (
-            name.includes(filterByName.name)
-          ));
-          return filterNumericValues(filteredByName, column, comparison, value);
-        }
-        return filterNumericValues(prevPlanets, column, comparison, value);
-      })
-    ));
-  }, [data, filterByName, filterByNumericValues]);
 
   return (data.length > 0 && !dataError)
  && (
