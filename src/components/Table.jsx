@@ -64,6 +64,14 @@ function PlanetsTable() {
 
   sortPlanets(data);
 
+  const renderNameRow = (planet, column) => (
+    <td key={ column } data-testid="planet-name">{ planet[column] }</td>
+  );
+
+  const renderRegularRow = (planet, column) => (
+    <td key={ column }>{ planet[column] }</td>
+  );
+
   return (data.length > 0 && !dataError
     && (
       <table>
@@ -84,8 +92,8 @@ function PlanetsTable() {
                 {
                   Object.keys(planet).map((column) => (
                     column === 'name'
-                      ? <td key={ column } data-testid="planet-name">{ planet[column] }</td>
-                      : <td key={ column }>{ planet[column] }</td>
+                      ? renderNameRow(planet, column)
+                      : renderRegularRow(planet, column)
                   ))
                 }
               </tr>
