@@ -4,7 +4,7 @@ import Context from '../context/Context';
 function useFilter() {
   const { data, filters } = useContext(Context);
   const { filterByName, filterByNumericValues, order } = filters;
-  
+
   const handleFilter = () => {
     let planets = [...data];
 
