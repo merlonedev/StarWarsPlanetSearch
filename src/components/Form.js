@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import MyContext from '../context/MyContext';
 
-function Form({ column, comparison, availableColumns, onFilter }) {
+function Form({ comparison, availableColumns }) {
   const [form, setForm] = useState({
-    column,
+    column: availableColumns[0],
     comparison,
     value: 0,
   });
@@ -13,7 +13,6 @@ function Form({ column, comparison, availableColumns, onFilter }) {
     setFilters } = useContext(MyContext);
 
   function handleFilter({ target: { name, value } }) {
-    console.log(name, value);
     setForm({ ...form, [name]: value });
   }
 
@@ -22,13 +21,19 @@ function Form({ column, comparison, availableColumns, onFilter }) {
       ...filters,
       filterByNumericValues: [...filters.filterByNumericValues, form],
     });
-    onFilter();
   }
+
+  useEffect(() => {
+    setForm({
+      column: availableColumns[0],
+      comparison,
+      value: 0,
+    });
+  }, [availableColumns, comparison]);
 
   return (
     <div>
       <select
-        value={ form.column }
         onChange={ (e) => handleFilter(e) }
         name="column"
         data-testid="column-filter"
@@ -68,22 +73,13 @@ function Form({ column, comparison, availableColumns, onFilter }) {
       >
         Filtrar
       </button>
-      <button
-        onClick={ () => { console.log('Removendo filtro...'); } }
-        data-testid="filter"
-        type="button"
-      >
-        X
-      </button>
     </div>
   );
 }
 
 Form.propTypes = {
-  column: PropTypes.string.isRequired,
   comparison: PropTypes.string.isRequired,
   availableColumns: PropTypes.string.isRequired,
-  onFilter: PropTypes.func.isRequired,
 };
 
 export default Form;

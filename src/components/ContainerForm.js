@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import MyContext from '../context/MyContext';
 import Form from './Form';
+import DisabledForm from './DisabledForm';
 
 function ContainerForm() {
+  const { filters, setFilters } = useContext(MyContext);
   const initialColumns = [
     'population',
     'orbital_period',
@@ -10,35 +13,41 @@ function ContainerForm() {
     'surface_water',
   ];
 
-  const [forms, setForms] = useState([{
-    column: 'population',
-    comparison: 'maior que',
-    value: 0,
-  }]);
-
   const [availableColumns, setAvailableColumns] = useState(initialColumns);
 
-  function addForm() {
-    const newColumns = initialColumns
-      .filter((column) => forms.filter((form) => form.column === column).length === 0);
-    setAvailableColumns(newColumns);
-    setForms([{
-      column: newColumns[0],
-      comparison: 'maior que',
-      value: 0,
-    }]);
+  function onDelete(columnFilter) {
+    setAvailableColumns([...availableColumns, columnFilter]);
+    setFilters({
+      filterByName: { name: filters.filterByName.name },
+      filterByNumericValues: filters.filterByNumericValues
+        .filter((filter) => filter.column !== columnFilter),
+    });
   }
 
+  useEffect(() => {
+    filters.filterByNumericValues.forEach((filter) => setAvailableColumns(availableColumns
+      .filter((column) => column !== filter.column)));
+  }, [filters]);
+
   return (
-    <form action="">
-      { forms.map((form, index) => (<Form
-        column={ form.column }
-        comparison={ form.comparison }
-        onFilter={ addForm }
-        availableColumns={ availableColumns }
-        key={ index }
-      />)) }
-    </form>
+    <>
+      <div>
+        { filters.filterByNumericValues
+          .map((filter) => (<DisabledForm
+            key={ filter.column }
+            column={ filter.column }
+            comparison={ filter.comparison }
+            value={ filter.value }
+            onDelete={ () => { onDelete(filter.column); } }
+          />)) }
+      </div>
+      <form action="">
+        <Form
+          comparison="maior que"
+          availableColumns={ availableColumns }
+        />
+      </form>
+    </>
   );
 }
 
