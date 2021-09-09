@@ -8,7 +8,9 @@ function Header() {
     filterOptions,
     setFilterOptions } = useContext(MyContext);
 
-  const columnsOptions = ['population', 'orbital_period',
+  const { filterByNumericValues } = filters;
+
+  const columns = ['population', 'orbital_period',
     'diameter', 'rotation_period', 'surface_water'];
   const comparisonOptions = ['maior que', 'menor que', 'igual a'];
 
@@ -18,15 +20,36 @@ function Header() {
       [name]: value,
     }));
   };
-  const handleClick = () => {
-    setFilters({
-      ...filters,
-      filterByNumericValues: [{
-        ...filterOptions,
-      },
-      ],
+
+  const handleClick = (filterOption) => {
+    setFilters((prevState) => {
+      if (!prevState.filterByNumericValues[0].value) {
+        return { ...prevState,
+          filterByNumericValues: [{
+            ...filterOption,
+          },
+          ] };
+      } return { ...prevState,
+        filterByNumericValues:
+         [...prevState.filterByNumericValues,
+           { ...filterOption }] };
     });
   };
+
+  const setColumnsOptions = () => {
+    let copyColumns = columns;
+    const optionColumn = filterByNumericValues.map(({ column }) => column);
+    optionColumn.forEach(
+      (item) => {
+        copyColumns = copyColumns.filter(
+          (col) => col !== item,
+        );
+      },
+    );
+    return copyColumns;
+  };
+
+  const columnsOptions = setColumnsOptions();
 
   return (
     <header>
@@ -72,7 +95,7 @@ function Header() {
           <button
             type="button"
             data-testid="button-filter"
-            onClick={ handleClick }
+            onClick={ () => handleClick(filterOptions) }
           >
             Filtrar
           </button>
