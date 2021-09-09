@@ -26,7 +26,6 @@ export default function Home() {
     },
   });
   const [FilterWithNameAndNumber, setFilterWithNameAndNumber] = useState('');
-  const [FilterWithNameAndNumber2, setFilterWithNameAndNumber2] = useState('');
   const [filterNumberAmount, setFilterNumberAmount] = useState(0);
   const [shouldFilterNumber, setshouldFilterNumber] = useState(false);
   useEffect(() => {
@@ -41,7 +40,6 @@ export default function Home() {
         };
         const filteredName = planets.filter(filterNameInArray);
         setFilterWithNameAndNumber(filteredName);
-        setFilterWithNameAndNumber2(filteredName);
       }
     };
     filterPlanet();
@@ -82,54 +80,12 @@ export default function Home() {
     }
   }
   useEffect(() => {
-    if ((planets || FilterWithNameAndNumber2) && shouldFilterNumber
-    && filters.filterByNumericValues) {
-      const filterData = () => {
-        const usedArray = !FilterWithNameAndNumber2 ? planets : FilterWithNameAndNumber2;
-        filters.filterByNumericValues.forEach((filter) => {
-          const { column, comparison, value } = filter;
-          const filterRound = usedArray.filter((obj) => {
-            switch (comparison) {
-            case 'maior que':
-              if (parseFloat(obj[column]) > parseFloat(value)) {
-                return true;
-              }
-              return false;
-            case 'menor que':
-              if (parseFloat(obj[column]) < parseFloat(value)) {
-                return true;
-              }
-              return false;
-            case 'igual a':
-              if (parseFloat(obj[column]) === parseFloat(value)) {
-                return true;
-              }
-              return false;
-            default:
-              break;
-            }
-          });
-          setFilterWithNameAndNumber2(filterRound);
-          setUsedArrayOfNumber([...usedArrayOfNumber, filterWithNumber.columnSetup]);
-          setfilterWithNumber({ ...filterWithNumber, columnSetup: newArrayofFilter[1] });
-          setshouldFilterNumber(false);
-          /* console.log(i, column, comparison, value);
-          console.log(FilterWithNameAndNumber2);
-          console.log(usedArray); */
-        });
-      };
-      filterData();
-    }
-  },
-  [filters.filterByNumericValues, shouldFilterNumber, usedArrayOfNumber]);
-
-  /* useEffect(() => {
     const filterPlanetWithNumber = () => {
       if ((planets || FilterWithNameAndNumber) && shouldFilterNumber) {
         const usedArray = !FilterWithNameAndNumber ? planets : FilterWithNameAndNumber;
-        usedArray.sort((a,b) => (a['name'] > b['name']) ? 1 : ((b['name'] > a['name']) ? -1 : 0))
+        /* usedArray.sort((a,b) => (a['name'] > b['name']) ? 1 : ((b['name'] > a['name']) ? -1 : 0)) */
         const filteredwithNumber = usedArray.filter(comparisonSwitch);
-        console.log(usedArray);
+        console.log(usedArray)
         setFilterWithNameAndNumber(filteredwithNumber);
         setFilterNumberAmount(filterNumberAmount + 1);
         setUsedArrayOfNumber([...usedArrayOfNumber, filterWithNumber.columnSetup]);
@@ -139,10 +95,10 @@ export default function Home() {
     };
     filterPlanetWithNumber();
   },
-  [FilterWithNameAndNumber, filterWithNumber, shouldFilterNumber, usedArrayOfNumber]); */
+  [shouldFilterNumber]);
   //  [filterWithNumber, shouldFilterNumber, usedArrayOfNumber]);
   function renderPlanets() {
-    const usedArray = !FilterWithNameAndNumber2 ? planets : FilterWithNameAndNumber2;
+    const usedArray = !FilterWithNameAndNumber ? planets : FilterWithNameAndNumber;
     return (
       Object.values(usedArray).map((planetas, index) => (
         <tr key={ index }>
@@ -179,18 +135,6 @@ export default function Home() {
     setfilterWithNumber({ ...filterWithNumber,
       [name]: value,
     });
-  }
-  function removeItem({ target }) {
-    const { id } = target;
-    setFilters({ ...filters,
-      filterByNumericValues: [...filters.filterByNumericValues.filter((obj) => {if (obj.column !== id) {
-        return true;
-      }
-      return false;
-    })],
-    });
-    setFilterWithNameAndNumber2(planets);
-    setshouldFilterNumber(true);
   }
 
   return (
@@ -251,24 +195,7 @@ export default function Home() {
       >
         Filtrar
       </button>
-      <ul>
-        { filters.filterByNumericValues.length === 0 ? ''
-          : Object.values(filters.filterByNumericValues).map((filter, index) => (
-            <li 
-            data-testid="filter" key={ index }>
-              {filter.column}
-              {filter.comparison}
-              {filter.value}
-              <button
-                id={filter.column}
-                type="button"
-                onClick={ removeItem }
-              >
-              x
-              </button>
-            </li>
-          ))}
-      </ul>
+      <FilterList filters={ filters } />
       <table>
         <thead>
           <tr>
@@ -293,3 +220,4 @@ export default function Home() {
       </table>
     </div>);
 }
+
