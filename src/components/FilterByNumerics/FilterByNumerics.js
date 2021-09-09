@@ -33,22 +33,6 @@ function generateSelectComparison(nome, label, optionArray, handleSelect) {
   );
 }
 
-function generateColumnSort(nome, label, optionArray, handleSelect) {
-  return (
-    <label htmlFor={ nome }>
-      {label}
-      <select
-        name={ nome }
-        id={ nome }
-        data-testid="column-sort"
-        onChange={ handleSelect }
-      >
-        {optionArray.map((element, index) => <option key={ index }>{element}</option>)}
-      </select>
-    </label>
-  );
-}
-
 function generateInputNumber(label, handleNumber) {
   return (
     <label htmlFor="number">
@@ -63,46 +47,15 @@ function generateInputNumber(label, handleNumber) {
   );
 }
 
-function generateButton(label, handleClick, dataTestId) {
+function generateButton(handleClick) {
   return (
     <button
       type="button"
       onClick={ handleClick }
-      data-testid={ dataTestId }
+      data-testid="button-filter"
     >
-      {label}
+      Filtrar
     </button>
-  );
-}
-
-function generateActiveFilters(activeFilters, handleRemoveFilter) {
-  return (
-    <div>
-      { activeFilters.map((filter) => (
-        <ul data-testid="filter" key={ `${filter}-filter-button` }>
-          <li>{filter}</li>
-          <button type="button" onClick={ handleRemoveFilter } name={ filter }>
-            X
-          </button>
-        </ul>
-      ))}
-    </div>
-  );
-}
-
-function generateRadiosSort(name, label, values, handleRadios) {
-  return (
-    <label htmlFor={ name }>
-      {label}
-      <input
-        type="radio"
-        data-testid={ `column-sort-input-${values}` }
-        id={ name }
-        name={ name }
-        value={ values.toUpperCase() }
-        onClick={ handleRadios }
-      />
-    </label>
   );
 }
 
@@ -113,18 +66,9 @@ export default function FilterByNumerics() {
     value: '0',
   });
 
-  const [orderByFilters, setOrderByFilters] = useState({
-    column: 'name',
-    sort: 'ASC',
-  });
-
   const {
     filterByNumericValues,
-    removeFilter,
-    filterByOrder,
-    dataColumn,
   } = useContext(AppContext);
-  const [activeFilters, setActiveFilters] = useState([]);
 
   function handleFilter({ target: { name, value } }) {
     setNumericValuesFilters({
@@ -135,21 +79,7 @@ export default function FilterByNumerics() {
 
   const handleClick = () => {
     filterByNumericValues(numericValuesFilter);
-    setActiveFilters([...activeFilters, numericValuesFilter.column]);
   };
-
-  function handleRemoveFilter({ target: { name } }) {
-    removeFilter(name);
-    setActiveFilters([...activeFilters.filter((filter) => filter !== name)]);
-  }
-
-  function handleSortFilters({ target: { name, value } }) {
-    setOrderByFilters({ ...orderByFilters, [name]: value });
-  }
-
-  function handleSortButton() {
-    filterByOrder(orderByFilters);
-  }
 
   const optionPlanets = [
     'population',
@@ -178,13 +108,9 @@ export default function FilterByNumerics() {
         optionComparison,
         handleFilter,
       )}
+
       {generateInputNumber('Coloque seu número', handleFilter)}
-      {generateButton('Filtrar', handleClick, 'button-filter')}
-      { generateActiveFilters(activeFilters, handleRemoveFilter) }
-      {generateColumnSort('column', 'Ordene por', dataColumn, handleSortFilters)}
-      {generateRadiosSort('sort', 'Asc', 'asc', handleSortFilters)}
-      {generateRadiosSort('sort', 'Desc', 'desc', handleSortFilters)}
-      {generateButton('Sort', handleSortButton, 'column-sort-button')}
+      {generateButton(handleClick)}
     </div>
   );
 }
