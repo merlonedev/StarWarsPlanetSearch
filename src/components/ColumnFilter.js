@@ -11,7 +11,13 @@ const ColumnFilter = () => {
   const [comparison, setComparison] = useState(comparisonOptions[0]);
   const [value, setValue] = useState(0);
 
-  const { addFilter } = useContext(StarWarsContext);
+  const {
+    addFilter,
+    filters: { filterByNumericValues },
+  } = useContext(StarWarsContext);
+
+  const invalidColumns = Object.values(filterByNumericValues)
+    .map((filter) => filter.column);
 
   function handleAddFilter() {
     addFilter({ column, comparison, value });
@@ -24,8 +30,10 @@ const ColumnFilter = () => {
         value={ column }
         onChange={ ({ target }) => setColumn(target.value) }
       >
-        { columnOptions.map((option, index) => (
-          <option key={ index }>{ option }</option>)) }
+        { columnOptions
+          .filter((currentColumn) => !invalidColumns.includes(currentColumn))
+          .map((option, index) => (
+            <option key={ index }>{ option }</option>)) }
       </select>
 
       <select
