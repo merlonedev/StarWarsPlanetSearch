@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Context from '../context/Context';
-import '../styles/filters.css';
 
 function Filters() {
   const defaultValues = {
