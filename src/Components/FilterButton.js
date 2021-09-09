@@ -1,6 +1,8 @@
 import React from 'react';
 import MyContext from '../Context';
 
+const columns = 0;
+
 function FilterButton() {
   return (
     <div>
@@ -17,6 +19,21 @@ function FilterButton() {
               Filtrar
             </button>
           )
+        }
+      </MyContext.Consumer>
+      <MyContext.Consumer>
+        {
+          ({ renderButton, deleteButton }) => (renderButton.length > columns
+            ? renderButton.map((col, i) => (
+              <button
+                type="button"
+                name={ col.coluna }
+                key={ i }
+                data-testid="filter"
+                onClick={ deleteButton }
+              >
+                {`${col.coluna} ${col.comparar} ${col.valor}`}
+              </button>)) : false)
         }
       </MyContext.Consumer>
     </div>

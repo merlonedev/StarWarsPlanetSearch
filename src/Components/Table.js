@@ -7,7 +7,7 @@ class Table extends React.Component {
       <tbody>
         <MyContext.Consumer>
           {
-            (value) => value.filterContainer.map(({
+            ({ filterContainer }) => filterContainer.map(({
               name,
               rotation_period: rotation,
               orbital_period: orbital,
