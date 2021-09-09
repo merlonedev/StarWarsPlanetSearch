@@ -1,8 +1,9 @@
 import React, { useContext, useEffect } from 'react';
-import PlanestContext from '../context/PlanetsContext';
+import PlanetsContext from '../context/PlanetsContext';
+
 function Table() {
-  const context = useContext(PlanestContext);
-  const { data, isLoading, filters, setData, copyResults } = context;
+  const context = useContext(PlanetsContext);
+  const { data, isLoading, filters, setData, copyResults, resetFilter } = context;
   const { filterByNumericValues } = filters;
   const { name } = filters.filterByName;
 
@@ -12,10 +13,11 @@ function Table() {
       .filter((planet) => planet.name.toLowerCase().includes(name));
     if (filterPlanets.length < 1) return setData(copyResults);
     setData(filterPlanets);
-  }, [name]);
+  }, [copyResults, data, name, setData]);
 
   const resetPlanets = () => {
     setData(copyResults);
+    resetFilter();
   };
 
   const checkComparison = (currItem) => {
@@ -35,13 +37,14 @@ function Table() {
   };
 
   useEffect(() => {
+    if (filterByNumericValues.length < 1) return setData(copyResults);
     const aplyFilter = filterByNumericValues.reduce((acc, currItem) => {
       const filter = checkComparison(currItem);
       return filter;
     }, []);
     if (aplyFilter.length < 1) return setData('');
     setData(aplyFilter);
-  }, [filterByNumericValues]);
+  }, [checkComparison, copyResults, filterByNumericValues, setData]);
   if (isLoading) return <h2>Loading...</h2>;
   if (data.length < 1) {
     return (
@@ -63,7 +66,7 @@ function Table() {
       <tbody>
         {data.map((info) => (
           <tr key={ info.name }>
-            <td>{info.name}</td>
+            <td data-testid="planet-name">{info.name}</td>
             <td>{info.rotation_period}</td>
             <td>{info.orbital_period}</td>
             <td>{info.diameter}</td>
@@ -82,5 +85,5 @@ function Table() {
     </table>
   );
 }
-export default Table;
+
 export default Table;

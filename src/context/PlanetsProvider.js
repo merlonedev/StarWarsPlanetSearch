@@ -8,12 +8,21 @@ function PlanetsProvider(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
   const [copyResults, setcopyResults] = useState([]);
+  const [allTypes, setAllTypes] = useState([]);
   const [filters, setFilters] = useState({
     filterByName: {
       name: '',
     },
     filterByNumericValues: [],
+    order: {
+      column: 'name',
+      sort: 'ASC',
+    },
   });
+
+  const setOrderSort = (column, sort) => {
+    setFilters({ ...filters, order: { column, sort } });
+  };
 
   const setFilterByName = (event) => {
     const { value } = event.target;
@@ -23,6 +32,18 @@ function PlanetsProvider(props) {
   const sendFilterNumeric = (obj) => {
     const { filterByNumericValues } = filters;
     setFilters({ ...filters, filterByNumericValues: [...filterByNumericValues, obj] });
+  };
+
+  const deleteFilter = (arr) => {
+    setFilters({ ...filters, filterByNumericValues: arr });
+  };
+
+  const resetFilter = () => {
+    setFilters({ ...filters, filterByNumericValues: [] });
+  };
+
+  const addType = (type) => {
+    setAllTypes([...allTypes, type]);
   };
 
   useEffect(() => {
@@ -39,6 +60,7 @@ function PlanetsProvider(props) {
         setIsLoading(false);
       }
     };
+
     load();
   }, []);
 
@@ -49,7 +71,12 @@ function PlanetsProvider(props) {
     setFilterByName,
     setData,
     copyResults,
-    sendFilterNumeric };
+    sendFilterNumeric,
+    deleteFilter,
+    resetFilter,
+    allTypes,
+    addType,
+    setOrderSort };
   const { children } = props;
   return (
     <PlanetsContext.Provider value={ context }>
@@ -57,7 +84,9 @@ function PlanetsProvider(props) {
     </PlanetsContext.Provider>
   );
 }
+
 PlanetsProvider.propTypes = {
   children: PropTypes.node,
 }.isRequired;
+
 export default PlanetsProvider;

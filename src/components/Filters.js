@@ -1,11 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
-import PlanetsContext from '../context/PlanetsContext';
+import PlanestContext from '../context/PlanetsContext';
 
 function Filters() {
   const context = useContext(PlanestContext);
-  const { filters, setFilterByName, sendFilterNumeric } = context;
+
+  const { filters,
+    setFilterByName, sendFilterNumeric, deleteFilter, allTypes, addType } = context;
   const { filterByNumericValues } = filters;
   const { name } = filters.filterByName;
+
   const [types, setFilterTypes] = useState(['population',
     'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
   const comparison = ['maior que', 'menor que', 'igual a'];
@@ -21,6 +24,13 @@ function Filters() {
 
   useEffect(() => setFilterByType(types[0]), [types]);
 
+  const deleteCurrFilter = (filterType) => {
+    const filter = filterByNumericValues.filter((item) => item.column !== filterType);
+    const filter2 = allTypes.find((type) => filterType === type);
+    setFilterTypes([...types, filter2]);
+    deleteFilter(filter);
+  };
+
   const setComparison = (event) => {
     const { value } = event.target;
     if (filtercomparison.includes(value)) return;
@@ -34,11 +44,13 @@ function Filters() {
 
   const sendFilters = () => {
     const obj = { column: filterByType, comparison: filtercomparison, value: number };
+    addType(filterByType);
     sendFilterNumeric(obj);
     setFilterTypes(types.filter((type) => type !== filterByType));
   };
 
   const disabled = types.length < 1;
+
   return (
     <form>
       <input
@@ -82,6 +94,12 @@ function Filters() {
       >
         Filtrar
       </button>
+      {filterByNumericValues.map((item) => (
+        <div key={ item.column } data-testid="filter">
+          {`{ ${item.column} ${item.comparison} ${item.value} }`}
+          <button onClick={ () => deleteCurrFilter(item.column) } type="button">X</button>
+        </div>
+      ))}
     </form>
   );
 }
