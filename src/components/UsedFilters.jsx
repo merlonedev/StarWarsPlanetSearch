@@ -10,7 +10,6 @@ function UsedFilters() {
   const { filterByNumericValues } = filters;
 
   const removeFilter = (index) => {
-    console.log(filterByNumericValues);
     setFilters({
       ...filters,
       filterByNumericValues: filterByNumericValues.filter((_filter, i) => (
