@@ -1,4 +1,4 @@
-export default async function fetchAPI() {
+export const fetchAPI = async () => {
   try {
     const URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
     const response = await fetch(URL);
@@ -7,4 +7,9 @@ export default async function fetchAPI() {
   } catch (error) {
     console.log(error);
   }
-}
+};
+
+export const fetchNoResidents = async (fetch) => {
+  const data = fetch.forEach((planet) => delete planet.residents);
+  return data;
+};
