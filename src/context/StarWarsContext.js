@@ -26,6 +26,10 @@ export function StarWarsProvider({ children }) {
     setFilters([...filters, newFilter]);
   }
 
+  function removeFilter(index) {
+    setFilters(filters.slice(0, index).concat(filters.slice(index + 1)));
+  }
+
   const filtersNode = {
     filters: {
       filterByName: {
@@ -40,6 +44,7 @@ export function StarWarsProvider({ children }) {
     planets,
     handleNameChange,
     addFilter,
+    removeFilter,
   };
 
   return (
