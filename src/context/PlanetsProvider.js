@@ -7,20 +7,25 @@ function PlanetsProvider(props) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
+  const [copyResults, setcopyResults] = useState([]);
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [],
+  });
+
+  const setFilterByName = (event) => {
+    const { value } = event.target;
+    setFilters({ ...filters, filterByName: { name: value.toLowerCase() } });
+  };
+
+  const sendFilterNumeric = (obj) => {
+    const { filterByNumericValues } = filters;
+    setFilters({ ...filters, filterByNumericValues: [...filterByNumericValues, obj] });
+  };
 
   useEffect(() => {
-    const [data, setData] = useState([]);
-    const [filters, setfilters] = useState({
-      filterByName: {
-        name: '',
-      },
-    });
-    const [copyResults, setcopyResults] = useState([]);
-
-    const setFilterByName = (event) => {
-      const { value } = event.target;
-      setfilters({ filterByName: { name: value.toLowerCase() } });
-    };
     const load = async () => {
       try {
         setIsLoading(true);
@@ -36,14 +41,15 @@ function PlanetsProvider(props) {
     };
     load();
   }, []);
-  // const { name } = filters.filterByName;
+
   const context = { data,
     isLoading,
     loadError,
     filters,
     setFilterByName,
     setData,
-    copyResults };
+    copyResults,
+    sendFilterNumeric };
   const { children } = props;
   return (
     <PlanetsContext.Provider value={ context }>
@@ -51,9 +57,7 @@ function PlanetsProvider(props) {
     </PlanetsContext.Provider>
   );
 }
-
 PlanetsProvider.propTypes = {
   children: PropTypes.node,
 }.isRequired;
-
 export default PlanetsProvider;
