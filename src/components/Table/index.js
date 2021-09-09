@@ -1,116 +1,83 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import AppContext from '../../context/AppContext';
+import './Table.css';
 
-function generateSelectColums(nome, label, optionArray, handleSelect) {
-  return (
-    <label htmlFor={ nome }>
-      {label}
-      <select
-        name={ nome }
-        id={ nome }
-        onChange={ handleSelect }
-        data-testid="column-filter"
-      >
-        {optionArray.map((element, index) => <option key={ index }>{element}</option>)}
-      </select>
-    </label>
-  );
-}
+function filterData(data, filters) {
+  const { filterByName: { name }, filterByNumericValues } = filters;
+  let filteredData = data.filter((
+    planet,
+  ) => planet.name.toLowerCase().includes(name.toLowerCase()));
 
-function generateSelectComparison(nome, label, optionArray, handleSelect) {
-  return (
-    <label htmlFor={ nome }>
-      {label}
-      <select
-        name={ nome }
-        id={ nome }
-        data-testid="comparison-filter"
-        onChange={ handleSelect }
-      >
-        {optionArray.map((element, index) => <option key={ index }>{element}</option>)}
-      </select>
-    </label>
-  );
-}
+  filterByNumericValues.forEach((filter) => {
+    filteredData = filteredData.filter((planet) => {
+      const columnValue = +(planet[filter.column]);
+      const filterValue = +(filter.value);
 
-function generateInputNumber(label, handleNumber) {
-  return (
-    <label htmlFor="number">
-      {label}
-      <input
-        type="number"
-        name="value"
-        data-testid="value-filter"
-        onChange={ handleNumber }
-      />
-    </label>
-  );
-}
+      if (filter.comparison === 'maior que') {
+        return (columnValue > filterValue && columnValue !== 'unknown');
+      }
 
-function generateButton(handleClick) {
-  return (
-    <button
-      type="button"
-      onClick={ handleClick }
-      data-testid="button-filter"
-    >
-      Filtrar
-    </button>
-  );
-}
+      if (filter.comparison === 'menor que') {
+        return (columnValue < filterValue && columnValue !== 'unknown');
+      }
 
-export default function FilterByNumerics() {
-  const [numericValuesFilter, setNumericValuesFilters] = useState({
-    column: 'population',
-    comparison: 'maior que',
-    value: '0',
+      if (filter.comparison === 'igual a') {
+        return (columnValue === filterValue && columnValue !== 'unknown');
+      }
+
+      return false;
+    });
   });
 
+  return filteredData;
+}
+
+function generateThead(data) {
+  if (data) {
+    return data.map((
+      item,
+      index,
+    ) => <th className="head" key={ index }>{item}</th>);
+  }
+}
+
+function generateTBody(data) {
+  console.log('oi');
+  const resident = 9;
+  if (data) {
+    return data.map((planet) => (
+      <tr key={ `${planet.name}` }>
+        {Object.values(planet).map((
+          value,
+          index,
+        ) => (index !== resident
+          ? <td key={ value }>{value}</td>
+          : null))}
+      </tr>
+    ));
+  }
+}
+
+export default function Table() {
   const {
-    filterByNumericValues,
+    dataColumn,
+    dataRow,
+    filters,
   } = useContext(AppContext);
 
-  function handleFilter({ target: { name, value } }) {
-    setNumericValuesFilters({
-      ...numericValuesFilter,
-      [name]: value,
-    });
-  }
-
-  const handleClick = () => {
-    filterByNumericValues(numericValuesFilter);
-  };
-
-  const optionPlanets = [
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
-  ];
-  const optionComparison = [
-    'maior que',
-    'menor que',
-    'igual a',
-  ];
+  const dataFilters = filterData(dataRow, filters);
+  console.log('filters', filters);
 
   return (
-    <div>
-      {generateSelectColums(
-        'column',
-        'Filtre por coluna',
-        optionPlanets,
-        handleFilter,
-      )}
-      {generateSelectComparison(
-        'comparison',
-        'Filtre por comparação',
-        optionComparison,
-        handleFilter,
-      )}
-
-      {generateInputNumber('Coloque seu número', handleFilter)}
-      {generateButton(handleClick)}
-    </div>
+    <table>
+      <thead>
+        <tr>
+          {generateThead(dataColumn)}
+        </tr>
+      </thead>
+      <tbody>
+        {generateTBody(dataFilters)}
+      </tbody>
+    </table>
   );
 }
