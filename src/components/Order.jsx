@@ -30,7 +30,7 @@ function Order() {
         name="column"
         data-testid="column-sort"
         value={ order.column }
-        onChange={ handleChange }
+        onChange={ (e) => handleChange(e) }
       >
         {orderColumns.map((column, i) => (
           <option key={ i } value={ column }>{ column }</option>
@@ -44,7 +44,7 @@ function Order() {
           value="ASC"
           type="radio"
           id="asc-input"
-          onChange={ handleChange }
+          onChange={ (e) => handleChange(e) }
           data-testid="column-sort-input-asc"
           checked={ order.sort === 'ASC' }
         />
@@ -57,7 +57,7 @@ function Order() {
           value="DESC"
           type="radio"
           id="desc-input"
-          onChange={ handleChange }
+          onChange={ (e) => handleChange(e) }
           data-testid="column-sort-input-desc"
           checked={ order.sort === 'DESC' }
         />

@@ -43,7 +43,7 @@ function PlanetsTable() {
   }, [order]);
 
   useEffect(() => {
-    let newPlanets = data;
+    let newPlanets = [...data];
 
     filterByNumericValues.forEach(({ column, comparison, value }) => {
       if (value) newPlanets = filterNumericValues(newPlanets, column, comparison, value);
@@ -62,6 +62,8 @@ function PlanetsTable() {
     }
   }, [filterByName, data]);
 
+  sortPlanets(data);
+
   return (data.length > 0 && !dataError
     && (
       <table>
@@ -77,13 +79,13 @@ function PlanetsTable() {
 
         <tbody>
           {
-            planets.map((planet, i) => (
-              <tr key={ i }>
+            planets.map((planet) => (
+              <tr key={ planet.name }>
                 {
-                  Object.keys(planet).map((column, j) => (
+                  Object.keys(planet).map((column) => (
                     column === 'name'
-                      ? <td key={ j } data-testid="planet-name">{ planet[column] }</td>
-                      : <td key={ j }>{ planet[column] }</td>
+                      ? <td key={ column } data-testid="planet-name">{ planet[column] }</td>
+                      : <td key={ column }>{ planet[column] }</td>
                   ))
                 }
               </tr>
