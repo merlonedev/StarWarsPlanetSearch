@@ -8,6 +8,7 @@ export const StarWarsConsumer = StarWarsContext.Consumer;
 
 export function StarWarsProvider({ children }) {
   const [planets, setPlanets] = useState([]);
+  const [name, setName] = useState('');
 
   useEffect(() => {
     getPlanets().then(({ results }) => {
@@ -16,8 +17,22 @@ export function StarWarsProvider({ children }) {
     });
   }, []);
 
+  function handleNameChange({ target }) {
+    setName(target.value);
+  }
+
+  const filters = {
+    filters: {
+      filterByName: {
+        name,
+      },
+    },
+  };
+
   const context = {
+    ...filters,
     planets,
+    handleNameChange,
   };
 
   return (
@@ -28,7 +43,10 @@ export function StarWarsProvider({ children }) {
 }
 
 StarWarsProvider.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]).isRequired,
 };
 
 export default StarWarsContext;

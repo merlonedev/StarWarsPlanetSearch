@@ -4,7 +4,7 @@ import StarWarsContext from '../context/StarWarsContext';
 import styles from '../styles/Table.css';
 
 const Table = () => {
-  const { planets } = useContext(StarWarsContext);
+  const { planets, filters: { filterByName: { name } } } = useContext(StarWarsContext);
   const headers = Object.keys(planets[0] || []);
 
   function renderPlanetRow(planet, key) {
@@ -28,7 +28,9 @@ const Table = () => {
         </tr>
       </thread>
       <tbody>
-        { planets.map((planet, key) => renderPlanetRow(planet, key)) }
+        { planets
+          .filter((planet) => (name ? planet.name.includes(name) : true))
+          .map((planet, key) => renderPlanetRow(planet, key)) }
       </tbody>
     </table>
   );
