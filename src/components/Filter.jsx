@@ -1,6 +1,7 @@
 import React from 'react';
 import FilterByName from './FilterByName';
 import FilterByColumnAndNumber from './FilterByColumnAndNumber';
+import UsedFilters from './UsedFilters';
 
 function Filter() {
   return (
@@ -9,6 +10,7 @@ function Filter() {
 
       <FilterByName />
       <FilterByColumnAndNumber />
+      <UsedFilters />
     </div>
   );
 }

@@ -5,6 +5,7 @@ function PlanetsTable() {
   const {
     data,
     dataError,
+    filterNumericValues,
     filters: { filterByName, filterByNumericValues },
   } = useContext(Context);
 
@@ -17,28 +18,6 @@ function PlanetsTable() {
       setPlanets(data.filter(({ name }) => name.includes(filterByName.name)));
     }
   }, [filterByName, data]);
-
-  const filterNumericValues = (planetsData, column, comparison, value) => {
-    let filteredPlanets;
-
-    if (comparison === 'maior que') {
-      filteredPlanets = planetsData.filter((planet) => (
-        Number(planet[column]) > Number(value)
-      ));
-    }
-    if (comparison === 'menor que') {
-      filteredPlanets = planetsData.filter((planet) => (
-        Number(planet[column]) < Number(value)
-      ));
-    }
-    if (comparison === 'igual a') {
-      filteredPlanets = planetsData.filter((planet) => (
-        Number(planet[column]) === Number(value)
-      ));
-    }
-
-    return filteredPlanets;
-  };
 
   useEffect(() => {
     filterByNumericValues.forEach(({ column, comparison, value }) => (
@@ -58,7 +37,7 @@ function PlanetsTable() {
         return filterNumericValues(prevPlanets, column, comparison, value);
       })
     ));
-  }, [data, filterByName, filterByNumericValues]);
+  }, [data, filterByName, filterByNumericValues, filterNumericValues]);
 
   return (data.length > 0 && !dataError
     && (

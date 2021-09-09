@@ -37,6 +37,28 @@ function Provider({ children }) {
     }));
   };
 
+  const filterNumericValues = (planetsData, column, comparison, value) => {
+    let filteredPlanets;
+
+    if (comparison === 'maior que') {
+      filteredPlanets = planetsData.filter((planet) => (
+        Number(planet[column]) > Number(value)
+      ));
+    }
+    if (comparison === 'menor que') {
+      filteredPlanets = planetsData.filter((planet) => (
+        Number(planet[column]) < Number(value)
+      ));
+    }
+    if (comparison === 'igual a') {
+      filteredPlanets = planetsData.filter((planet) => (
+        Number(planet[column]) === Number(value)
+      ));
+    }
+
+    return filteredPlanets;
+  };
+
   const context = {
     data,
     setData,
@@ -44,6 +66,7 @@ function Provider({ children }) {
     filters,
     setFilters,
     handleFilterByName,
+    filterNumericValues,
   };
 
   return (
