@@ -1,11 +1,9 @@
 import React, { useContext, useState } from 'react';
-import PropTypes from 'prop-types';
 import Context from '../context/Context';
 
 function SortFilters() {
   const { filteredPlanet, setFilteredPlanet } = useContext(Context);
-  // sortOptions
-  const [newMap, setNewMap] = useState([
+  const [newMap] = useState([
     'name',
     'rotation_period',
     'orbital_period',
@@ -16,7 +14,6 @@ function SortFilters() {
     'surface_water',
     'population',
   ]);
-  // selectedSort, setSelectedSort
   const [order, setOrder] = useState({
     column: 'Name',
     sort: 'ASC',
@@ -30,17 +27,12 @@ function SortFilters() {
     if (sort === 'ASC') {
       filterSort.sort((a, b) => (a[column] > b[column] ? 1 : numberFix))
         .sort((a, b) => a[column] - b[column]);
-      // console.log('SORT');
     }
-    // array.sort((a, b) => a > b ? 1 : a < b ? -1 : 0
     if (sort === 'DESC') {
       filterSort.sort((a, b) => (a[column] < b[column] ? 1 : numberFix))
         .sort((a, b) => b[column] - a[column]);
     }
-    // console.log(column, sort);
     setFilteredPlanet(filterSort);
-    // setNewMap(filterSort);
-    // console.log(filterSort);
   }
 
   function handlerChange({ target: { value } }) {
@@ -51,11 +43,8 @@ function SortFilters() {
     setOrder({ ...order, column: value });
   }
 
-  // selectedSort, setSelectedSort} - order, setOrder
-  // sortOptions - newMap
   return (
     <>
-      {/* {console.log(column, 'colum', sort)} */}
       <select
         data-testid="column-sort"
         value={ newMap.column }

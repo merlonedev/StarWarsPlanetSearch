@@ -26,7 +26,6 @@ function Provider({ children }) {
       const { results } = resolve;
       results.forEach((el) => delete el.residents);
       const setKey = Object.keys(results[0]);
-      console.log(results);
       setData(results.sort((a, b) => (a.name > b.name ? 1 : numberFix)));
       setKeys(setKey);
       setLoading(false);

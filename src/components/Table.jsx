@@ -17,7 +17,13 @@ function Table() {
       <tbody>
         {filteredPlanet.map((plan) => (
           <tr key={ plan.name }>
-            {keys.map((i) => (<td data-testid="planet-name" key={ i }>{plan[i]}</td>))}
+            {keys.map((i) => (
+              <td
+                data-testid={ i === 'name' ? 'planet-name' : '' }
+                key={ i }
+              >
+                {plan[i]}
+              </td>))}
           </tr>
         ))}
       </tbody>
