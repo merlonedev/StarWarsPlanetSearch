@@ -28,7 +28,7 @@ function GetPlanet() {
   function filterData(rows) {
     const { filterByName: { name } } = filters;
     const results = [];
-    const minusOne = -1;
+    // const minusOne = -1;
 
     if (filterByNumericValues.length > 0) {
       filterByNumericValues.forEach((filter) => {
