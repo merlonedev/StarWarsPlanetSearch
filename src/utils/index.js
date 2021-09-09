@@ -12,7 +12,19 @@ export const comparisonColumns = [
   'igual a',
 ];
 
+export const orderColumns = [
+  'name',
+  'rotation_period',
+  'orbital_period',
+  'diameter',
+  'climate',
+  'terrain',
+  'surface_water',
+  'population',
+];
+
 export const initialFilterState = {
   filterByName: { name: '' },
   filterByNumericValues: [{ column: '', comparison: '', value: '' }],
+  order: { column: 'name', sort: 'ASC' },
 };

@@ -1,15 +1,46 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, useCallback } from 'react';
 import Context from '../context';
+
+const POSITIVE = 1;
+const NEGATIVE = -1;
 
 function PlanetsTable() {
   const {
     data,
     dataError,
     filterNumericValues,
-    filters: { filterByName, filterByNumericValues },
+    filters: { filterByName, filterByNumericValues, order },
   } = useContext(Context);
 
   const [planets, setPlanets] = useState([]);
+
+  const set = (z, par) => {
+    if (z[par] === 'unknown') return 0;
+    if (Number.isNaN(Number(z[par]))) return z[par];
+    return Number(z[par]);
+  };
+
+  const sortPlanets = useCallback((dataToSort) => {
+    const { column, sort } = order;
+    const key = column.toLowerCase();
+    if (sort === 'ASC') {
+      return dataToSort.sort((a, b) => {
+        const x = set(a, key);
+        const y = set(b, key);
+        if (x < y) return NEGATIVE;
+        if (x > y) return POSITIVE;
+        return 0;
+      });
+    }
+
+    return dataToSort.sort((a, b) => {
+      const x = set(a, key);
+      const y = set(b, key);
+      if (x > y) return NEGATIVE;
+      if (x < y) return POSITIVE;
+      return 0;
+    });
+  }, [order]);
 
   useEffect(() => {
     let newPlanets = data;
@@ -18,8 +49,10 @@ function PlanetsTable() {
       if (value) newPlanets = filterNumericValues(newPlanets, column, comparison, value);
     });
 
+    newPlanets = sortPlanets(newPlanets);
+
     setPlanets(newPlanets);
-  }, [data, filterByName, filterByNumericValues, filterNumericValues]);
+  }, [data, filterByNumericValues, filterNumericValues, sortPlanets]);
 
   useEffect(() => {
     if (!filterByName.name) {
@@ -48,7 +81,9 @@ function PlanetsTable() {
               <tr key={ i }>
                 {
                   Object.keys(planet).map((column, j) => (
-                    <td key={ j }>{ planet[column] }</td>
+                    column === 'name'
+                      ? <td key={ j } data-testid="planet-name">{ planet[column] }</td>
+                      : <td key={ j }>{ planet[column] }</td>
                   ))
                 }
               </tr>
