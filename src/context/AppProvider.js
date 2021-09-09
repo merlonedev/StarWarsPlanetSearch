@@ -5,11 +5,14 @@ import AppContext from './AppContext';
 
 export default function AppProvider({ children }) {
   const [planets, setPlanets] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
 
   const fetchPlanets = async () => {
     const filteredResults = await fetchAPI();
     filteredResults.forEach((planet) => delete planet.residents);
     setPlanets(filteredResults);
+    setLoading(true);
   };
 
   useEffect(() => {
@@ -19,6 +22,10 @@ export default function AppProvider({ children }) {
   const context = {
     planets,
     setPlanets,
+    isLoading,
+    setLoading,
+    searchInput,
+    setSearchInput,
   };
 
   return (

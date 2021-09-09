@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 export default function Table() {
-  const { planets } = useContext(AppContext);
+  const { planets, isLoading, searchInput } = useContext(AppContext);
 
   const renderInfo = (data) => {
     const infoPlanets = Object.values(data);
@@ -17,14 +17,13 @@ export default function Table() {
               </td>
             );
           }
-
           return <td key={ info }>{info}</td>;
         })}
       </tr>
     );
   };
 
-  if (!planets.length) return <span>Carregando!</span>;
+  if (!isLoading) return <span>Carregando!</span>;
   return (
     <div>
       <table>
@@ -35,7 +34,11 @@ export default function Table() {
           </tr>
         </thead>
         <tbody>
-          {planets.map((planet) => renderInfo(planet))}
+          {planets.filter((planet) => {
+            if (planet.name.toLowerCase()
+              .includes(searchInput.toLowerCase())) return planet;
+            return null;
+          }).map((planet) => renderInfo(planet))}
         </tbody>
       </table>
     </div>
