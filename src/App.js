@@ -1,7 +1,7 @@
 import React from 'react';
 import Provider from './context/Provider';
-import Table from './components/Table.js';
-import Filters from './components/Filters.js';
+import Filters from './Components/Filters';
+import Table from './Components/Table';
 
 function App() {
   return (
