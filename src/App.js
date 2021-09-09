@@ -5,12 +5,14 @@ import './App.css';
 import FilterName from './components/FilterName';
 import NumericFilter from './components/NumericFilter';
 import ActiveFilters from './components/ActiveFilters';
+import OrderFilter from './components/OrderColumn';
 
 function App() {
   return (
     <Provider>
       <FilterName />
       <NumericFilter />
+      <OrderFilter />
       <ActiveFilters />
       <Table />
     </Provider>

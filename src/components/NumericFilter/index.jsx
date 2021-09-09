@@ -2,18 +2,11 @@ import React, { useContext, useState } from 'react';
 import MyContext from '../../context';
 
 const NumericFilter = () => {
-  const { filters, setFilter } = useContext(MyContext);
+  const { filters, setFilter, columns, setColumns } = useContext(MyContext);
   const { filterByNumericValues } = filters;
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState('');
-  const [columns, setColumns] = useState([
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
-  ]);
 
   const handleSubmit = () => {
     setFilter({

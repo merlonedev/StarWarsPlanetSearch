@@ -4,17 +4,30 @@ import MyContext from '..';
 
 const Provider = ({ children }) => {
   const [api, setApi] = useState([]);
+  const [columns, setColumns] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
   const [filters, setFilter] = useState({
     filterByName: {
       name: '',
     },
     filterByNumericValues: [],
+    order: {
+      column: 'name',
+      sort: 'ASC',
+    },
   });
 
   useEffect(() => {
     const getApi = async () => {
       const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
+      const negativeOne = -1;
       const { results } = await fetch(endpoint).then((data) => data.json());
+      results.sort((a, b) => (a.name > b.name ? 1 : negativeOne));
       setApi(results);
     };
     getApi();
@@ -33,10 +46,12 @@ const Provider = ({ children }) => {
 
   const contextValue = {
     data: api,
+    setData: setApi,
     filters,
     setFilter,
     handleFilter,
-
+    columns,
+    setColumns,
   };
 
   return (
