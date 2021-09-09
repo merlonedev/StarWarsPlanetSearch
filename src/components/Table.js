@@ -3,8 +3,32 @@ import StarWarsContext from '../context/StarWarsContext';
 
 import styles from '../styles/Table.css';
 
+const comparisonReducer = (items = [], filter) => {
+  switch (filter.comparison) {
+  case 'maior que': {
+    return items.filter((item) => item[filter.column] > filter.value);
+  }
+  case 'menor que': {
+    return items.filter((item) => item[filter.column] < filter.value);
+  }
+  case 'igual a': {
+    return items.filter((item) => (
+      Number(item[filter.column]) === filter.value
+    ));
+  }
+  default: return items;
+  }
+};
+
 const Table = () => {
-  const { planets, filters: { filterByName: { name } } } = useContext(StarWarsContext);
+  const {
+    planets,
+    filters: {
+      filterByName: { name },
+      filterByNumericValues,
+    },
+  } = useContext(StarWarsContext);
+
   const headers = Object.keys(planets[0] || []);
 
   function renderPlanetRow(planet, key) {
@@ -28,7 +52,8 @@ const Table = () => {
         </tr>
       </thread>
       <tbody>
-        { planets
+        { filterByNumericValues
+          .reduce(comparisonReducer, planets)
           .filter((planet) => (name ? planet.name.includes(name) : true))
           .map((planet, key) => renderPlanetRow(planet, key)) }
       </tbody>
