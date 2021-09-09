@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import MyContext from '../context/MyContext';
 
 function FilterValue() {
@@ -7,9 +7,9 @@ function FilterValue() {
     comparison: '',
     value: '',
   });
-  const { filters, setFilters,
-    compare, coluns, filterPlanet, setFilterPlanet } = useContext(MyContext);
-  // const { filterByName: { name } } = filters;
+  const { filters, setFilters, compare, filterPlanet,
+    setFilterPlanet, removeColumnFilter } = useContext(MyContext);
+  const [setButtonStatus] = useState(true);
   const { filterByNumericValues } = filters;
 
   const handlerClick = () => {
@@ -22,13 +22,6 @@ function FilterValue() {
     });
   };
 
-  const handlerChange = (({ target: { name, value } }) => {
-    setCompareFilter({
-      ...compareFilter,
-      [name]: value,
-    });
-  });
-
   useEffect(() => {
     if (filterByNumericValues.length > 0) {
       let newData = filterPlanet;
@@ -37,8 +30,8 @@ function FilterValue() {
           if (comparison === 'maior que') return Number(item[column]) > Number(value);
           if (comparison === 'menor que') return Number(item[column]) < Number(value);
           if (comparison === 'igual a') return Number(item[column]) === Number(value);
-          console.log(filterByNumericValues);
-          console.log(newData);
+          // console.log(filterByNumericValues);
+          // console.log(newData);
           return true;
         });
         setFilterPlanet(newData);
@@ -46,19 +39,51 @@ function FilterValue() {
     }
   }, [filters]);
 
-  const selectOption = () => {
-    const newColuns = coluns;
+  const handlerChange = (({ target: { name, value } }) => {
+    setCompareFilter({
+      ...compareFilter,
+      [name]: value,
+    });
+  });
+
+  // const selectOption = () => {
+  //   const newColuns = coluns;
+  //   if (filterByNumericValues.length) {
+  //     filterByNumericValues.forEach(({ column }) => {
+  //       const deleteOption = newColuns.indexOf(column);
+  //       const index = -1;
+  //       if (deleteOption > index) {
+  //         newColuns.splice(deleteOption, 1);
+  //       }
+  //     });
+  //   }
+  //   return newColuns;
+  // };
+
+  const optionsNumericFilter = () => {
+    let columnsFilters = ['population',
+      'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+
     if (filterByNumericValues.length) {
       filterByNumericValues.forEach(({ column }) => {
-        const deleteOption = newColuns.indexOf(column);
-        const index = -1;
-        if (deleteOption > index) {
-          newColuns.splice(deleteOption, 1);
-        }
+        columnsFilters = columnsFilters.filter((option) => option !== column);
       });
     }
-    return newColuns;
+    if (columnsFilters.length === 1) setButtonStatus(true);
+    return columnsFilters;
   };
+
+  // const removeFilter = (selected) => {
+  //   const filtered = filterByNumericValues.filter((stored) => stored !== selected);
+  //   setFilters({
+  //     ...filters,
+  //     filterByNumericValues: [
+  //       {
+  //         ...filtered,
+  //       },
+  //     ],
+  //   });
+  // };
 
   return (
     <form>
@@ -68,8 +93,8 @@ function FilterValue() {
         onChange={ handlerChange }
       >
         {
-          selectOption().map((coluna) => (
-            <option key={ coluna }>{ coluna }</option>
+          optionsNumericFilter().map((coluna, index) => (
+            <option key={ index } value={ coluna }>{ coluna }</option>
           ))
         }
       </select>
@@ -97,6 +122,20 @@ function FilterValue() {
       >
         Filtrar
       </button>
+      <div>
+        {filterByNumericValues.map(({ column, comparison, value }) => (
+          <div key={ column } data-testid="filter">
+            {`${column} | ${comparison} | ${value}`}
+            <button
+              type="button"
+              data-testid="filter"
+              onClick={ () => removeColumnFilter(column) }
+            >
+              x
+            </button>
+          </div>
+        ))}
+      </div>
     </form>
   );
 }

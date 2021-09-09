@@ -10,6 +10,7 @@ function Provider({ children }) {
       name: '' },
     filterByNumericValues: [],
   });
+  // const { filterByNumericValues } = filters;
 
   useEffect(() => {
     const getPlanet = async () => {
@@ -35,9 +36,16 @@ function Provider({ children }) {
     });
   }
 
-  const [coluns, setColuns] = useState(
-    ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'],
-  );
+  const removeColumnFilter = (columnName) => {
+    setFilters((prevFilters) => {
+      const { filterByNumericValues } = prevFilters;
+      return {
+        ...prevFilters,
+        filterByNumericValues: filterByNumericValues
+          .filter(({ column }) => column !== columnName),
+      };
+    });
+  };
 
   const [compare, setCompare] = useState([
     'maior que', 'menor que', 'igual a',
@@ -48,13 +56,12 @@ function Provider({ children }) {
     setData,
     filters,
     setFilters,
-    coluns,
-    setColuns,
     compare,
     setCompare,
     filterPlanet,
     setFilterPlanet,
     handleChange,
+    removeColumnFilter,
   };
 
   return (
