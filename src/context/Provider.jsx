@@ -19,13 +19,15 @@ function Provider({ children }) {
 
   useEffect(() => {
     const fetchApi = async () => {
+      const numberFix = -1;
       const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
       const planets = await fetch(endpoint);
       const resolve = await planets.json();
       const { results } = resolve;
       results.forEach((el) => delete el.residents);
       const setKey = Object.keys(results[0]);
-      setData(results);
+      console.log(results);
+      setData(results.sort((a, b) => (a.name > b.name ? 1 : numberFix)));
       setKeys(setKey);
       setLoading(false);
     };
