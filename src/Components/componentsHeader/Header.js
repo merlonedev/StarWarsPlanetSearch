@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import MyContext from '../../Context/MyContext';
+import RenderFilters from './RenderFilters';
 import Selector from './Selector';
 
 function Header() {
@@ -51,6 +52,15 @@ function Header() {
 
   const columnsOptions = setColumnsOptions();
 
+  const handleRemoveFilter = (col) => {
+    setFilters({
+      ...filters,
+      filterByNumericValues: filterByNumericValues
+        .filter(({ column }) => column !== col),
+    });
+    console.log(`oi${filters.filterByNumericValues}`);
+  };
+
   return (
     <header>
       <h1> Star Wars Planets </h1>
@@ -99,6 +109,12 @@ function Header() {
           >
             Filtrar
           </button>
+        </div>
+        <div>
+          <RenderFilters
+            filters={ filterByNumericValues }
+            handleClick={ handleRemoveFilter }
+          />
         </div>
       </form>
     </header>

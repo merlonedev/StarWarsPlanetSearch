@@ -23,7 +23,6 @@ function MyProvider({ children }) {
     value: '' });
 
   const { filterByName: { name }, filterByNumericValues } = filters;
-  console.log(filters);
   useEffect(() => {
     async function requiredData() {
       const END_POINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
@@ -57,6 +56,8 @@ function MyProvider({ children }) {
       }))
     ));
   }, [filterByNumericValues]);
+
+  console.log(planetsFiltered);
 
   const contextValue = {
     planetsData,
