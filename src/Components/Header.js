@@ -6,23 +6,32 @@ import SelectColumn from './SelectColumn';
 import SelectComparison from './SelectComparison';
 import InputValue from './InputValue';
 import FilterButton from './FilterButton';
+import OrderFunc from './FilterOrder';
 
 const columnOptions = ['population', 'orbital_period',
+  'diameter', 'rotation_period', 'surface_water'];
+
+const verifyArray = ['population', 'orbital_period',
   'diameter', 'rotation_period', 'surface_water'];
 
 const filters = { filterByName: { name: '' } };
 
 const values = { filterByNumericValues: [] };
 
+const order = { column: 'Name', sort: 'ASC' };
+
 function Header() {
   const [headers, setHeaders] = useState([]); // 1
   const [data, setData] = useState([]);// 2
   const [stateName, setStateName] = useState(filters);// 3
   const [stateValue, setStateValue] = useState(values);// 4
+  const [orderFilter, setOrderFilter] = useState(order); // 11
 
   const [stateColumn, setStateColumn] = useState('population');// 5
   const [stateComparison, setStateComparison] = useState('maior que');// 6
   const [stateValor, setStateValor] = useState('');// 7
+  const [orderColumn, setOrderColumn] = useState('');
+  const [orderDirection, setOrderDirection] = useState('');
 
   const [filterContainer, setFilterContainer] = useState(data);// 8
 
@@ -71,9 +80,17 @@ function Header() {
     return result;
   };
 
-  const applyFilters = () => setFilterContainer(filterValue(filterName(data)));
+  const testOrder = (array) => {
+    if (verifyArray.some((el) => orderFilter.column === el)) {
+      console.log('asdasd');
+      return (array.sort((a, b) => a[orderFilter.column] - b[orderFilter.column]));
+    }
+    return array;
+  };
 
-  useEffect(() => { applyFilters(); console.log('applyfilterline'); }, [stateValue, stateName]);
+  const applyFilters = () => setFilterContainer(testOrder(filterValue(filterName(data))));
+
+  useEffect(applyFilters, [stateValue, stateName, orderFilter]);
 
   const handleName = ({ target }) => {
     setStateName({ ...stateName, filterByName: { name: target.value } });
@@ -91,6 +108,18 @@ function Header() {
     setStateValor(target.value);
   };
 
+  const handleOrder = ({ target }) => {
+    setOrderDirection(target.value);
+  };
+
+  const handleOrderColumn = ({ target }) => {
+    setOrderColumn(target.value);
+  };
+
+  const buttonClickOrder = () => {
+    setOrderFilter({ column: orderColumn, sort: orderDirection });
+  };
+
   const buttonClick = () => {
     setStateValue({ filterByNumericValues: [...stateValue.filterByNumericValues,
       { column: stateColumn,
@@ -98,29 +127,34 @@ function Header() {
         comparison: stateComparison }] });
   };
 
-  // const selecRender = () => setColumnOptionsFil(columnOptionsFil
-  //   .filter((el) => !stateValue.filterByNumericValues
-  //     .some((le) => le.column === el)));
+  const selecRender = () => setColumnOptionsFil(columnOptionsFil
+    .filter((el) => !stateValue.filterByNumericValues
+      .some((le) => le.column === el)));
 
-  // useEffect(selecRender, [stateValue]);
+  useEffect(selecRender, [stateValue]);
 
   const deleteButton = ({ target }) => {
     setColumnOptionsFil([...columnOptionsFil, target.name]);
-    const test = stateValue.filterByNumericValues
+    const removeValue = stateValue.filterByNumericValues
       .filter((el) => el.column !== target.name);
-    setStateValue({ filterByNumericValues: test });
+    setStateValue({ filterByNumericValues: removeValue });
   };
 
   const contextValue = {
     filterContainer,
     columnOptionsFil,
     stateValue,
+    headers,
     buttonClick,
     deleteButton,
     handleName,
     handleColumn,
     handleComparison,
     handleValue,
+    handleOrder,
+    handleOrderColumn,
+    // testOrder,
+    buttonClickOrder,
   };
 
   return (
@@ -130,6 +164,7 @@ function Header() {
       <SelectComparison />
       <InputValue />
       <FilterButton />
+      <OrderFunc />
       <table>
         <thead>
           <tr>

@@ -21,22 +21,23 @@ function FilterButton() {
           )
         }
       </MyContext.Consumer>
-      <MyContext.Consumer>
-        {
-          ({ stateValue,
-            deleteButton }) => (stateValue.filterByNumericValues.length > columns
-            ? stateValue.filterByNumericValues.map((col, i) => (
-              <button
-                type="button"
-                name={ col.column }
-                key={ i }
-                data-testid="filter"
-                onClick={ deleteButton }
-              >
-                {`${col.column} ${col.comparison} ${col.value}X`}
-              </button>)) : false)
-        }
-      </MyContext.Consumer>
+      <div data-testid="filter">
+        <MyContext.Consumer>
+          {
+            ({ stateValue,
+              deleteButton }) => (stateValue.filterByNumericValues.length > columns
+              ? stateValue.filterByNumericValues.map((col, i) => (
+                <button
+                  type="button"
+                  name={ col.column }
+                  key={ i }
+                  onClick={ deleteButton }
+                >
+                  X
+                </button>)) : false)
+          }
+        </MyContext.Consumer>
+      </div>
     </div>
 
   );

@@ -23,7 +23,7 @@ class Table extends React.Component {
               url,
             }) => (
               <tr key={ name }>
-                <td>{ name }</td>
+                <td data-testid="planet-name">{ name }</td>
                 <td>{ rotation }</td>
                 <td>{ orbital }</td>
                 <td>{ diameter }</td>
