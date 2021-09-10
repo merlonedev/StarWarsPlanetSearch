@@ -32,11 +32,12 @@ function MyProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    const result = [...planetsData];
     setPlanetsFiltered(
-      planetsData.filter(({ name: planet }) => planet.toLowerCase()
+      result.filter(({ name: planet }) => planet.toLowerCase()
         .includes(name.toLowerCase())),
     );
-  }, [name, planetsData]);
+  }, [name, filters, planetsData]);
 
   useEffect(() => {
     let result = [...planetsData];
