@@ -73,19 +73,25 @@ function Header() {
     });
     console.log({ removeFilter });
   };
+  const sortPlantes = (a, b, sort, column) => {
+    if (sort === 'ASC') {
+      return Number.isNaN(Number(a[column]))
+        ? a[column].localeCompare(b[column]) : a[column] > b[column];
+    }
+    if (sort === 'DESC') {
+      return Number.isNaN(Number(a[column]))
+        ? b[column].localeCompare(a[column]) : a[column] < b[column];
+    }
+    return false;
+  };
 
   const handleSort = () => {
     setFilters((prevState) => ({ ...prevState, order: { ...orderedPlanets } }));
     const { sort, column } = orderedPlanets;
     let sortedPlanets = [...planetsData];
     if (sort && column) {
-      sortedPlanets = sortedPlanets.sort((a, b) => {
-        if (sort === 'ASC') return a[column].localeCompare(b[column]);
-        if (sort === 'DESC') return b[column].localeCompare(a[column]);
-        return false;
-      });
+      sortedPlanets = sortedPlanets.sort((a, b) => sortPlantes(a, b, sort, column));
     }
-    console.log(sortedPlanets);
     setPlanetsFiltered(sortedPlanets);
   };
 
