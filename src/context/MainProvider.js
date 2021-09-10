@@ -5,9 +5,17 @@ import MainContext from './MainContext';
 
 function MainProvider({ children }) {
   const [data, setData] = useState({});
-  const [renderDefault, setRenderDefault] = useState(true);
   const [filters, setFilters] = useState({
-    filterByName: '',
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [
+      {
+        column: '',
+        comparison: '',
+        value: '',
+      },
+    ],
   });
 
   useEffect(() => {
@@ -21,8 +29,6 @@ function MainProvider({ children }) {
   const value = {
     data,
     setData,
-    renderDefault,
-    setRenderDefault,
     filters,
     setFilters,
   };

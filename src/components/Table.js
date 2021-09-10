@@ -2,9 +2,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import MainContext from '../context/MainContext';
 
 function Table() {
-  const { data, renderDefault, setRenderDefault, filters } = useContext(MainContext);
+  const { data, filters: {
+    filterByName,
+    filterByNumericValues,
+  } } = useContext(MainContext);
   const [tableHeading, setTableHeading] = useState([]);
-  const [nameFiltered, setNameFiltered] = useState([]);
+  const [planets, setPlanets] = useState([]);
 
   useEffect(() => {
     if (data.length > 0) {
@@ -14,31 +17,35 @@ function Table() {
   }, [data]);
 
   useEffect(() => {
+    const { name } = filterByName;
     const filterPlanetsByName = () => {
-      const { filterByName } = filters;
-      setNameFiltered(data.filter((p) => p.name.toLowerCase().includes(filterByName)));
-      setRenderDefault(false);
+      if (!name) {
+        setPlanets(data);
+      } else {
+        setPlanets(data.filter((p) => p.name.toLowerCase().includes(name)));
+      }
     };
 
     if (data.length) return filterPlanetsByName();
-  }, [filters, data, setRenderDefault]);
+  }, [data, filterByName]);
 
-  function renderAllPlanets() {
-    return (
-      data.length && data.map((planet) => (
-        <tr key={ planet.name }>
-          {
-            Object.values(planet)
-              .map((feature) => (<td key={ feature }>{ feature }</td>))
-          }
-        </tr>
-      ))
-    );
-  }
+  useEffect(() => {
+    filterByNumericValues.forEach(({ column, comparison, value }) => (
+      value && setPlanets((prevsPlanets) => prevsPlanets.filter((planet) => {
+        if (comparison === 'maior que') {
+          return Number(planet[column]) > Number(value);
+        }
+        if (comparison === 'menor que') {
+          return Number(planet[column]) < Number(value);
+        }
+        return Number(planet[column]) === Number(value);
+      }))
+    ));
+  }, [filterByNumericValues]);
 
   function renderFilteredByName() {
     return (
-      nameFiltered.length && nameFiltered.map((planet) => (
+      planets.map((planet) => (
         <tr key={ planet.name }>
           {
             Object.values(planet)
@@ -59,7 +66,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { renderDefault ? renderAllPlanets() : renderFilteredByName() }
+        { renderFilteredByName() }
       </tbody>
     </table>
   );
