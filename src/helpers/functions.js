@@ -36,8 +36,6 @@ export function getInitialSorted(planets) {
   return filterRoundSorted;
 }
 export function getInitialSortedArrayAsc(planets, coluna) {
-  console.log('derivado', planets);
-  console.log('derivado', coluna);
   if (coluna !== 'name') {
     const filterRoundSorted = planets.sort((a, b) => {
       if (parseFloat(a[coluna]) > parseFloat(b[coluna])) {
@@ -51,8 +49,6 @@ export function getInitialSortedArrayAsc(planets, coluna) {
     return filterRoundSorted;
   }
   const filterRoundSorted = planets.sort((a, b) => {
-    console.log('derivado', planets);
-    console.log('derivado', coluna);
     if (a[coluna] > b[coluna]) {
       return ONE;
     }
@@ -65,8 +61,6 @@ export function getInitialSortedArrayAsc(planets, coluna) {
 }
 
 export function getInitialSortedArrayDesc(planets, coluna) {
-  console.log('derivado', planets);
-  console.log('derivado', coluna);
   if (coluna !== 'name') {
     const filterRoundSorted = planets.sort((a, b) => {
       if (parseFloat(a[coluna]) < parseFloat(b[coluna])) {
@@ -80,8 +74,6 @@ export function getInitialSortedArrayDesc(planets, coluna) {
     return filterRoundSorted;
   }
   const filterRoundSorted = planets.sort((a, b) => {
-    console.log('derivado', planets);
-    console.log('derivado', coluna);
     if (a[coluna] < b[coluna]) {
       return ONE;
     }
@@ -94,11 +86,8 @@ export function getInitialSortedArrayDesc(planets, coluna) {
 }
 
 export function getAscOrDescFunc(planets, filters) {
-  console.log('interno', filters);
   const coluna = filters.order.column;
   const ordem = filters.order.sort;
-  console.log('interno', coluna);
-  console.log('interno', ordem);
   if (ordem === 'ASC')getInitialSortedArrayAsc(planets, coluna);
   if (ordem === 'DESC')getInitialSortedArrayDesc(planets, coluna);
 }

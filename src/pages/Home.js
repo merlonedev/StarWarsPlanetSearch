@@ -6,7 +6,7 @@ import { getAscOrDescFunc, getByName, getWithNumbers,
 
 export default function Home() {
   const { planets, filters, setFilters, setshouldFilterNumber, shouldFilterSort,
-    filteredPlanets, setFilteredPlanets, shouldFilterNumber,
+    filteredPlanets, setFilteredPlanets, shouldFilterNumber, setPlanets,
     setshouldFilterSort } = useContext(myContext);
   const filterNumberOptions = [
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
@@ -30,7 +30,7 @@ export default function Home() {
     const filterPlanet = () => {
       if (planets) {
         const filteredName = getAscOrDescFunc(filteredPlanets, filters);
-        setFilteredPlanets(filteredName);
+        setPlanets(filteredName);
         setshouldFilterSort(false);
       }
     };

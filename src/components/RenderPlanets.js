@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import myContext from '../context/myContext';
 
 function RenderPlanets() {
-  const { filteredPlanets } = useContext(myContext);
-
+  const { filteredPlanets, planets } = useContext(myContext);
+  const usedPlanet = !filteredPlanets ? planets : filteredPlanets;
   return (
-    Object.values(filteredPlanets).map((planetas, index) => (
+    Object.values(usedPlanet).map((planetas, index) => (
       <tr key={ index }>
         <td data-testid="planet-name">{planetas.name}</td>
         <td>{planetas.rotation_period}</td>
