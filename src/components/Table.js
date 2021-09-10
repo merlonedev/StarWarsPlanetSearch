@@ -13,7 +13,7 @@ function Table() {
       .filter((planet) => planet.name.toLowerCase().includes(name));
     if (filterPlanets.length < 1) return setData(copyResults);
     setData(filterPlanets);
-  }, [copyResults, data, name, setData]);
+  }, [name]);
 
   const resetPlanets = () => {
     setData(copyResults);
@@ -44,7 +44,7 @@ function Table() {
     }, []);
     if (aplyFilter.length < 1) return setData('');
     setData(aplyFilter);
-  }, [checkComparison, copyResults, filterByNumericValues, setData]);
+  }, [filterByNumericValues]);
   if (isLoading) return <h2>Loading...</h2>;
   if (data.length < 1) {
     return (

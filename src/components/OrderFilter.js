@@ -44,14 +44,14 @@ function OrderFilter() {
     }
   };
 
-  const getOrderForm = useCallback(() => {
+  const getOrderForm = () => {
     orderPlanets(orderBy, orderForm);
-  });
+  };
 
   useEffect(() => {
     setOrderSort(orderBy, orderForm);
     getOrderForm();
-  }, [data, getOrderForm, orderBy, orderForm, setOrderSort]);
+  }, [data, orderBy, orderForm]);
 
   return (
     <div className="App">
