@@ -1,13 +1,18 @@
 import React from 'react';
 import './App.css';
 import Table from './components/Table';
-import Provider from './components/Provider';
+import PayloadProvider from './components/PayloadProvider';
+import FilterProvider from './components/FilterProvider';
+import Filters from './components/Filters';
 
 function App() {
   return (
-    <Provider>
-      <Table />
-    </Provider>
+    <FilterProvider>
+      <Filters />
+      <PayloadProvider>
+        <Table />
+      </PayloadProvider>
+    </FilterProvider>
   );
 }
 
