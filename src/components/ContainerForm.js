@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import MyContext from '../context/MyContext';
 import Form from './Form';
 import DisabledForm from './DisabledForm';
@@ -18,13 +18,17 @@ function ContainerForm() {
   async function onDelete(columnFilter) {
     setAvailableColumns([...availableColumns, columnFilter]);
     await setFilters({
+      ...filters,
       filterByName: { name: filters.filterByName.name },
       filterByNumericValues: filters.filterByNumericValues
         .filter((filter) => filter.column !== columnFilter),
     });
+  }
+
+  useEffect(() => {
     filters.filterByNumericValues.forEach((filter) => setAvailableColumns(availableColumns
       .filter((column) => column !== filter.column)));
-  }
+  }, [filters]);
 
   return (
     <>

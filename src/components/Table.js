@@ -17,8 +17,8 @@ const Table = () => {
       <tbody>
         { filteredPlanets.map(((planet, index) => (
           <tr key={ index }>
-            {Object.values(planet).map((info) => (
-              <td key={ info.name }>
+            {Object.values(planet).map((info, index2) => (
+              <td key={ info.name } data-testid={ index2 === 0 ? 'planet-name' : '' }>
                 {info}
               </td>
             ))}
