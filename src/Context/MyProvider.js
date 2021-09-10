@@ -32,15 +32,9 @@ function MyProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    const result = [...planetsData];
-    setPlanetsFiltered(
-      result.filter(({ name: planet }) => planet.toLowerCase()
-        .includes(name.toLowerCase())),
-    );
-  }, [name, filters, planetsData]);
-
-  useEffect(() => {
     let result = [...planetsData];
+    result = result.filter(({ name: planet }) => planet.toLowerCase()
+      .includes(name.toLowerCase()));
     filterByNumericValues.forEach(({ column, comparison, value }) => {
       result = result.filter((planet) => {
         if (comparison === 'maior que') {
@@ -53,7 +47,7 @@ function MyProvider({ children }) {
       });
     });
     setPlanetsFiltered(result);
-  }, [filters, filterByNumericValues, planetsData]);
+  }, [filters, filterByNumericValues, name, planetsData]);
 
   const contextValue = {
     planetsData,
