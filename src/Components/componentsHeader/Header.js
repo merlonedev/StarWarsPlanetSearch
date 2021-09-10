@@ -24,7 +24,7 @@ function Header() {
 
   const handleClick = (filterOption) => {
     setFilters((prevState) => {
-      if (!prevState.filterByNumericValues[0].value) {
+      if (!prevState.filterByNumericValues.length) {
         return { ...prevState,
           filterByNumericValues: [{
             ...filterOption,
@@ -53,12 +53,13 @@ function Header() {
   const columnsOptions = setColumnsOptions();
 
   const handleRemoveFilter = (col) => {
+    console.log(col);
+    const removeFilter = filterByNumericValues.filter((item) => item.column !== col);
     setFilters({
       ...filters,
-      filterByNumericValues: filterByNumericValues
-        .filter(({ column }) => column !== col),
+      filterByNumericValues: removeFilter,
     });
-    console.log(`oi${filters.filterByNumericValues}`);
+    console.log({ removeFilter });
   };
 
   return (

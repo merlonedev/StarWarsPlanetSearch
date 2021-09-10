@@ -6,12 +6,7 @@ const INITIAL_STATE = {
   filterByName: {
     name: '',
   },
-  filterByNumericValues: [
-    { column: '',
-      comparison: '',
-      value: '',
-    },
-  ],
+  filterByNumericValues: [],
 };
 
 function MyProvider({ children }) {
@@ -44,8 +39,9 @@ function MyProvider({ children }) {
   }, [name, planetsData]);
 
   useEffect(() => {
-    filterByNumericValues.forEach(({ column, comparison, value }) => (
-      value && setPlanetsFiltered((prevsPlanets) => prevsPlanets.filter((planet) => {
+    let result = [...planetsData];
+    filterByNumericValues.forEach(({ column, comparison, value }) => {
+      result = result.filter((planet) => {
         if (comparison === 'maior que') {
           return Number(planet[column]) > Number(value);
         }
@@ -53,11 +49,10 @@ function MyProvider({ children }) {
           return Number(planet[column]) < Number(value);
         }
         return Number(planet[column]) === Number(value);
-      }))
-    ));
-  }, [filterByNumericValues]);
-
-  console.log(planetsFiltered);
+      });
+    });
+    setPlanetsFiltered(result);
+  }, [filters, filterByNumericValues, planetsData]);
 
   const contextValue = {
     planetsData,
