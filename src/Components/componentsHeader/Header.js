@@ -5,9 +5,14 @@ import Selector from './Selector';
 
 function Header() {
   const { filters,
+    planetsData,
     setFilters,
     filterOptions,
-    setFilterOptions } = useContext(MyContext);
+    setFilterOptions,
+    setOrderedPlanets,
+    orderedPlanets,
+    setPlanetsFiltered,
+  } = useContext(MyContext);
 
   const { filterByNumericValues } = filters;
 
@@ -17,6 +22,13 @@ function Header() {
 
   const handleChange = ({ target: { name, value } }) => {
     setFilterOptions((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleChangeSort = ({ target: { name, value } }) => {
+    setOrderedPlanets((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -62,6 +74,24 @@ function Header() {
     console.log({ removeFilter });
   };
 
+  const handleSort = () => {
+    setFilters((prevState) => ({ ...prevState, order: { ...orderedPlanets } }));
+    const { sort, column } = orderedPlanets;
+    let sortedPlanets = [...planetsData];
+    if (sort && column) {
+      sortedPlanets = sortedPlanets.sort((a, b) => {
+        if (sort === 'ASC') return a[column].localeCompare(b[column]);
+        if (sort === 'DESC') return b[column].localeCompare(a[column]);
+        return false;
+      });
+    }
+    console.log(sortedPlanets);
+    setPlanetsFiltered(sortedPlanets);
+  };
+
+  console.log(orderedPlanets.column);
+  console.log(orderedPlanets.sort);
+  console.log(filters);
   return (
     <header>
       <h1> Star Wars Planets </h1>
@@ -116,6 +146,42 @@ function Header() {
             filters={ filterByNumericValues }
             handleClick={ handleRemoveFilter }
           />
+        </div>
+        <div>
+          <Selector
+            testid="column-sort"
+            name="column"
+            value={ orderedPlanets.column }
+            options={ columnsOptions }
+            handleChange={ handleChangeSort }
+          />
+          <label htmlFor="asc">
+            ASC:
+            <input
+              type="radio"
+              name="sort"
+              value="ASC"
+              data-testid="column-sort-input-asc"
+              onChange={ handleChangeSort }
+            />
+          </label>
+          <label htmlFor="desc">
+            DESC:
+            <input
+              type="radio"
+              name="sort"
+              value="DESC"
+              data-testid="column-sort-input-desc"
+              onChange={ handleChangeSort }
+            />
+          </label>
+          <button
+            type="button"
+            data-testid="column-sort-button"
+            onClick={ handleSort }
+          >
+            Sort
+          </button>
         </div>
       </form>
     </header>

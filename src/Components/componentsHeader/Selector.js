@@ -14,7 +14,7 @@ function Selector(props) {
       {
         options
           .map(
-            (item, index) => <option key={ index }>{ item }</option>,
+            (item, index) => <option key={ index } value={ item }>{ item }</option>,
           )
       }
     </select>

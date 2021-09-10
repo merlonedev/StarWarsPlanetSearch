@@ -7,6 +7,7 @@ const INITIAL_STATE = {
     name: '',
   },
   filterByNumericValues: [],
+  order: {},
 };
 
 function MyProvider({ children }) {
@@ -16,6 +17,10 @@ function MyProvider({ children }) {
   const [filterOptions, setFilterOptions] = useState({ column: 'population',
     comparison: 'maior que',
     value: '' });
+  const [orderedPlanets, setOrderedPlanets] = useState({
+    column: 'population',
+    sort: 'ASC',
+  });
 
   const { filterByName: { name }, filterByNumericValues } = filters;
   useEffect(() => {
@@ -23,7 +28,9 @@ function MyProvider({ children }) {
       const END_POINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
       try {
         const { results } = await (await fetch(END_POINT)).json();
-        setPlanetsData(results);
+        const orderedPlanetsData = results
+          .sort(({ name: a }, { name: b }) => a.localeCompare(b));
+        setPlanetsData(orderedPlanetsData);
       } catch (error) {
         console.log(error);
       }
@@ -47,7 +54,7 @@ function MyProvider({ children }) {
       });
     });
     setPlanetsFiltered(result);
-  }, [filters, filterByNumericValues, name, planetsData]);
+  }, [filterByNumericValues, name, planetsData]);
 
   const contextValue = {
     planetsData,
@@ -56,6 +63,9 @@ function MyProvider({ children }) {
     setFilters,
     setFilterOptions,
     filterOptions,
+    orderedPlanets,
+    setOrderedPlanets,
+    setPlanetsFiltered,
   };
 
   return (
