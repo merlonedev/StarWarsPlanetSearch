@@ -13,7 +13,7 @@ function NumericValuesFilter() {
 
   const [availableOptions, setAvailableOptions] = useState(true);
   const [columnOptions, setColumnOptions] = useState(initialColumnOptions);
-  const [comparisonOptions, setComparisonOptions] = useState(initialComparisonOptions);
+  const [comparisonOptions] = useState(initialComparisonOptions);
   const [column, setColumn] = useState(columnOptions[0]);
   const [comparison, setComparison] = useState(comparisonOptions[0]);
   const [value, setValue] = useState(0);
@@ -31,16 +31,12 @@ function NumericValuesFilter() {
   };
 
   useEffect(() => {
-    setComparison(comparisonOptions[0]);
     setColumn(columnOptions[0]);
     setValue(0);
-  }, [columnOptions, comparisonOptions]);
+  }, [columnOptions]);
 
   const handleOptions = () => {
-    if (comparisonOptions.length > 0) {
-      const newComparisonOptions = comparisonOptions
-        .filter((item) => item !== comparison);
-      setComparisonOptions(newComparisonOptions);
+    if (columnOptions.length > 0) {
       const newColumnOptions = columnOptions.filter((element) => element !== column);
       setColumnOptions(newColumnOptions);
     } else {
@@ -93,6 +89,7 @@ function NumericValuesFilter() {
           type="number"
           data-testid="value-filter"
           onChange={ ({ target }) => setValue(+target.value) }
+          value={ value }
         />
       </label>
       <button

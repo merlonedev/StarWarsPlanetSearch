@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 import './Table.css';
 
 function Table() {
-  const { data, filters } = useContext(StarWarsContext);
-  const [numericFilter, setNumericFilter] = useState('');
+  const { data } = useContext(StarWarsContext);
+  const { filters:
+    { filterByNumericValues, filterByName } } = useContext(StarWarsContext);
 
   const renderTableHeader = () => {
     const dataKeys = ['Name', 'Rotation Period', 'Orbital Period',
@@ -12,40 +13,45 @@ function Table() {
       'Films', 'Created', 'Edited', 'URL'];
     return dataKeys.map((columnName) => <th key={ columnName }>{ columnName }</th>);
   };
-  const filterByName = () => {
-    const { filterByName: { name } } = filters;
-    const filterData = data
-      .filter((item) => item.name.toLowerCase().includes(name.toLowerCase()));
-    return filterData;
+
+  const filterName = (array) => {
+    const { name } = filterByName;
+    if (name !== '') {
+      const filterDataName = array
+        .filter((item) => item.name.toLowerCase().includes(name.toLowerCase()));
+      return filterDataName;
+    }
+    return array;
   };
 
-  useEffect(() => {
-    const { filterByNumericValues } = filters;
-    if (filterByNumericValues.length > 0) {
-      const index = filterByNumericValues.length - 1;
-      const obj = filterByNumericValues[index];
-      setNumericFilter(obj);
-    }
-  }, [filters]);
-
-  const filterNumericData = (dataArray) => {
-    const { column, comparison, value } = numericFilter;
+  const compareNumericValues = (planet, comparison, column, value) => {
     if (comparison === 'maior que') {
-      const filtered = dataArray.filter((planet) => planet[column] > value);
-      return filtered;
+      return +planet[column] > +value;
     }
     if (comparison === 'menor que') {
-      const filtered = dataArray.filter((planet) => planet[column] < value);
-      return filtered;
+      return +planet[column] < +value;
     }
     if (comparison === 'igual a') {
-      const filtered = dataArray.filter((planet) => +(planet[column]) === value);
-      return filtered;
+      return +planet[column] === +value;
     }
   };
 
-  const mapData = (finalData = data) => finalData.map((item) => (
-    <tr key={ item.name }>
+  const filterNumericValues = (array) => {
+    if (filterByNumericValues.length > 0) {
+      let filteredValues = array;
+      filterByNumericValues.forEach((obj) => {
+        filteredValues = filteredValues
+          .filter((planet) => compareNumericValues(
+            planet, obj.comparison, obj.column, obj.value,
+          ));
+      });
+      return filteredValues;
+    }
+    return array;
+  };
+
+  const mapData = (array) => array.map((item, index) => (
+    <tr key={ index }>
       <td>{ item.name }</td>
       <td>{ item.rotation_period }</td>
       <td>{ item.orbital_period }</td>
@@ -61,13 +67,7 @@ function Table() {
       <td>{ item.url }</td>
     </tr>));
 
-  const renderTableBody = () => {
-    if (numericFilter) {
-      const allFiltersApplied = filterNumericData(filterByName());
-      return mapData(allFiltersApplied);
-    }
-    return mapData(filterByName());
-  };
+  const renderTableBody = () => mapData(filterNumericValues(filterName(data)));
 
   if (data.length === 0) {
     return <div className="loading-div"><h3>LOADING...</h3></div>;
