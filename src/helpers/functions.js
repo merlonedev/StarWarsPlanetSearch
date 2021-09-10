@@ -22,6 +22,19 @@ export function renderTableHead() {
 
 const ONE = 1;
 const DEC_ONE = -1;
+
+export function getInitialSorted(planets) {
+  const filterRoundSorted = planets.sort((a, b) => {
+    if (a.name > b.name) {
+      return ONE;
+    }
+    if (b.name > a.name) {
+      return DEC_ONE;
+    }
+    return 0;
+  });
+  return filterRoundSorted;
+}
 export function getInitialSortedArrayAsc(planets, coluna) {
   console.log('derivado', planets);
   console.log('derivado', coluna);

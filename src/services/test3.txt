@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import RenderPlanets from '../components/RenderPlanets';
 import myContext from '../context/myContext';
 import { getAscOrDescFunc, getByName, getWithNumbers,
   renderTableHead } from '../helpers/functions';
@@ -26,6 +25,7 @@ export default function Home() {
     filterPlanet();
   },
   [filters.filterByName.name]);
+
   useEffect(() => {
     const filterPlanet = () => {
       if (planets) {
@@ -38,6 +38,7 @@ export default function Home() {
   },
   [shouldFilterSort]);
   //   [filters.filterByName.name]);
+
   useEffect(() => {
     if (shouldFilterNumber) {
       const filterData = () => {
@@ -56,6 +57,22 @@ export default function Home() {
   },
   [filters.filterByNumericValues, shouldFilterNumber, usedArrayOfNumber]);
   //  [filters.filterByNumericValues, shouldFilterNumber, usedArrayOfNumber]);
+  function renderPlanets() {
+    return (
+      Object.values(filteredPlanets).map((planetas, index) => (
+        <tr key={ index }>
+          <td data-testid="planet-name">{planetas.name}</td>
+          <td>{planetas.rotation_period}</td>
+          <td>{planetas.orbital_period}</td>
+          <td>{planetas.diameter}</td>
+          <td>{planetas.climate}</td>
+          <td>{planetas.gravity}</td>
+          <td>{planetas.terrain}</td>
+          <td>{planetas.surface_water}</td>
+          <td>{planetas.population}</td>
+        </tr>
+      )));
+  }
   function getFilterNamePlanets({ target }) {
     const { value } = target;
     setFilters({ ...filters,
@@ -240,7 +257,7 @@ export default function Home() {
           {renderTableHead()}
         </thead>
         <tbody>
-          <RenderPlanets />
+          {renderPlanets()}
         </tbody>
       </table>
     </div>);

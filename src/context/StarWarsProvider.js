@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import myContext from './myContext';
 import getPlanets from '../services/SWApi';
+import { getInitialSorted } from '../helpers/functions';
 
 function StarWarsProvider({ children }) {
   const [planets, setPlanets] = useState('');
+  const [filteredPlanets, setFilteredPlanets] = useState('');
+  const [shouldFilterNumber, setshouldFilterNumber] = useState(false);
+  const [shouldFilterSort, setshouldFilterSort] = useState(false);
   const [filters, setFilters] = useState({
     filterByName: {
       name: '',
@@ -16,29 +20,38 @@ function StarWarsProvider({ children }) {
       sort: 'ASC',
     },
   });
-  const ONE = 1;
-  const DEC_ONE = -1;
 
   useEffect(() => {
     const setupPlanet = async () => {
       const planet = await getPlanets();
-      const filterRoundSorted = planet.sort((a, b) => {
-        if (a.name > b.name) {
-          return ONE;
-        }
-        if (b.name > a.name) {
-          return DEC_ONE;
-        }
-        return 0;
-      });
+      const filterRoundSorted = getInitialSorted(planet);
       setPlanets(filterRoundSorted);
     };
     setupPlanet();
   },
   []);
 
+  useEffect(() => {
+    const setupPlanetsToFilter = async () => {
+      const planet = await getPlanets();
+      const filterRoundSorted = getInitialSorted(planet);
+      setFilteredPlanets(filterRoundSorted);
+    };
+    setupPlanetsToFilter();
+  },
+  []);
+
   const globalState = {
-    planets, setPlanets, filters, setFilters,
+    planets,
+    setPlanets,
+    filters,
+    setFilters,
+    filteredPlanets,
+    setFilteredPlanets,
+    shouldFilterNumber,
+    setshouldFilterNumber,
+    shouldFilterSort,
+    setshouldFilterSort,
   };
 
   return (
