@@ -9,7 +9,7 @@ const STATE_FILTER = {
   },
   filterByNumericValues: [],
   order: {
-    column: 'Name',
+    column: 'name',
     sort: 'ASC',
   },
 };
@@ -23,7 +23,17 @@ export default function AppProvider({ children }) {
 
   const fetchPlanets = async () => {
     const filteredResults = await fetchAPI();
-    filteredResults.forEach((planet) => delete planet.residents);
+    filteredResults.sort((a, b) => {
+      const NEGATIVE = -1;
+      const POSITIVE = 1;
+      const ZERO = 0;
+      const planetA = a.name.toLowerCase();
+      const planetB = b.name.toLowerCase();
+
+      if (planetA < planetB) return NEGATIVE;
+      if (planetA > planetB) return POSITIVE;
+      return ZERO;
+    });
     setPlanets(filteredResults);
     setPlanetsBase(filteredResults);
     setLoading(true);

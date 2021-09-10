@@ -12,7 +12,7 @@ export default function Table() {
         {infoPlanets.map((info, index) => {
           if (!index) {
             return (
-              <td key={ info }>
+              <td key={ info } data-testid="planet-name">
                 {info}
               </td>
             );
