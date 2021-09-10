@@ -42,7 +42,7 @@ export default function FiltersContainer() {
   const [numericFilters, setNumericFilters] = useState({
     column: numeric[0],
     comparison: 'maior que',
-    value: '1000',
+    value: '0',
   });
 
   const [orderFilter, setOrderFilter] = useState({
