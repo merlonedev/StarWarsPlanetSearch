@@ -2,14 +2,16 @@ import React from 'react';
 import './App.css';
 import Filters from './components/Filters';
 import Table from './components/Table';
-import MainProvider from './context/MainProvider';
+import FiltersUsed from './components/FiltersUsed';
+import MyProvider from './context/MainContext';
 
 function App() {
   return (
-    <MainProvider>
+    <MyProvider>
       <Filters />
+      <FiltersUsed />
       <Table />
-    </MainProvider>
+    </MyProvider>
   );
 }
 

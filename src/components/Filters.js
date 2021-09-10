@@ -1,98 +1,169 @@
-import React, { useContext, useEffect, useState } from 'react';
-import MainContext from '../context/MainContext';
+import React, { useCallback, useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { useMyContext } from '../context/MainContext';
 
-const columns = [
-  'population',
-  'orbital_period',
-  'diameter',
-  'rotation_period',
-  'surface_water',
-];
+const filtrableColumns = {
+  numeric: [
+    'population',
+    'rotation_period',
+    'orbital_period',
+    'diameter',
+    'surface_water',
+  ],
 
-function Filter() {
+  text: [
+    'name',
+    'rotation_period',
+    'orbital_period',
+    'diameter',
+    'climate',
+    'terrain',
+    'surface_water',
+    'population',
+  ],
+
+  comparative: [
+    'maior que',
+    'menor que',
+    'igual a',
+  ],
+};
+
+export default function FiltersContainer() {
   const {
+    handleNameFilter,
+    handleFilterByNumeric,
+    handleOrder,
     filters: { filterByNumericValues },
-    handleFilterByName,
-    handleFilterByNumericClick,
-  } = useContext(MainContext);
+  } = useMyContext();
+
+  const { numeric, text, comparative } = filtrableColumns;
+
   const [numericFilters, setNumericFilters] = useState({
-    column: columns[0],
+    column: numeric[0],
     comparison: 'maior que',
-    value: '0',
+    value: '1000',
   });
 
+  const [orderFilter, setOrderFilter] = useState({
+    column: 'name',
+    sort: 'ASC',
+  });
+
+  const availableColumns = useCallback(() => (
+    numeric.filter((column) => !filterByNumericValues
+      .map((filter) => filter.column).includes(column))
+  ), [numeric, filterByNumericValues]);
+
   useEffect(() => {
-    const [newFirstColumn] = columns.filter((column) => !filterByNumericValues
-      .some((numericFilter) => numericFilter.column === column))
-      .map((column) => column);
+    const [newFirstColumn] = availableColumns();
     setNumericFilters((prevNumericFilters) => ({
       ...prevNumericFilters,
       column: newFirstColumn,
     }));
-  }, [filterByNumericValues]);
+  }, [availableColumns]);
 
-  function handleChange({ target: { name, value } }) {
+  const handleChangeNumeric = ({ target: { name, value } }) => {
     setNumericFilters((prevNumericFilters) => ({
       ...prevNumericFilters,
       [name]: value,
     }));
-  }
+  };
+
+  const handleChangeOrder = ({ target: { name, value } }) => {
+    setOrderFilter((prevOrderFilters) => ({
+      ...prevOrderFilters,
+      [name]: value,
+    }));
+  };
 
   return (
-    <div>
-      <section>
-        <label htmlFor="name">
-          Filtrar por Nome:
-          <input
-            type="text"
-            name="name"
-            id="name"
-            data-testid="name-filter"
-            placeholder="Digite aqui o nome"
-            onChange={ handleFilterByName }
-          />
-        </label>
-      </section>
-      <section>
-        <select
-          data-testid="column-filter"
-          name="column"
-          value={ numericFilters.column }
-          onChange={ handleChange }
-        >
-          { columns.filter((column) => !filterByNumericValues
-            .some((numericFilter) => numericFilter.column === column))
-            .map((column) => (
-              <option key={ column } value={ column }>{ column }</option>
-            )) }
-        </select>
+    <section>
+      <div>
+        <input
+          type="text"
+          data-testid="name-filter"
+          placeholder="Digite o nome de um planeta"
+          onChange={ handleNameFilter }
+        />
+        { availableColumns().length > 0 && (
+          <select
+            data-testid="column-filter"
+            name="column"
+            value={ numericFilters.column }
+            onChange={ handleChangeNumeric }
+          >
+            { availableColumns().map((column) => (
+              <option key={ column } value={ column }>{ column }</option>))}
+          </select>
+        )}
         <select
           data-testid="comparison-filter"
           name="comparison"
           value={ numericFilters.comparison }
-          onChange={ handleChange }
+          onChange={ handleChangeNumeric }
         >
-          <option value="maior que">maior que</option>
-          <option value="menor que">menor que</option>
-          <option value="igual a">igual a</option>
+          { comparative.map((name) => (
+            <option key={ name } value={ name }>{ name }</option>)) }
         </select>
         <input
           type="number"
           data-testid="value-filter"
           name="value"
           value={ numericFilters.value }
-          onChange={ handleChange }
+          onChange={ handleChangeNumeric }
         />
         <button
-          type="submit"
+          type="button"
           data-testid="button-filter"
-          onClick={ () => handleFilterByNumericClick(numericFilters) }
+          onClick={ () => handleFilterByNumeric(numericFilters) }
+          disabled={ availableColumns().length < 1 }
         >
-          Filtrar
+          Adicionar filtro
         </button>
-      </section>
-    </div>
+      </div>
+      <div>
+        <select
+          name="column"
+          data-testid="column-sort"
+          value={ orderFilter.column }
+          onChange={ handleChangeOrder }
+        >
+          { text.map((column) => (
+            <option key={ uuidv4() } value={ column }>{ column }</option>)) }
+        </select>
+        <label htmlFor="acs-input">
+          Acrescente
+          <input
+            id="acs-input"
+            type="radio"
+            name="sort"
+            value="ASC"
+            data-testid="column-sort-input-asc"
+            onChange={ handleChangeOrder }
+            checked={ orderFilter.sort === 'ASC' }
+          />
+        </label>
+        <label htmlFor="desc-input">
+          Descrescente
+          <input
+            id="desc-input"
+            type="radio"
+            name="sort"
+            value="DESC"
+            data-testid="column-sort-input-desc"
+            onChange={ handleChangeOrder }
+            checked={ orderFilter.sort === 'DESC' }
+          />
+        </label>
+        <button
+          type="button"
+          onClick={ () => handleOrder(orderFilter) }
+          data-testid="column-sort-button"
+        >
+          Ordenar
+        </button>
+      </div>
+    </section>
   );
 }
-
-export default Filter;
