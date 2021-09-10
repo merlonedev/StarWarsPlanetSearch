@@ -10,16 +10,28 @@ export function StarWarsProvider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [name, setName] = useState('');
   const [filters, setFilters] = useState([]);
+  const [orderColumn, setOrderColumn] = useState('name');
+  const [orderSort, setOrderSort] = useState('ASC');
+  const [columns, setColumns] = useState([]);
 
   useEffect(() => {
     getPlanets().then(({ results }) => {
       results.forEach((result) => delete result.residents);
       setPlanets(results);
+      setColumns(Object.keys(results[0]));
     });
   }, []);
 
   function handleNameChange({ target }) {
     setName(target.value);
+  }
+
+  function changeOrderColumn({ target }) {
+    setOrderColumn(target.value);
+  }
+
+  function changeOrderSort(sort) {
+    setOrderSort(sort);
   }
 
   function addFilter(newFilter) {
@@ -36,12 +48,21 @@ export function StarWarsProvider({ children }) {
         name,
       },
       filterByNumericValues: filters,
+      order: {
+        column: orderColumn,
+        sort: orderSort,
+      },
     },
   };
 
   const context = {
     ...filtersNode,
     planets,
+    orderSort,
+    orderColumn,
+    columns,
+    changeOrderSort,
+    changeOrderColumn,
     handleNameChange,
     addFilter,
     removeFilter,

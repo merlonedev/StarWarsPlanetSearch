@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import StarWarsContext from '../context/StarWarsContext';
+import StarWarsContext from '../contexts/StarWarsContext';
 
 import styles from '../styles/Table.css';
 
@@ -23,19 +23,20 @@ const comparisonReducer = (items = [], filter) => {
 const Table = () => {
   const {
     planets,
+    columns,
     filters: {
       filterByName: { name },
       filterByNumericValues,
     },
+    orderColumn,
+    orderSort,
   } = useContext(StarWarsContext);
-
-  const headers = Object.keys(planets[0] || []);
 
   function renderPlanetRow(planet, key) {
     return (
       <tr key={ key }>
-        { Object.values(planet).map((info, index) => (
-          <td key={ index }>
+        { Object.entries(planet).map(([prop, info], index) => (
+          <td key={ index } data-testid={ prop === 'name' ? 'planet-name' : null }>
             { Array.isArray(info) ? info.join('\n') : info.toString() }
           </td>
         )) }
@@ -43,19 +44,39 @@ const Table = () => {
     );
   }
 
+  function columnToNumber(columnValue) {
+    return columnValue === 'unknown' ? 0 : Number(columnValue);
+  }
+
+  const filteredPlanets = filterByNumericValues
+    .reduce(comparisonReducer, planets)
+    .filter((planet) => (name ? planet.name.includes(name) : true));
+
+  const isStringColumn = filteredPlanets.some((planet) => (
+    Number.isNaN(columnToNumber(planet[orderColumn]))));
+
+  filteredPlanets.sort((planetA, planetB) => {
+    let result = null;
+    if (isStringColumn) {
+      result = planetA[orderColumn].localeCompare(planetB[orderColumn]);
+    } else {
+      const numberA = columnToNumber(planetA[orderColumn]);
+      const numberB = columnToNumber(planetB[orderColumn]);
+      result = numberA - numberB;
+    }
+    return orderSort === 'ASC' ? result : result * -'1';
+  });
+
   return (
     <table className={ styles.table }>
       <thread>
         <tr>
-          { headers.map((header, index) => (
+          { columns.map((header, index) => (
             <th key={ index }>{header}</th>)) }
         </tr>
       </thread>
       <tbody>
-        { filterByNumericValues
-          .reduce(comparisonReducer, planets)
-          .filter((planet) => (name ? planet.name.includes(name) : true))
-          .map((planet, key) => renderPlanetRow(planet, key)) }
+        { filteredPlanets.map((planet, key) => renderPlanetRow(planet, key)) }
       </tbody>
     </table>
   );

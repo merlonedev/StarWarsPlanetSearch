@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import StarWarsContext from '../context/StarWarsContext';
+import StarWarsContext from '../contexts/StarWarsContext';
 
 const columnOptions = ['population', 'orbital_period', 'diameter',
   'rotation_period', 'surface_water'];

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import StarWarsContext from '../context/StarWarsContext';
+import StarWarsContext from '../contexts/StarWarsContext';
 
 const NameFilter = () => {
   const { filters: { filterByName: { name } },
