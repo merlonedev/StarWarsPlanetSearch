@@ -7,8 +7,8 @@ function FilterValue() {
     comparison: '',
     value: '',
   });
-  const { filters, setFilters, compare, filterPlanet,
-    setFilterPlanet, removeColumnFilter } = useContext(MyContext);
+  const { filters, setFilters, compare,
+    setFilterPlanet, data } = useContext(MyContext);
   const [setButtonStatus] = useState(true);
   const { filterByNumericValues } = filters;
 
@@ -24,7 +24,7 @@ function FilterValue() {
 
   useEffect(() => {
     if (filterByNumericValues.length > 0) {
-      let newData = filterPlanet;
+      let newData = [...data];
       filterByNumericValues.forEach(({ column, comparison, value }) => {
         newData = newData.filter((item) => {
           if (comparison === 'maior que') return Number(item[column]) > Number(value);
@@ -37,7 +37,19 @@ function FilterValue() {
         setFilterPlanet(newData);
       });
     }
-  }, [filters]);
+  }, [data, filterByNumericValues, setFilterPlanet]);
+
+  const removerFilter = (select) => {
+    const rmvFilter = filterByNumericValues.filter((arm) => arm !== select);
+    setFilters({
+      ...filters,
+      filterByNumericValues: [
+        {
+          ...rmvFilter,
+        },
+      ],
+    });
+  };
 
   const handlerChange = (({ target: { name, value } }) => {
     setCompareFilter({
@@ -45,20 +57,6 @@ function FilterValue() {
       [name]: value,
     });
   });
-
-  // const selectOption = () => {
-  //   const newColuns = coluns;
-  //   if (filterByNumericValues.length) {
-  //     filterByNumericValues.forEach(({ column }) => {
-  //       const deleteOption = newColuns.indexOf(column);
-  //       const index = -1;
-  //       if (deleteOption > index) {
-  //         newColuns.splice(deleteOption, 1);
-  //       }
-  //     });
-  //   }
-  //   return newColuns;
-  // };
 
   const optionsNumericFilter = () => {
     let columnsFilters = ['population',
@@ -72,18 +70,6 @@ function FilterValue() {
     if (columnsFilters.length === 1) setButtonStatus(true);
     return columnsFilters;
   };
-
-  // const removeFilter = (selected) => {
-  //   const filtered = filterByNumericValues.filter((stored) => stored !== selected);
-  //   setFilters({
-  //     ...filters,
-  //     filterByNumericValues: [
-  //       {
-  //         ...filtered,
-  //       },
-  //     ],
-  //   });
-  // };
 
   return (
     <form>
@@ -122,20 +108,18 @@ function FilterValue() {
       >
         Filtrar
       </button>
-      <div>
-        {filterByNumericValues.map(({ column, comparison, value }) => (
-          <div key={ column } data-testid="filter">
-            {`${column} | ${comparison} | ${value}`}
-            <button
-              type="button"
-              data-testid="filter"
-              onClick={ () => removeColumnFilter(column) }
-            >
-              x
-            </button>
-          </div>
-        ))}
-      </div>
+      {filterByNumericValues && filterByNumericValues.map((selecionado) => (
+        <div key={ selecionado } data-testid="filter">
+          {selecionado.column}
+          <button
+            type="button"
+            onClick={ () => removerFilter(selecionado) }
+            data-testid="filter"
+          >
+            X
+          </button>
+        </div>
+      ))}
     </form>
   );
 }

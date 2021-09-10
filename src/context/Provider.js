@@ -10,7 +10,6 @@ function Provider({ children }) {
       name: '' },
     filterByNumericValues: [],
   });
-  // const { filterByNumericValues } = filters;
 
   useEffect(() => {
     const getPlanet = async () => {
@@ -46,6 +45,10 @@ function Provider({ children }) {
       };
     });
   };
+
+  useEffect(() => {
+
+  });
 
   const [compare, setCompare] = useState([
     'maior que', 'menor que', 'igual a',
