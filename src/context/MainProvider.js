@@ -18,6 +18,27 @@ function MainProvider({ children }) {
     ],
   });
 
+  const handleFilterByName = ({ target: { value } }) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      filterByName: { name: value },
+    }));
+  };
+
+  const handleFilterByNumericClick = ({ column, comparison, value }) => {
+    setFilters((prevFilters) => {
+      if (!prevFilters.filterByNumericValues[0].value) {
+        return { ...prevFilters, filterByNumericValues: [{ column, comparison, value }] };
+      }
+      return { ...prevFilters,
+        filterByNumericValues: [
+          ...prevFilters.filterByNumericValues,
+          { column, comparison, value },
+        ],
+      };
+    });
+  };
+
   useEffect(() => {
     const getPlanets = async () => {
       const response = await fetchAPI();
@@ -31,6 +52,8 @@ function MainProvider({ children }) {
     setData,
     filters,
     setFilters,
+    handleFilterByName,
+    handleFilterByNumericClick,
   };
 
   return (

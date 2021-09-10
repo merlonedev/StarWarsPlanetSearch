@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import MainContext from '../context/MainContext';
 
 const columns = [
@@ -10,12 +10,26 @@ const columns = [
 ];
 
 function Filter() {
-  const { filters, setFilters } = useContext(MainContext);
+  const {
+    filters: { filterByNumericValues },
+    handleFilterByName,
+    handleFilterByNumericClick,
+  } = useContext(MainContext);
   const [numericFilters, setNumericFilters] = useState({
-    column: 'population',
+    column: columns[0],
     comparison: 'maior que',
     value: '0',
   });
+
+  useEffect(() => {
+    const [newFirstColumn] = columns.filter((column) => !filterByNumericValues
+      .some((numericFilter) => numericFilter.column === column))
+      .map((column) => column);
+    setNumericFilters((prevNumericFilters) => ({
+      ...prevNumericFilters,
+      column: newFirstColumn,
+    }));
+  }, [filterByNumericValues]);
 
   function handleChange({ target: { name, value } }) {
     setNumericFilters((prevNumericFilters) => ({
@@ -23,20 +37,6 @@ function Filter() {
       [name]: value,
     }));
   }
-
-  const handleFilterByNumericClick = ({ column, comparison, value }) => {
-    setFilters((prevFilters) => {
-      if (!prevFilters.filterByNumericValues[0].value) {
-        return { ...prevFilters, filterByNumericValues: [{ column, comparison, value }] };
-      }
-      return { ...prevFilters,
-        filterByNumericValues: [
-          ...prevFilters.filterByNumericValues,
-          { column, comparison, value },
-        ],
-      };
-    });
-  };
 
   return (
     <div>
@@ -49,9 +49,7 @@ function Filter() {
             id="name"
             data-testid="name-filter"
             placeholder="Digite aqui o nome"
-            onChange={ ({ target: { value } }) => {
-              setFilters({ ...filters, filterByName: { name: value } });
-            } }
+            onChange={ handleFilterByName }
           />
         </label>
       </section>
@@ -62,8 +60,11 @@ function Filter() {
           value={ numericFilters.column }
           onChange={ handleChange }
         >
-          { columns.map((colum) => (
-            <option key={ colum } value={ colum }>{ colum }</option>))}
+          { columns.filter((column) => !filterByNumericValues
+            .some((numericFilter) => numericFilter.column === column))
+            .map((column) => (
+              <option key={ column } value={ column }>{ column }</option>
+            )) }
         </select>
         <select
           data-testid="comparison-filter"
