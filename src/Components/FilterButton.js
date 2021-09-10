@@ -23,16 +23,17 @@ function FilterButton() {
       </MyContext.Consumer>
       <MyContext.Consumer>
         {
-          ({ renderButton, deleteButton }) => (renderButton.length > columns
-            ? renderButton.map((col, i) => (
+          ({ stateValue,
+            deleteButton }) => (stateValue.filterByNumericValues.length > columns
+            ? stateValue.filterByNumericValues.map((col, i) => (
               <button
                 type="button"
-                name={ col.coluna }
+                name={ col.column }
                 key={ i }
                 data-testid="filter"
                 onClick={ deleteButton }
               >
-                {`${col.coluna} ${col.comparar} ${col.valor}`}
+                {`${col.column} ${col.comparison} ${col.value}X`}
               </button>)) : false)
         }
       </MyContext.Consumer>

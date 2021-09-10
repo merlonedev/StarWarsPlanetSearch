@@ -15,24 +15,18 @@ const filters = { filterByName: { name: '' } };
 const values = { filterByNumericValues: [] };
 
 function Header() {
-  const [headers, setHeaders] = useState([]);
-  const [data, setData] = useState([]);
-  const [stateName, setStateName] = useState(filters);
+  const [headers, setHeaders] = useState([]); // 1
+  const [data, setData] = useState([]);// 2
+  const [stateName, setStateName] = useState(filters);// 3
+  const [stateValue, setStateValue] = useState(values);// 4
 
-  const [stateValue, setStateValue] = useState(values);
+  const [stateColumn, setStateColumn] = useState('population');// 5
+  const [stateComparison, setStateComparison] = useState('maior que');// 6
+  const [stateValor, setStateValor] = useState('');// 7
 
-  const [stateColumn, setStateColumn] = useState('population');
-  const [stateComparison, setStateComparison] = useState('maior que');
-  const [stateValor, setStateValor] = useState('');
+  const [filterContainer, setFilterContainer] = useState(data);// 8
 
-  const [filterContainer, setFilterContainer] = useState(data);
-  const [choices, setChoices] = useState([]);
-  const [renderButton, setRenderButton] = useState([]);
-  const [columnOptionsFil, setColumnOptionsFil] = useState(columnOptions);
-
-  // const columnFil = stateValue.filterByNumericValues[0].column;
-  // const comparisonFil = stateValue.filterByNumericValues[0].comparison;
-  // const valueFil = stateValue.filterByNumericValues[0].value;
+  const [columnOptionsFil, setColumnOptionsFil] = useState(columnOptions);// 10
 
   // Fetch da API salva no 'ESTADO' "data". Salva "HEADERS".
   useEffect(() => {
@@ -49,21 +43,10 @@ function Header() {
   }, []);
   // Fetch da API salva no 'ESTADO' "data". Salva "HEADERS".
 
-  // Filtro por "stateName".
-  // useEffect(() => {
-  //   const filterName = () => {
-  //     const resultName = data.filter((planeta) => (
-  //       planeta.name.toLowerCase().includes(stateName.filterByName.name.toLowerCase())));
-  //     setFilterContainer(resultName);
-  //   };
-  //   filterName();
-  // }, [data, stateName]);
-
   const filterName = (array) => {
     if (stateName.filterByName.name === '') {
       return array;
     }
-    console.log(stateName.filterByName.name);
     return array.filter((planeta) => (
       planeta.name.toLowerCase().includes(stateName.filterByName.name.toLowerCase())));
   };
@@ -79,12 +62,10 @@ function Header() {
           Number(planeta[column]) > Number(value)));
       } else if (comparison === 'menor que') {
         result = filterContainer.filter((planeta) => (
-          Number(planeta[column]) < Number(value)
-        ));
+          Number(planeta[column]) < Number(value)));
       } else {
         result = filterContainer.filter((planeta) => (
-          Number(planeta[column]) === Number(value)
-        ));
+          Number(planeta[column]) === Number(value)));
       }
     });
     return result;
@@ -92,21 +73,11 @@ function Header() {
 
   const applyFilters = () => setFilterContainer(filterValue(filterName(data)));
 
-  useEffect(applyFilters, [stateValue, stateName]);
+  useEffect(() => { applyFilters(); console.log('applyfilterline'); }, [stateValue, stateName]);
 
   const handleName = ({ target }) => {
     setStateName({ ...stateName, filterByName: { name: target.value } });
   };
-  // Filtro por "stateName".
-
-  useEffect(() => {
-    const columnRender = () => {
-      const filterColumn = columnOptions
-        .filter((el) => !choices.some((le) => le.includes(el)));
-      setColumnOptionsFil(filterColumn);
-    };
-    columnRender();
-  }, [choices]);
 
   const handleColumn = ({ target }) => {
     setStateColumn(target.value);
@@ -121,47 +92,35 @@ function Header() {
   };
 
   const buttonClick = () => {
-    // let result = [];
-    // if (comparisonFil === 'maior que') {
-    //   result = filterContainer.filter((planeta) => (
-    //     Number(planeta[columnFil]) > Number(valueFil)));
-    // } else if (comparisonFil === 'menor que') {
-    //   result = filterContainer.filter((planeta) => (
-    //     Number(planeta[columnFil]) < Number(valueFil)
-    //   ));
-    // } else {
-    //   result = filterContainer.filter((planeta) => (
-    //     Number(planeta[columnFil]) === Number(valueFil)
-    //   ));
-    // }
-
-    // setFilterContainer(result);
-    // setRenderButton([...renderButton,
-    //   { comparar: comparisonFil, coluna: columnFil, valor: valueFil }]);
-    // setChoices([...choices, columnFil]);
     setStateValue({ filterByNumericValues: [...stateValue.filterByNumericValues,
       { column: stateColumn,
         value: stateValor,
         comparison: stateComparison }] });
   };
 
+  // const selecRender = () => setColumnOptionsFil(columnOptionsFil
+  //   .filter((el) => !stateValue.filterByNumericValues
+  //     .some((le) => le.column === el)));
+
+  // useEffect(selecRender, [stateValue]);
+
   const deleteButton = ({ target }) => {
-    const choicesF = choices.filter((el) => el !== target.name);
-    setChoices(choicesF);
-    columnOptionsFil.push(target.name);
-    setRenderButton([renderButton.filter((el) => (el !== target.name ? el : false))]);
+    setColumnOptionsFil([...columnOptionsFil, target.name]);
+    const test = stateValue.filterByNumericValues
+      .filter((el) => el.column !== target.name);
+    setStateValue({ filterByNumericValues: test });
   };
 
   const contextValue = {
     filterContainer,
+    columnOptionsFil,
+    stateValue,
+    buttonClick,
+    deleteButton,
     handleName,
     handleColumn,
     handleComparison,
     handleValue,
-    buttonClick,
-    columnOptionsFil,
-    renderButton,
-    deleteButton,
   };
 
   return (
