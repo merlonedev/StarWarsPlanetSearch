@@ -9,6 +9,7 @@ export default function Provider({ children }) {
   const initialFilterState = {
     filterByName: { name: '' },
     filterByNumericValues: [{ column: '', comparison: '', value: '' }],
+    order: { column: 'name', sort: 'ASC' },
   };
 
   const [filters, setFilters] = useState(initialFilterState);

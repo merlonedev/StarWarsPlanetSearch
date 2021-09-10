@@ -5,6 +5,7 @@ import Table from './components/Table';
 import FilterName from './components/FilterName';
 import FilterNumber from './components/FilterNumber';
 import UsedFilters from './components/UsedFilters';
+import Order from './components/Order';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <FilterName />
       <FilterNumber />
       <UsedFilters />
+      <Order />
       <Table />
     </Provider>
   );
