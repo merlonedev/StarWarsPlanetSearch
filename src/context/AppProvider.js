@@ -12,6 +12,7 @@ const STATE_FILTER = {
 
 export default function AppProvider({ children }) {
   const [planets, setPlanets] = useState([]);
+  const [planetsBase, setPlanetsBase] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [filter, setFilter] = useState(STATE_FILTER);
@@ -20,6 +21,7 @@ export default function AppProvider({ children }) {
     const filteredResults = await fetchAPI();
     filteredResults.forEach((planet) => delete planet.residents);
     setPlanets(filteredResults);
+    setPlanetsBase(filteredResults);
     setLoading(true);
   };
 
@@ -36,6 +38,8 @@ export default function AppProvider({ children }) {
     setSearchInput,
     filter,
     setFilter,
+    planetsBase,
+    setPlanetsBase,
   };
 
   return (

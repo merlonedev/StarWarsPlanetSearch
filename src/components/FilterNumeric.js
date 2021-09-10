@@ -19,7 +19,8 @@ export default function FilterNumeric() {
   const [category, setCategory] = useState('');
   const [comparison, setComparison] = useState('');
   const [value, setValue] = useState('');
-  const { filter, setFilter, planets, setPlanets } = useContext(AppContext);
+  const { filter, setFilter, planets, setPlanets,
+    planetsBase } = useContext(AppContext);
   const { filterByNumericValues } = filter;
   const filterLength = filter.filterByNumericValues.length;
 
@@ -37,6 +38,13 @@ export default function FilterNumeric() {
     setFilter(newFilter);
   };
 
+  const removeFilter = (ctgry) => {
+    const newFilter = filter.filterByNumericValues
+      .filter((item) => item.category !== ctgry);
+    setFilter({ ...filter, filterByNumericValues: newFilter });
+    setPlanets(planetsBase);
+  };
+
   const categoriesFilter = categoriesOptions.reduce((acc, cur) => {
     if (filteredGlobalCategories.includes(cur)) return acc;
     return acc.concat(cur);
@@ -52,6 +60,27 @@ export default function FilterNumeric() {
     setPlanets(planetsData);
   };
 
+  const renderFilters = () => {
+    if (filterLength > 0) {
+      return filterByNumericValues.map((item, i) => (
+        <div
+          key={ i }
+          data-testid="filter"
+        >
+          <span>{`${item.category} - ${item.comparison} - ${item.value}`}</span>
+          <button
+            type="button"
+            name={ item.category }
+            onClick={ (e) => removeFilter(e.target.name) }
+          >
+            Delete
+          </button>
+        </div>
+      ));
+    }
+    return null;
+  };
+
   useEffect(() => {
     console.log(comparison);
     console.log(category);
@@ -59,6 +88,7 @@ export default function FilterNumeric() {
     console.log(planets);
     console.log(categoriesFilter);
     console.log(filteredGlobalCategories);
+    console.log(planetsBase);
   }, [filter,
     categoriesFilter,
     filteredGlobalCategories,
@@ -66,7 +96,8 @@ export default function FilterNumeric() {
     comparison,
     value,
     filterByNumericValues,
-    planets]);
+    planets,
+    planetsBase]);
 
   return (
     <div>
@@ -98,6 +129,7 @@ export default function FilterNumeric() {
       >
         Add Filtro
       </button>
+      {renderFilters()}
     </div>
   );
 }
