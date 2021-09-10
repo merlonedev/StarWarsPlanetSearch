@@ -8,6 +8,10 @@ const STATE_FILTER = {
     name: '',
   },
   filterByNumericValues: [],
+  order: {
+    column: 'Name',
+    sort: 'ASC',
+  },
 };
 
 export default function AppProvider({ children }) {
