@@ -5,18 +5,40 @@ import getPlanets from '../services/SWApi';
 
 function StarWarsProvider({ children }) {
   const [planets, setPlanets] = useState('');
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [
+    ],
+    order: {
+      column: 'name',
+      sort: 'ASC',
+    },
+  });
+  const ONE = 1;
+  const DEC_ONE = -1;
 
   useEffect(() => {
     const setupPlanet = async () => {
       const planet = await getPlanets();
-      setPlanets(planet);
+      const filterRoundSorted = planet.sort((a, b) => {
+        if (a.name > b.name) {
+          return ONE;
+        }
+        if (b.name > a.name) {
+          return DEC_ONE;
+        }
+        return 0;
+      });
+      setPlanets(filterRoundSorted);
     };
     setupPlanet();
   },
   []);
 
   const globalState = {
-    planets, setPlanets,
+    planets, setPlanets, filters, setFilters,
   };
 
   return (

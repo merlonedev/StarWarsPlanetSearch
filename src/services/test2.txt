@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import FilterList from '../components/FilterList';
 import myContext from '../context/myContext';
 
 export default function Home() {
@@ -10,9 +9,7 @@ export default function Home() {
   const [usedArrayOfNumber, setUsedArrayOfNumber] = useState([]);
   const [newArrayofFilter, setNewArrayOfFilter] = useState(filterNumberOptions);
   const [filterWithNumber, setfilterWithNumber] = useState({
-    columnSetup: 'population',
-    comparisonSetup: 'maior que',
-    valueSetup: '1',
+    columnSetup: 'population', comparisonSetup: 'maior que', valueSetup: '1',
   });
   const [filters, setFilters] = useState({
     filterByName: {
@@ -26,8 +23,6 @@ export default function Home() {
     },
   });
   const [FilterWithNameAndNumber, setFilterWithNameAndNumber] = useState('');
-  const [FilterWithNameAndNumber2, setFilterWithNameAndNumber2] = useState('');
-  const [filterNumberAmount, setFilterNumberAmount] = useState(0);
   const [shouldFilterNumber, setshouldFilterNumber] = useState(false);
   useEffect(() => {
     const filterPlanet = () => {
@@ -40,12 +35,7 @@ export default function Home() {
           return false;
         };
         const filteredName = planets.filter(filterNameInArray);
-        console.log('1', planets);
-        console.log('1', filteredName);
-        console.log('1', FilterWithNameAndNumber);
-        console.log('2', FilterWithNameAndNumber2);
         setFilterWithNameAndNumber(filteredName);
-        setFilterWithNameAndNumber2(filteredName);
       }
     };
     filterPlanet();
@@ -62,36 +52,12 @@ export default function Home() {
   },
   [shouldFilterNumber, usedArrayOfNumber]);
   //  [shouldFilterNumber, usedArrayOfNumber]);
-  function comparisonSwitch(obj) {
-    const { column, value, comparison } = filters
-      .filterByNumericValues[filterNumberAmount];
-    switch (comparison) {
-    case 'maior que':
-      if (parseFloat(obj[column]) > parseFloat(value)) {
-        return true;
-      }
-      return false;
-    case 'menor que':
-      if (parseFloat(obj[column]) < parseFloat(value)) {
-        return true;
-      }
-      return false;
-    case 'igual a':
-      if (parseFloat(obj[column]) === parseFloat(value)) {
-        return true;
-      }
-      return false;
-    default:
-      break;
-    }
-  }
   useEffect(() => {
-    if ((planets || FilterWithNameAndNumber2) && shouldFilterNumber){
-      
-    if (filters.filterByNumericValues) {
-      const aaa = () => {
-        const usedArray = !FilterWithNameAndNumber2 ? planets : FilterWithNameAndNumber2;
-        const resultsss = filters.filterByNumericValues.forEach((filter, i) => {
+    if ((planets || FilterWithNameAndNumber) && shouldFilterNumber
+    && filters.filterByNumericValues) {
+      const filterData = () => {
+        const usedArray = !FilterWithNameAndNumber ? planets : FilterWithNameAndNumber;
+        filters.filterByNumericValues.forEach((filter) => {
           const { column, comparison, value } = filter;
           const filterRound = usedArray.filter((obj) => {
             switch (comparison) {
@@ -113,35 +79,19 @@ export default function Home() {
             default:
               break;
             }
+            return filterRound;
           });
-          console.log(i, column, comparison, value);
-          setFilterWithNameAndNumber2(filterRound);
-          console.log(usedArray);
+          setFilterWithNameAndNumber(filterRound);
+          setUsedArrayOfNumber([...usedArrayOfNumber, filterWithNumber.columnSetup]);
+          setfilterWithNumber({ ...filterWithNumber, columnSetup: newArrayofFilter[1] });
+          setshouldFilterNumber(false);
         });
-      }
-      aaa();
-    }}
+      };
+      filterData();
+    }
   },
   [filters.filterByNumericValues, shouldFilterNumber, usedArrayOfNumber]);
-
-  useEffect(() => {
-    const filterPlanetWithNumber = () => {
-      if ((planets || FilterWithNameAndNumber) && shouldFilterNumber) {
-        const usedArray = !FilterWithNameAndNumber ? planets : FilterWithNameAndNumber;
-        /* usedArray.sort((a,b) => (a['name'] > b['name']) ? 1 : ((b['name'] > a['name']) ? -1 : 0)) */
-        const filteredwithNumber = usedArray.filter(comparisonSwitch);
-        console.log(usedArray);
-        setFilterWithNameAndNumber(filteredwithNumber);
-        setFilterNumberAmount(filterNumberAmount + 1);
-        setUsedArrayOfNumber([...usedArrayOfNumber, filterWithNumber.columnSetup]);
-        setfilterWithNumber({ ...filterWithNumber, columnSetup: newArrayofFilter[1] });
-        setshouldFilterNumber(false);
-      }
-    };
-    filterPlanetWithNumber();
-  },
-  [FilterWithNameAndNumber, filterWithNumber, shouldFilterNumber, usedArrayOfNumber]);
-  //  [filterWithNumber, shouldFilterNumber, usedArrayOfNumber]);
+  //  [filters.filterByNumericValues, shouldFilterNumber, usedArrayOfNumber]);
   function renderPlanets() {
     const usedArray = !FilterWithNameAndNumber ? planets : FilterWithNameAndNumber;
     return (
@@ -180,6 +130,19 @@ export default function Home() {
     setfilterWithNumber({ ...filterWithNumber,
       [name]: value,
     });
+  }
+  function removeItem({ target }) {
+    const { id } = target;
+    setFilters({ ...filters,
+      filterByNumericValues: [...filters.filterByNumericValues.filter((obj) => {
+        if (obj.column !== id) {
+          return true;
+        }
+        return false;
+      })],
+    });
+    setFilterWithNameAndNumber(planets);
+    setshouldFilterNumber(true);
   }
 
   return (
@@ -240,7 +203,26 @@ export default function Home() {
       >
         Filtrar
       </button>
-      <FilterList filters={ filters } />
+      <ul>
+        { filters.filterByNumericValues.length === 0 ? ''
+          : Object.values(filters.filterByNumericValues).map((filter, index) => (
+            <li
+              data-testid="filter"
+              key={ index }
+            >
+              {filter.column}
+              {filter.comparison}
+              {filter.value}
+              <button
+                id={ filter.column }
+                type="button"
+                onClick={ removeItem }
+              >
+                x
+              </button>
+            </li>
+          ))}
+      </ul>
       <table>
         <thead>
           <tr>

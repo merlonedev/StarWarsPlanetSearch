@@ -1,152 +1,71 @@
 import React, { useContext, useEffect, useState } from 'react';
-import FilterList from '../components/FilterList';
 import myContext from '../context/myContext';
+import { getAscOrDescFunc, getByName, getWithNumbers,
+  renderTableHead } from '../helpers/functions';
 
 export default function Home() {
-  const { planets } = useContext(myContext);
+  const { planets, filters, setFilters } = useContext(myContext);
   const filterNumberOptions = [
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
   ];
   const [usedArrayOfNumber, setUsedArrayOfNumber] = useState([]);
   const [newArrayofFilter, setNewArrayOfFilter] = useState(filterNumberOptions);
   const [filterWithNumber, setfilterWithNumber] = useState({
-    columnSetup: 'population',
-    comparisonSetup: 'maior que',
-    valueSetup: '1',
+    columnSetup: 'population', comparisonSetup: 'maior que', valueSetup: '1',
   });
-  const [filters, setFilters] = useState({
-    filterByName: {
-      name: '',
-    },
-    filterByNumericValues: [
-    ],
-    order: {
-      column: 'Name',
-      sort: 'ASC',
-    },
-  });
-  const [FilterWithNameAndNumber, setFilterWithNameAndNumber] = useState('');
-  const [FilterWithNameAndNumber2, setFilterWithNameAndNumber2] = useState('');
-  const [filterNumberAmount, setFilterNumberAmount] = useState(0);
+
+  const [FilterWithNameAndNumber, setFilterWithNameAndNumber] = useState(planets);
   const [shouldFilterNumber, setshouldFilterNumber] = useState(false);
+  const [shouldFilterSort, setshouldFilterSort] = useState(false);
   useEffect(() => {
     const filterPlanet = () => {
       if (planets) {
-        const filterName = filters.filterByName.name;
-        const filterNameInArray = (obj) => {
-          if (obj.name.includes(filterName)) {
-            return true;
-          }
-          return false;
-        };
-        const filteredName = planets.filter(filterNameInArray);
+        const filteredName = getByName(planets, filters);
         setFilterWithNameAndNumber(filteredName);
-        setFilterWithNameAndNumber2(filteredName);
       }
     };
     filterPlanet();
   },
   [filters.filterByName.name]);
-  //   [filters.filterByName.name]);
+
   useEffect(() => {
-    const newArrayColumn = () => {
-      const arrayToSet = filterNumberOptions
-        .filter((used) => !usedArrayOfNumber.includes(used));
-      setNewArrayOfFilter(arrayToSet);
+    const filterPlanet = () => {
+      if (FilterWithNameAndNumber) {
+        const filteredName = getAscOrDescFunc(FilterWithNameAndNumber, filters);
+        setFilterWithNameAndNumber(filteredName);
+        setshouldFilterSort(false);
+      }
     };
-    newArrayColumn();
+    filterPlanet();
   },
-  [shouldFilterNumber, usedArrayOfNumber]);
-  //  [shouldFilterNumber, usedArrayOfNumber]);
-  function comparisonSwitch(obj) {
-    const { column, value, comparison } = filters
-      .filterByNumericValues[filterNumberAmount];
-    switch (comparison) {
-    case 'maior que':
-      if (parseFloat(obj[column]) > parseFloat(value)) {
-        return true;
-      }
-      return false;
-    case 'menor que':
-      if (parseFloat(obj[column]) < parseFloat(value)) {
-        return true;
-      }
-      return false;
-    case 'igual a':
-      if (parseFloat(obj[column]) === parseFloat(value)) {
-        return true;
-      }
-      return false;
-    default:
-      break;
-    }
-  }
+  [shouldFilterSort]);
+  //   [filters.filterByName.name]);
+
   useEffect(() => {
-    if ((planets || FilterWithNameAndNumber2) && shouldFilterNumber
-    && filters.filterByNumericValues) {
+    if (planets || shouldFilterNumber) {
+      const usedArray = !FilterWithNameAndNumber ? planets : FilterWithNameAndNumber;
       const filterData = () => {
-        const usedArray = !FilterWithNameAndNumber2 ? planets : FilterWithNameAndNumber2;
         filters.filterByNumericValues.forEach((filter) => {
-          const { column, comparison, value } = filter;
-          const filterRound = usedArray.filter((obj) => {
-            switch (comparison) {
-            case 'maior que':
-              if (parseFloat(obj[column]) > parseFloat(value)) {
-                return true;
-              }
-              return false;
-            case 'menor que':
-              if (parseFloat(obj[column]) < parseFloat(value)) {
-                return true;
-              }
-              return false;
-            case 'igual a':
-              if (parseFloat(obj[column]) === parseFloat(value)) {
-                return true;
-              }
-              return false;
-            default:
-              break;
-            }
-          });
-          setFilterWithNameAndNumber2(filterRound);
-          setUsedArrayOfNumber([...usedArrayOfNumber, filterWithNumber.columnSetup]);
+          const filterRound = getWithNumbers(usedArray,
+            filter);
+          setFilterWithNameAndNumber(filterRound);
+          setNewArrayOfFilter(newArrayofFilter
+            .filter((used) => !usedArrayOfNumber.includes(used)));
           setfilterWithNumber({ ...filterWithNumber, columnSetup: newArrayofFilter[1] });
           setshouldFilterNumber(false);
-          /* console.log(i, column, comparison, value);
-          console.log(FilterWithNameAndNumber2);
-          console.log(usedArray); */
         });
       };
       filterData();
     }
   },
   [filters.filterByNumericValues, shouldFilterNumber, usedArrayOfNumber]);
-
-  /* useEffect(() => {
-    const filterPlanetWithNumber = () => {
-      if ((planets || FilterWithNameAndNumber) && shouldFilterNumber) {
-        const usedArray = !FilterWithNameAndNumber ? planets : FilterWithNameAndNumber;
-        usedArray.sort((a,b) => (a['name'] > b['name']) ? 1 : ((b['name'] > a['name']) ? -1 : 0))
-        const filteredwithNumber = usedArray.filter(comparisonSwitch);
-        console.log(usedArray);
-        setFilterWithNameAndNumber(filteredwithNumber);
-        setFilterNumberAmount(filterNumberAmount + 1);
-        setUsedArrayOfNumber([...usedArrayOfNumber, filterWithNumber.columnSetup]);
-        setfilterWithNumber({ ...filterWithNumber, columnSetup: newArrayofFilter[1] });
-        setshouldFilterNumber(false);
-      }
-    };
-    filterPlanetWithNumber();
-  },
-  [FilterWithNameAndNumber, filterWithNumber, shouldFilterNumber, usedArrayOfNumber]); */
-  //  [filterWithNumber, shouldFilterNumber, usedArrayOfNumber]);
+  //  [filters.filterByNumericValues, shouldFilterNumber, usedArrayOfNumber]);
   function renderPlanets() {
-    const usedArray = !FilterWithNameAndNumber2 ? planets : FilterWithNameAndNumber2;
+    const usedArray = !FilterWithNameAndNumber ? planets : FilterWithNameAndNumber;
     return (
       Object.values(usedArray).map((planetas, index) => (
         <tr key={ index }>
-          <td>{planetas.name}</td>
+          <td data-testid="planet-name">{planetas.name}</td>
           <td>{planetas.rotation_period}</td>
           <td>{planetas.orbital_period}</td>
           <td>{planetas.diameter}</td>
@@ -165,6 +84,7 @@ export default function Home() {
     });
   }
   function getFilterNumber() {
+    setUsedArrayOfNumber([...usedArrayOfNumber, filterWithNumber.columnSetup]);
     setFilters({ ...filters,
       filterByNumericValues: [...filters.filterByNumericValues, {
         column: filterWithNumber.columnSetup,
@@ -173,6 +93,27 @@ export default function Home() {
       }],
     });
     setshouldFilterNumber(true);
+  }
+  function sortButton() {
+    const usedArray = !FilterWithNameAndNumber ? planets : FilterWithNameAndNumber;
+    getAscOrDescFunc(usedArray, filters);
+    setshouldFilterSort(true);
+  }
+  function getOrder({ target }) {
+    const { value } = target;
+    setFilters({ ...filters,
+      order: { ...filters.order,
+        column: value,
+      },
+    });
+  }
+  function getAscOrDesc({ target }) {
+    const { value } = target;
+    setFilters({ ...filters,
+      order: { ...filters.order,
+        sort: value,
+      },
+    });
   }
   function getNumberSetup({ target }) {
     const { value, name } = target;
@@ -183,16 +124,16 @@ export default function Home() {
   function removeItem({ target }) {
     const { id } = target;
     setFilters({ ...filters,
-      filterByNumericValues: [...filters.filterByNumericValues.filter((obj) => {if (obj.column !== id) {
-        return true;
-      }
-      return false;
-    })],
+      filterByNumericValues: [...filters.filterByNumericValues.filter((obj) => {
+        if (obj.column !== id) {
+          return true;
+        }
+        return false;
+      })],
     });
-    setFilterWithNameAndNumber2(planets);
+    setFilterWithNameAndNumber(planets);
     setshouldFilterNumber(true);
   }
-
   return (
     <div>
       <label htmlFor="filterByName">
@@ -251,41 +192,75 @@ export default function Home() {
       >
         Filtrar
       </button>
+      <label htmlFor="columnSetup">
+        Ordenar:
+        <select
+          type="select"
+          name="columnOrder"
+          id="columnOrder"
+          data-testid="column-sort"
+          onChange={ getOrder }
+        >
+          {Object.values(['name', ...filterNumberOptions]).map((number, i) => (
+            <option key={ i }>{number}</option>
+          ))}
+        </select>
+      </label>
+      <label
+        htmlFor="column-sort-input-asc"
+      >
+        <input
+          data-testid="column-sort-input-asc"
+          type="radio"
+          value="ASC"
+          checked={ filters.order.sort === 'ASC' }
+          onClick={ getAscOrDesc }
+        />
+        Crescente
+      </label>
+      <label
+        htmlFor="column-sort-input-desc"
+      >
+        <input
+          data-testid="column-sort-input-desc"
+          type="radio"
+          value="DESC"
+          checked={ filters.order.sort === 'DESC' }
+          onClick={ getAscOrDesc }
+        />
+        Decrescente
+      </label>
+      <button
+        type="button"
+        name="button-sort"
+        data-testid="column-sort-button"
+        onClick={ sortButton }
+      >
+        Ordenar
+      </button>
       <ul>
         { filters.filterByNumericValues.length === 0 ? ''
           : Object.values(filters.filterByNumericValues).map((filter, index) => (
-            <li 
-            data-testid="filter" key={ index }>
+            <li
+              data-testid="filter"
+              key={ index }
+            >
               {filter.column}
               {filter.comparison}
               {filter.value}
               <button
-                id={filter.column}
+                id={ filter.column }
                 type="button"
                 onClick={ removeItem }
               >
-              x
+                x
               </button>
             </li>
           ))}
       </ul>
       <table>
         <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Rotação</th>
-            <th>Orbital</th>
-            <th>Diâmetro</th>
-            <th>Clima</th>
-            <th>Gravidade</th>
-            <th>Terreno</th>
-            <th>Superície da Água</th>
-            <th>População</th>
-            <th>Residentes</th>
-            <th>Filmes</th>
-            <th>Criado</th>
-            <th>Editado</th>
-          </tr>
+          {renderTableHead()}
         </thead>
         <tbody>
           {renderPlanets()}

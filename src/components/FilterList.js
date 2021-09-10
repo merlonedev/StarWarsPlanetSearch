@@ -1,4 +1,4 @@
-import React from 'react';
+/* import React from 'react';
 
 function FilterList(props) {
   const { filters } = props;
@@ -22,4 +22,4 @@ function FilterList(props) {
   );
 }
 
-export default FilterList;
+export default FilterList; */
