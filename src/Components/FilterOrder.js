@@ -32,7 +32,7 @@ function OrderFunc() {
                     name="order"
                     value="ASC"
                     data-testid="column-sort-input-asc"
-                    onClick={ handleOrder }
+                    onChange={ handleOrder }
                   />
                 </label>
                 <label htmlFor="DESC">
@@ -43,7 +43,7 @@ function OrderFunc() {
                     name="order"
                     value="DESC"
                     data-testid="column-sort-input-desc"
-                    onClick={ handleOrder }
+                    onChange={ handleOrder }
                   />
                 </label>
                 <button

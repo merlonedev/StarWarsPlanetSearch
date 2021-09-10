@@ -8,6 +8,7 @@ import InputValue from './InputValue';
 import FilterButton from './FilterButton';
 import OrderFunc from './FilterOrder';
 
+const numberM = -1;
 const columnOptions = ['population', 'orbital_period',
   'diameter', 'rotation_period', 'surface_water'];
 
@@ -18,24 +19,24 @@ const filters = { filterByName: { name: '' } };
 
 const values = { filterByNumericValues: [] };
 
-const order = { column: 'Name', sort: 'ASC' };
+const order = { column: 'name', sort: 'ASC' };
 
 function Header() {
   const [headers, setHeaders] = useState([]); // 1
   const [data, setData] = useState([]);// 2
   const [stateName, setStateName] = useState(filters);// 3
   const [stateValue, setStateValue] = useState(values);// 4
-  const [orderFilter, setOrderFilter] = useState(order); // 11
+  const [orderFilter, setOrderFilter] = useState(order); // 5
 
-  const [stateColumn, setStateColumn] = useState('population');// 5
-  const [stateComparison, setStateComparison] = useState('maior que');// 6
-  const [stateValor, setStateValor] = useState('');// 7
-  const [orderColumn, setOrderColumn] = useState('');
-  const [orderDirection, setOrderDirection] = useState('');
+  const [stateColumn, setStateColumn] = useState('population');// 6
+  const [stateComparison, setStateComparison] = useState('maior que');// 7
+  const [stateValor, setStateValor] = useState('');// 8
+  const [orderColumn, setOrderColumn] = useState('name'); // 9
+  const [orderDirection, setOrderDirection] = useState('ASC'); // 10
 
-  const [filterContainer, setFilterContainer] = useState(data);// 8
+  const [filterContainer, setFilterContainer] = useState(data);// 11
 
-  const [columnOptionsFil, setColumnOptionsFil] = useState(columnOptions);// 10
+  const [columnOptionsFil, setColumnOptionsFil] = useState(columnOptions);// 12
 
   // Fetch da API salva no 'ESTADO' "data". Salva "HEADERS".
   useEffect(() => {
@@ -67,30 +68,57 @@ function Header() {
     let result = [];
     stateValue.filterByNumericValues.forEach(({ comparison, column, value }) => {
       if (comparison === 'maior que') {
-        result = filterContainer.filter((planeta) => (
+        result = array.filter((planeta) => (
           Number(planeta[column]) > Number(value)));
       } else if (comparison === 'menor que') {
-        result = filterContainer.filter((planeta) => (
+        result = array.filter((planeta) => (
           Number(planeta[column]) < Number(value)));
       } else {
-        result = filterContainer.filter((planeta) => (
+        result = array.filter((planeta) => (
           Number(planeta[column]) === Number(value)));
       }
     });
     return result;
   };
 
-  const testOrder = (array) => {
-    if (verifyArray.some((el) => orderFilter.column === el)) {
-      console.log('asdasd');
-      return (array.sort((a, b) => a[orderFilter.column] - b[orderFilter.column]));
-    }
+  const sortAsc = (array) => {
+    const { column } = orderFilter;
+    array.sort((a, b) => {
+      if (a[column] > b[column]) return 1;
+      if (a[column] < b[column]) return numberM;
+      return 0;
+    });
     return array;
   };
 
-  const applyFilters = () => setFilterContainer(testOrder(filterValue(filterName(data))));
+  const testOrder = (array) => {
+    const { column, sort } = orderFilter;
+    if (verifyArray.some((el) => column === el)) {
+      if (sort === 'ASC') {
+        const result = [...array];
+        result.sort((a, b) => +a[column] - +b[column]);
+        return result;
+      }
+      const result = [...array];
+      result.sort((a, b) => +a[column] - +b[column]);
+      return result.reverse();
+      // return sort === 'ASC'
+      // ? (array.sort((a, b) => +a[column] - +b[column]))
+      // : (array.sort((a, b) => +a[column] - +b[column]))
+      // .reverse();
+    }
+    if (sort === 'ASC') return sortAsc(array);
+    return sortAsc(array).reverse();
+    // return sort === 'ASC'
+    //   ? sortAsc(array)
+    //   : sortAsc(array).reverse();
+  };
 
-  useEffect(applyFilters, [stateValue, stateName, orderFilter]);
+  const applyFilters = () => {
+    setFilterContainer(testOrder(filterValue(filterName(data))));
+  };
+
+  useEffect(applyFilters, [stateValue, stateName, orderFilter, data]);
 
   const handleName = ({ target }) => {
     setStateName({ ...stateName, filterByName: { name: target.value } });
@@ -153,7 +181,6 @@ function Header() {
     handleValue,
     handleOrder,
     handleOrderColumn,
-    // testOrder,
     buttonClickOrder,
   };
 
