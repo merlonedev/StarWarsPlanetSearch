@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useMyContext } from '../context/MainContext';
 
 const filtrableColumns = {
@@ -130,7 +129,7 @@ export default function FiltersContainer() {
           onChange={ handleChangeOrder }
         >
           { text.map((column) => (
-            <option key={ uuidv4() } value={ column }>{ column }</option>)) }
+            <option key={ column } value={ column }>{ column }</option>)) }
         </select>
         <label htmlFor="acs-input">
           Acrescente

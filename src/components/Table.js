@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useMyContext } from '../context/MainContext';
 
 export default function Table() {
@@ -63,16 +62,16 @@ export default function Table() {
           <tr>
             { data.length > 0
             && Object.keys(data[0]).map((heading) => (
-              heading !== 'residents' && <th key={ uuidv4() }>{ heading }</th>)) }
+              heading !== 'residents' && <th key={ heading }>{ heading }</th>)) }
           </tr>
         </thead>
         <tbody>
           { filtredArray().map((planet) => (
-            <tr key={ uuidv4() }>
+            <tr key={ planet.name }>
               { Object.keys(planet).map((prop) => (
                 (prop === 'name')
-                  ? <td key={ uuidv4() } data-testid="planet-name">{ planet[prop] }</td>
-                  : prop !== 'residents' && <td key={ uuidv4() }>{ planet[prop] }</td>
+                  ? <td key={ prop } data-testid="planet-name">{ planet[prop] }</td>
+                  : prop !== 'residents' && <td key={ prop }>{ planet[prop] }</td>
               )) }
             </tr>
           )) }
