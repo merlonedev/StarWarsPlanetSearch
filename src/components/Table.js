@@ -5,9 +5,9 @@ function Table() {
   const { globalState } = useContext(Context);
   const { data, filterByName,
     numericFilter: { column, comparison, value },
-    order: { column: columnToOrder, sort } } = globalState;
+    order: { column: colToOrder, sort } } = globalState;
   const check = column && comparison && value;
-  const typeToOrder = (Number.isNaN(Number(data.results[0][columnToOrder])))
+  const typeToOrder = (Number.isNaN(Number(data.results[0][colToOrder])))
     ? 'LET' : 'NUM';
 
   const comparisonFunction = {
@@ -28,7 +28,7 @@ function Table() {
     .filter(({ name: planetName }) => planetName.includes(filterByName))
     .filter((planetInfo) => (
       !check || comparisonFunction[comparison](Number(planetInfo[column]), Number(value))
-    )).sort((a, b) => ordenation[`${sort}${typeToOrder}`](a[columnToOrder], b[columnToOrder]));
+    )).sort((a, b) => ordenation[`${sort}${typeToOrder}`](a[colToOrder], b[colToOrder]));
 
   const makeDataTable = () => {
     const headerFields = Object.keys(data.results[0])
