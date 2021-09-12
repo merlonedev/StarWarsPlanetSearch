@@ -46,7 +46,7 @@ function Order() {
   const createSelectInput = (properties) => {
     const [id, text, value, dataTest, options] = properties;
     return (
-      <div data-testid="filter">
+      <div>
         <label htmlFor={ id }>
           {text}
           <select

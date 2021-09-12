@@ -51,7 +51,12 @@ function Table() {
             { dataTable.map((planetData, i) => (
               <tr key={ i }>
                 { headerFields.map((field, j) => (
-                  <td key={ String(i) + String(j) }>{ planetData[field] }</td>))}
+                  <td
+                    key={ String(i) + String(j) }
+                    data-testid={ field === 'name' ? 'planet-name' : '' }
+                  >
+                    { planetData[field] }
+                  </td>))}
               </tr>
             ))}
           </tbody>
