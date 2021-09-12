@@ -10,6 +10,10 @@ const INITIAL_STATE = {
     column: '',
     comparison: '',
     value: '' },
+  order: {
+    column: 'name',
+    sort: 'ASC',
+  },
 };
 
 function Provider(props) {

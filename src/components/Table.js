@@ -4,8 +4,11 @@ import Context from '../context/context';
 function Table() {
   const { globalState } = useContext(Context);
   const { data, filterByName,
-    numericFilter: { column, comparison, value } } = globalState;
+    numericFilter: { column, comparison, value },
+    order: { column: columnToOrder, sort } } = globalState;
   const check = column && comparison && value;
+  const typeToOrder = (Number.isNaN(Number(data.results[0][columnToOrder])))
+    ? 'LET' : 'NUM';
 
   const comparisonFunction = {
     'maior que': (a, b) => a > b,
@@ -14,11 +17,18 @@ function Table() {
     '': () => true,
   };
 
+  const ordenation = {
+    ASCNUM: (a, b) => Number(a) - Number(b),
+    DESCNUM: (a, b) => Number(b) - Number(a),
+    ASCLET: (a, b) => a.localeCompare(b),
+    DESCLET: (a, b) => b.localeCompare(a),
+  };
+
   const dataTable = data.results
     .filter(({ name: planetName }) => planetName.includes(filterByName))
     .filter((planetInfo) => (
       !check || comparisonFunction[comparison](Number(planetInfo[column]), Number(value))
-    ));
+    )).sort((a, b) => ordenation[`${sort}${typeToOrder}`](a[columnToOrder], b[columnToOrder]));
 
   const makeDataTable = () => {
     const headerFields = Object.keys(data.results[0])

@@ -21,6 +21,7 @@ function NumericFilter() {
 
   const clearFilter = ({ target: name }) => {
     setGlobalState({ ...globalState, numericFilter: { [name]: '' } });
+    setLocalState({ ...localState, [name]: '' });
   };
 
   const creteClearBtn = (name) => (

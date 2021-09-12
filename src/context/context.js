@@ -8,6 +8,10 @@ const INITIAL_STATE = {
     column: '',
     comparison: '',
     value: '' },
+  order: {
+    column: 'name',
+    sort: 'ASC',
+  },
 };
 
 const Context = createContext(INITIAL_STATE);
