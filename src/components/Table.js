@@ -12,17 +12,17 @@ const Table = () => {
       byNumber.forEach((filt) => {
         switch (filt.comparison) {
         case 'maior que':
-          console.log('>');
+          // console.log('>');
           filteredData = filteredData
             .filter((d) => parseInt(d[filt.column], 10) > filt.value);
           break;
         case 'menor que':
-          console.log('<');
+          // console.log('<');
           filteredData = filteredData
             .filter((d) => parseInt(d[filt.column], 10) < filt.value);
           break;
         case 'igual a':
-          console.log('=');
+          // console.log('=');
           filteredData = filteredData.filter((d) => d[filt.column] === filt.value);
           break;
         default:
