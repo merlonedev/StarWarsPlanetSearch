@@ -3,8 +3,8 @@ import StarWarsContext from '../context/StarWarsContext';
 
 const initialColumnOptions = ['population',
   'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
-const initialComparisonOptions = ['maior que',
-  'menor que', 'igual a'];
+const initialComparisonOptions = ['greater than',
+  'less than', 'equal to'];
 
 function NumericValuesFilter() {
   const {

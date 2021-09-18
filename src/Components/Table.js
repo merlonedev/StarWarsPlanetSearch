@@ -25,13 +25,13 @@ function Table() {
   };
 
   const compareNumericValues = (planet, comparison, column, value) => {
-    if (comparison === 'maior que') {
+    if (comparison === 'greater than') {
       return +planet[column] > +value;
     }
-    if (comparison === 'menor que') {
+    if (comparison === 'less than') {
       return +planet[column] < +value;
     }
-    if (comparison === 'igual a') {
+    if (comparison === 'equal to') {
       return +planet[column] === +value;
     }
   };
