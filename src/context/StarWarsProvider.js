@@ -5,7 +5,7 @@ import StarWarsContext from './StarWarsContext';
 function StarWarsProvider({ children }) {
   const [data, setData] = useState([]);
   const [nameInput, setNameInput] = useState('');
-  const [numValues, setNumValue] = useState([]);
+  const [numValues, setNumValues] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
@@ -26,7 +26,7 @@ function StarWarsProvider({ children }) {
       },
       filterByNumericValues: numValues,
     },
-    setNumValue,
+    setNumValues,
   };
 
   return (

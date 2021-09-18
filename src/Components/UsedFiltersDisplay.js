@@ -4,16 +4,16 @@ import './UsedFiltersDisplay.css';
 
 function UsedFiltersDisplay() {
   const { filters:
-    { filterByNumericValues }, setNumValue } = useContext(StarWarsContext);
+    { filterByNumericValues }, setNumValues } = useContext(StarWarsContext);
 
   const handleClick = (column) => {
-    setNumValue(filterByNumericValues.filter((item) => item.column !== column));
+    setNumValues(filterByNumericValues.filter((item) => item.column !== column));
   };
 
   if (filterByNumericValues.length === 0) {
     return (
       <div className="used-filters-div">
-        NENHUM FILTRO SELECIONADO
+        NO FILTERS WERE SELECTED
       </div>
     );
   }

@@ -8,7 +8,7 @@ const initialComparisonOptions = ['maior que',
 
 function NumericValuesFilter() {
   const {
-    setNumValue,
+    setNumValues,
     filters } = useContext(StarWarsContext);
 
   const [availableOptions, setAvailableOptions] = useState(true);
@@ -20,7 +20,7 @@ function NumericValuesFilter() {
 
   const changeFilterByNumericValues = () => {
     const { filterByNumericValues } = filters;
-    setNumValue([
+    setNumValues([
       ...filterByNumericValues,
       {
         column,
@@ -93,6 +93,7 @@ function NumericValuesFilter() {
         />
       </label>
       <button
+        className="add-filter-button"
         type="button"
         data-testid="button-filter"
         onClick={ handleClick }

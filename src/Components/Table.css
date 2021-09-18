@@ -1,12 +1,12 @@
 .planet-table {
   border: 2px solid rgb(150, 150, 150);
   border-collapse: collapse;
-  font-family: sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   text-align: center;
   width: 100%;
 }
 
 .planet-table td, th {
   border: 1px solid rgb(150, 150, 150);
-  padding: 5px;
+  padding: 4px;
 }

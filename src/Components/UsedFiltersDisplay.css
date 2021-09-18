@@ -1,4 +1,6 @@
 .used-filters-div {
+  font-family: 'Noto Sans', sans-serif;
+  color: rgb(3, 3, 165);
   margin: 10px;
   text-align: left;
 }
@@ -11,6 +13,7 @@
   background-color: rgb(246, 221, 109);
   border: none;
   border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
   font-size: medium;
   padding: 5px;
 }
