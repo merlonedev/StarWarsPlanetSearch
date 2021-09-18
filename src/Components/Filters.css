@@ -1,18 +1,20 @@
 * {
   margin: 0;
-  font-family: sans-serif;
 }
 
 label {
+  font-family: sans-serif;
   margin: 10px;
 }
 
 input {
+  font-family: sans-serif;
   margin: 5px;
   padding: 2px;
 }
 
 select {
+  font-family: sans-serif;
   margin: 5px;
   padding: 2px;
 }
@@ -33,7 +35,7 @@ select {
 }
 
 .loading-div {
-  font-family: sans-serif;
+  font-family: 'Noto Sans';
   margin-top: 200px;
   text-align: center;
 }
