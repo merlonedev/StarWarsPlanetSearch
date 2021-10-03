@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/StarWarsPlanetSearch/static/css/main.32174912.chunk.css",
+    "main.js": "/StarWarsPlanetSearch/static/js/main.1dd564a0.chunk.js",
+    "main.js.map": "/StarWarsPlanetSearch/static/js/main.1dd564a0.chunk.js.map",
+    "runtime-main.js": "/StarWarsPlanetSearch/static/js/runtime-main.a5d4a132.js",
+    "runtime-main.js.map": "/StarWarsPlanetSearch/static/js/runtime-main.a5d4a132.js.map",
+    "static/js/2.bf734956.chunk.js": "/StarWarsPlanetSearch/static/js/2.bf734956.chunk.js",
+    "static/js/2.bf734956.chunk.js.map": "/StarWarsPlanetSearch/static/js/2.bf734956.chunk.js.map",
+    "index.html": "/StarWarsPlanetSearch/index.html",
+    "precache-manifest.9bd20fcbcb70b711bf922944f43c7ced.js": "/StarWarsPlanetSearch/precache-manifest.9bd20fcbcb70b711bf922944f43c7ced.js",
+    "service-worker.js": "/StarWarsPlanetSearch/service-worker.js",
+    "static/css/main.32174912.chunk.css.map": "/StarWarsPlanetSearch/static/css/main.32174912.chunk.css.map",
+    "static/js/2.bf734956.chunk.js.LICENSE.txt": "/StarWarsPlanetSearch/static/js/2.bf734956.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/StarWarsPlanetSearch/static/media/anewhope.a11b0a3c.jpeg",
+    "static/media/star-wars-logo-974.png": "/StarWarsPlanetSearch/static/media/star-wars-logo-974.739e58c0.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a5d4a132.js",
+    "static/js/2.bf734956.chunk.js",
+    "static/css/main.32174912.chunk.css",
+    "static/js/main.1dd564a0.chunk.js"
+  ]
+}
